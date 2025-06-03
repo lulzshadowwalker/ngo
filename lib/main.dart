@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ngo/ngo.dart';
-import 'package:ngo/provider/shared_preference.dart';
+import 'package:ngo/providers/shared_preference.dart'
+    show sharedPreferencesProvider;
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -16,4 +17,3 @@ void main() async {
     ),
   );
 }
-

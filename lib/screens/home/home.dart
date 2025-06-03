@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ngo/provider/l10n.dart';
+import 'package:ngo/providers/l10n.dart';
 
 class Home extends ConsumerWidget {
   const Home({super.key});

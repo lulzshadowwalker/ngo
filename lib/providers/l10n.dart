@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ngo/provider/shared_preference.dart';
+import 'package:ngo/providers/shared_preference.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocaleState {
