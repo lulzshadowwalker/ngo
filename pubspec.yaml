@@ -7,13 +7,28 @@ environment:
   sdk: ^3.8.1
 
 dependencies:
+  dio: ^5.8.0+1
   flutter:
     sdk: flutter
+  flutter_animate: ^4.5.2
+  flutter_hooks: ^0.21.2
+  flutter_localizations:
+    sdk: flutter
+  flutter_secure_storage: ^9.2.4
+  freezed_annotation: ^3.0.0
+  hooks_riverpod: ^2.6.1
+  intl: any
+  riverpod_generator: ^2.6.5
+  shared_preferences: ^2.5.3
+  validators: ^3.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  freezed: ^3.0.6
+  build_runner: ^2.4.15
 
 flutter:
   uses-material-design: true
+  generate: true
