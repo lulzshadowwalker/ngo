@@ -1,5 +1,6 @@
 import 'package:hugeicons/hugeicons.dart';
 import 'package:ngo/export_tools.dart';
+import 'package:ngo/features/join_our_community_part_two/join_our_communitry_part_two.dart';
 
 import '../../core/core_export.dart';
 import 'join_our_export.dart';
@@ -12,6 +13,8 @@ class JionOurCommunity extends StatelessWidget {
     var lang = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        scrolledUnderElevation: 0,
         leading: IconButton(
           icon: Container(
             decoration: BoxDecoration(
@@ -44,6 +47,14 @@ class JionOurCommunity extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             IamJoiningAsAnSection(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => JoinOurCommunitryPartTwo(),
+                  ),
+                );
+              },
               title: AppLocalizations.of(context)!.individual,
               description: AppLocalizations.of(
                 context,
@@ -52,6 +63,7 @@ class JionOurCommunity extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             IamJoiningAsAnSection(
+              onTap: () {},
               title: AppLocalizations.of(context)!.organization,
               description: AppLocalizations.of(
                 context,
