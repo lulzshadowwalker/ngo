@@ -10,4 +10,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helloWorld => 'Hello World!';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get arabic => 'العربية';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get sigup => 'Sign Up';
+
+  @override
+  String get connent_evaluate_volunteer => 'Connect. Evaluate. Volunteers.';
+
+  @override
+  String get join_us => 'Join Jordan\'s largest volunteering community';
+
+  @override
+  String get continue_as_guest => 'Continue as Guest';
 }

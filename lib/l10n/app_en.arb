@@ -1,6 +1,31 @@
 {
-  "helloWorld": "Hello World!",
-  "@helloWorld": {
-    "description": "The conventional newborn programmer greeting"
-  }
+	"@@locale": "en",
+	"helloWorld": "Hello World!",
+	"@helloWorld": {
+		"description": "The conventional newborn programmer greeting"
+	},
+	"english": "English",
+	"@english": {},
+	"arabic": "العربية",
+	"@arabic": {},
+	"login": "Login",
+	"@login": {
+		"description": "Login button text"
+	},
+	"sigup": "Sign Up",
+	"@sigup": {
+		"description": "Sign Up button text"
+	},
+	"connent_evaluate_volunteer": "Connect. Evaluate. Volunteers.",
+	"@connent_evaluate_volunteer": {
+		"description": "Text for connecting and evaluating volunteers"
+	},
+	"join_us": "Join Jordan's largest volunteering community",
+	"@join_us": {
+		"description": "Call to action for joining the volunteering community"
+	},
+	"continue_as_guest": "Continue as Guest",
+	"@continue_as_guest": {
+		"description": "Button text for continuing as a guest user"
+	}
 }

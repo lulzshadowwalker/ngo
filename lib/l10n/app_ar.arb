@@ -1,6 +1,14 @@
 {
-  "helloWorld": "Hello Arabi!",
-  "@helloWorld": {
-    "description": "The conventional newborn programmer greeting"
-  }
+	"@@locale": "ar",
+	"helloWorld": "Hello Arabi!",
+	"@helloWorld": {
+		"description": "The conventional newborn programmer greeting"
+	},
+	"english": "English",
+	"arabic": "العربية",
+	"login": "تسجيل الدخول",
+	"sigup": "إنشاء حساب جديد",
+	"connent_evaluate_volunteer": "تواصل. قيّم. المتطوعين.",
+	"join_us": "انضم إلى أكبر مجتمع تطوعي في الأردن",
+	"continue_as_guest": "متابعة كزائر"
 }

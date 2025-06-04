@@ -103,6 +103,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hello World!'**
   String get helloWorld;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @arabic.
+  ///
+  /// In en, this message translates to:
+  /// **'العربية'**
+  String get arabic;
+
+  /// Login button text
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
+
+  /// Sign Up button text
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get sigup;
+
+  /// Text for connecting and evaluating volunteers
+  ///
+  /// In en, this message translates to:
+  /// **'Connect. Evaluate. Volunteers.'**
+  String get connent_evaluate_volunteer;
+
+  /// Call to action for joining the volunteering community
+  ///
+  /// In en, this message translates to:
+  /// **'Join Jordan\'s largest volunteering community'**
+  String get join_us;
+
+  /// Button text for continuing as a guest user
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as Guest'**
+  String get continue_as_guest;
 }
 
 class _AppLocalizationsDelegate

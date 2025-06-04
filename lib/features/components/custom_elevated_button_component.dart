@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ngo/screens/components/text_component.dart';
+import 'package:ngo/features/components/text_component.dart';
 
 import '../../theme/my_colors.dart';
 

@@ -8,20 +8,21 @@ environment:
 
 dependencies:
   dio: ^5.8.0+1
+  equatable: ^2.0.7
   flutter:
     sdk: flutter
   flutter_animate: ^4.5.2
+  flutter_bloc: ^9.1.1
   flutter_hooks: ^0.21.2
   flutter_localizations:
     sdk: flutter
   flutter_secure_storage: ^9.2.4
   freezed_annotation: ^3.0.0
   google_fonts: ^6.2.1
-  hooks_riverpod: ^2.6.1
+
   intl: any
-  riverpod_generator: ^2.6.5
+
   shared_preferences: ^2.5.3
-  validators: ^3.0.0
 
 dev_dependencies:
   flutter_test:
