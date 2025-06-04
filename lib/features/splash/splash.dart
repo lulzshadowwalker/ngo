@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:ngo/features/components/logo_app.dart';
-import 'package:ngo/features/components/text_component.dart';
-import 'package:ngo/features/landing/landing.dart';
-import 'package:ngo/theme/my_colors.dart';
-import 'package:ngo/theme/my_fonts.dart';
+import 'package:ngo/core/core_export.dart';
+import 'package:ngo/export_tools.dart';
+import '../components/text_component.dart';
+import '../landing/landing.dart';
 
 class Splash extends HookWidget {
   const Splash({super.key});

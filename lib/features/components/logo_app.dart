@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ngo/constant/app_assets.dart';
+import 'package:ngo/core/constant/app_assets.dart';
 
 class LogoApp extends StatelessWidget {
   const LogoApp({super.key, this.height = 320, this.logoApp = AppAssets.logo});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ngo/l10n/app_localizations.dart';
-import 'package:ngo/locale/cubit/locale_cubit.dart';
+import 'package:ngo/l10n/locale/cubit/locale_cubit.dart';
 import 'package:ngo/features/splash/splash.dart';
 
 class MyApp extends StatelessWidget {
