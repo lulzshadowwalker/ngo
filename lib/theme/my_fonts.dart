@@ -25,6 +25,17 @@ class MyFonts {
     color: Colors.black,
     fontWeight: FontWeight.bold,
   );
+  static final TextStyle font16Black = GoogleFonts.getFont(
+    "Lato",
+    fontSize: 16,
+    color: Colors.black,
+  );
+  static final TextStyle font16BlackBold = GoogleFonts.getFont(
+    "Lato",
+    fontSize: 16,
+    color: Colors.black,
+    fontWeight: FontWeight.bold,
+  );
   static final TextStyle font14Black = GoogleFonts.getFont(
     "Lato",
     fontSize: 14,

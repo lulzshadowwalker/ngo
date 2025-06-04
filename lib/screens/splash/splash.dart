@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:ngo/screens/components/logo_app.dart';
 import 'package:ngo/screens/components/text_component.dart';
 import 'package:ngo/screens/landing/landing.dart';
+import 'package:ngo/theme/my_colors.dart';
 import 'package:ngo/theme/my_fonts.dart';
 
 class Splash extends HookWidget {
@@ -24,23 +26,31 @@ class Splash extends HookWidget {
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      body: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: double.infinity),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(),
-            TextComponent(
-              title: "Connect. Evaluate. Volunteer.",
-              style: MyFonts.font20Black,
+      body: ListView(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 60),
+        children: [
+          const SizedBox(height: 40),
+          LogoApp(),
+          const SizedBox(height: 20),
+          TextComponent(
+            title: "NGO 962",
+            style: MyFonts.font28BlackBold.copyWith(
+              color: MyColors.primaryColor,
             ),
-            TextComponent(
-              title: "Join Jordan's largest volunteering community",
-              style: MyFonts.font14Black,
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 30),
+          TextComponent(
+            title: "Connect. Evaluate. Volunteer.",
+            style: MyFonts.font22BlackBold,
+          ),
+          const SizedBox(height: 10),
+          TextComponent(
+            title: "Join Jordan's largest volunteering community",
+            style: MyFonts.font16Black,
+          ),
+        ],
       ),
     );
   }
