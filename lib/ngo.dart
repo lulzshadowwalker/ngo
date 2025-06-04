@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<LocaleCubit, LocaleState>(
         builder: (context, localeState) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             title: 'NGO-962',
             locale: (localeState is LocaleSetSuccess)
                 ? localeState.locale

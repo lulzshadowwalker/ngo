@@ -31,4 +31,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get continue_as_guest => 'Continue as Guest';
+
+  @override
+  String get join_our_community => 'Join Our Community';
+
+  @override
+  String get iam_joining_as => 'I am joining as an';
+
+  @override
+  String get individual => 'Individual';
+
+  @override
+  String get for_personal_use_and_volunteering =>
+      'For personal use and volunteering';
+
+  @override
+  String get organization => 'Organization (NGO)';
+
+  @override
+  String get for_registered_organizations =>
+      'For registered non-profie organizations';
+
+  @override
+  String get by_continuing_you_agree_to => 'By continuing, you agree to our';
+
+  @override
+  String get terms_and_conditions => 'Terms of Service';
+
+  @override
+  String get and => 'and';
+
+  @override
+  String get privacy_policy => 'Privacy Policy';
 }

@@ -145,6 +145,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue as Guest'**
   String get continue_as_guest;
+
+  /// Text for joining the community
+  ///
+  /// In en, this message translates to:
+  /// **'Join Our Community'**
+  String get join_our_community;
+
+  /// Text indicating the type of user joining
+  ///
+  /// In en, this message translates to:
+  /// **'I am joining as an'**
+  String get iam_joining_as;
+
+  /// No description provided for @individual.
+  ///
+  /// In en, this message translates to:
+  /// **'Individual'**
+  String get individual;
+
+  /// Description for individual users
+  ///
+  /// In en, this message translates to:
+  /// **'For personal use and volunteering'**
+  String get for_personal_use_and_volunteering;
+
+  /// Text for organizations or NGOs
+  ///
+  /// In en, this message translates to:
+  /// **'Organization (NGO)'**
+  String get organization;
+
+  /// Description for organizations or NGOs
+  ///
+  /// In en, this message translates to:
+  /// **'For registered non-profie organizations'**
+  String get for_registered_organizations;
+
+  /// Text indicating agreement to terms and conditions
+  ///
+  /// In en, this message translates to:
+  /// **'By continuing, you agree to our'**
+  String get by_continuing_you_agree_to;
+
+  /// Link text for terms and conditions
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get terms_and_conditions;
+
+  /// Conjunction used in legal agreements
+  ///
+  /// In en, this message translates to:
+  /// **'and'**
+  String get and;
+
+  /// Link text for privacy policy
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacy_policy;
 }
 
 class _AppLocalizationsDelegate

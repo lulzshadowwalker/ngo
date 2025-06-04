@@ -27,5 +27,43 @@
 	"continue_as_guest": "Continue as Guest",
 	"@continue_as_guest": {
 		"description": "Button text for continuing as a guest user"
+	},
+	"join_our_community": "Join Our Community",
+	"@join_our_community": {
+		"description": "Text for joining the community"
+	},
+	"iam_joining_as": "I am joining as an",
+	"@iam_joining_as": {
+		"description": "Text indicating the type of user joining"
+	},
+	"individual": "Individual",
+	"@individual": {},
+	"for_personal_use_and_volunteering": "For personal use and volunteering",
+	"@for_personal_use_and_volunteering": {
+		"description": "Description for individual users"
+	},
+	"organization": "Organization (NGO)",
+	"@organization": {
+		"description": "Text for organizations or NGOs"
+	},
+	"for_registered_organizations": "For registered non-profie organizations",
+	"@for_registered_organizations": {
+		"description": "Description for organizations or NGOs"
+	},
+	"by_continuing_you_agree_to": "By continuing, you agree to our",
+	"@by_continuing_you_agree_to": {
+		"description": "Text indicating agreement to terms and conditions"
+	},
+	"terms_and_conditions": "Terms of Service",
+	"@terms_and_conditions": {
+		"description": "Link text for terms and conditions"
+	},
+	"and": "and",
+	"@and": {
+		"description": "Conjunction used in legal agreements"
+	},
+	"privacy_policy": "Privacy Policy",
+	"@privacy_policy": {
+		"description": "Link text for privacy policy"
 	}
 }

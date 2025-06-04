@@ -10,5 +10,15 @@
 	"sigup": "إنشاء حساب جديد",
 	"connent_evaluate_volunteer": "تواصل. قيّم. المتطوعين.",
 	"join_us": "انضم إلى أكبر مجتمع تطوعي في الأردن",
-	"continue_as_guest": "متابعة كزائر"
+	"continue_as_guest": "متابعة كزائر",
+	"join_our_community": "انضم إلى مجتمعنا",
+	"iam_joining_as": "أنا أنضم كـ",
+	"individual": "فرد",
+	"for_personal_use_and_volunteering": "للاستخدام الشخصي والتطوع",
+	"organization": "منظمة (جمعية أهلية)",
+	"for_registered_organizations": "للمنظمات غير الربحية المسجلة",
+	"by_continuing_you_agree_to": "بمتابعة، أنت توافق على",
+	"terms_and_conditions": "شروط الخدمة",
+	"and": "و",
+	"privacy_policy": "سياسة الخصوصية"
 }

@@ -31,4 +31,34 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get continue_as_guest => 'متابعة كزائر';
+
+  @override
+  String get join_our_community => 'انضم إلى مجتمعنا';
+
+  @override
+  String get iam_joining_as => 'أنا أنضم كـ';
+
+  @override
+  String get individual => 'فرد';
+
+  @override
+  String get for_personal_use_and_volunteering => 'للاستخدام الشخصي والتطوع';
+
+  @override
+  String get organization => 'منظمة (جمعية أهلية)';
+
+  @override
+  String get for_registered_organizations => 'للمنظمات غير الربحية المسجلة';
+
+  @override
+  String get by_continuing_you_agree_to => 'بمتابعة، أنت توافق على';
+
+  @override
+  String get terms_and_conditions => 'شروط الخدمة';
+
+  @override
+  String get and => 'و';
+
+  @override
+  String get privacy_policy => 'سياسة الخصوصية';
 }
