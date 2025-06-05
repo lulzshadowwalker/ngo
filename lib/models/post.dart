@@ -8,6 +8,7 @@ abstract class Post with _$Post {
   const factory Post({
     required String id,
     required String title,
+    required String slug,
     required String content,
     required String cover,
     required Organization? organization,
@@ -18,12 +19,16 @@ abstract class Post with _$Post {
 
   factory Post.fromLaravel(Map<String, dynamic> data) {
     final attributes = data['attributes'] as Map<String, dynamic>;
-    final includes = data['includes'] as Map<String, dynamic>;
+    final includes = <String, dynamic>{};
+    if (data['includes'] is Map<String, dynamic>) {
+      includes.addAll(data['includes'] as Map<String, dynamic>);
+    }
 
     return Post(
       id: data['id'] as String,
-      createdAt: DateTime.parse(data['created_at'] as String),
-      updatedAt: DateTime.parse(data['updated_at'] as String),
+      slug: attributes['slug'] as String,
+      createdAt: DateTime.parse(attributes['createdAt'] as String),
+      updatedAt: DateTime.parse(attributes['updatedAt'] as String),
       title: attributes['title'],
       content: attributes['content'],
       cover: attributes['cover'],

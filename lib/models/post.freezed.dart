@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Post {
 
- String get id; String get title; String get content; String get cover; Organization? get organization; DateTime get createdAt; String get createdAtReadable; DateTime get updatedAt;
+ String get id; String get title; String get slug; String get content; String get cover; Organization? get organization; DateTime get createdAt; String get createdAtReadable; DateTime get updatedAt;
 /// Create a copy of Post
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $PostCopyWith<Post> get copyWith => _$PostCopyWithImpl<Post>(this as Post, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Post&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.content, content) || other.content == content)&&(identical(other.cover, cover) || other.cover == cover)&&(identical(other.organization, organization) || other.organization == organization)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.createdAtReadable, createdAtReadable) || other.createdAtReadable == createdAtReadable)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Post&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.content, content) || other.content == content)&&(identical(other.cover, cover) || other.cover == cover)&&(identical(other.organization, organization) || other.organization == organization)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.createdAtReadable, createdAtReadable) || other.createdAtReadable == createdAtReadable)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,content,cover,organization,createdAt,createdAtReadable,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,title,slug,content,cover,organization,createdAt,createdAtReadable,updatedAt);
 
 @override
 String toString() {
-  return 'Post(id: $id, title: $title, content: $content, cover: $cover, organization: $organization, createdAt: $createdAt, createdAtReadable: $createdAtReadable, updatedAt: $updatedAt)';
+  return 'Post(id: $id, title: $title, slug: $slug, content: $content, cover: $cover, organization: $organization, createdAt: $createdAt, createdAtReadable: $createdAtReadable, updatedAt: $updatedAt)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $PostCopyWith<$Res>  {
   factory $PostCopyWith(Post value, $Res Function(Post) _then) = _$PostCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, String content, String cover, Organization? organization, DateTime createdAt, String createdAtReadable, DateTime updatedAt
+ String id, String title, String slug, String content, String cover, Organization? organization, DateTime createdAt, String createdAtReadable, DateTime updatedAt
 });
 
 
@@ -63,10 +63,11 @@ class _$PostCopyWithImpl<$Res>
 
 /// Create a copy of Post
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? content = null,Object? cover = null,Object? organization = freezed,Object? createdAt = null,Object? createdAtReadable = null,Object? updatedAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? slug = null,Object? content = null,Object? cover = null,Object? organization = freezed,Object? createdAt = null,Object? createdAtReadable = null,Object? updatedAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,slug: null == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
 as String,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String,cover: null == cover ? _self.cover : cover // ignore: cast_nullable_to_non_nullable
 as String,organization: freezed == organization ? _self.organization : organization // ignore: cast_nullable_to_non_nullable
@@ -96,11 +97,12 @@ $OrganizationCopyWith<$Res>? get organization {
 
 
 class _Post implements Post {
-  const _Post({required this.id, required this.title, required this.content, required this.cover, required this.organization, required this.createdAt, required this.createdAtReadable, required this.updatedAt});
+  const _Post({required this.id, required this.title, required this.slug, required this.content, required this.cover, required this.organization, required this.createdAt, required this.createdAtReadable, required this.updatedAt});
   
 
 @override final  String id;
 @override final  String title;
+@override final  String slug;
 @override final  String content;
 @override final  String cover;
 @override final  Organization? organization;
@@ -118,16 +120,16 @@ _$PostCopyWith<_Post> get copyWith => __$PostCopyWithImpl<_Post>(this, _$identit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Post&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.content, content) || other.content == content)&&(identical(other.cover, cover) || other.cover == cover)&&(identical(other.organization, organization) || other.organization == organization)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.createdAtReadable, createdAtReadable) || other.createdAtReadable == createdAtReadable)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Post&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.content, content) || other.content == content)&&(identical(other.cover, cover) || other.cover == cover)&&(identical(other.organization, organization) || other.organization == organization)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.createdAtReadable, createdAtReadable) || other.createdAtReadable == createdAtReadable)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,content,cover,organization,createdAt,createdAtReadable,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,title,slug,content,cover,organization,createdAt,createdAtReadable,updatedAt);
 
 @override
 String toString() {
-  return 'Post(id: $id, title: $title, content: $content, cover: $cover, organization: $organization, createdAt: $createdAt, createdAtReadable: $createdAtReadable, updatedAt: $updatedAt)';
+  return 'Post(id: $id, title: $title, slug: $slug, content: $content, cover: $cover, organization: $organization, createdAt: $createdAt, createdAtReadable: $createdAtReadable, updatedAt: $updatedAt)';
 }
 
 
@@ -138,7 +140,7 @@ abstract mixin class _$PostCopyWith<$Res> implements $PostCopyWith<$Res> {
   factory _$PostCopyWith(_Post value, $Res Function(_Post) _then) = __$PostCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, String content, String cover, Organization? organization, DateTime createdAt, String createdAtReadable, DateTime updatedAt
+ String id, String title, String slug, String content, String cover, Organization? organization, DateTime createdAt, String createdAtReadable, DateTime updatedAt
 });
 
 
@@ -155,10 +157,11 @@ class __$PostCopyWithImpl<$Res>
 
 /// Create a copy of Post
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? content = null,Object? cover = null,Object? organization = freezed,Object? createdAt = null,Object? createdAtReadable = null,Object? updatedAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? slug = null,Object? content = null,Object? cover = null,Object? organization = freezed,Object? createdAt = null,Object? createdAtReadable = null,Object? updatedAt = null,}) {
   return _then(_Post(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,slug: null == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
 as String,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String,cover: null == cover ? _self.cover : cover // ignore: cast_nullable_to_non_nullable
 as String,organization: freezed == organization ? _self.organization : organization // ignore: cast_nullable_to_non_nullable
