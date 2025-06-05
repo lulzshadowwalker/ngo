@@ -29,8 +29,8 @@ abstract class Organization with _$Organization {
       location: attributes['location'] as String,
       bio: attributes['bio'] as String?,
       website: attributes['website'] as String?,
-      createdAt: DateTime.parse(data['created_at'] as String),
-      updatedAt: DateTime.parse(data['updated_at'] as String),
+      createdAt: DateTime.parse(attributes['createdAt'] as String),
+      updatedAt: DateTime.parse(attributes['updatedAt'] as String),
     );
   }
 }
