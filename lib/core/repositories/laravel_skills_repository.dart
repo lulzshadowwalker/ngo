@@ -14,4 +14,11 @@ final class LaravelSkillsRepository extends LaravelRepository
         .map((item) => Skill.fromLaravel(item as Map<String, dynamic>))
         .toList();
   }
+
+  @override
+  Future<Skill> fetch(String slug, {String language = 'en'}) async {
+    final response = await get('/$language/skills/$slug');
+    final data = response['data'] as Map<String, dynamic>;
+    return Skill.fromLaravel(data);
+  }
 }
