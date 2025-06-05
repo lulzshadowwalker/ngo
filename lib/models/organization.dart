@@ -1,0 +1,36 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'organization.freezed.dart';
+
+@freezed
+abstract class Organization with _$Organization {
+  const factory Organization({
+    required String id,
+    required String name,
+    required String slug,
+    required String logo,
+    required String sector,
+    required String location,
+    required String? bio,
+    required String? website,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+  }) = _Organization;
+
+  factory Organization.fromLaravel(Map<String, dynamic> data) {
+    final attributes = data['attributes'] as Map<String, dynamic>;
+
+    return Organization(
+      id: data['id'] as String,
+      name: attributes['name'] as String,
+      slug: attributes['slug'] as String,
+      logo: attributes['logo'] as String,
+      sector: attributes['sector'] as String,
+      location: attributes['location'] as String,
+      bio: attributes['bio'] as String?,
+      website: attributes['website'] as String?,
+      createdAt: DateTime.parse(data['created_at'] as String),
+      updatedAt: DateTime.parse(data['updated_at'] as String),
+    );
+  }
+}
