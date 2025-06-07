@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:ngo/features/post/ui/post_ui.dart';
 import 'package:ngo/l10n/app_localizations.dart';
 import 'package:ngo/l10n/locale/cubit/locale_cubit.dart';
 import 'package:ngo/features/splash/splash.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
             locale: (localeState is LocaleSetSuccess)
                 ? localeState.locale
                 : const Locale('en'),
-            home: Splash(),
+            home: PostUi(),
             localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,

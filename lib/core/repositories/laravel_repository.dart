@@ -29,7 +29,7 @@ abstract class LaravelRepository {
           dio ??
           Dio(
             BaseOptions(
-              //  TODO: Refactor baseUrl instead of using a hard-coded value.
+              ///   Refactor baseUrl instead of using a hard-coded value.
               baseUrl: "https://ngo.lulzie.online/api/",
               headers: {
                 'Accept': 'application/json',
@@ -165,7 +165,7 @@ abstract class LaravelRepository {
       }
 
       return processData(response.data);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (e.response != null) {
         final handled = handleStatusCode(e.response!);
         if (handled) return null;
