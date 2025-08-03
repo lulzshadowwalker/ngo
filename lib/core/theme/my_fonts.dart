@@ -52,4 +52,9 @@ class MyFonts {
     fontSize: 12,
     color: Colors.black,
   );
+    static final TextStyle font11Black = GoogleFonts.getFont(
+    "Lato",
+    fontSize: 8,
+    color: Colors.black,
+  );
 }
