@@ -10,7 +10,6 @@ class Home extends HookWidget {
     final tabController = useTabController(initialLength: 2);
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -42,9 +41,19 @@ class Home extends HookWidget {
               children: [
                 const SizedBox(height: 8),
                 TabBar(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  dividerColor: Colors.transparent,
+                  // padding: const EdgeInsets.symmetric(horizontal: 50),
+                  tabAlignment: TabAlignment.center,
                   controller: tabController,
                   indicatorColor: Colors.green,
+                  indicator: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.green,
+                        width: 1.0,
+                      ),
+                    ),
+                  ),
                   labelColor: Colors.black,
                   unselectedLabelColor: Colors.grey,
                   labelStyle: const TextStyle(

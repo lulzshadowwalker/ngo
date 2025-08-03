@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:ngo/core/theme/my_colors.dart';
 import 'package:ngo/features/main_nav/main_nav_export.dart';
 import 'package:ngo/l10n/app_localizations.dart';
 import 'package:ngo/l10n/locale/cubit/locale_cubit.dart';
@@ -18,6 +19,8 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<LocaleCubit, LocaleState>(
         builder: (context, localeState) {
           return MaterialApp(
+              theme: AppTheme.lightTheme,
+
             debugShowCheckedModeBanner: false,
             title: 'NGO-962',
             locale: (localeState is LocaleSetSuccess)
