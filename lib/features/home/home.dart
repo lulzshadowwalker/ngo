@@ -1,7 +1,6 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../export_tools.dart';
-import '../post/ui/post_ui.dart';
 
 class Home extends HookWidget {
   const Home({super.key});
@@ -49,10 +48,7 @@ class Home extends HookWidget {
                   indicatorColor: Colors.green,
                   indicator: BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(
-                        color: Colors.green,
-                        width: 1.0,
-                      ),
+                      bottom: BorderSide(color: Colors.green, width: 1.0),
                     ),
                   ),
                   labelColor: Colors.black,
@@ -113,197 +109,120 @@ class Home extends HookWidget {
               ),
             ),
           ),
-
-          SliverToBoxAdapter(child: SizedBox(
-            height: 600,
-            child: PostUi()),)
-          // SliverList(
-          //   delegate: SliverChildListDelegate([
-          //     Padding(
-          //       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          //       child: Card(
-          //         shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.circular(12),
-          //         ),
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             ListTile(
-          //               leading: CircleAvatar(
-          //                 backgroundImage: NetworkImage(
-          //                   'https://randomuser.me/api/portraits/men/32.jpg',
-          //                 ),
-          //               ),
-          //               title: const Text('UNRWA Jordan'),
-          //               subtitle: const Text('2 hours ago'),
-          //               trailing: Icon(Icons.more_vert),
-          //             ),
-          //             Padding(
-          //               padding: const EdgeInsets.symmetric(horizontal: 16),
-          //               child: Text(
-          //                 'Today we distributed winter supplies to 100 families in Amman. Thank you to all our volunteers who made this possible!',
-          //                 style: const TextStyle(fontSize: 15),
-          //               ),
-          //             ),
-          //             const SizedBox(height: 8),
-          //             ClipRRect(
-          //               borderRadius: BorderRadius.circular(8),
-          //               child: Image.network(
-          //                 'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
-          //                 height: 160,
-          //                 width: double.infinity,
-          //                 fit: BoxFit.cover,
-          //               ),
-          //             ),
-          //             const SizedBox(height: 8),
-          //             Padding(
-          //               padding: const EdgeInsets.symmetric(horizontal: 16),
-          //               child: Row(
-          //                 children: [
-          //                   Icon(Icons.favorite_border, color: Colors.grey),
-          //                   const SizedBox(width: 4),
-          //                   const Text('245'),
-          //                   const SizedBox(width: 16),
-          //                   Icon(Icons.chat_bubble_outline, color: Colors.grey),
-          //                   const SizedBox(width: 4),
-          //                   const Text('18'),
-          //                 ],
-          //               ),
-          //             ),
-          //             const SizedBox(height: 8),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          //       child: Card(
-          //         shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.circular(12),
-          //         ),
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             ClipRRect(
-          //               borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-          //               child: Image.network(
-          //                 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2',
-          //                 height: 120,
-          //                 width: double.infinity,
-          //                 fit: BoxFit.cover,
-          //               ),
-          //             ),
-          //             Padding(
-          //               padding: const EdgeInsets.all(16),
-          //               child: Column(
-          //                 crossAxisAlignment: CrossAxisAlignment.start,
-          //                 children: [
-          //                   const Text(
-          //                     'Digital Skills Workshop Series',
-          //                     style: TextStyle(
-          //                       fontWeight: FontWeight.bold,
-          //                       fontSize: 16,
-          //                     ),
-          //                   ),
-          //                   const SizedBox(height: 4),
-          //                   const Text(
-          //                     'Free workshops teaching essential digital skills to empower job seekers. Starting next month in Amman.',
-          //                     style: TextStyle(fontSize: 14, color: Colors.black87),
-          //                   ),
-          //                   const SizedBox(height: 8),
-          //                   GestureDetector(
-          //                     onTap: () {},
-          //                     child: const Text(
-          //                       'Learn More',
-          //                       style: TextStyle(
-          //                         color: Colors.green,
-          //                         fontWeight: FontWeight.bold,
-          //                       ),
-          //                     ),
-          //                   ),
-          //                 ],
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          //       child: Card(
-          //         shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.circular(12),
-          //         ),
-          //         child: Padding(
-          //           padding: const EdgeInsets.all(16),
-          //           child: Column(
-          //             crossAxisAlignment: CrossAxisAlignment.start,
-          //             children: [
-          //               const Text(
-          //                 'Featured Opportunity',
-          //                 style: TextStyle(
-          //                   color: Colors.green,
-          //                   fontWeight: FontWeight.bold,
-          //                   fontSize: 14,
-          //                 ),
-          //               ),
-          //               const SizedBox(height: 8),
-          //               const Text(
-          //                 'Youth Education Program Volunteer',
-          //                 style: TextStyle(
-          //                   fontWeight: FontWeight.bold,
-          //                   fontSize: 16,
-          //                 ),
-          //               ),
-          //               const SizedBox(height: 4),
-          //               Row(
-          //                 children: [
-          //                   CircleAvatar(
-          //                     radius: 12,
-          //                     backgroundImage: NetworkImage(
-          //                       'https://randomuser.me/api/portraits/men/45.jpg',
-          //                     ),
-          //                   ),
-          //                   const SizedBox(width: 8),
-          //                   const Text('UNICEF Jordan'),
-          //                 ],
-          //               ),
-          //               const SizedBox(height: 4),
-          //               Row(
-          //                 children: [
-          //                   const Icon(Icons.location_on, size: 16, color: Colors.grey),
-          //                   const SizedBox(width: 4),
-          //                   const Text('Zarqa, Jordan'),
-          //                 ],
-          //               ),
-          //               const SizedBox(height: 8),
-          //               const Text(
-          //                 'Join us in teaching basic computer skills to youth in underserved communities.',
-          //                 style: TextStyle(fontSize: 14),
-          //               ),
-          //               const SizedBox(height: 12),
-          //               SizedBox(
-          //                 width: double.infinity,
-          //                 height: 44,
-          //                 child: ElevatedButton(
-          //                   style: ElevatedButton.styleFrom(
-          //                     backgroundColor: Colors.green[700],
-          //                     shape: RoundedRectangleBorder(
-          //                       borderRadius: BorderRadius.circular(8),
-          //                     ),
-          //                   ),
-          //                   onPressed: () {},
-          //                   child: const Text('Apply Now'),
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ]),
-          // ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+          PostUi(),
+          PostUi(),
+          PostUi(),
+            ]),
+          ),
         ],
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+class PostUi extends StatelessWidget {
+  const PostUi({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: Container(
+        decoration: BoxDecoration(
+          
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withValues(alpha:  0.2),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+       
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(
+                  'https://randomuser.me/api/portraits/men/32.jpg',
+                ),
+              ),
+              title: const Text(
+                'UNRWA Jordan',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: const Text('2 hours ago'),
+              trailing: IconButton(
+                icon: const Icon(Icons.more_vert),
+                onPressed: () {
+                  // Handle more options
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: const Text(
+                'Today we distributed winter supplies to 100 families in Amman. Thank you to all our volunteers who made this possible!',
+                style: TextStyle(fontSize: 15),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
+                  height: 160,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.favorite_border, color: Colors.grey),
+                    onPressed: () {
+                      // Handle like action
+                    },
+                  ),
+                  const Text('245'),
+                  const SizedBox(width: 16),
+                  IconButton(
+                    icon: const Icon(Icons.chat_bubble_outline, color: Colors.grey),
+                    onPressed: () {
+                      // Handle comment action
+                    },
+                  ),
+                  const Text('18'),
+                  const SizedBox(width: 16),
+                  IconButton(
+                    icon: const Icon(Icons.share, color: Colors.grey),
+                    onPressed: () {
+                      // Handle share action
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
       ),
     );
   }
