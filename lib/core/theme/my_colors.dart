@@ -27,7 +27,7 @@ class AppTheme {
       primary: MyColors.primaryColor,
       secondary: MyColors.secondaryColor,
       error: MyColors.errorColor,
-      background: MyColors.backgroundColor,
+      surface: MyColors.backgroundColor,
     ),
 
     // AppBar Theme
