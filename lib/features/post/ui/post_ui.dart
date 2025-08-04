@@ -1,10 +1,9 @@
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ngo/features/components/text_component.dart';
-import 'package:ngo/features/post/data/model/post.dart';
-import 'package:ngo/features/post/data/repo/posts_repository.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:ngo/core/theme/my_fonts.dart';
 import 'package:ngo/export_tools.dart';
+import 'package:ngo/features/components/text_component.dart';
+import 'package:ngo/features/post/data/model/post.dart';
 import 'package:ngo/features/post/logic/post_cubit.dart';
 import 'package:ngo/features/post/logic/post_state.dart';
 import 'package:ngo/service_locator.dart';
@@ -19,8 +18,7 @@ class PostUi extends HookWidget {
 
     return BlocProvider(
       create: (context) =>
-          PostCubit(postsRepository: sl<PostsRepository>())
-            ..fetchAllPost(language: lang.localeName),
+          sl<PostCubit>()..fetchAllPost(language: lang.localeName),
       child: Scaffold(
         body: BlocBuilder<PostCubit, PostState>(
           buildWhen: (previous, current) =>

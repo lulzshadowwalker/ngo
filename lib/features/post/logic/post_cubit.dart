@@ -18,6 +18,7 @@ class PostCubit extends Cubit<PostState> {
       log('Fetched posts: ${post?.length}');
       emit(PostState.loaded(post!));
     } catch (e) {
+      log('Error fetching posts: $e');
       emit(PostState.error(e.toString()));
     }
   }
