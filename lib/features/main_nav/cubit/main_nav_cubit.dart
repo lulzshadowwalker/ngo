@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../export_tools.dart';
 import '../../home/home_export.dart';
+import '../../organization/organization_screen_export.dart';
 import 'main_nav_state.dart';
 
 class MainNavCubit extends Cubit<MainNavState> {
@@ -9,7 +10,7 @@ class MainNavCubit extends Cubit<MainNavState> {
 
   List<Widget> pages = [
   Home(),
-    Scaffold(body: Center(child: Text('Organization'))),
+  OrganizationScreen(),
     Scaffold(body: Center(child: Text('Opportunities'))),
     Scaffold(body: Center(child: Text('blog'))),
     Scaffold(body: Center(child: Text('Profile'))),
