@@ -1,6 +1,8 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../export_tools.dart';
+import '../notifications/notifications_home_export.dart';
+import '../search_home/search_home_export.dart';
 
 class Home extends HookWidget {
   const Home({super.key});
@@ -28,11 +30,17 @@ class Home extends HookWidget {
             actions: [
               IconButton(
                 icon: const Icon(Icons.search, color: Colors.black),
-                onPressed: () {},
+                onPressed: () {
+                  // Handle search action
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchHome()));
+                },
               ),
               IconButton(
                 icon: const Icon(Icons.notifications_none, color: Colors.black),
-                onPressed: () {},
+                onPressed: () {
+                  // Handle notifications action
+                   Navigator.push(context, MaterialPageRoute(builder: (context)=> NotificationsHome()));
+                },
               ),
             ],
           ),
@@ -134,94 +142,100 @@ class PostUi extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      child: Container(
-        decoration: BoxDecoration(
-          
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withValues(alpha:  0.2),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: const Offset(0, 3), // changes position of shadow
-            ),
-          ],
-        ),
-       
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(
-                  'https://randomuser.me/api/portraits/men/32.jpg',
+      child: GestureDetector(
+        onTap: () {
+          print("Post tapped");
+          // Handle post tap
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withValues(alpha:  0.2),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: const Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+         
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    'https://randomuser.me/api/portraits/men/32.jpg',
+                  ),
+                ),
+                title: const Text(
+                  'UNRWA Jordan',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: const Text('2 hours ago'),
+                trailing: IconButton(
+                  icon: const Icon(Icons.more_vert),
+                  onPressed: () {
+                    // Handle more options
+                  },
                 ),
               ),
-              title: const Text(
-                'UNRWA Jordan',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: const Text('2 hours ago'),
-              trailing: IconButton(
-                icon: const Icon(Icons.more_vert),
-                onPressed: () {
-                  // Handle more options
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: const Text(
-                'Today we distributed winter supplies to 100 families in Amman. Thank you to all our volunteers who made this possible!',
-                style: TextStyle(fontSize: 15),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
-                  height: 160,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: const Text(
+                  'Today we distributed winter supplies to 100 families in Amman. Thank you to all our volunteers who made this possible!',
+                  style: TextStyle(fontSize: 15),
                 ),
               ),
-            ),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.favorite_border, color: Colors.grey),
-                    onPressed: () {
-                      // Handle like action
-                    },
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
+                    height: 160,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
                   ),
-                  const Text('245'),
-                  const SizedBox(width: 16),
-                  IconButton(
-                    icon: const Icon(Icons.chat_bubble_outline, color: Colors.grey),
-                    onPressed: () {
-                      // Handle comment action
-                    },
-                  ),
-                  const Text('18'),
-                  const SizedBox(width: 16),
-                  IconButton(
-                    icon: const Icon(Icons.share, color: Colors.grey),
-                    onPressed: () {
-                      // Handle share action
-                    },
-                  ),
-                ],
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-          ],
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.favorite_border, color: Colors.grey),
+                      onPressed: () {
+                        // Handle like action
+                      },
+                    ),
+                    const Text('245'),
+                    const SizedBox(width: 16),
+                    IconButton(
+                      icon: const Icon(Icons.chat_bubble_outline, color: Colors.grey),
+                      onPressed: () {
+                        // Handle comment action
+                      },
+                    ),
+                    const Text('18'),
+                    const SizedBox(width: 16),
+                    IconButton(
+                      icon: const Icon(Icons.share, color: Colors.grey),
+                      onPressed: () {
+                        // Handle share action
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
         ),
       ),
     );
