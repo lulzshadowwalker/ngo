@@ -75,10 +75,10 @@ class OrganizationView extends HookWidget {
           ),
           child: Text(
             label,
-            style: TextStyle(
-              color: isSelected ? Colors.white : Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+           style: TextStyle(
+            color: isSelected ? Colors.white : Colors.black87,
+            fontWeight: FontWeight.w500,
+          ),
           ),
         ),
       );
