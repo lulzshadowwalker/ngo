@@ -9,7 +9,7 @@ class LaravelLoginRepository extends LaravelRepository implements AuthRepository
   @override
   @override
   Future<(AccessToken accessToken, Role role)> login(
-    String identifier,
+    String email,
     String password, {
     String? deviceToken,
   }) async {
@@ -17,7 +17,7 @@ class LaravelLoginRepository extends LaravelRepository implements AuthRepository
       '/v1/auth/login',
       data: {
         'data': {
-          'attributes': {'identifier': identifier, 'password': password},
+          'attributes': {'email': email, 'password': password},
           'relationships': {
             'deviceTokens': {
               'data': {

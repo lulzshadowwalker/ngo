@@ -1,5 +1,5 @@
-import '../../core/constant/app_assets.dart';
-import '../../export_tools.dart';
+import '../../../core/constant/app_assets.dart';
+import '../../../export_tools.dart';
 import 'login_export.dart';
 
 class Login extends StatelessWidget {
@@ -16,12 +16,13 @@ class Login extends StatelessWidget {
 
           LoginFromSection(),
           const SizedBox(height: 20),
-          ForgotPasswordSection(),
-          const SizedBox(height: 20),
-          LoginScreenButtonSection(lang: lang),
-          const SizedBox(height: 15),
+       
+       
+             DontHaveAcountSection(lang: lang),
+          // LoginScreenButtonSection(lang: lang),
+          // const SizedBox(height: 15),
 
-          DontHaveAcountSection(lang: lang),
+       
         ],
       ),
     );

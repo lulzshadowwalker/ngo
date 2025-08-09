@@ -95,4 +95,40 @@ class SharedPrefHelper {
     debugPrint('FlutterSecureStorage : all data has been cleared');
     await _flutterSecureStorage.deleteAll();
   }
+
+  /// Auth-specific helper methods
+  
+  /// Saves authentication data (access token and role)
+  static Future<void> saveAuthData({
+    required String accessToken,
+    required String role,
+  }) async {
+    debugPrint('SharedPrefHelper : saving auth data');
+    await setSecuredString('access_token', accessToken);
+    await setData('user_role', role);
+    await setData('is_logged_in', true);
+  }
+
+  /// Gets the saved access token
+  static Future<String> getAccessToken() async {
+    return await getSecuredString('access_token');
+  }
+
+  /// Gets the saved user role
+  static Future<String> getUserRole() async {
+    return await getString('user_role');
+  }
+
+  /// Checks if user is logged in
+  static Future<bool> isLoggedIn() async {
+    return await getBool('is_logged_in');
+  }
+
+  /// Clears all authentication data
+  static Future<void> clearAuthData() async {
+    debugPrint('SharedPrefHelper : clearing auth data');
+    await _flutterSecureStorage.delete(key: 'access_token');
+    await removeData('user_role');
+    await removeData('is_logged_in');
+  }
 }

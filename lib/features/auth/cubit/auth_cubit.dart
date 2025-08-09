@@ -1,0 +1,170 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../core/contracts/auth_repository.dart';
+import '../../../core/helpers/helper.dart';
+import '../../../models/role.dart';
+
+part 'auth_cubit.freezed.dart';
+part 'auth_state.dart';
+
+class AuthCubit extends Cubit<AuthState> {
+  final AuthRepository _authRepository;
+  
+  AuthCubit(this._authRepository) : super(const AuthState.initial());
+
+  /// Initialize AuthCubit and restore auth state from SharedPreferences
+  /// Call this method after creating the AuthCubit instance
+  /// Example:
+  /// ```dart
+  /// final authCubit = AuthCubit(authRepository);
+  /// await authCubit.restoreAuthState();
+  /// ```
+  Future<void> initialize() async {
+    await restoreAuthState();
+  }
+
+  /// Login with email and password
+  Future<void> login({
+    required String email,
+    required String password,
+    String? deviceToken,
+  }) async {
+    try {
+      emit(const AuthState.loggingIn());
+      
+      final (accessToken, role) = await _authRepository.login(
+        email,
+        password,
+        deviceToken: deviceToken,
+      );
+      
+      // Save auth data to SharedPreferences
+      await SharedPrefHelper.saveAuthData(
+        accessToken: accessToken,
+        role: role.name,
+      );
+      
+      emit(AuthState.authenticated(
+        accessToken: accessToken,
+        role: role,
+      ));
+    } catch (error) {
+      emit(AuthState.loginError(error.toString()));
+    }
+  }
+
+  /// Register new individual user
+  Future<void> registerIndividual({
+    required String name,
+    required String email,
+    required String password,
+    required String passwordConfirmation,
+    required int locationId,
+    String? avatar,
+  }) async {
+    try {
+      emit(const AuthState.registering());
+      
+      final (accessToken, role) = await _authRepository.registerIndividuals(
+        name: name,
+        email: email,
+        password: password,
+        passwordConfirmation: passwordConfirmation,
+        locationId: locationId,
+        avatar: avatar,
+      );
+      
+      // Save auth data to SharedPreferences
+      await SharedPrefHelper.saveAuthData(
+        accessToken: accessToken,
+        role: role.name,
+      );
+      
+      emit(AuthState.authenticated(
+        accessToken: accessToken,
+        role: role,
+      ));
+    } catch (error) {
+      emit(AuthState.registerError(error.toString()));
+    }
+  }
+
+  /// Logout current user
+  Future<void> logout() async {
+    try {
+      emit(const AuthState.loggingOut());
+      await _authRepository.logout();
+      
+      // Clear auth data from SharedPreferences
+      await SharedPrefHelper.clearAuthData();
+      
+      emit(const AuthState.unauthenticated());
+    } catch (error) {
+      emit(AuthState.logoutError(error.toString()));
+    }
+  }
+
+  /// Clear error state
+  void clearError() {
+    emit(const AuthState.initial());
+  }
+
+  /// Restore auth state from SharedPreferences
+  Future<void> restoreAuthState() async {
+    try {
+      final isLoggedIn = await SharedPrefHelper.isLoggedIn();
+      
+      if (isLoggedIn) {
+        final accessToken = await SharedPrefHelper.getAccessToken();
+        final roleString = await SharedPrefHelper.getUserRole();
+        
+        if (accessToken.isNotEmpty && roleString.isNotEmpty) {
+          final role = Role.from(roleString);
+          emit(AuthState.authenticated(
+            accessToken: accessToken,
+            role: role,
+          ));
+        } else {
+          // Clear invalid auth data
+          await SharedPrefHelper.clearAuthData();
+          emit(const AuthState.unauthenticated());
+        }
+      } else {
+        emit(const AuthState.unauthenticated());
+      }
+    } catch (error) {
+      // Clear invalid auth data and set unauthenticated state
+      await SharedPrefHelper.clearAuthData();
+      emit(const AuthState.unauthenticated());
+    }
+  }
+
+  /// Check if user is authenticated
+  bool get isAuthenticated => state is _Authenticated;
+
+  /// Check if any operation is in progress
+  bool get isLoading => 
+    state is _Loading || 
+    state is _LoggingIn || 
+    state is _Registering || 
+    state is _LoggingOut;
+
+  /// Get current access token if authenticated
+  String? get accessToken {
+    final currentState = state;
+    if (currentState is _Authenticated) {
+      return currentState.accessToken;
+    }
+    return null;
+  }
+
+  /// Get current user role if authenticated
+  Role? get userRole {
+    final currentState = state;
+    if (currentState is _Authenticated) {
+      return currentState.role;
+    }
+    return null;
+  }
+}

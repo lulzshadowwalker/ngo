@@ -1,8 +1,11 @@
 import 'package:ngo/core/core_export.dart';
 import 'package:ngo/export_tools.dart';
+import 'package:ngo/features/auth/cubit/auth_cubit.dart';
+import 'package:ngo/service_locator.dart';
 
 import '../components/text_component.dart';
 import '../landing/landing.dart';
+import '../main_nav/main_nav.dart';
 
 class Splash extends HookWidget {
   const Splash({super.key});
@@ -11,7 +14,22 @@ class Splash extends HookWidget {
   Widget build(BuildContext context) {
     useEffect(() {
       Future.delayed(const Duration(seconds: 1), () async {
-        if (context.mounted) {
+        final authCubit = sl<AuthCubit>();
+        await authCubit.restoreAuthState();
+        final state = authCubit.state;
+        final stateType = state.runtimeType.toString();
+        
+        // Check if the widget is still mounted before using context
+        if (!context.mounted) return;
+        
+        if (stateType.contains('Authenticated')) {
+          // User is authenticated, navigate to MainNav
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => MainNav()),
+            (route) => false,
+          );
+        } else {
+          // User is not authenticated, navigate to Landing
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => Landing()),
             (route) => false,

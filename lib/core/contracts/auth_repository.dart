@@ -9,7 +9,7 @@ abstract class AuthRepository {
   ///
   /// Returns a [Map<String, dynamic>] containing user data on success.
    Future<(AccessToken accessToken, Role role)> login(
-    String identifier,
+    String email,
     String password, {
     String? deviceToken,
   });
@@ -32,4 +32,7 @@ abstract class AuthRepository {
     required int locationId,
     String? avatar, // File path for avatar upload
   });
+
+
+
 }
