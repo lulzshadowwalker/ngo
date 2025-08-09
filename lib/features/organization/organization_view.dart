@@ -75,10 +75,10 @@ class OrganizationView extends HookWidget {
           ),
           child: Text(
             label,
-           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black87,
-            fontWeight: FontWeight.w500,
-          ),
+            style: TextStyle(
+              color: isSelected ? Colors.white : Colors.black87,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       );
@@ -91,23 +91,19 @@ class OrganizationView extends HookWidget {
       required String imageUrl,
     }) {
       final isFollowing = followingStates.value[name] ?? false;
-      
+
       return Card(
         margin: const EdgeInsets.symmetric(vertical: 8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: ListTile(
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(imageUrl),
-          ),
+          leading: CircleAvatar(backgroundImage: NetworkImage(imageUrl)),
           title: Text(
             name,
-          style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
-                  ),
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,7 +120,9 @@ class OrganizationView extends HookWidget {
           ),
           trailing: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: isFollowing ? Colors.grey[300] : MyColors.primaryColor,
+              backgroundColor: isFollowing
+                  ? Colors.grey[300]
+                  : MyColors.primaryColor,
               foregroundColor: isFollowing ? Colors.black : Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -132,7 +130,9 @@ class OrganizationView extends HookWidget {
             ),
             onPressed: () {
               // Toggle follow state using hooks
-              final currentStates = Map<String, bool>.from(followingStates.value);
+              final currentStates = Map<String, bool>.from(
+                followingStates.value,
+              );
               currentStates[name] = !isFollowing;
               followingStates.value = currentStates;
             },
@@ -150,10 +150,7 @@ class OrganizationView extends HookWidget {
         leading: const BackButton(color: Colors.black),
         title: const Text(
           'Organizations',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
@@ -187,7 +184,7 @@ class OrganizationView extends HookWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Filter Chips
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -207,24 +204,21 @@ class OrganizationView extends HookWidget {
               ),
             ),
           ),
-          
+
           // Organizations List
           SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final org = filteredOrganizations[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: buildOrganizationCard(
-                    name: org['name'] as String,
-                    description: org['description'] as String,
-                    location: org['location'] as String,
-                    imageUrl: org['imageUrl'] as String,
-                  ),
-                );
-              },
-              childCount: filteredOrganizations.length,
-            ),
+            delegate: SliverChildBuilderDelegate((context, index) {
+              final org = filteredOrganizations[index];
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: buildOrganizationCard(
+                  name: org['name'] as String,
+                  description: org['description'] as String,
+                  location: org['location'] as String,
+                  imageUrl: org['imageUrl'] as String,
+                ),
+              );
+            }, childCount: filteredOrganizations.length),
           ),
         ],
       ),

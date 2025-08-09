@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../export_tools.dart';
+import '../../blog/blog_export.dart';
 import '../../home/home_export.dart';
 import '../../opportunities/opportunities_export.dart';
 import '../../organization/organization_view_export.dart';
@@ -13,7 +14,7 @@ class MainNavCubit extends Cubit<MainNavState> {
   Home(),
   OrganizationView(),
 OpportunitiesView(),
-    Scaffold(body: Center(child: Text('blog'))),
+BlogView(),
     Scaffold(body: Center(child: Text('Profile'))),
   ];
 
