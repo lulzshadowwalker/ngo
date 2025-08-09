@@ -6,14 +6,18 @@ final class LaravelOrganizationsRepository extends LaravelRepository
     implements OrganizationsRepository {
   @override
   Future<Organization> fetch(String slug, {String language = 'en'}) async {
-    final response = await get('/$language/organizations/$slug');
+    final response = await get('/v1/organizations/$slug' , headers: {
+      'Accept-Language': language,
+    });
     final data = response['data'] as Map<String, dynamic>;
     return Organization.fromLaravel(data);
   }
 
   @override
   Future<List<Organization>> fetchAll({String language = 'en'}) async {
-    final response = await get('/$language/organizations');
+    final response = await get('/v1/organizations', headers: {
+      'Accept-Language': language,
+    });
 
     final data = response['data'] as List<dynamic>;
     return data

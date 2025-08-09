@@ -7,7 +7,9 @@ final class LaravelSkillsRepository extends LaravelRepository
 
   @override
   Future<List<Skill>> fetchAll({String language = 'en'}) async {
-    final response = await get('/$language/skills');
+    final response = await get('/v1/skills' , headers: {
+      'Accept-Language': language,
+    });
 
     final data = response['data'] as List<dynamic>;
     return data
@@ -17,7 +19,9 @@ final class LaravelSkillsRepository extends LaravelRepository
 
   @override
   Future<Skill> fetch(String id, {String language = 'en'}) async {
-    final response = await get('/$language/skills/$id');
+    final response = await get('/v1/skills/$id' , headers: {
+      'Accept-Language': language,
+    });
     final data = response['data'] as Map<String, dynamic>;
     return Skill.fromLaravel(data);
   }

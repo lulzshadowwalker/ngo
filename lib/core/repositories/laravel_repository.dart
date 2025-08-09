@@ -34,6 +34,7 @@ abstract class LaravelRepository {
               headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                
               },
             ),
           );
