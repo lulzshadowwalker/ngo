@@ -27,20 +27,20 @@ class LoginFromSection extends HookWidget {
         listener: (context, state) {
           final stateType = state.runtimeType.toString();
           if (stateType.contains('Authenticated')) {
-            CustomSnackBar.showSuccess(context, message: 'Login successful!');
+            CustomSnackBar.showSuccess(context, message: AppLocalizations.of(context)!.login_successful);
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => MainNav()),
               (route) => false,
             );
           } else if (stateType.contains('LoginError')) {
-            CustomSnackBar.showError(context, message: 'Login failed');
+            CustomSnackBar.showError(context, message: AppLocalizations.of(context)!.login_failed);
           } else if (stateType.contains('RegisterError')) {
-            CustomSnackBar.showError(context, message: 'Registration failed');
+            CustomSnackBar.showError(context, message: AppLocalizations.of(context)!.registration_failed);
           } else if (stateType.contains('LogoutError')) {
-            CustomSnackBar.showError(context, message: 'Logout failed');
+            CustomSnackBar.showError(context, message: AppLocalizations.of(context)!.logout_failed);
           } else if (stateType.contains('Error')) {
-            CustomSnackBar.showWarning(context, message: 'An error occurred');
+            CustomSnackBar.showWarning(context, message: AppLocalizations.of(context)!.error_occurred);
           }
         },
         builder: (context, state) {
@@ -58,7 +58,7 @@ class LoginFromSection extends HookWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextComponent(title: "Email", style: MyFonts.font14BlackBold),
+                  TextComponent(title: AppLocalizations.of(context)!.email, style: MyFonts.font14BlackBold),
                   const SizedBox(height: 10),
                   AppTextFormField(
                     controller: emailController,
@@ -67,7 +67,7 @@ class LoginFromSection extends HookWidget {
                       size: 20,
                       color: MyColors.darkGrayColor,
                     ),
-                    hintText: "Enter your email",
+                    hintText: AppLocalizations.of(context)!.enter_your_email,
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -83,7 +83,7 @@ class LoginFromSection extends HookWidget {
                   ),
                   const SizedBox(height: 20),
                   TextComponent(
-                    title: "Password",
+                    title: AppLocalizations.of(context)!.password,
                     style: MyFonts.font14BlackBold,
                   ),
                   const SizedBox(height: 10),
@@ -94,7 +94,7 @@ class LoginFromSection extends HookWidget {
                       size: 20,
                       color: MyColors.darkGrayColor,
                     ),
-                    hintText: "Enter your password",
+                    hintText: AppLocalizations.of(context)!.enter_your_password,
                     obscureText: !isPasswordVisible.value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -151,8 +151,8 @@ class LoginFromSection extends HookWidget {
                                 strokeWidth: 2,
                               ),
                             )
-                          : const Text(
-                              'Login',
+                          : Text(
+                              AppLocalizations.of(context)!.login,
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,

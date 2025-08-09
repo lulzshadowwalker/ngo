@@ -63,4 +63,190 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacy_policy => 'Privacy Policy';
+
+  @override
+  String get app_name => 'NGO 962';
+
+  @override
+  String get connect_evaluate_volunteer => 'Connect. Evaluate. Volunteer.';
+
+  @override
+  String get complete_your_profile => 'Complete Your Profile';
+
+  @override
+  String get step_1_of_3 => 'Step 1 of 3';
+
+  @override
+  String get following => 'Following';
+
+  @override
+  String get recently => 'Recently';
+
+  @override
+  String get follow => 'Follow';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get organizations => 'Organizations';
+
+  @override
+  String get opportunities => 'Opportunities';
+
+  @override
+  String get blog => 'Blog';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get phone => 'Phone';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get enter_your_email => 'Enter your email';
+
+  @override
+  String get enter_your_password => 'Enter your password';
+
+  @override
+  String get login_successful => 'Login successful!';
+
+  @override
+  String get login_failed => 'Login failed';
+
+  @override
+  String get registration_failed => 'Registration failed';
+
+  @override
+  String get logout_failed => 'Logout failed';
+
+  @override
+  String get error_occurred => 'An error occurred';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String get logout => 'Log Out';
+
+  @override
+  String get are_you_sure_logout => 'Are you sure you want to log out?';
+
+  @override
+  String get logging_out => 'Logging out...';
+
+  @override
+  String get search_ngos_programs => 'Search NGOs, programs, opportunities.';
+
+  @override
+  String get search_results => 'Search Results';
+
+  @override
+  String get my_applications => 'My Applications';
+
+  @override
+  String get my_evaluations => 'My Evaluations';
+
+  @override
+  String get edit_profile => 'Edit Profile';
+
+  @override
+  String get change_password => 'Change Password';
+
+  @override
+  String get deactivate_account => 'Deactivate Account';
+
+  @override
+  String get push_notifications => 'Push Notifications';
+
+  @override
+  String get email_notifications => 'Email Notifications';
+
+  @override
+  String get profile_visibility => 'Profile Visibility';
+
+  @override
+  String get data_management => 'Data Management';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get help_center => 'Help Center';
+
+  @override
+  String get report_problem => 'Report a Problem';
+
+  @override
+  String get about_app => 'About App';
+
+  @override
+  String get privacy => 'Privacy';
+
+  @override
+  String get general => 'General';
+
+  @override
+  String get account => 'Account';
+
+  @override
+  String get forgot_fassword => 'Forgot Password?';
+
+  @override
+  String get dont_have_an => 'Don\'t have an account?';
+
+  @override
+  String get following_ng => 'Following';
+
+  @override
+  String get recentlyNg => 'Recently';
 }

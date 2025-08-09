@@ -51,19 +51,19 @@ class Splash extends HookWidget {
           LogoApp(),
           const SizedBox(height: 20),
           TextComponent(
-            title: "NGO 962",
+            title: AppLocalizations.of(context)!.app_name,
             style: MyFonts.font28BlackBold.copyWith(
               color: MyColors.primaryColor,
             ),
           ),
           const SizedBox(height: 30),
           TextComponent(
-            title: "Connect. Evaluate. Volunteer.",
+            title: AppLocalizations.of(context)!.connect_evaluate_volunteer,
             style: MyFonts.font22BlackBold,
           ),
           const SizedBox(height: 10),
           TextComponent(
-            title: "Join Jordan's largest volunteering community",
+            title: AppLocalizations.of(context)!.join_us,
             style: MyFonts.font16Black,
           ),
         ],

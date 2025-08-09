@@ -41,7 +41,7 @@ class MainNav extends HookWidget {
                       ? MyColors.primaryColor
                       : Colors.black,
                 ),
-                label: 'Home',
+                label: AppLocalizations.of(context)!.home,
               ),
               BottomNavigationBarItem(
                 icon: HugeIcon(
@@ -50,7 +50,7 @@ class MainNav extends HookWidget {
                       ? MyColors.primaryColor
                       : Colors.black,
                 ),
-                label: 'Organizations',
+                label: AppLocalizations.of(context)!.organizations,
               ),
               BottomNavigationBarItem(
                 icon: HugeIcon(
@@ -59,7 +59,7 @@ class MainNav extends HookWidget {
                       ? MyColors.primaryColor
                       : Colors.black,
                 ),
-                label: 'Opportunities',
+                label: AppLocalizations.of(context)!.opportunities,
               ),
               BottomNavigationBarItem(
                 icon: HugeIcon(
@@ -68,7 +68,7 @@ class MainNav extends HookWidget {
                       ? MyColors.primaryColor
                       : Colors.black,
                 ),
-                label: 'Blog',
+                label: AppLocalizations.of(context)!.blog,
               ),
               BottomNavigationBarItem(
                 icon: HugeIcon(
@@ -77,7 +77,7 @@ class MainNav extends HookWidget {
                       ? MyColors.primaryColor
                       : Colors.black,
                 ),
-                label: 'Profile',
+                label: AppLocalizations.of(context)!.profile,
               ),
             ],
           ),

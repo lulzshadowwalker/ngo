@@ -65,9 +65,9 @@ class Home extends HookWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
-                  tabs: const [
-                    Tab(text: 'Following'),
-                    Tab(text: 'Recently'),
+                  tabs:  [
+                    Tab(text: AppLocalizations.of(context)!.following_ng),
+                            Tab(text: AppLocalizations.of(context)!.recentlyNg),
                   ],
                 ),
                 const SizedBox(height: 8),

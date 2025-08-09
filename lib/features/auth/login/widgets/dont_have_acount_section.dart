@@ -19,7 +19,7 @@ class DontHaveAcountSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextComponent(
-              title: "Don't have an account?",
+              title: AppLocalizations.of(context)!.dont_have_an,
               style: MyFonts.font14BlackBold,
             ),
             const SizedBox(width: 5),

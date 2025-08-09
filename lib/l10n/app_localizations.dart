@@ -205,6 +205,378 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Privacy Policy'**
   String get privacy_policy;
+
+  /// Application name
+  ///
+  /// In en, this message translates to:
+  /// **'NGO 962'**
+  String get app_name;
+
+  /// Application tagline
+  ///
+  /// In en, this message translates to:
+  /// **'Connect. Evaluate. Volunteer.'**
+  String get connect_evaluate_volunteer;
+
+  /// Profile completion prompt
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Your Profile'**
+  String get complete_your_profile;
+
+  /// Progress indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Step 1 of 3'**
+  String get step_1_of_3;
+
+  /// Following status or tab
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get following;
+
+  /// Recently tab
+  ///
+  /// In en, this message translates to:
+  /// **'Recently'**
+  String get recently;
+
+  /// Follow button
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get follow;
+
+  /// Settings screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// Profile screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// Home screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// Organizations screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Organizations'**
+  String get organizations;
+
+  /// Opportunities screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Opportunities'**
+  String get opportunities;
+
+  /// Blog screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Blog'**
+  String get blog;
+
+  /// Search functionality
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
+  /// Notifications screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// Email field label
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// Password field label
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// Name field label
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// Phone field label
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get phone;
+
+  /// Address field label
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get address;
+
+  /// Email field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email'**
+  String get enter_your_email;
+
+  /// Password field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get enter_your_password;
+
+  /// Success message for login
+  ///
+  /// In en, this message translates to:
+  /// **'Login successful!'**
+  String get login_successful;
+
+  /// Error message for login
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed'**
+  String get login_failed;
+
+  /// Error message for registration
+  ///
+  /// In en, this message translates to:
+  /// **'Registration failed'**
+  String get registration_failed;
+
+  /// Error message for logout
+  ///
+  /// In en, this message translates to:
+  /// **'Logout failed'**
+  String get logout_failed;
+
+  /// General error message
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred'**
+  String get error_occurred;
+
+  /// Cancel button
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// Close button
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// Save button
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// Edit button
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// Delete button
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// Confirm button
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// Back button
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// Next button
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// Done button
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// Logout button
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out'**
+  String get logout;
+
+  /// Logout confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out?'**
+  String get are_you_sure_logout;
+
+  /// Logout progress message
+  ///
+  /// In en, this message translates to:
+  /// **'Logging out...'**
+  String get logging_out;
+
+  /// Search field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Search NGOs, programs, opportunities.'**
+  String get search_ngos_programs;
+
+  /// Search results title
+  ///
+  /// In en, this message translates to:
+  /// **'Search Results'**
+  String get search_results;
+
+  /// My applications tab
+  ///
+  /// In en, this message translates to:
+  /// **'My Applications'**
+  String get my_applications;
+
+  /// My evaluations tab
+  ///
+  /// In en, this message translates to:
+  /// **'My Evaluations'**
+  String get my_evaluations;
+
+  /// Edit profile option
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get edit_profile;
+
+  /// Change password option
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get change_password;
+
+  /// Deactivate account option
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate Account'**
+  String get deactivate_account;
+
+  /// Push notifications setting
+  ///
+  /// In en, this message translates to:
+  /// **'Push Notifications'**
+  String get push_notifications;
+
+  /// Email notifications setting
+  ///
+  /// In en, this message translates to:
+  /// **'Email Notifications'**
+  String get email_notifications;
+
+  /// Profile visibility setting
+  ///
+  /// In en, this message translates to:
+  /// **'Profile Visibility'**
+  String get profile_visibility;
+
+  /// Data management setting
+  ///
+  /// In en, this message translates to:
+  /// **'Data Management'**
+  String get data_management;
+
+  /// Language setting
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// Appearance setting
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// Help center option
+  ///
+  /// In en, this message translates to:
+  /// **'Help Center'**
+  String get help_center;
+
+  /// Report problem option
+  ///
+  /// In en, this message translates to:
+  /// **'Report a Problem'**
+  String get report_problem;
+
+  /// About app option
+  ///
+  /// In en, this message translates to:
+  /// **'About App'**
+  String get about_app;
+
+  /// Privacy section title
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get privacy;
+
+  /// General section title
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get general;
+
+  /// Account section title
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
+  /// No description provided for @forgot_fassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get forgot_fassword;
+
+  /// No description provided for @dont_have_an.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get dont_have_an;
+
+  /// Following NGOs section title
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get following_ng;
+
+  /// Recently tab title
+  ///
+  /// In en, this message translates to:
+  /// **'Recently'**
+  String get recentlyNg;
 }
 
 class _AppLocalizationsDelegate

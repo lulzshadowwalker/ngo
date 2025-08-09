@@ -1,69 +1,313 @@
 {
-	"@@locale": "en",
-	"helloWorld": "Hello World!",
-	"@helloWorld": {
-		"description": "The conventional newborn programmer greeting"
-	},
-	"english": "English",
-	"@english": {},
-	"arabic": "العربية",
-	"@arabic": {},
-	"login": "Login",
-	"@login": {
-		"description": "Login button text"
-	},
-	"sigup": "Sign Up",
-	"@sigup": {
-		"description": "Sign Up button text"
-	},
-	"connent_evaluate_volunteer": "Connect. Evaluate. Volunteers.",
-	"@connent_evaluate_volunteer": {
-		"description": "Text for connecting and evaluating volunteers"
-	},
-	"join_us": "Join Jordan's largest volunteering community",
-	"@join_us": {
-		"description": "Call to action for joining the volunteering community"
-	},
-	"continue_as_guest": "Continue as Guest",
-	"@continue_as_guest": {
-		"description": "Button text for continuing as a guest user"
-	},
-	"join_our_community": "Join Our Community",
-	"@join_our_community": {
-		"description": "Text for joining the community"
-	},
-	"iam_joining_as": "I am joining as an",
-	"@iam_joining_as": {
-		"description": "Text indicating the type of user joining"
-	},
-	"individual": "Individual",
-	"@individual": {},
-	"for_personal_use_and_volunteering": "For personal use and volunteering",
-	"@for_personal_use_and_volunteering": {
-		"description": "Description for individual users"
-	},
-	"organization": "Organization (NGO)",
-	"@organization": {
-		"description": "Text for organizations or NGOs"
-	},
-	"for_registered_organizations": "For registered non-profie organizations",
-	"@for_registered_organizations": {
-		"description": "Description for organizations or NGOs"
-	},
-	"by_continuing_you_agree_to": "By continuing, you agree to our",
-	"@by_continuing_you_agree_to": {
-		"description": "Text indicating agreement to terms and conditions"
-	},
-	"terms_and_conditions": "Terms of Service",
-	"@terms_and_conditions": {
-		"description": "Link text for terms and conditions"
-	},
-	"and": "and",
-	"@and": {
-		"description": "Conjunction used in legal agreements"
-	},
-	"privacy_policy": "Privacy Policy",
-	"@privacy_policy": {
-		"description": "Link text for privacy policy"
-	}
+  "@@locale": "en",
+  "helloWorld": "Hello World!",
+  "@helloWorld": {
+    "description": "The conventional newborn programmer greeting"
+  },
+  "english": "English",
+  "@english": {},
+  "arabic": "العربية",
+  "@arabic": {},
+  "login": "Login",
+  "@login": {
+    "description": "Login button text"
+  },
+  "sigup": "Sign Up",
+  "@sigup": {
+    "description": "Sign Up button text"
+  },
+  "connent_evaluate_volunteer": "Connect. Evaluate. Volunteers.",
+  "@connent_evaluate_volunteer": {
+    "description": "Text for connecting and evaluating volunteers"
+  },
+  "join_us": "Join Jordan's largest volunteering community",
+  "@join_us": {
+    "description": "Call to action for joining the volunteering community"
+  },
+  "continue_as_guest": "Continue as Guest",
+  "@continue_as_guest": {
+    "description": "Button text for continuing as a guest user"
+  },
+  "join_our_community": "Join Our Community",
+  "@join_our_community": {
+    "description": "Text for joining the community"
+  },
+  "iam_joining_as": "I am joining as an",
+  "@iam_joining_as": {
+    "description": "Text indicating the type of user joining"
+  },
+  "individual": "Individual",
+  "@individual": {},
+  "for_personal_use_and_volunteering": "For personal use and volunteering",
+  "@for_personal_use_and_volunteering": {
+    "description": "Description for individual users"
+  },
+  "organization": "Organization (NGO)",
+  "@organization": {
+    "description": "Text for organizations or NGOs"
+  },
+  "for_registered_organizations": "For registered non-profie organizations",
+  "@for_registered_organizations": {
+    "description": "Description for organizations or NGOs"
+  },
+  "by_continuing_you_agree_to": "By continuing, you agree to our",
+  "@by_continuing_you_agree_to": {
+    "description": "Text indicating agreement to terms and conditions"
+  },
+  "terms_and_conditions": "Terms of Service",
+  "@terms_and_conditions": {
+    "description": "Link text for terms and conditions"
+  },
+  "and": "and",
+  "@and": {
+    "description": "Conjunction used in legal agreements"
+  },
+  "privacy_policy": "Privacy Policy",
+  "@privacy_policy": {
+    "description": "Link text for privacy policy"
+  },
+  "app_name": "NGO 962",
+  "@app_name": {
+    "description": "Application name"
+  },
+  "connect_evaluate_volunteer": "Connect. Evaluate. Volunteer.",
+  "@connect_evaluate_volunteer": {
+    "description": "Application tagline"
+  },
+  "complete_your_profile": "Complete Your Profile",
+  "@complete_your_profile": {
+    "description": "Profile completion prompt"
+  },
+  "step_1_of_3": "Step 1 of 3",
+  "@step_1_of_3": {
+    "description": "Progress indicator"
+  },
+  "following": "Following",
+  "@following": {
+    "description": "Following status or tab"
+  },
+  "recently": "Recently",
+  "@recently": {
+    "description": "Recently tab"
+  },
+  "follow": "Follow",
+  "@follow": {
+    "description": "Follow button"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings screen title"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile screen title"
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Home screen title"
+  },
+  "organizations": "Organizations",
+  "@organizations": {
+    "description": "Organizations screen title"
+  },
+  "opportunities": "Opportunities",
+  "@opportunities": {
+    "description": "Opportunities screen title"
+  },
+  "blog": "Blog",
+  "@blog": {
+    "description": "Blog screen title"
+  },
+  "search": "Search",
+  "@search": {
+    "description": "Search functionality"
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Notifications screen title"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email field label"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password field label"
+  },
+  "name": "Name",
+  "@name": {
+    "description": "Name field label"
+  },
+  "phone": "Phone",
+  "@phone": {
+    "description": "Phone field label"
+  },
+  "address": "Address",
+  "@address": {
+    "description": "Address field label"
+  },
+  "enter_your_email": "Enter your email",
+  "@enter_your_email": {
+    "description": "Email field hint"
+  },
+  "enter_your_password": "Enter your password",
+  "@enter_your_password": {
+    "description": "Password field hint"
+  },
+  "login_successful": "Login successful!",
+  "@login_successful": {
+    "description": "Success message for login"
+  },
+  "login_failed": "Login failed",
+  "@login_failed": {
+    "description": "Error message for login"
+  },
+  "registration_failed": "Registration failed",
+  "@registration_failed": {
+    "description": "Error message for registration"
+  },
+  "logout_failed": "Logout failed",
+  "@logout_failed": {
+    "description": "Error message for logout"
+  },
+  "error_occurred": "An error occurred",
+  "@error_occurred": {
+    "description": "General error message"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Close button"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save button"
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit button"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button"
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirm button"
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Back button"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next button"
+  },
+  "done": "Done",
+  "@done": {
+    "description": "Done button"
+  },
+  "logout": "Log Out",
+  "@logout": {
+    "description": "Logout button"
+  },
+  "are_you_sure_logout": "Are you sure you want to log out?",
+  "@are_you_sure_logout": {
+    "description": "Logout confirmation message"
+  },
+  "logging_out": "Logging out...",
+  "@logging_out": {
+    "description": "Logout progress message"
+  },
+  "search_ngos_programs": "Search NGOs, programs, opportunities.",
+  "@search_ngos_programs": {
+    "description": "Search field hint"
+  },
+  "search_results": "Search Results",
+  "@search_results": {
+    "description": "Search results title"
+  },
+  "my_applications": "My Applications",
+  "@my_applications": {
+    "description": "My applications tab"
+  },
+  "my_evaluations": "My Evaluations",
+  "@my_evaluations": {
+    "description": "My evaluations tab"
+  },
+  "edit_profile": "Edit Profile",
+  "@edit_profile": {
+    "description": "Edit profile option"
+  },
+  "change_password": "Change Password",
+  "@change_password": {
+    "description": "Change password option"
+  },
+  "deactivate_account": "Deactivate Account",
+  "@deactivate_account": {
+    "description": "Deactivate account option"
+  },
+  "push_notifications": "Push Notifications",
+  "@push_notifications": {
+    "description": "Push notifications setting"
+  },
+  "email_notifications": "Email Notifications",
+  "@email_notifications": {
+    "description": "Email notifications setting"
+  },
+  "profile_visibility": "Profile Visibility",
+  "@profile_visibility": {
+    "description": "Profile visibility setting"
+  },
+  "data_management": "Data Management",
+  "@data_management": {
+    "description": "Data management setting"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Language setting"
+  },
+  "appearance": "Appearance",
+  "@appearance": {
+    "description": "Appearance setting"
+  },
+  "help_center": "Help Center",
+  "@help_center": {
+    "description": "Help center option"
+  },
+  "report_problem": "Report a Problem",
+  "@report_problem": {
+    "description": "Report problem option"
+  },
+  "about_app": "About App",
+  "@about_app": {
+    "description": "About app option"
+  },
+  "privacy": "Privacy",
+  "@privacy": {
+    "description": "Privacy section title"
+  },
+  "general": "General",
+  "@general": {
+    "description": "General section title"
+  },
+  "account": "Account",
+  "@account": {
+    "description": "Account section title"
+  },
+  "forgot_fassword": "Forgot Password?",
+  "@forgot_fassword": {},
+  "dont_have_an": "Don't have an account?",
+  "@dont_have_an": {},
+  "following_ng": "Following",
+  "@following_ng": {
+    "description": "Following NGOs section title"
+  },
+  "recentlyNg": "Recently",
+  "@recentlyNg": {
+    "description": "Recently tab title"
+  }
 }

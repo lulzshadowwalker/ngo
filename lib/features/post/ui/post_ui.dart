@@ -114,7 +114,7 @@ class PostCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         log("post like tapped: ${post.slug}");
-       
+
         log('Post tapped: ${post.title}');
         // Navigate to post details page
         // Navigator.push(
@@ -136,15 +136,15 @@ class PostCard extends StatelessWidget {
               // Header
               HeaderPostCardSection(post: post),
               const SizedBox(height: 12),
-      
+
               // Content
               ContentPostCardSection(post: post),
               const SizedBox(height: 12),
-      
+
               // Cover Image
               CoverImagePostCardSection(post: post),
               const SizedBox(height: 12),
-      
+
               // Interaction Row
               InteractionRowPostCardSection(),
             ],
@@ -223,34 +223,33 @@ class HeaderPostCardSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-       CircleAvatar(
+    return post.organization == null
+        ? Container()
+        : Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
                 radius: 18,
                 backgroundImage: NetworkImage(post.organization!.logo),
-              )
-   ,
-        
-       
-        const SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextComponent(
-                title: post.organization?.name ?? "Unknown Organization",
-                style: MyFonts.font14BlackBold,
               ),
-              TextComponent(
-                title: post.createdAtReadable,
-                style: MyFonts.font12Black,
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextComponent(
+                      title: post.organization?.name ?? "Unknown Organization",
+                      style: MyFonts.font14BlackBold,
+                    ),
+                    TextComponent(
+                      title: post.createdAtReadable,
+                      style: MyFonts.font12Black,
+                    ),
+                  ],
+                ),
               ),
+              const Icon(Icons.more_horiz, color: Colors.grey),
             ],
-          ),
-        ),
-        const Icon(Icons.more_horiz, color: Colors.grey),
-      ],
-    );
+          );
   }
 }

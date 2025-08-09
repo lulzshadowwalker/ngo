@@ -1,7 +1,11 @@
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngo/export_tools.dart';
 
 import '../../core/theme/my_colors.dart';
+import '../../service_locator.dart';
+import '../auth/cubit/auth_cubit.dart';
+import '../splash/splash.dart';
 
 class SettingsView extends HookWidget {
   const SettingsView({super.key});
@@ -23,8 +27,8 @@ class SettingsView extends HookWidget {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Settings',
+        title: Text(
+          AppLocalizations.of(context)!.settings,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -38,25 +42,25 @@ class SettingsView extends HookWidget {
           // Account Section
           SliverToBoxAdapter(
             child: _buildSection(
-              title: 'Account',
+              title: AppLocalizations.of(context)!.account,
               items: [
                 _buildSettingsItem(
                   icon: Icons.person_outline,
-                  title: 'Edit Profile',
+                  title: AppLocalizations.of(context)!.edit_profile,
                   onTap: () {
                     // Handle edit profile
                   },
                 ),
                 _buildSettingsItem(
                   icon: Icons.lock_outline,
-                  title: 'Change Password',
+                  title: AppLocalizations.of(context)!.change_password,
                   onTap: () {
                     // Handle change password
                   },
                 ),
                 _buildSettingsItem(
                   icon: Icons.warning_outlined,
-                  title: 'Deactivate Account',
+                  title: AppLocalizations.of(context)!.deactivate_account,
                   titleColor: Colors.red,
                   onTap: () {
                     // Handle deactivate account
@@ -69,11 +73,11 @@ class SettingsView extends HookWidget {
           // Notifications Section
           SliverToBoxAdapter(
             child: _buildSection(
-              title: 'Notifications',
+              title: AppLocalizations.of(context)!.notifications,
               items: [
                 _buildToggleItem(
                   icon: Icons.notifications_outlined,
-                  title: 'Push Notifications',
+                  title: AppLocalizations.of(context)!.push_notifications,
                   value: pushNotifications.value,
                   onChanged: (value) {
                     pushNotifications.value = value;
@@ -81,7 +85,7 @@ class SettingsView extends HookWidget {
                 ),
                 _buildToggleItem(
                   icon: Icons.email_outlined,
-                  title: 'Email Notifications',
+                  title: AppLocalizations.of(context)!.email_notifications,
                   value: emailNotifications.value,
                   onChanged: (value) {
                     emailNotifications.value = value;
@@ -94,18 +98,18 @@ class SettingsView extends HookWidget {
           // Privacy Section
           SliverToBoxAdapter(
             child: _buildSection(
-              title: 'Privacy',
+              title: AppLocalizations.of(context)!.privacy,
               items: [
                 _buildSettingsItem(
                   icon: Icons.visibility_outlined,
-                  title: 'Profile Visibility',
+                  title: AppLocalizations.of(context)!.profile_visibility,
                   onTap: () {
                     // Handle profile visibility
                   },
                 ),
                 _buildSettingsItem(
                   icon: Icons.description_outlined,
-                  title: 'Data Management',
+                  title: AppLocalizations.of(context)!.data_management,
                   onTap: () {
                     // Handle data management
                   },
@@ -117,19 +121,19 @@ class SettingsView extends HookWidget {
           // General Section
           SliverToBoxAdapter(
             child: _buildSection(
-              title: 'General',
+              title: AppLocalizations.of(context)!.general,
               items: [
                 _buildSettingsItem(
                   icon: Icons.translate_outlined,
-                  title: 'Language',
-                  trailing: 'English',
+                  title: AppLocalizations.of(context)!.language,
+                  trailing: AppLocalizations.of(context)!.english,
                   onTap: () {
                     // Handle language selection
                   },
                 ),
                 _buildToggleItem(
                   icon: Icons.dark_mode_outlined,
-                  title: 'Appearance',
+                  title: AppLocalizations.of(context)!.appearance,
                   value: darkMode.value,
                   onChanged: (value) {
                     darkMode.value = value;
@@ -137,21 +141,21 @@ class SettingsView extends HookWidget {
                 ),
                 _buildSettingsItem(
                   icon: Icons.help_outline,
-                  title: 'Help Center',
+                  title: AppLocalizations.of(context)!.help_center,
                   onTap: () {
                     // Handle help center
                   },
                 ),
                 _buildSettingsItem(
                   icon: Icons.report_outlined,
-                  title: 'Report a Problem',
+                  title: AppLocalizations.of(context)!.report_problem,
                   onTap: () {
                     // Handle report problem
                   },
                 ),
                 _buildSettingsItem(
                   icon: Icons.info_outline,
-                  title: 'About App',
+                  title: AppLocalizations.of(context)!.about_app,
                   trailing: '1.0.0',
                   onTap: () {
                     // Handle about app
@@ -165,7 +169,7 @@ class SettingsView extends HookWidget {
           SliverToBoxAdapter(
             child: Container(
               margin: const EdgeInsets.all(16),
-              child: _buildLogoutItem(),
+              child: _buildLogoutItem(context),
             ),
           ),
 
@@ -309,11 +313,11 @@ class SettingsView extends HookWidget {
     );
   }
 
-  Widget _buildLogoutItem() {
+  Widget _buildLogoutItem(BuildContext context) {
     return InkWell(
       onTap: () {
         // Handle logout
-        _showLogoutDialog();
+        _showLogoutDialog(context);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -345,8 +349,78 @@ class SettingsView extends HookWidget {
     );
   }
 
-  void _showLogoutDialog() {
-    // This would show a logout confirmation dialog
-    // Implementation can be added when needed
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return BlocProvider.value(
+          value: sl<AuthCubit>(),
+          child: BlocListener<AuthCubit, AuthState>(
+            listener: (context, state) {
+              final stateType = state.runtimeType.toString();
+              if (stateType.contains('Unauthenticated')) {
+                // Close dialog first
+                Navigator.of(dialogContext).pop();
+                // Navigate to splash screen and remove all routes
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const Splash()),
+                  (route) => false,
+                );
+              } else if (stateType.contains('LogoutError')) {
+                // Close dialog and show error
+                Navigator.of(dialogContext).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Logout failed. Please try again.'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+            child: BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) {
+                final stateType = state.runtimeType.toString();
+                final isLoggingOut = stateType.contains('LoggingOut');
+
+                return AlertDialog(
+                  title: Text(AppLocalizations.of(context)!.logout),
+                  content: isLoggingOut
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                            SizedBox(width: 16),
+                            Text(AppLocalizations.of(context)!.logging_out),
+                          ],
+                        )
+                      : Text(AppLocalizations.of(context)!.are_you_sure_logout),
+                  actions: isLoggingOut
+                      ? []
+                      : [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop();
+                            },
+                            child: Text(AppLocalizations.of(context)!.cancel),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              final authCubit = context.read<AuthCubit>();
+                              authCubit.logout();
+                            },
+                            child: Text(AppLocalizations.of(context)!.logout),
+                          ),
+                        ],
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
   }
 }

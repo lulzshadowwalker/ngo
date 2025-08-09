@@ -61,4 +61,190 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get privacy_policy => 'سياسة الخصوصية';
+
+  @override
+  String get app_name => 'منظمة 962';
+
+  @override
+  String get connect_evaluate_volunteer => 'تواصل. قيّم. تطوع.';
+
+  @override
+  String get complete_your_profile => 'أكمل ملفك الشخصي';
+
+  @override
+  String get step_1_of_3 => 'الخطوة 1 من 3';
+
+  @override
+  String get following => 'يتابع';
+
+  @override
+  String get recently => 'مؤخراً';
+
+  @override
+  String get follow => 'متابعة';
+
+  @override
+  String get settings => 'الإعدادات';
+
+  @override
+  String get profile => 'الملف الشخصي';
+
+  @override
+  String get home => 'الرئيسية';
+
+  @override
+  String get organizations => 'المنظمات';
+
+  @override
+  String get opportunities => 'الفرص';
+
+  @override
+  String get blog => 'المدونة';
+
+  @override
+  String get search => 'البحث';
+
+  @override
+  String get notifications => 'الإشعارات';
+
+  @override
+  String get email => 'البريد الإلكتروني';
+
+  @override
+  String get password => 'كلمة المرور';
+
+  @override
+  String get name => 'الاسم';
+
+  @override
+  String get phone => 'الهاتف';
+
+  @override
+  String get address => 'العنوان';
+
+  @override
+  String get enter_your_email => 'أدخل بريدك الإلكتروني';
+
+  @override
+  String get enter_your_password => 'أدخل كلمة المرور';
+
+  @override
+  String get login_successful => 'تم تسجيل الدخول بنجاح!';
+
+  @override
+  String get login_failed => 'فشل تسجيل الدخول';
+
+  @override
+  String get registration_failed => 'فشل في إنشاء الحساب';
+
+  @override
+  String get logout_failed => 'فشل في تسجيل الخروج';
+
+  @override
+  String get error_occurred => 'حدث خطأ';
+
+  @override
+  String get cancel => 'إلغاء';
+
+  @override
+  String get close => 'إغلاق';
+
+  @override
+  String get save => 'حفظ';
+
+  @override
+  String get edit => 'تعديل';
+
+  @override
+  String get delete => 'حذف';
+
+  @override
+  String get confirm => 'تأكيد';
+
+  @override
+  String get back => 'رجوع';
+
+  @override
+  String get next => 'التالي';
+
+  @override
+  String get done => 'تم';
+
+  @override
+  String get logout => 'تسجيل الخروج';
+
+  @override
+  String get are_you_sure_logout => 'هل أنت متأكد من تسجيل الخروج؟';
+
+  @override
+  String get logging_out => 'جاري تسجيل الخروج...';
+
+  @override
+  String get search_ngos_programs => 'البحث في المنظمات والبرامج والفرص.';
+
+  @override
+  String get search_results => 'نتائج البحث';
+
+  @override
+  String get my_applications => 'طلباتي';
+
+  @override
+  String get my_evaluations => 'تقييماتي';
+
+  @override
+  String get edit_profile => 'تعديل الملف الشخصي';
+
+  @override
+  String get change_password => 'تغيير كلمة المرور';
+
+  @override
+  String get deactivate_account => 'إلغاء تفعيل الحساب';
+
+  @override
+  String get push_notifications => 'الإشعارات المباشرة';
+
+  @override
+  String get email_notifications => 'إشعارات البريد الإلكتروني';
+
+  @override
+  String get profile_visibility => 'ظهور الملف الشخصي';
+
+  @override
+  String get data_management => 'إدارة البيانات';
+
+  @override
+  String get language => 'اللغة';
+
+  @override
+  String get appearance => 'المظهر';
+
+  @override
+  String get help_center => 'مركز المساعدة';
+
+  @override
+  String get report_problem => 'الإبلاغ عن مشكلة';
+
+  @override
+  String get about_app => 'حول التطبيق';
+
+  @override
+  String get privacy => 'الخصوصية';
+
+  @override
+  String get general => 'عام';
+
+  @override
+  String get account => 'الحساب';
+
+  @override
+  String get forgot_fassword => 'نسيت كلمة المرور؟';
+
+  @override
+  String get dont_have_an => 'لا تملك حساباً؟!';
+
+  @override
+  String get following_ng => 'يتابع';
+
+  @override
+  String get recentlyNg => 'مؤخراً';
 }

@@ -94,7 +94,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     try {
       emit(const AuthState.loggingOut());
-      await _authRepository.logout();
+      // await _authRepository.logout();
       
       // Clear auth data from SharedPreferences
       await SharedPrefHelper.clearAuthData();
