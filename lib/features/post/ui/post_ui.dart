@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngo/core/theme/my_fonts.dart';
 import 'package:ngo/export_tools.dart';
@@ -18,63 +20,59 @@ class PostUi extends HookWidget {
     return BlocProvider(
       create: (context) =>
           sl<PostCubit>()..fetchAllPost(language: lang.localeName),
-      child: Scaffold(
-        body: BlocBuilder<PostCubit, PostState>(
-          buildWhen: (previous, current) =>
-              current is Loading || current is Loaded || current is Error,
-          builder: (context, state) {
-            switch (state) {
-              case Loading():
-                return Skeletonizer(
-                  enabled: true,
-                  child: ListView.builder(
-                    itemCount: 5, // Optional: use a placeholder count
-                    itemBuilder: (context, index) {
-                      return AnimatedPostTile(
-                        post: Post(
-                          id: 'post_12345',
-                          title: 'Winter Supplies Distributed to 100 Families',
-                          slug: 'winter-supplies-amman',
-                          content:
-                              'Today we distributed winter supplies including blankets and food parcels to 100 families in Amman. Thank you to all volunteers who made this possible!',
-                          cover:
-                              'https://images.unsplash.com/photo-1605733160314-4c0b5560e80e?auto=format&fit=crop&w=800&q=60',
-                          organization: null,
-                          createdAt: DateTime.now().subtract(
-                            const Duration(hours: 2),
-                          ),
-                          createdAtReadable: '2 hours ago',
-                          updatedAt: DateTime.now(),
+      child: BlocBuilder<PostCubit, PostState>(
+        buildWhen: (previous, current) =>
+            current is Loading || current is Loaded || current is Error,
+        builder: (context, state) {
+          switch (state) {
+            case Loading():
+              return Skeletonizer(
+                enabled: true,
+                child: Column(
+                  children: List.generate(5, (index) {
+                    return AnimatedPostTile(
+                      post: Post(
+                        id: 'post_12345',
+                        title: 'Winter Supplies Distributed to 100 Families',
+                        slug: 'winter-supplies-amman',
+                        content:
+                            'Today we distributed winter supplies including blankets and food parcels to 100 families in Amman. Thank you to all volunteers who made this possible!',
+                        cover:
+                            'https://images.unsplash.com/photo-1605733160314-4c0b5560e80e?auto=format&fit=crop&w=800&q=60',
+                        organization: null,
+                        createdAt: DateTime.now().subtract(
+                          const Duration(hours: 2),
                         ),
-                        index: 0,
-                      ); // Create a loading variant if needed
-                    },
-                  ),
-                );
+                        createdAtReadable: '2 hours ago',
+                        updatedAt: DateTime.now(),
+                      ),
+                      index: 0,
+                    );
+                  }),
+                ),
+              );
 
-              case Loaded():
-                final loadedState = state;
-                return Skeletonizer(
-                  enabled: false, // Now skeleton is disabled
-                  child: ListView.builder(
-                    itemCount: loadedState.posts.length,
-                    itemBuilder: (context, index) {
-                      final post = loadedState.posts[index];
-                      return AnimatedPostTile(post: post, index: index);
-                    },
-                  ),
-                );
+            case Loaded():
+              final loadedState = state;
+              return Skeletonizer(
+                enabled: false,
+                child: Column(
+                  children: loadedState.posts.map((post) {
+                    final index = loadedState.posts.indexOf(post);
+                    return AnimatedPostTile(post: post, index: index);
+                  }).toList(),
+                ),
+              );
 
-              case Error():
-                return Center(
-                  child: Text(state.message, style: MyFonts.font12Black),
-                );
+            case Error():
+              return Center(
+                child: Text(state.message, style: MyFonts.font12Black),
+              );
 
-              default:
-                return const SizedBox.shrink();
-            }
-          },
-        ),
+            default:
+              return const SizedBox.shrink();
+          }
+        },
       ),
     );
   }
@@ -113,30 +111,44 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 3,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            HeaderPostCardSection(post: post),
-            const SizedBox(height: 12),
-
-            // Content
-            ContentPostCardSection(post: post),
-            const SizedBox(height: 12),
-
-            // Cover Image
-            CoverImagePostCardSection(post: post),
-            const SizedBox(height: 12),
-
-            // Interaction Row
-            InteractionRowPostCardSection(),
-          ],
+    return GestureDetector(
+      onTap: () {
+        log("post like tapped: ${post.slug}");
+       
+        log('Post tapped: ${post.title}');
+        // Navigate to post details page
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => PostDetailsPage(post: post),
+        //   ),
+        // );
+      },
+      child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 3,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header
+              HeaderPostCardSection(post: post),
+              const SizedBox(height: 12),
+      
+              // Content
+              ContentPostCardSection(post: post),
+              const SizedBox(height: 12),
+      
+              // Cover Image
+              CoverImagePostCardSection(post: post),
+              const SizedBox(height: 12),
+      
+              // Interaction Row
+              InteractionRowPostCardSection(),
+            ],
+          ),
         ),
       ),
     );
@@ -214,11 +226,13 @@ class HeaderPostCardSection extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        CircleAvatar(
-          radius: 18,
-          backgroundColor: Colors.grey[200],
-          child: Icon(Icons.home_work, size: 18, color: Colors.grey[700]),
-        ),
+       CircleAvatar(
+                radius: 18,
+                backgroundImage: NetworkImage(post.organization!.logo),
+              )
+   ,
+        
+       
         const SizedBox(width: 10),
         Expanded(
           child: Column(

@@ -5,7 +5,7 @@ import 'package:ngo/features/post/data/repo/posts_repository.dart';
 final class LaravelPostsRepository extends LaravelRepository
     implements PostsRepository {
   @override
-  Future<Post> fetch(String slug, {String language = 'en'}) async {
+  Future<Post> fetch(String accessToken , String slug, {String language = 'en'}) async {
     final response = await get(
       '/v1/posts/$slug?include=organization,comments,likes'
     , headers: {
@@ -17,7 +17,7 @@ final class LaravelPostsRepository extends LaravelRepository
   }
 
   @override
-  Future<List<Post>> fetchAll({String language = 'en'}) async {
+  Future<List<Post>> fetchAll(String accessToken ,{String language = 'en'}) async {
     final response = await get(
       '/v1/posts?include=organization,comments,likes',
     headers: {

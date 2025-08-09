@@ -1,6 +1,7 @@
 
 import '../../export_tools.dart';
 import '../notifications/notifications_home_export.dart';
+import '../post/ui/post_ui.dart';
 import '../search_home/search_home_export.dart';
 
 class Home extends HookWidget {
@@ -116,126 +117,38 @@ class Home extends HookWidget {
               ),
             ),
           ),
+          // Option 1: Simple approach - PostUi in SliverToBoxAdapter
+          SliverToBoxAdapter(
+            child: PostUi(),
+          ),
+
+          // Option 2: Alternative approach for better performance with individual slivers
+          // Uncomment below and comment above if you want posts as individual slivers
+          /*
           SliverList(
-            delegate: SliverChildListDelegate([
-          PostUi(),
-          PostUi(),
-          PostUi(),
-            ]),
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return BlocProvider(
+                  create: (context) => sl<PostCubit>()..fetchAllPost(language: 'en'),
+                  child: BlocBuilder<PostCubit, PostState>(
+                    builder: (context, state) {
+                      if (state is Loaded && index < state.posts.length) {
+                        return AnimatedPostTile(
+                          post: state.posts[index], 
+                          index: index
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                );
+              },
+              childCount: 10, // Set expected maximum posts
+            ),
           ),
+          */
+    
         ],
-      ),
-    );
-  }
-}
-
-
-
-
-
-
-class PostUi extends StatelessWidget {
-  const PostUi({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      child: GestureDetector(
-        onTap: () {
-       
-          // Handle post tap
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withValues(alpha:  0.2),
-                spreadRadius: 1,
-                blurRadius: 5,
-                offset: const Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-         
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    'https://randomuser.me/api/portraits/men/32.jpg',
-                  ),
-                ),
-                title: const Text(
-                  'UNRWA Jordan',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                subtitle: const Text('2 hours ago'),
-                trailing: IconButton(
-                  icon: const Icon(Icons.more_vert),
-                  onPressed: () {
-                    // Handle more options
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: const Text(
-                  'Today we distributed winter supplies to 100 families in Amman. Thank you to all our volunteers who made this possible!',
-                  style: TextStyle(fontSize: 15),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
-                    height: 160,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.favorite_border, color: Colors.grey),
-                      onPressed: () {
-                        // Handle like action
-                      },
-                    ),
-                    const Text('245'),
-                    const SizedBox(width: 16),
-                    IconButton(
-                      icon: const Icon(Icons.chat_bubble_outline, color: Colors.grey),
-                      onPressed: () {
-                        // Handle comment action
-                      },
-                    ),
-                    const Text('18'),
-                    const SizedBox(width: 16),
-                    IconButton(
-                      icon: const Icon(Icons.share, color: Colors.grey),
-                      onPressed: () {
-                        // Handle share action
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 8),
-            ],
-          ),
-        ),
       ),
     );
   }
