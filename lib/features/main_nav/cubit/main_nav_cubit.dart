@@ -5,17 +5,18 @@ import '../../blog/blog_export.dart';
 import '../../home/home_export.dart';
 import '../../opportunities/opportunities_export.dart';
 import '../../organization/organization_view_export.dart';
+import '../../profile/profile_export.dart';
 import 'main_nav_state.dart';
 
 class MainNavCubit extends Cubit<MainNavState> {
   MainNavCubit() : super(MainNavInitial());
 
   List<Widget> pages = [
-  Home(),
-  OrganizationView(),
-OpportunitiesView(),
-BlogView(),
-    Scaffold(body: Center(child: Text('Profile'))),
+    Home(),
+    OrganizationView(),
+    OpportunitiesView(),
+    BlogView(),
+    ProfileView(),
   ];
 
   int currentIndex = 0;
