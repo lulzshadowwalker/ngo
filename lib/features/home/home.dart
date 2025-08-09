@@ -1,4 +1,3 @@
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../export_tools.dart';
 import '../notifications/notifications_home_export.dart';
@@ -144,7 +143,7 @@ class PostUi extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       child: GestureDetector(
         onTap: () {
-          print("Post tapped");
+       
           // Handle post tap
         },
         child: Container(
