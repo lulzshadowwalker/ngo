@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:ngo/features/organization/cubit/organization_cubit.dart';
 import 'package:ngo/features/post/logic/post_cubit.dart';
 
 import 'core/contracts/auth_repository.dart';
@@ -31,4 +32,5 @@ void setupServiceLocator() {
   // Register cubits as factories (new instance per injection)
   sl.registerFactory(() => AuthCubit(sl<AuthRepository>()));
   sl.registerFactory(() => PostCubit(postsRepository: sl<PostsRepository>()));
+  sl.registerFactory(() => OrganizationCubit(sl<OrganizationsRepository>()));
 }

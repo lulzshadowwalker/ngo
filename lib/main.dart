@@ -8,7 +8,6 @@ import 'package:ngo/service_locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await SharedPrefHelper.init();
   setupServiceLocator();
     Bloc.observer = AppBlocObserver();

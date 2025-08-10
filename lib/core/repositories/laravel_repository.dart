@@ -30,7 +30,7 @@ abstract class LaravelRepository {
           Dio(
             BaseOptions(
               ///   Refactor baseUrl instead of using a hard-coded value.
-              baseUrl: "https://ngo.lulzie.online/api/",
+              baseUrl: "https://staging.ngo.lulzie.online/api/",
               headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',

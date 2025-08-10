@@ -1,5 +1,8 @@
-import 'package:ngo/core/theme/my_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngo/export_tools.dart';
+import 'package:ngo/features/organization/cubit/organization_cubit.dart';
+import 'package:ngo/service_locator.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class OrganizationView extends HookWidget {
   const OrganizationView({super.key});
@@ -8,61 +11,9 @@ class OrganizationView extends HookWidget {
   Widget build(BuildContext context) {
     final searchController = useTextEditingController();
     final selectedFilter = useState('All');
-    final followingStates = useState<Map<String, bool>>({
-      'Youth Empowerment Foundation': false,
-      'Global Health Connect': false,
-      'Green Earth Jordan': true,
-      'Youth Education Alliance': false,
-      'Justice For All': true,
-    });
-
-    // Sample organizations data
-    final organizations = [
-      {
-        'name': 'Youth Empowerment Foundation',
-        'description': 'Education & Development',
-        'location': 'Zarqa, Jordan',
-        'imageUrl': 'https://randomuser.me/api/portraits/men/45.jpg',
-        'category': 'Education',
-      },
-      {
-        'name': 'Global Health Connect',
-        'description': 'Healthcare & Development',
-        'location': 'Aqaba, Jordan',
-        'imageUrl': 'https://randomuser.me/api/portraits/men/32.jpg',
-        'category': 'Healthcare',
-      },
-      {
-        'name': 'Green Earth Jordan',
-        'description': 'Environmental Conservation',
-        'location': 'Amman, Jordan',
-        'imageUrl': 'https://randomuser.me/api/portraits/men/33.jpg',
-        'category': 'Environmental',
-      },
-      {
-        'name': 'Youth Education Alliance',
-        'description': 'Education & Development',
-        'location': 'Amman, Jordan',
-        'imageUrl': 'https://randomuser.me/api/portraits/men/34.jpg',
-        'category': 'Education',
-      },
-      {
-        'name': 'Justice For All',
-        'description': 'Human Rights Advocacy',
-        'location': 'Amman, Jordan',
-        'imageUrl': 'https://randomuser.me/api/portraits/men/35.jpg',
-        'category': 'Healthcare',
-      },
-    ];
-
-    // Filter organizations based on selected filter
-    final filteredOrganizations = organizations.where((org) {
-      if (selectedFilter.value == 'All') return true;
-      return org['category'] == selectedFilter.value;
-    }).toList();
+    final followedOrganizations = useState<List<String>>([]);
 
     Widget buildFilterChip(String label) {
-      final isSelected = selectedFilter.value == label;
       return GestureDetector(
         onTap: () {
           selectedFilter.value = label;
@@ -70,14 +21,16 @@ class OrganizationView extends HookWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: isSelected ? MyColors.primaryColor : Colors.grey[200],
+            color: selectedFilter.value == label
+                ? Colors.green
+                : Colors.grey[200],
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
             label,
             style: TextStyle(
-              color: isSelected ? Colors.white : Colors.black87,
-              fontWeight: FontWeight.w500,
+              color: selectedFilter.value == label ? Colors.white : Colors.black,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -88,22 +41,21 @@ class OrganizationView extends HookWidget {
       required String name,
       required String description,
       required String location,
-      required String imageUrl,
+      required String? imageUrl,
+      required bool isFollowing,
     }) {
-      final isFollowing = followingStates.value[name] ?? false;
-
       return Card(
         margin: const EdgeInsets.symmetric(vertical: 8),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: ListTile(
-          leading: CircleAvatar(backgroundImage: NetworkImage(imageUrl)),
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(imageUrl??"https://via.placeholder.com/150"),
+          ),
           title: Text(
             name,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,21 +72,20 @@ class OrganizationView extends HookWidget {
           ),
           trailing: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: isFollowing
-                  ? Colors.grey[300]
-                  : MyColors.primaryColor,
+              backgroundColor: isFollowing ? Colors.grey[300] : Colors.green,
               foregroundColor: isFollowing ? Colors.black : Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
             onPressed: () {
-              // Toggle follow state using hooks
-              final currentStates = Map<String, bool>.from(
-                followingStates.value,
-              );
-              currentStates[name] = !isFollowing;
-              followingStates.value = currentStates;
+              if (isFollowing) {
+                followedOrganizations.value = List.from(followedOrganizations.value)
+                  ..remove(name);
+              } else {
+                followedOrganizations.value = List.from(followedOrganizations.value)
+                  ..add(name);
+              }
             },
             child: Text(isFollowing ? 'Following' : 'Follow'),
           ),
@@ -142,85 +93,167 @@ class OrganizationView extends HookWidget {
       );
     }
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: const BackButton(color: Colors.black),
-        title: const Text(
-          'Organizations',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.filter_list, color: Colors.black),
-            onPressed: () {
-              // Handle filter action
-            },
-          ),
-        ],
-      ),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Search Bar
-                  TextField(
-                    controller: searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Search organizations...',
-                      prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Filter Chips
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        buildFilterChip('All'),
-                        const SizedBox(width: 8),
-                        buildFilterChip('Environmental'),
-                        const SizedBox(width: 8),
-                        buildFilterChip('Education'),
-                        const SizedBox(width: 8),
-                        buildFilterChip('Healthcare'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+    return BlocProvider(
+      create: (context) => sl<OrganizationCubit>()..fetchAllOrganizations(language: 'en'),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: const BackButton(color: Colors.black),
+          title: const Text(
+            'Organizations',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
             ),
           ),
-
-          // Organizations List
-          SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-              final org = filteredOrganizations[index];
-              return Padding(
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.filter_list, color: Colors.black),
+              onPressed: () {
+                // Handle filter action
+              },
+            ),
+          ],
+        ),
+        body: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search organizations...',
+                        prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          buildFilterChip('All'),
+                          const SizedBox(width: 8),
+                          buildFilterChip('Environmental'),
+                          const SizedBox(width: 8),
+                          buildFilterChip('Education'),
+                          const SizedBox(width: 8),
+                          buildFilterChip('Healthcare'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+BlocBuilder<OrganizationCubit, OrganizationState>(
+  builder: (context, state) {
+    // Use runtimeType or instanceof checks instead of when()
+    if (state.runtimeType.toString().contains('Initial')) {
+      return const SliverToBoxAdapter(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Text('No data available'),
+          ),
+        ),
+      );
+    } else if (state.runtimeType.toString().contains('Loading')) {
+      return  SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+        
+            return Skeletonizer(
+              enabled: true,
+              child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: buildOrganizationCard(
-                  name: org['name'] as String,
-                  description: org['description'] as String,
-                  location: org['location'] as String,
-                  imageUrl: org['imageUrl'] as String,
+                  name:  'Unknown Organization',
+                  // Check what properties are available in your Organization model
+                  // Replace 'description' with the correct property name
+                  description:  'No description available',
+                  location:  'Unknown location',
+                  imageUrl: ',
+                  isFollowing: false,
                 ),
-              );
-            }, childCount: filteredOrganizations.length),
+              ),
+            );
+          },
+          childCount: 10,
+        ),
+      );
+    } else if (state.runtimeType.toString().contains('Loaded')) {
+      // Access organizations from the loaded state
+      final loadedState = state as dynamic;
+      final organizations = loadedState.organizations as List<dynamic>;
+      
+      return SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            final org = organizations[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: buildOrganizationCard(
+                name: org.name ?? 'Unknown Organization',
+                // Check what properties are available in your Organization model
+                // Replace 'description' with the correct property name
+                description:  'No description available',
+                location:  'Unknown location',
+                imageUrl: org.logo ?? org.image ?? org.avatar ?? 'https://via.placeholder.com/150',
+                isFollowing: followedOrganizations.value.contains(org.name),
+              ),
+            );
+          },
+          childCount: organizations.length,
+        ),
+      );
+    } else if (state.runtimeType.toString().contains('Error')) {
+      final errorState = state as dynamic;
+      final message = errorState.message ?? 'Unknown error';
+      
+      return SliverToBoxAdapter(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Error: $message'),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () => context.read<OrganizationCubit>()
+                      .fetchAllOrganizations(language: 'en'),
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
+      );
+    } else {
+      return const SliverToBoxAdapter(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Text('Unknown state'),
+          ),
+        ),
+      );
+    }
+  },
+),
+          ],
+        ),
       ),
     );
   }
