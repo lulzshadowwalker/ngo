@@ -34,4 +34,24 @@ class OrganizationCubit extends Cubit<OrganizationState> {
       emit(OrganizationState.error(error.toString()));
     }
   }
+
+  Future<void> followOrganization(String organizationId) async {
+    try {
+      await _repository.followOrganization(organizationId);
+      // Optionally refresh the organizations list
+      await fetchAllOrganizations();
+    } catch (error) {
+      emit(OrganizationState.error('Failed to follow organization: ${error.toString()}'));
+    }
+  }
+
+  Future<void> unfollowOrganization(String organizationId) async {
+    try {
+      await _repository.unfollowOrganization(organizationId);
+      // Optionally refresh the organizations list
+      await fetchAllOrganizations();
+    } catch (error) {
+      emit(OrganizationState.error('Failed to unfollow organization: ${error.toString()}'));
+    }
+  }
 }

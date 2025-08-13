@@ -29,7 +29,9 @@ class OrganizationView extends HookWidget {
           child: Text(
             label,
             style: TextStyle(
-              color: selectedFilter.value == label ? Colors.white : Colors.black,
+              color: selectedFilter.value == label
+                  ? Colors.white
+                  : Colors.black,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -43,15 +45,27 @@ class OrganizationView extends HookWidget {
       required String location,
       required String? imageUrl,
       required bool isFollowing,
+      required String organizationId,
+      required BuildContext context,
     }) {
       return Card(
         margin: const EdgeInsets.symmetric(vertical: 8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: ListTile(
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(imageUrl??"https://via.placeholder.com/150"),
+            backgroundImage: NetworkImage(
+              imageUrl ?? "https://placehold.co/100",
+            ),
+            onBackgroundImageError: (exception, stackTrace) {
+              // Handle image loading error silently
+            },
+            child: imageUrl == null || imageUrl.isEmpty
+                ? const Icon(
+                    Icons.business,
+                    color: Colors.white,
+                    size: 30,
+                  )
+                : null,
           ),
           title: Text(
             name,
@@ -80,11 +94,15 @@ class OrganizationView extends HookWidget {
             ),
             onPressed: () {
               if (isFollowing) {
-                followedOrganizations.value = List.from(followedOrganizations.value)
-                  ..remove(name);
+                context.read<OrganizationCubit>().unfollowOrganization(organizationId);
+                followedOrganizations.value = List.from(
+                  followedOrganizations.value,
+                )..remove(name);
               } else {
-                followedOrganizations.value = List.from(followedOrganizations.value)
-                  ..add(name);
+                context.read<OrganizationCubit>().followOrganization(organizationId);
+                followedOrganizations.value = List.from(
+                  followedOrganizations.value,
+                )..add(name);
               }
             },
             child: Text(isFollowing ? 'Following' : 'Follow'),
@@ -92,9 +110,11 @@ class OrganizationView extends HookWidget {
         ),
       );
     }
-var lang = AppLocalizations.of(context)!.localeName;
+
+    var lang = AppLocalizations.of(context)!.localeName;
     return BlocProvider(
-      create: (context) => sl<OrganizationCubit>()..fetchAllOrganizations(language: lang),
+      create: (context) =>
+          sl<OrganizationCubit>()..fetchAllOrganizations(language: lang),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -102,10 +122,7 @@ var lang = AppLocalizations.of(context)!.localeName;
           leading: const BackButton(color: Colors.black),
           title: const Text(
             'Organizations',
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           actions: [
             IconButton(
@@ -128,7 +145,10 @@ var lang = AppLocalizations.of(context)!.localeName;
                       controller: searchController,
                       decoration: InputDecoration(
                         hintText: 'Search organizations...',
-                        prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          color: Colors.grey,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
@@ -156,102 +176,107 @@ var lang = AppLocalizations.of(context)!.localeName;
                 ),
               ),
             ),
-BlocBuilder<OrganizationCubit, OrganizationState>(
-  builder: (context, state) {
-    // Use runtimeType or instanceof checks instead of when()
-    if (state.runtimeType.toString().contains('Initial')) {
-      return const SliverToBoxAdapter(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Text('No data available'),
-          ),
-        ),
-      );
-    } else if (state.runtimeType.toString().contains('Loading')) {
-      return  SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-        
-            return Skeletonizer(
-              enabled: true,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: buildOrganizationCard(
-                  name:  'Unknown Organization',
-                  // Check what properties are available in your Organization model
-                  // Replace 'description' with the correct property name
-                  description:  'No description available',
-                  location:  'Unknown location',
-                  imageUrl: 'https://via.placeholder.com/150',
-                  isFollowing: false,
-                ),
-              ),
-            );
-          },
-          childCount: 10,
-        ),
-      );
-    } else if (state.runtimeType.toString().contains('Loaded')) {
-      // Access organizations from the loaded state
-      final loadedState = state as dynamic;
-      final organizations = loadedState.organizations as List<dynamic>;
-      
-      return SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            final org = organizations[index];
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: buildOrganizationCard(
-                name: org.name ?? 'Unknown Organization',
-                // Check what properties are available in your Organization model
-                // Replace 'description' with the correct property name
-                description:  'No description available',
-                location:  'Unknown location',
-                imageUrl: org.logo ?? org.image ?? org.avatar ?? 'https://via.placeholder.com/150',
-                isFollowing: followedOrganizations.value.contains(org.name),
-              ),
-            );
-          },
-          childCount: organizations.length,
-        ),
-      );
-    } else if (state.runtimeType.toString().contains('Error')) {
-      final errorState = state as dynamic;
-      final message = errorState.message ?? 'Unknown error';
-      
-      return SliverToBoxAdapter(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Error: $message'),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () => context.read<OrganizationCubit>()
-                      .fetchAllOrganizations(language: 'en'),
-                  child: const Text('Retry'),
-                ),
-              ],
+            BlocBuilder<OrganizationCubit, OrganizationState>(
+              builder: (context, state) {
+                // Use runtimeType or instanceof checks instead of when()
+                if (state.runtimeType.toString().contains('Initial')) {
+                  return const SliverToBoxAdapter(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text('No data available'),
+                      ),
+                    ),
+                  );
+                } else if (state.runtimeType.toString().contains('Loading')) {
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      return Skeletonizer(
+                        enabled: true,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: buildOrganizationCard(
+                            name: 'Unknown Organization',
+                            // Check what properties are available in your Organization model
+                            // Replace 'description' with the correct property name
+                            description: 'No description available',
+                            location: 'Unknown location',
+                            imageUrl: 'https://placehold.co/100',
+                            isFollowing: false,
+                            organizationId: '0', // placeholder for loading state
+                            context: context,
+                          ),
+                        ),
+                      );
+                    }, childCount: 10),
+                  );
+                } else if (state.runtimeType.toString().contains('Loaded')) {
+                  // Access organizations from the loaded state
+                  final loadedState = state as dynamic;
+                  final organizations =
+                      loadedState.organizations as List<dynamic>;
+
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      final org = organizations[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: buildOrganizationCard(
+                          name: org.name ?? 'Unknown Organization',
+                          // Check what properties are available in your Organization model
+                          // Replace 'description' with the correct property name
+                          description: 'No description available',
+                          location: 'Unknown location',
+                          imageUrl:
+                              org.logo ??
+                              org.image ??
+                              org.avatar ??
+                             'https://placehold.co/100',
+                          isFollowing: followedOrganizations.value.contains(
+                            org.name,
+                          ),
+                          organizationId: org.slug ?? '0', // Add organization ID
+                          context: context,
+                        ),
+                      );
+                    }, childCount: organizations.length),
+                  );
+                } else if (state.runtimeType.toString().contains('Error')) {
+                  final errorState = state as dynamic;
+                  final message = errorState.message ?? 'Unknown error';
+
+                  return SliverToBoxAdapter(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Error: $message'),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: () => context
+                                  .read<OrganizationCubit>()
+                                  .fetchAllOrganizations(language: 'en'),
+                              child: const Text('Retry'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return const SliverToBoxAdapter(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text('Unknown state'),
+                      ),
+                    ),
+                  );
+                }
+              },
             ),
-          ),
-        ),
-      );
-    } else {
-      return const SliverToBoxAdapter(
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Text('Unknown state'),
-          ),
-        ),
-      );
-    }
-  },
-),
           ],
         ),
       ),
