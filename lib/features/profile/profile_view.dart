@@ -1,6 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ngo/features/components/text_component.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../core/theme/my_colors.dart';
+import '../../core/theme/my_fonts.dart';
 import '../../export_tools.dart';
 import '../../service_locator.dart';
 import '../edit_proflie/edit_profle_export.dart';
@@ -60,11 +63,9 @@ class _ProfileViewContent extends HookWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
-          'Profile',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
+        title: TextComponent(
+          title: 'Profile',
+          style: MyFonts.font20Black.copyWith(
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -88,9 +89,7 @@ class _ProfileViewContent extends HookWidget {
           return CustomScrollView(
             slivers: [
               // Profile Header Section
-              SliverToBoxAdapter(
-                child: _buildProfileHeader(context, state),
-              ),
+              SliverToBoxAdapter(child: _buildProfileHeader(context, state)),
 
               // Tab Navigation
               SliverToBoxAdapter(child: _buildTabNavigation(selectedTab)),
@@ -111,7 +110,8 @@ class _ProfileViewContent extends HookWidget {
 
   Widget _buildProfileHeader(BuildContext context, UserManagementState state) {
     // Handle different states properly
-    if (state.toString().contains('loading') || state.toString().contains('initial')) {
+    if (state.toString().contains('loading') ||
+        state.toString().contains('initial')) {
       return _buildLoadingHeader();
     } else if (state.toString().contains('error')) {
       return _buildErrorHeader(context, 'Error loading profile');
@@ -123,63 +123,156 @@ class _ProfileViewContent extends HookWidget {
     }
   }
 
-  Widget _buildUserHeaderFromState(BuildContext context, UserManagementState state) {
- 
-    
+  Widget _buildUserHeaderFromState(
+    BuildContext context,
+    UserManagementState state,
+  ) {
     Map<String, dynamic>? userData;
-    
+
     try {
-   
       final stateString = state.toString();
-      
+
       if (stateString.contains('User(')) {
         // Extract user name
         final nameMatch = RegExp(r'name: ([^,\)]+)').firstMatch(stateString);
         final emailMatch = RegExp(r'email: ([^,\)]+)').firstMatch(stateString);
-        final avatarMatch = RegExp(r'avatar: ([^,\)]+)').firstMatch(stateString);
-        final locationMatch = RegExp(r'Location\([^)]*city: ([^,\)]+)').firstMatch(stateString);
+        final avatarMatch = RegExp(
+          r'avatar: ([^,\)]+)',
+        ).firstMatch(stateString);
+        final locationMatch = RegExp(
+          r'Location\([^)]*city: ([^,\)]+)',
+        ).firstMatch(stateString);
         final bioMatch = RegExp(r'bio: ([^,\)]+)').firstMatch(stateString);
-        
+
         userData = {
           'name': nameMatch?.group(1)?.trim() ?? 'User Name',
           'email': emailMatch?.group(1)?.trim() ?? '@username',
-          'avatar': avatarMatch?.group(1)?.trim() != 'null' ? avatarMatch?.group(1)?.trim() : null,
-          'location': locationMatch?.group(1)?.trim() != 'null' ? locationMatch?.group(1)?.trim() : null,
-          'bio': bioMatch?.group(1)?.trim() != 'null' ? bioMatch?.group(1)?.trim() : null,
+          'avatar': avatarMatch?.group(1)?.trim() != 'null'
+              ? avatarMatch?.group(1)?.trim()
+              : null,
+          'location': locationMatch?.group(1)?.trim() != 'null'
+              ? locationMatch?.group(1)?.trim()
+              : null,
+          'bio': bioMatch?.group(1)?.trim() != 'null'
+              ? bioMatch?.group(1)?.trim()
+              : null,
         };
       }
     } catch (e) {
-  
       debugPrint('Error parsing user data: $e');
     }
-    
- 
+
     return _buildUserHeaderWithData(context, userData);
   }
 
   Widget _buildLoadingHeader() {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      child: const Column(
-        children: [
-          // Profile Picture Loading
-          CircleAvatar(
-            radius: 50,
-            backgroundColor: Colors.grey,
-            child: CircularProgressIndicator(color: Colors.white),
-          ),
-          SizedBox(height: 16),
-          
-          // Loading Text
-          Text(
-            'Loading profile...',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
+    return Skeletonizer(
+      enabled: true,
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          children: [
+            // Profile Picture
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: MyColors.primaryColor, width: 3),
+              ),
+              child: ClipOval(
+                child: Container(
+                  color: Colors.grey[200],
+                  child: Icon(Icons.person, size: 50, color: Colors.grey),
+                ),
+              ),
             ),
-          ),
-          SizedBox(height: 100),
-        ],
+            SizedBox(height: 16),
+
+            // Name and Email
+            TextComponent(
+              title: 'User Name',
+              style: MyFonts.font20BlackBold.copyWith(
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 4),
+            TextComponent(
+              title: '@username',
+              style: MyFonts.font16Black.copyWith(color: Colors.grey),
+            ),
+            SizedBox(height: 8),
+
+            // Location
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.location_on, size: 16, color: Colors.grey),
+                const SizedBox(width: 4),
+                TextComponent(
+                  title: "South Logan",
+                  style: MyFonts.font14Black.copyWith(color: Colors.grey),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            const SizedBox(height: 20),
+
+            // Stats Row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildStatItem('24', 'Following'),
+                _buildStatItem('12', 'Evaluations'),
+                _buildStatItem('8', 'Applications'),
+              ],
+            ),
+            const SizedBox(height: 20),
+
+            // Bio
+            TextComponent(
+              title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+              style: MyFonts.font14Black.copyWith(
+                color: Colors.black54,
+                height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Edit Profile Button
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: MyColors.primaryColor,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                      horizontal: 24,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: TextComponent(
+                    title: 'Edit Profile',
+                    style: MyFonts.font16Black.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.settings, color: Colors.grey),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -191,26 +284,27 @@ class _ProfileViewContent extends HookWidget {
         children: [
           const Icon(Icons.error_outline, size: 64, color: Colors.red),
           const SizedBox(height: 16),
-          Text(
-            'Error loading profile',
-            style: const TextStyle(
-              fontSize: 18,
+          TextComponent(
+            title: 'Error loading profile',
+            style: MyFonts.font18BlackBold.copyWith(
               fontWeight: FontWeight.w500,
               color: Colors.red,
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            error,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 14, color: Colors.grey),
+          TextComponent(
+            title: error,
+            style: MyFonts.font14Black.copyWith(color: Colors.grey),
           ),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
               context.read<UserManagementCubit>().fetchUserData();
             },
-            child: const Text('Retry'),
+            child: TextComponent(
+              title: 'Retry',
+              style: MyFonts.font14Black.copyWith(color: Colors.white),
+            ),
           ),
           const SizedBox(height: 50),
         ],
@@ -239,32 +333,39 @@ class _ProfileViewContent extends HookWidget {
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
                           color: Colors.grey[200],
-                          child: const Icon(Icons.person, size: 50, color: Colors.grey),
+                          child: const Icon(
+                            Icons.person,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
                         );
                       },
                     )
                   : Container(
                       color: Colors.grey[200],
-                      child: const Icon(Icons.person, size: 50, color: Colors.grey),
+                      child: const Icon(
+                        Icons.person,
+                        size: 50,
+                        color: Colors.grey,
+                      ),
                     ),
             ),
           ),
           const SizedBox(height: 16),
 
           // Name and Email
-          Text(
-            user != null ? user['name'] ?? 'User Name' : 'User Name',
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
-            ),
+          TextComponent(
+            title: user != null ? user['name'] ?? 'User Name' : 'User Name',
+            style: MyFonts.font20BlackBold,
           ),
+
           const SizedBox(height: 4),
-          Text(
-            user != null ? user['email'] ?? '@username' : '@username',
-            style: const TextStyle(fontSize: 16, color: Colors.grey),
+
+          TextComponent(
+            title: user != null ? user['email'] ?? '@username' : '@username',
+            style: MyFonts.font14Black.copyWith(color: Colors.grey),
           ),
+
           const SizedBox(height: 8),
 
           // Location
@@ -274,9 +375,9 @@ class _ProfileViewContent extends HookWidget {
               children: [
                 const Icon(Icons.location_on, size: 16, color: Colors.grey),
                 const SizedBox(width: 4),
-                Text(
-                  user['location'],
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                TextComponent(
+                  title: user['location'],
+                  style: MyFonts.font14Black.copyWith(color: Colors.grey),
                 ),
               ],
             ),
@@ -295,11 +396,8 @@ class _ProfileViewContent extends HookWidget {
 
           // Bio
           if (user != null && user['bio'] != null)
-            Text(
-              user['bio'],
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14, color: Colors.black54, height: 1.4),
-            ),
+            TextComponent(title: user['bio'], style: MyFonts.font14Black),
+
           const SizedBox(height: 24),
 
           // Edit Profile Button
@@ -326,9 +424,9 @@ class _ProfileViewContent extends HookWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: const Text(
-                  'Edit Profile',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                child: TextComponent(
+                  title: "Edit Profile",
+                  style: MyFonts.font16Black.copyWith(color: Colors.white),
                 ),
               ),
               const SizedBox(width: 12),
@@ -353,16 +451,17 @@ class _ProfileViewContent extends HookWidget {
   Widget _buildStatItem(String number, String label) {
     return Column(
       children: [
-        Text(
-          number,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
+        TextComponent(
+          title: number,
+          style: MyFonts.font20BlackBold.copyWith(
             color: Colors.black87,
           ),
         ),
         const SizedBox(height: 4),
-        Text(label, style: const TextStyle(fontSize: 14, color: Colors.grey)),
+        TextComponent(
+          title: label,
+          style: MyFonts.font14Black.copyWith(color: Colors.grey),
+        ),
       ],
     );
   }
@@ -395,11 +494,9 @@ class _ProfileViewContent extends HookWidget {
                     ),
                   ),
                 ),
-                child: Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
+                child: TextComponent(
+                  title: title,
+                  style: MyFonts.font14Black.copyWith(
                     fontWeight: FontWeight.w500,
                     color: isSelected ? MyColors.primaryColor : Colors.grey,
                   ),
@@ -486,34 +583,37 @@ class _ProfileViewContent extends HookWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Text(
-                        name,
-                        style: const TextStyle(
-                          fontSize: 16,
+                      child: TextComponent(
+                        textAlign: TextAlign.start,
+                        title: name,
+                        style: MyFonts.font16Black.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Colors.black87,
                         ),
                       ),
                     ),
+                    SizedBox(width: 2),
                     if (isVerified)
                       const Icon(Icons.verified, size: 16, color: Colors.blue),
                   ],
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  description,
-                  style: const TextStyle(fontSize: 14, color: Colors.black54),
+                TextComponent(
+                  textAlign: TextAlign.start,
+                  title: description,
+                  style: MyFonts.font14Black.copyWith(color: Colors.black54),
                 ),
                 const SizedBox(height: 4),
                 Row(
                   children: [
                     const Icon(Icons.location_on, size: 14, color: Colors.grey),
                     const SizedBox(width: 4),
-                    Text(
-                      location,
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    TextComponent(
+                      title: location,
+                      style: MyFonts.font12Black.copyWith(color: Colors.grey),
                     ),
                   ],
                 ),
@@ -528,10 +628,9 @@ class _ProfileViewContent extends HookWidget {
               border: Border.all(color: MyColors.primaryColor),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Text(
-              'Following',
-              style: TextStyle(
-                fontSize: 12,
+            child: TextComponent(
+              title: 'Following',
+              style: MyFonts.font12Black.copyWith(
                 color: MyColors.primaryColor,
                 fontWeight: FontWeight.w500,
               ),
@@ -545,23 +644,22 @@ class _ProfileViewContent extends HookWidget {
   Widget _buildMyApplicationsTab() {
     return Container(
       padding: const EdgeInsets.all(24),
-      child: const Center(
+      child: Center(
         child: Column(
           children: [
-            Icon(Icons.assignment, size: 64, color: Colors.grey),
-            SizedBox(height: 16),
-            Text(
-              'No Applications Yet',
-              style: TextStyle(
-                fontSize: 18,
+            const Icon(Icons.assignment, size: 64, color: Colors.grey),
+            const SizedBox(height: 16),
+            TextComponent(
+              title: 'No Applications Yet',
+              style: MyFonts.font18BlackBold.copyWith(
                 fontWeight: FontWeight.w500,
                 color: Colors.grey,
               ),
             ),
-            SizedBox(height: 8),
-            Text(
-              'Your volunteer applications will appear here',
-              style: TextStyle(fontSize: 14, color: Colors.grey),
+            const SizedBox(height: 8),
+            TextComponent(
+              title: 'Your volunteer applications will appear here',
+              style: MyFonts.font14Black.copyWith(color: Colors.grey),
             ),
           ],
         ),
@@ -572,23 +670,22 @@ class _ProfileViewContent extends HookWidget {
   Widget _buildMyEvaluationsTab() {
     return Container(
       padding: const EdgeInsets.all(24),
-      child: const Center(
+      child: Center(
         child: Column(
           children: [
-            Icon(Icons.rate_review, size: 64, color: Colors.grey),
-            SizedBox(height: 16),
-            Text(
-              'No Evaluations Yet',
-              style: TextStyle(
-                fontSize: 18,
+            const Icon(Icons.rate_review, size: 64, color: Colors.grey),
+            const SizedBox(height: 16),
+            TextComponent(
+              title: 'No Evaluations Yet',
+              style: MyFonts.font18BlackBold.copyWith(
                 fontWeight: FontWeight.w500,
                 color: Colors.grey,
               ),
             ),
-            SizedBox(height: 8),
-            Text(
-              'Your volunteer evaluations will appear here',
-              style: TextStyle(fontSize: 14, color: Colors.grey),
+            const SizedBox(height: 8),
+            TextComponent(
+              title: 'Your volunteer evaluations will appear here',
+              style: MyFonts.font14Black.copyWith(color: Colors.grey),
             ),
           ],
         ),

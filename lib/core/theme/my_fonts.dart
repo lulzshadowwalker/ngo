@@ -8,6 +8,12 @@ class MyFonts {
     color: Colors.black,
     fontWeight: FontWeight.bold,
   );
+   static final TextStyle font20BlackBold = GoogleFonts.getFont(
+    "Lato",
+    fontSize: 20,
+    color: Colors.black,
+    fontWeight: FontWeight.bold,
+  );
   static final TextStyle font20Black = GoogleFonts.getFont(
     "Lato",
     fontSize: 20,
