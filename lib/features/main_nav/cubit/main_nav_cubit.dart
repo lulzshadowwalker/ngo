@@ -5,18 +5,18 @@ import '../../blog/blog_export.dart';
 import '../../home/home_export.dart';
 import '../../opportunities/opportunities_export.dart';
 import '../../organization/organization_view_export.dart';
-import '../../profile/profile_export.dart';
+import '../../profile/profile_view.dart'; // Direct import instead of export
 import 'main_nav_state.dart';
 
 class MainNavCubit extends Cubit<MainNavState> {
   MainNavCubit() : super(MainNavInitial());
 
   List<Widget> pages = [
-    Home(),
-    OrganizationView(),
-    OpportunitiesView(),
-    BlogView(),
-    ProfileView(),
+    const Home(),
+    const OrganizationView(),
+    const OpportunitiesView(),
+    const BlogView(),
+    const ProfileView(), // Re-enable ProfileView
   ];
 
   int currentIndex = 0;

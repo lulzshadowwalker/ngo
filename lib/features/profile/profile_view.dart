@@ -1,7 +1,11 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../core/theme/my_colors.dart';
 import '../../export_tools.dart';
+import '../../service_locator.dart';
 import '../edit_proflie/edit_profle_export.dart';
 import '../settings/settings_export.dart';
+import '../user_management/cubit/user_management_cubit.dart';
 
 class ProfileView extends HookWidget {
   const ProfileView({super.key});
@@ -12,6 +16,20 @@ class ProfileView extends HookWidget {
       0,
     ); // 0: Following, 1: My Applications, 2: My Evaluations
 
+    return BlocProvider(
+      create: (context) => sl<UserManagementCubit>()..fetchUserData(),
+      child: _ProfileViewContent(selectedTab: selectedTab),
+    );
+  }
+}
+
+class _ProfileViewContent extends HookWidget {
+  final ValueNotifier<int> selectedTab;
+
+  const _ProfileViewContent({required this.selectedTab});
+
+  @override
+  Widget build(BuildContext context) {
     // Sample following organizations data
     final followingOrganizations = [
       {
@@ -52,6 +70,12 @@ class ProfileView extends HookWidget {
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.refresh, color: Colors.black),
+            onPressed: () {
+              context.read<UserManagementCubit>().fetchUserData();
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.search, color: Colors.black),
             onPressed: () {
               // Handle search action
@@ -59,27 +83,142 @@ class ProfileView extends HookWidget {
           ),
         ],
       ),
-      body: CustomScrollView(
-        slivers: [
-          // Profile Header Section
-          SliverToBoxAdapter(child: _buildProfileHeader(context)),
+      body: BlocBuilder<UserManagementCubit, UserManagementState>(
+        builder: (context, state) {
+          return CustomScrollView(
+            slivers: [
+              // Profile Header Section
+              SliverToBoxAdapter(
+                child: _buildProfileHeader(context, state),
+              ),
 
-          // Tab Navigation
-          SliverToBoxAdapter(child: _buildTabNavigation(selectedTab)),
+              // Tab Navigation
+              SliverToBoxAdapter(child: _buildTabNavigation(selectedTab)),
 
-          // Tab Content
-          SliverToBoxAdapter(
-            child: _buildTabContent(selectedTab, followingOrganizations),
+              // Tab Content
+              SliverToBoxAdapter(
+                child: _buildTabContent(selectedTab, followingOrganizations),
+              ),
+
+              // Bottom padding
+              const SliverToBoxAdapter(child: SizedBox(height: 100)),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildProfileHeader(BuildContext context, UserManagementState state) {
+    // Handle different states properly
+    if (state.toString().contains('loading') || state.toString().contains('initial')) {
+      return _buildLoadingHeader();
+    } else if (state.toString().contains('error')) {
+      return _buildErrorHeader(context, 'Error loading profile');
+    } else if (state.toString().contains('loaded')) {
+      // Extract user data from the loaded state
+      return _buildUserHeaderFromState(context, state);
+    } else {
+      return _buildLoadingHeader();
+    }
+  }
+
+  Widget _buildUserHeaderFromState(BuildContext context, UserManagementState state) {
+ 
+    
+    Map<String, dynamic>? userData;
+    
+    try {
+   
+      final stateString = state.toString();
+      
+      if (stateString.contains('User(')) {
+        // Extract user name
+        final nameMatch = RegExp(r'name: ([^,\)]+)').firstMatch(stateString);
+        final emailMatch = RegExp(r'email: ([^,\)]+)').firstMatch(stateString);
+        final avatarMatch = RegExp(r'avatar: ([^,\)]+)').firstMatch(stateString);
+        final locationMatch = RegExp(r'Location\([^)]*city: ([^,\)]+)').firstMatch(stateString);
+        final bioMatch = RegExp(r'bio: ([^,\)]+)').firstMatch(stateString);
+        
+        userData = {
+          'name': nameMatch?.group(1)?.trim() ?? 'User Name',
+          'email': emailMatch?.group(1)?.trim() ?? '@username',
+          'avatar': avatarMatch?.group(1)?.trim() != 'null' ? avatarMatch?.group(1)?.trim() : null,
+          'location': locationMatch?.group(1)?.trim() != 'null' ? locationMatch?.group(1)?.trim() : null,
+          'bio': bioMatch?.group(1)?.trim() != 'null' ? bioMatch?.group(1)?.trim() : null,
+        };
+      }
+    } catch (e) {
+  
+      debugPrint('Error parsing user data: $e');
+    }
+    
+ 
+    return _buildUserHeaderWithData(context, userData);
+  }
+
+  Widget _buildLoadingHeader() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      child: const Column(
+        children: [
+          // Profile Picture Loading
+          CircleAvatar(
+            radius: 50,
+            backgroundColor: Colors.grey,
+            child: CircularProgressIndicator(color: Colors.white),
           ),
-
-          // Bottom padding
-          const SliverToBoxAdapter(child: SizedBox(height: 100)),
+          SizedBox(height: 16),
+          
+          // Loading Text
+          Text(
+            'Loading profile...',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey,
+            ),
+          ),
+          SizedBox(height: 100),
         ],
       ),
     );
   }
 
-  Widget _buildProfileHeader(BuildContext context) {
+  Widget _buildErrorHeader(BuildContext context, String error) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        children: [
+          const Icon(Icons.error_outline, size: 64, color: Colors.red),
+          const SizedBox(height: 16),
+          Text(
+            'Error loading profile',
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: Colors.red,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            error,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 14, color: Colors.grey),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              context.read<UserManagementCubit>().fetchUserData();
+            },
+            child: const Text('Retry'),
+          ),
+          const SizedBox(height: 50),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserHeaderWithData(BuildContext context, dynamic user) {
     return Container(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -93,42 +232,54 @@ class ProfileView extends HookWidget {
               border: Border.all(color: MyColors.primaryColor, width: 3),
             ),
             child: ClipOval(
-              child: Container(
-                color: Colors.grey[200],
-                child: const Icon(Icons.person, size: 50, color: Colors.grey),
-              ),
+              child: user != null && user['avatar'] != null
+                  ? Image.network(
+                      user['avatar'],
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: Colors.grey[200],
+                          child: const Icon(Icons.person, size: 50, color: Colors.grey),
+                        );
+                      },
+                    )
+                  : Container(
+                      color: Colors.grey[200],
+                      child: const Icon(Icons.person, size: 50, color: Colors.grey),
+                    ),
             ),
           ),
           const SizedBox(height: 16),
 
-          // Name and Username
-          const Text(
-            'Sarah Johnson',
-            style: TextStyle(
+          // Name and Email
+          Text(
+            user != null ? user['name'] ?? 'User Name' : 'User Name',
+            style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
-            '@sarahjohnson',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
+          Text(
+            user != null ? user['email'] ?? '@username' : '@username',
+            style: const TextStyle(fontSize: 16, color: Colors.grey),
           ),
           const SizedBox(height: 8),
 
           // Location
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(Icons.location_on, size: 16, color: Colors.grey),
-              SizedBox(width: 4),
-              Text(
-                'Amman, Jordan',
-                style: TextStyle(fontSize: 14, color: Colors.grey),
-              ),
-            ],
-          ),
+          if (user != null && user['location'] != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.location_on, size: 16, color: Colors.grey),
+                const SizedBox(width: 4),
+                Text(
+                  user['location'],
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+              ],
+            ),
           const SizedBox(height: 20),
 
           // Stats Row
@@ -143,11 +294,12 @@ class ProfileView extends HookWidget {
           const SizedBox(height: 20),
 
           // Bio
-          const Text(
-            'Passionate about community development and sustainable initiatives in Jordan',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14, color: Colors.black54, height: 1.4),
-          ),
+          if (user != null && user['bio'] != null)
+            Text(
+              user['bio'],
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 14, color: Colors.black54, height: 1.4),
+            ),
           const SizedBox(height: 24),
 
           // Edit Profile Button
@@ -156,12 +308,12 @@ class ProfileView extends HookWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const EditProfileView(),
-                  ),
-                );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EditProfileView(),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: MyColors.primaryColor,
