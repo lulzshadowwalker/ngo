@@ -92,9 +92,9 @@ class OrganizationView extends HookWidget {
         ),
       );
     }
-
+var lang = AppLocalizations.of(context)!.localeName;
     return BlocProvider(
-      create: (context) => sl<OrganizationCubit>()..fetchAllOrganizations(language: 'en'),
+      create: (context) => sl<OrganizationCubit>()..fetchAllOrganizations(language: lang),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -183,7 +183,7 @@ BlocBuilder<OrganizationCubit, OrganizationState>(
                   // Replace 'description' with the correct property name
                   description:  'No description available',
                   location:  'Unknown location',
-                  imageUrl: ',
+                  imageUrl: 'https://via.placeholder.com/150',
                   isFollowing: false,
                 ),
               ),
