@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ngo/core/contracts/notification_repository.dart';
@@ -14,6 +16,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 
   Future<void> fetchNotifications() async {
     final accessToken = await SharedPrefHelper.getAccessToken();
+    log("This my access token: $accessToken");
     try {
       emit(const NotificationsState.loading());
       
