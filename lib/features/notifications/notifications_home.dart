@@ -27,7 +27,9 @@ class NotificationsHome extends HookWidget {
           child: Text(
             label,
             style: TextStyle(
-              color: selectedFilter.value == label ? Colors.white : Colors.black,
+              color: selectedFilter.value == label
+                  ? Colors.white
+                  : Colors.black,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -47,11 +49,7 @@ class NotificationsHome extends HookWidget {
         child: ListTile(
           leading: CircleAvatar(
             backgroundColor: isRead ? Colors.grey[300] : Colors.green,
-            child: Icon(
-              Icons.notifications,
-              color: Colors.white,
-              size: 20,
-            ),
+            child: Icon(Icons.notifications, color: Colors.white, size: 20),
           ),
           title: Text(
             title,
@@ -61,9 +59,7 @@ class NotificationsHome extends HookWidget {
           ),
           subtitle: Text(
             subtitle,
-            style: TextStyle(
-              color: isRead ? Colors.grey : Colors.black87,
-            ),
+            style: TextStyle(color: isRead ? Colors.grey : Colors.black87),
           ),
           trailing: Text(
             time,
@@ -75,7 +71,7 @@ class NotificationsHome extends HookWidget {
     }
 
     return BlocProvider(
-      create: (context) => sl<NotificationsCubit>()..fetchNotifications(), // Replace with actual token
+      create: (context) => sl<NotificationsCubit>()..fetchNotifications(),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -83,22 +79,8 @@ class NotificationsHome extends HookWidget {
           leading: const BackButton(color: Colors.black),
           title: const Text(
             'Notifications',
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                context.read<NotificationsCubit>().markAllAsRead(); // Replace with actual token
-              },
-              child: const Text(
-                'Mark all as read',
-                style: TextStyle(color: Colors.green),
-              ),
-            ),
-          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(16),
@@ -106,10 +88,24 @@ class NotificationsHome extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  buildFilterChip('All'),
-                  const SizedBox(width: 8),
-                  buildFilterChip('Unread'),
+                  Row(
+                    children: [
+                      buildFilterChip('All'),
+                      const SizedBox(width: 8),
+                      buildFilterChip('Unread'),
+                    ],
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      context.read<NotificationsCubit>().markAllAsRead();
+                    },
+                    child: const Text(
+                      'Mark all as read',
+                      style: TextStyle(color: Colors.green),
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
@@ -120,15 +116,19 @@ class NotificationsHome extends HookWidget {
                       return const Center(
                         child: Text('No notifications available'),
                       );
-                    } else if (state.runtimeType.toString().contains('Loading')) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (state.runtimeType.toString().contains('Loaded')) {
+                    } else if (state.runtimeType.toString().contains(
+                      'Loading',
+                    )) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state.runtimeType.toString().contains(
+                      'Loaded',
+                    )) {
                       final loadedState = state as dynamic;
-                      final notifications = loadedState.notifications as List<dynamic>;
+                      final notifications =
+                          loadedState.notifications as List<dynamic>;
 
-                      final filteredNotifications = selectedFilter.value == 'All'
+                      final filteredNotifications =
+                          selectedFilter.value == 'All'
                           ? notifications
                           : notifications.where((n) => !n.isRead).toList();
 
@@ -150,13 +150,15 @@ class NotificationsHome extends HookWidget {
                           return buildNotificationCard(
                             title: notification.title ?? 'No title',
                             subtitle: notification.message ?? 'No message',
-                            time: _formatTime(notification.sentAt ?? DateTime.now()),
+                            time: _formatTime(
+                              notification.sentAt ?? DateTime.now(),
+                            ),
                             isRead: notification.isRead ?? false,
                             onTap: () {
                               if (!(notification.isRead ?? true)) {
                                 // Mark as read when tapped
                                 context.read<NotificationsCubit>().markAsRead(
-                                  notification.id ?? '', // Replace with actual notification ID
+                                  notification.id ?? '',
                                 );
                               }
                             },
@@ -176,16 +178,14 @@ class NotificationsHome extends HookWidget {
                             ElevatedButton(
                               onPressed: () => context
                                   .read<NotificationsCubit>()
-                                  .fetchNotifications(), // Replace with actual token
+                                  .fetchNotifications(),
                               child: const Text('Retry'),
                             ),
                           ],
                         ),
                       );
                     } else {
-                      return const Center(
-                        child: Text('Unknown state'),
-                      );
+                      return const Center(child: Text('Unknown state'));
                     }
                   },
                 ),
