@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -17,6 +19,8 @@ class LocationCubit extends Cubit<LocationState> {
     try {
       emit(const LocationState.loading());
        final locations = await  _repository.fetchAll(language: language);
+
+       log("Fetched ${locations.length} locations");
        emit(LocationState.loaded(locations));
     } catch (error) {
       emit(LocationState.error(error.toString()));

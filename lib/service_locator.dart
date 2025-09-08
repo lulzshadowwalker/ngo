@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:ngo/features/location_section/cubit/location_cubit.dart';
 import 'package:ngo/features/notifications/cubit/notifications_cubit.dart';
 import 'package:ngo/features/organization/cubit/organization_cubit.dart';
 import 'package:ngo/features/post/logic/post_cubit.dart';
@@ -53,4 +54,5 @@ void setupServiceLocator() {
   sl.registerFactory(() => UserManagementCubit(sl<UserManagementRepository>()));
 
   sl.registerFactory(()=> SkillsCubit(sl<SkillsRepository>()));
+  sl.registerFactory((()=> LocationCubit(sl<LocationsRepository>())));
 }
