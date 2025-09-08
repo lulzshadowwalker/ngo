@@ -6,6 +6,7 @@ import 'package:ngo/features/components/text_component.dart';
 import 'package:ngo/l10n/app_localizations.dart';
 
 import '../../components/custom_elevated_button_component.dart';
+import '../../join_our_community/join_our_community.dart';
 
 class LandingButtonSection extends StatelessWidget {
   const LandingButtonSection({super.key});
@@ -38,13 +39,17 @@ class LandingButtonSection extends StatelessWidget {
           ),
           buttonColor: MyColors.backgroundColor,
           borderColor: MyColors.backgroundColor,
-          onPressed: () {},
+          onPressed: () {
+               Navigator.push(context, MaterialPageRoute(builder: (context) => const JionOurCommunity()));
+          },
           title: lang.sigup,
         ),
 
         const SizedBox(height: 20),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+
+          },
           child: TextComponent(
             title: lang.continue_as_guest,
             style: MyFonts.font14BlackBold,

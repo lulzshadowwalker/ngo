@@ -1,9 +1,14 @@
 
 import 'dart:developer';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../core/hooks/use_image_picker.dart';
 import '../../core/theme/my_fonts.dart';
 import '../../export_tools.dart';
+import '../../models/skill.dart';
+import '../../service_locator.dart';
+import '../skills/cubit/skills_cubit.dart';
 
 class CompleteYourProfile extends HookWidget {
   const CompleteYourProfile({super.key , required this.fullName, required this.email, required this.password});
@@ -12,11 +17,35 @@ class CompleteYourProfile extends HookWidget {
   final String password;
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => sl<SkillsCubit>()..fetchAllSkills(),
+      child: _CompleteYourProfileView(
+        fullName: fullName,
+        email: email,
+        password: password,
+      ),
+    );
+  }
+}
+
+class _CompleteYourProfileView extends HookWidget {
+  const _CompleteYourProfileView({
+    required this.fullName,
+    required this.email,
+    required this.password,
+  });
+
+  final String fullName;
+  final String email;
+  final String password;
+
+  @override
+  Widget build(BuildContext context) {
     final pageController = usePageController();
     final aboutController = useTextEditingController();
     final locationController = useTextEditingController();
     final selectedDate = useState<DateTime?>(null);
-    final skills = useState<List<String>>(['Communication', 'Leadership']);
+    final selectedSkills = useState<List<Skill>>([]);
     final interests = useState<List<String>>(['Education', 'Environment']);
     final followedOrgs = useState<List<String>>([]);
     
@@ -200,8 +229,8 @@ class CompleteYourProfile extends HookWidget {
           // Step 2
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
+              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 stepIndicator(1),
                 const SizedBox(height: 8),
@@ -228,19 +257,49 @@ class CompleteYourProfile extends HookWidget {
                 const SizedBox(height: 20),
                 const Text('Skills'),
                 const SizedBox(height: 8),
-                Wrap(
-                  spacing: 8,
-                  children: skills.value
-                      .map((skill) => Chip(
-                            label: Text(skill),
-                            backgroundColor: Colors.green[50],
-                            labelStyle: const TextStyle(color: Colors.green),
-                            deleteIcon: const Icon(Icons.close, size: 18),
-                            onDeleted: () {
-                              skills.value = List.from(skills.value)..remove(skill);
-                            },
-                          ))
-                      .toList(),
+                // Selected skills display
+                if (selectedSkills.value.isNotEmpty) ...[
+                  Wrap(
+                    spacing: 8,
+                    children: selectedSkills.value
+                        .map((skill) => Chip(
+                              label: Text(skill.name),
+                              backgroundColor: Colors.green[50],
+                              labelStyle: const TextStyle(color: Colors.green),
+                              deleteIcon: const Icon(Icons.close, size: 18),
+                              onDeleted: () {
+                                selectedSkills.value = List.from(selectedSkills.value)..remove(skill);
+                              },
+                            ))
+                        .toList(),
+                  ),
+                  const SizedBox(height: 8),
+                ],
+                // Add skills button
+                BlocBuilder<SkillsCubit, SkillsState>(
+                  builder: (context, state) {
+                    return GestureDetector(
+                      onTap: () => _showSkillsBottomSheet(context, state, selectedSkills),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Theme.of(context).primaryColor),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add, color: Colors.green),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Add Skills',
+                              style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 20),
                 const Text('Volunteering Interests'),
@@ -274,7 +333,7 @@ class CompleteYourProfile extends HookWidget {
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.ease,
                     ),
-                    child:  Text('Next',      style: MyFonts.font16Black.copyWith(color: Colors.white),),
+                    child:  Text('Next', style: MyFonts.font16Black.copyWith(color: Colors.white),),
                   ),
                 ),
               ],
@@ -387,7 +446,7 @@ class CompleteYourProfile extends HookWidget {
                      log("About: ${aboutController.text}");
                      log("DOB: ${selectedDate.value}");
                      log("Location: ${locationController.text}");
-                     log("Skills: ${skills.value}");
+                     log("Skills: ${selectedSkills.value.map((s) => s.name).toList()}");
                      log("Interests: ${interests.value}");
                      log("Followed Orgs: ${followedOrgs.value}");
                      /// print selected image path
@@ -404,4 +463,130 @@ class CompleteYourProfile extends HookWidget {
       ),
     );  
   }
+
+  void _showSkillsBottomSheet(
+    BuildContext context,
+    SkillsState state,
+    ValueNotifier<List<Skill>> selectedSkills,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setModalState) => DraggableScrollableSheet(
+          initialChildSize: 0.7,
+          maxChildSize: 0.9,
+          minChildSize: 0.5,
+          expand: false,
+          builder: (context, scrollController) {
+          return Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Select Skills',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: () {
+                    if (state.runtimeType.toString() == '_Loading') {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state.runtimeType.toString() == '_Loaded') {
+                      final loadedState = state as dynamic;
+                      final skills = loadedState.skills as List<Skill>;
+                      return ListView.builder(
+                        controller: scrollController,
+                        itemCount: skills.length,
+                        itemBuilder: (context, index) {
+                          final skill = skills[index];
+                          final isSelected = selectedSkills.value.any((s) => s.id == skill.id);
+                          return CheckboxListTile(
+                            title: Text(skill.name),
+                            value: isSelected,
+                            activeColor: Colors.green,
+                            onChanged: (bool? value) {
+                              if (value == true) {
+                                selectedSkills.value = [...selectedSkills.value, skill];
+                              } else {
+                                selectedSkills.value = selectedSkills.value
+                                    .where((s) => s.id != skill.id)
+                                    .toList();
+                              }
+                              // Trigger modal state update
+                              setModalState(() {});
+                            },
+                          );
+                        },
+                      );
+                    } else if (state.runtimeType.toString() == '_Error') {
+                      final errorState = state as dynamic;
+                      final message = errorState.message as String;
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.error, color: Colors.red, size: 48),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Error loading skills',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(message),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: () => sl<SkillsCubit>().fetchAllSkills(),
+                              child: Text('Retry'),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return const Center(child: Text('Loading skills...'));
+                    }
+                  }(),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green[700],
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      'Done',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+      ),
+    );
+  }
+
+
+
+
 }
