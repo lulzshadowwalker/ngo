@@ -1,11 +1,15 @@
 
+import 'dart:developer';
+
+import '../../core/hooks/use_image_picker.dart';
 import '../../core/theme/my_fonts.dart';
 import '../../export_tools.dart';
-import '../main_nav/main_nav_export.dart';
 
 class CompleteYourProfile extends HookWidget {
-  const CompleteYourProfile({super.key});
-
+  const CompleteYourProfile({super.key , required this.fullName, required this.email, required this.password});
+  final String fullName;
+  final String email;
+  final String password;
   @override
   Widget build(BuildContext context) {
     final pageController = usePageController();
@@ -15,6 +19,9 @@ class CompleteYourProfile extends HookWidget {
     final skills = useState<List<String>>(['Communication', 'Leadership']);
     final interests = useState<List<String>>(['Education', 'Environment']);
     final followedOrgs = useState<List<String>>([]);
+    
+    // Use the custom image picker hook
+    final imagePickerResult = useImagePicker(imageQuality: 80);
 
     Widget stepIndicator(int step) {
       return Row(
@@ -80,9 +87,7 @@ class CompleteYourProfile extends HookWidget {
                 const SizedBox(height: 24),
                 Center(
                   child: GestureDetector(
-                    onTap: () {
-                      // Handle profile picture selection
-                    },
+                    onTap: () => imagePickerResult.showImageSourceDialog(context),
                     child: Column(
                       children: [
                         Container(
@@ -95,17 +100,27 @@ class CompleteYourProfile extends HookWidget {
                               style: BorderStyle.solid,
                               width: 2,
                             ),
+                            image: imagePickerResult.selectedImage != null
+                                ? DecorationImage(
+                                    image: FileImage(imagePickerResult.selectedImage!),
+                                    fit: BoxFit.cover,
+                                  )
+                                : null,
                           ),
-                          child: const Icon(
-                            Icons.camera_alt,
-                            color: Colors.green,
-                            size: 40,
-                          ),
+                          child: imagePickerResult.selectedImage == null
+                              ? const Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.green,
+                                  size: 40,
+                                )
+                              : null,
                         ),
                         const SizedBox(height: 8),
-                        const Text(
-                          'Add Profile Picture',
-                          style: TextStyle(
+                        Text(
+                          imagePickerResult.selectedImage == null
+                              ? 'Add Profile Picture'
+                              : 'Change Profile Picture',
+                          style: const TextStyle(
                             color: Colors.green,
                             fontWeight: FontWeight.w500,
                           ),
@@ -365,8 +380,19 @@ class CompleteYourProfile extends HookWidget {
                       ),
                     ),
                     onPressed: () {
-          
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> MainNav()));
+                     /// print all collected data
+                     log("Full Name: $fullName");
+                     log("Email: $email");
+                     log("Password: $password");
+                     log("About: ${aboutController.text}");
+                     log("DOB: ${selectedDate.value}");
+                     log("Location: ${locationController.text}");
+                     log("Skills: ${skills.value}");
+                     log("Interests: ${interests.value}");
+                     log("Followed Orgs: ${followedOrgs.value}");
+                     /// print selected image path
+                     log("Profile Image Path: ${imagePickerResult.selectedImage?.path}");
+                          // Navigator.push(context, MaterialPageRoute(builder: (context)=> MainNav()));
                     },
                     child:  Text('Save Profile',      style: MyFonts.font16Black.copyWith(color: Colors.white),),
                   ),

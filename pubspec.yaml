@@ -20,10 +20,9 @@ dependencies:
   freezed_annotation: ^3.0.0
   get_it: ^8.0.3
   google_fonts: ^6.2.1
-
   hugeicons: ^0.0.11
+  image_picker: ^1.0.7
   intl: any
-
   shared_preferences: ^2.5.3
   skeletonizer: ^2.0.1
 

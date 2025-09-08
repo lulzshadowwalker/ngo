@@ -34,6 +34,9 @@ void setupServiceLocator() {
     () => LaravelLocationsRepository(),
   );
   sl.registerLazySingleton<SkillsRepository>(() => LaravelSkillsRepository());
+
+
+  
   sl.registerLazySingleton<NotificationRepository>(
     () => LaravelNotificationRepository(),
   );
