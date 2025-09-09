@@ -11,6 +11,7 @@ import 'package:ngo/features/post/logic/post_cubit.dart';
 import 'package:ngo/features/sectors_features/cubit/sectors_cubit.dart';
 import 'package:ngo/features/skills/cubit/skills_cubit.dart';
 import 'package:ngo/features/static_page_features/cubit/static_page_cubit.dart';
+import 'package:ngo/features/support_ticket/cubit/support_ticket_cubit.dart';
 import 'package:ngo/features/user_management/cubit/user_management_cubit.dart';
 
 import 'core/contracts/auth_repository.dart';
@@ -50,10 +51,13 @@ void setupServiceLocator() {
   sl.registerLazySingleton<UserManagementRepository>(
     () => LaravelUserManagementRepository(),
   );
- sl.registerLazySingleton<SectorsRepository>(()=> LaravelSectorRepository());
- sl.registerLazySingleton<StaticPageRepository>((()=> LaravelStaticPageRepository()));
- sl.registerLazySingleton<SupportTicketRepository>((()=> LaravelSupportTicketRepository()));
-
+  sl.registerLazySingleton<SectorsRepository>(() => LaravelSectorRepository());
+  sl.registerLazySingleton<StaticPageRepository>(
+    (() => LaravelStaticPageRepository()),
+  );
+  sl.registerLazySingleton<SupportTicketRepository>(
+    (() => LaravelSupportTicketRepository()),
+  );
 
   // Register cubits as factories (new instance per injection)
   sl.registerFactory(() => AuthCubit(sl<AuthRepository>()));
@@ -65,5 +69,10 @@ void setupServiceLocator() {
   sl.registerFactory(() => SkillsCubit(sl<SkillsRepository>()));
   sl.registerFactory(() => LocationCubit(sl<LocationsRepository>()));
   sl.registerFactory(() => SectorsCubit(sl<SectorsRepository>()));
-  sl.registerFactory(() => StaticPageCubit(staticPageRepository: sl<StaticPageRepository>()));
+  sl.registerFactory(
+    () => StaticPageCubit(staticPageRepository: sl<StaticPageRepository>()),
+  );
+  sl.registerFactory(
+    () => SupportTicketCubit(repository: sl<SupportTicketRepository>()),
+  );
 }

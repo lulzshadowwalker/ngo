@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngo/export_tools.dart';
+import 'package:ngo/features/support_ticket/support_ticket_view.dart';
 
 import '../../core/theme/my_colors.dart';
 import '../../core/theme/my_fonts.dart';
@@ -82,47 +83,67 @@ class SettingsView extends HookWidget {
                       _buildToggleItem(
                         icon: Icons.notifications_outlined,
                         title: AppLocalizations.of(context)!.push_notifications,
-                        value: (state.runtimeType.toString().contains('Loaded') && (state as dynamic).preferences != null) 
-                            ? (state as dynamic).preferences!.pushNotifications 
+                        value:
+                            (state.runtimeType.toString().contains('Loaded') &&
+                                (state as dynamic).preferences != null)
+                            ? (state as dynamic).preferences!.pushNotifications
                             : true,
                         onChanged: (value) {
-                          final currentPrefs = (state.runtimeType.toString().contains('Loaded') && (state as dynamic).preferences != null) 
+                          final currentPrefs =
+                              (state.runtimeType.toString().contains(
+                                    'Loaded',
+                                  ) &&
+                                  (state as dynamic).preferences != null)
                               ? (state as dynamic).preferences!
                               : null;
-                          
+
                           final updateData = <String, dynamic>{
                             'pushNotifications': value,
-                            'emailNotifications': currentPrefs?.emailNotifications ?? false,
+                            'emailNotifications':
+                                currentPrefs?.emailNotifications ?? false,
                             'language': currentPrefs?.language ?? 'en',
                           };
-                          
+
                           // Remove null values
                           updateData.removeWhere((key, value) => value == null);
-                          
-                          context.read<UserManagementCubit>().updatePreferences(updateData);
+
+                          context.read<UserManagementCubit>().updatePreferences(
+                            updateData,
+                          );
                         },
                       ),
                       _buildToggleItem(
                         icon: Icons.email_outlined,
-                        title: AppLocalizations.of(context)!.email_notifications,
-                        value: (state.runtimeType.toString().contains('Loaded') && (state as dynamic).preferences != null) 
-                            ? (state as dynamic).preferences!.emailNotifications 
+                        title: AppLocalizations.of(
+                          context,
+                        )!.email_notifications,
+                        value:
+                            (state.runtimeType.toString().contains('Loaded') &&
+                                (state as dynamic).preferences != null)
+                            ? (state as dynamic).preferences!.emailNotifications
                             : false,
                         onChanged: (value) {
-                          final currentPrefs = (state.runtimeType.toString().contains('Loaded') && (state as dynamic).preferences != null) 
+                          final currentPrefs =
+                              (state.runtimeType.toString().contains(
+                                    'Loaded',
+                                  ) &&
+                                  (state as dynamic).preferences != null)
                               ? (state as dynamic).preferences!
                               : null;
-                          
+
                           final updateData = <String, dynamic>{
                             'emailNotifications': value,
-                            'pushNotifications': currentPrefs?.pushNotifications ?? true,
+                            'pushNotifications':
+                                currentPrefs?.pushNotifications ?? true,
                             'language': currentPrefs?.language ?? 'en',
                           };
-                          
+
                           // Remove null values
                           updateData.removeWhere((key, value) => value == null);
-                          
-                          context.read<UserManagementCubit>().updatePreferences(updateData);
+
+                          context.read<UserManagementCubit>().updatePreferences(
+                            updateData,
+                          );
                         },
                       ),
                     ],
@@ -160,10 +181,12 @@ class SettingsView extends HookWidget {
                       BlocBuilder<LocaleCubit, LocaleState>(
                         bloc: LocaleCubit(),
                         builder: (context, localeState) {
-                          final languageText = localeState is LocaleSetSuccess && localeState.isArabic 
-                              ? 'العربية' 
+                          final languageText =
+                              localeState is LocaleSetSuccess &&
+                                  localeState.isArabic
+                              ? 'العربية'
                               : 'English';
-                          
+
                           return _buildSettingsItem(
                             icon: Icons.translate_outlined,
                             title: AppLocalizations.of(context)!.language,
@@ -174,12 +197,18 @@ class SettingsView extends HookWidget {
                           );
                         },
                       ),
-                   
+
                       _buildSettingsItem(
                         icon: Icons.help_outline,
                         title: AppLocalizations.of(context)!.help_center,
                         onTap: () {
                           // Handle help center
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SupportTicketView(),
+                            ),
+                          );
                         },
                       ),
                       _buildSettingsItem(
@@ -216,21 +245,16 @@ class SettingsView extends HookWidget {
                 ),
 
                 // Bottom padding
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: 100),
-                ),
+                const SliverToBoxAdapter(child: SizedBox(height: 100)),
               ],
             ),
           );
-        }
+        },
       ),
     );
   }
 
-  Widget _buildSection({
-    required String title,
-    required List<Widget> items,
-  }) {
+  Widget _buildSection({required String title, required List<Widget> items}) {
     return Container(
       margin: const EdgeInsets.only(top: 24),
       child: Column(
@@ -247,9 +271,7 @@ class SettingsView extends HookWidget {
               ),
             ),
           ),
-          Column(
-            children: items,
-          ),
+          Column(children: items),
         ],
       ),
     );
@@ -267,17 +289,11 @@ class SettingsView extends HookWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(color: Colors.grey[200]!),
-          ),
+          border: Border(bottom: BorderSide(color: Colors.grey[200]!)),
         ),
         child: Row(
           children: [
-            Icon(
-              icon,
-              size: 24,
-              color: titleColor ?? Colors.black87,
-            ),
+            Icon(icon, size: 24, color: titleColor ?? Colors.black87),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
@@ -292,18 +308,11 @@ class SettingsView extends HookWidget {
             if (trailing != null) ...[
               Text(
                 trailing,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
+                style: const TextStyle(fontSize: 14, color: Colors.grey),
               ),
               const SizedBox(width: 8),
             ],
-            Icon(
-              Icons.arrow_forward_ios,
-              size: 16,
-              color: Colors.grey[400],
-            ),
+            Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[400]),
           ],
         ),
       ),
@@ -320,19 +329,12 @@ class SettingsView extends HookWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-            color: Colors.grey[100]!,
-            width: 0.5,
-          ),
+          bottom: BorderSide(color: Colors.grey[100]!, width: 0.5),
         ),
       ),
       child: Row(
         children: [
-          Icon(
-            icon,
-            size: 24,
-            color: Colors.black87,
-          ),
+          Icon(icon, size: 24, color: Colors.black87),
           const SizedBox(width: 16),
           Expanded(
             child: Text(
@@ -373,11 +375,7 @@ class SettingsView extends HookWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
-            Icon(
-              Icons.logout,
-              size: 24,
-              color: Colors.red,
-            ),
+            Icon(Icons.logout, size: 24, color: Colors.red),
             SizedBox(width: 12),
             Text(
               'Log Out',
@@ -395,7 +393,7 @@ class SettingsView extends HookWidget {
 
   void _showLanguageDialog(BuildContext context) {
     final userManagementCubit = context.read<UserManagementCubit>();
-    
+
     showDialog(
       context: context,
       builder: (dialogContext) {
@@ -405,7 +403,11 @@ class SettingsView extends HookWidget {
             title: Text(AppLocalizations.of(context)!.language),
             content: SizedBox(
               width: double.maxFinite,
-              child: _buildLanguageSelector(context, dialogContext, userManagementCubit),
+              child: _buildLanguageSelector(
+                context,
+                dialogContext,
+                userManagementCubit,
+              ),
             ),
             actions: [
               TextButton(
@@ -421,7 +423,11 @@ class SettingsView extends HookWidget {
     );
   }
 
-  Widget _buildLanguageSelector(BuildContext context, BuildContext dialogContext, UserManagementCubit userManagementCubit) {
+  Widget _buildLanguageSelector(
+    BuildContext context,
+    BuildContext dialogContext,
+    UserManagementCubit userManagementCubit,
+  ) {
     var lang = AppLocalizations.of(context)!;
     var cubit = context.read<LocaleCubit>();
 
@@ -435,11 +441,16 @@ class SettingsView extends HookWidget {
           children: [
             Expanded(
               child: TextButton(
-                onPressed: isEnglish ? null : () {
-                  cubit.switchLanguage();
-                  _updateUserLanguagePreference(userManagementCubit, 'en');
-                  Navigator.of(dialogContext).pop();
-                },
+                onPressed: isEnglish
+                    ? null
+                    : () {
+                        cubit.switchLanguage();
+                        _updateUserLanguagePreference(
+                          userManagementCubit,
+                          'en',
+                        );
+                        Navigator.of(dialogContext).pop();
+                      },
                 child: TextComponent(
                   title: lang.english,
                   style: MyFonts.font14BlackBold.copyWith(
@@ -458,11 +469,16 @@ class SettingsView extends HookWidget {
             ),
             Expanded(
               child: TextButton(
-                onPressed: isArabic ? null : () {
-                  cubit.switchLanguage();
-                  _updateUserLanguagePreference(userManagementCubit, 'ar');
-                  Navigator.of(dialogContext).pop();
-                },
+                onPressed: isArabic
+                    ? null
+                    : () {
+                        cubit.switchLanguage();
+                        _updateUserLanguagePreference(
+                          userManagementCubit,
+                          'ar',
+                        );
+                        Navigator.of(dialogContext).pop();
+                      },
                 child: TextComponent(
                   title: lang.arabic,
                   style: MyFonts.font14BlackBold.copyWith(
@@ -479,21 +495,26 @@ class SettingsView extends HookWidget {
     );
   }
 
-  void _updateUserLanguagePreference(UserManagementCubit userManagementCubit, String languageCode) {
+  void _updateUserLanguagePreference(
+    UserManagementCubit userManagementCubit,
+    String languageCode,
+  ) {
     final currentState = userManagementCubit.state;
-    final currentPrefs = (currentState.runtimeType.toString().contains('Loaded') && (currentState as dynamic).preferences != null) 
+    final currentPrefs =
+        (currentState.runtimeType.toString().contains('Loaded') &&
+            (currentState as dynamic).preferences != null)
         ? (currentState as dynamic).preferences!
         : null;
-    
+
     final updateData = <String, dynamic>{
       'language': languageCode,
       'emailNotifications': currentPrefs?.emailNotifications ?? false,
       'pushNotifications': currentPrefs?.pushNotifications ?? true,
     };
-    
+
     // Remove null values
     updateData.removeWhere((key, value) => value == null);
-    
+
     userManagementCubit.updatePreferences(updateData);
   }
 
