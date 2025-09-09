@@ -4,6 +4,8 @@ import 'package:ngo/core/theme/my_fonts.dart';
 import 'package:ngo/features/components/text_component.dart';
 import 'package:ngo/l10n/app_localizations.dart';
 
+import '../../../join_our_community/join_our_community.dart';
+
 class DontHaveAcountSection extends StatelessWidget {
   const DontHaveAcountSection({super.key, required this.lang});
 
@@ -14,7 +16,9 @@ class DontHaveAcountSection extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const JionOurCommunity()));
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

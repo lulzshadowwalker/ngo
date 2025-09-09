@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:hugeicons/hugeicons.dart';
 
 import '../../core/core_export.dart';
@@ -148,9 +150,16 @@ class JoinTheCommunity extends HookWidget {
                     ),
                   ),
                   onPressed: () {
+                    log("This Email is: ${emailController.text}");
+                    log("This Password is: ${passwordController.text}");
+                    log("This Name is: ${nameController.text}");
                     if (formKey.currentState?.validate() == true &&
                         agreedToTerms.value) {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> CompleteYourProfile()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> CompleteYourProfile(
+                            fullName: nameController.text,
+                            email: emailController.text,
+                            password: passwordController.text,
+                          )));
                     }
                   },
                   child: Text(
