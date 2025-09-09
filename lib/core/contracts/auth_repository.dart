@@ -24,14 +24,29 @@ abstract class AuthRepository {
   /// Registers a new individual user.
   ///
   /// Returns a [Future<(AccessToken, Role)>] containing the access token and role on success.
-  Future<(AccessToken accessToken, Role role)> registerIndividuals({
+  Future<(AccessToken accessToken, Role role)> registerIndividual({
     required String name,
     required String email,
     required String password,
-    required String passwordConfirmation,
     required int locationId,
     String? avatar, // File path for avatar upload
   });
+
+  /// Registers a new organization user.
+  ///
+  /// Returns a [Future<(AccessToken, Role)>] containing the access token and role on success.
+  Future<(AccessToken accessToken, Role role)> registerOrganization({
+    required String name,
+    required String email,
+    required String password,
+    required int locationId,
+    required int sectorId,
+    String? bio,
+    String? contactEmail,
+    String? website,
+    String? logo,
+  });
+
 
   Future<void> forgotPassword({String email});
 

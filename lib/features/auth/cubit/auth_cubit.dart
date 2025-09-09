@@ -59,18 +59,16 @@ class AuthCubit extends Cubit<AuthState> {
     required String name,
     required String email,
     required String password,
-    required String passwordConfirmation,
     required int locationId,
     String? avatar,
   }) async {
     try {
       emit(const AuthState.registering());
       
-      final (accessToken, role) = await _authRepository.registerIndividuals(
+      final (accessToken, role) = await _authRepository.registerIndividual(
         name: name,
         email: email,
         password: password,
-        passwordConfirmation: passwordConfirmation,
         locationId: locationId,
         avatar: avatar,
       );
