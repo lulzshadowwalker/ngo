@@ -33,6 +33,7 @@ abstract class AuthRepository {
     String? avatar, // File path for avatar upload
   });
 
+  Future<void> forgotPassword({String email});
 
 
 }

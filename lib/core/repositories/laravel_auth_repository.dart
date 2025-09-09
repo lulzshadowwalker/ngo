@@ -7,7 +7,9 @@ import '../../models/role.dart';
 
 class LaravelLoginRepository extends LaravelRepository implements AuthRepository{
   @override
-  @override
+ 
+ 
+ @override
   Future<(AccessToken accessToken, Role role)> login(
     String email,
     String password, {
@@ -84,4 +86,43 @@ class LaravelLoginRepository extends LaravelRepository implements AuthRepository
     final role = Role.from(response['data']['attributes']['role'] as String);
     return (accessToken, role);
   }
+  
+
+@override
+  Future<void> forgotPassword({String? email}) async {
+    if (email == null) {
+      throw ArgumentError('Email is required for forgot password');
+    }
+    
+    try {
+      await post(
+        '/v1/auth/forgot-password',
+        data: {
+          "data": {
+            "attributes": {
+              "email": email
+            }
+          }
+        },
+      );
+      
+      // API responses:
+      // 200 => Success - Password reset email sent (or email not found for security)
+      // 422 => Too many attempts, user needs to wait before trying again
+      
+    } catch (error) {
+      // For security reasons, we treat "email not found" as success
+      // Only throw errors for actual system issues (rate limiting, server errors, etc.)
+      if (error.toString().contains('404') || 
+          error.toString().contains('not found') ||
+          error.toString().contains('user not found')) {
+        // Don't throw error for email not found - treat as success for security
+        return;
+      }
+      
+      // Re-throw other errors (like rate limiting, server errors)
+      rethrow;
+    }
+  }
+
 }

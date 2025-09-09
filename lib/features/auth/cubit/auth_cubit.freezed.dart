@@ -503,6 +503,136 @@ as String,
 /// @nodoc
 
 
+class _ForgotPasswordLoading implements AuthState {
+  const _ForgotPasswordLoading();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ForgotPasswordLoading);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthState.forgotPasswordLoading()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _ForgotPasswordSuccess implements AuthState {
+  const _ForgotPasswordSuccess();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ForgotPasswordSuccess);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthState.forgotPasswordSuccess()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _ForgotPasswordError implements AuthState {
+  const _ForgotPasswordError(this.message);
+  
+
+ final  String message;
+
+/// Create a copy of AuthState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ForgotPasswordErrorCopyWith<_ForgotPasswordError> get copyWith => __$ForgotPasswordErrorCopyWithImpl<_ForgotPasswordError>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ForgotPasswordError&&(identical(other.message, message) || other.message == message));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,message);
+
+@override
+String toString() {
+  return 'AuthState.forgotPasswordError(message: $message)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ForgotPasswordErrorCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
+  factory _$ForgotPasswordErrorCopyWith(_ForgotPasswordError value, $Res Function(_ForgotPasswordError) _then) = __$ForgotPasswordErrorCopyWithImpl;
+@useResult
+$Res call({
+ String message
+});
+
+
+
+
+}
+/// @nodoc
+class __$ForgotPasswordErrorCopyWithImpl<$Res>
+    implements _$ForgotPasswordErrorCopyWith<$Res> {
+  __$ForgotPasswordErrorCopyWithImpl(this._self, this._then);
+
+  final _ForgotPasswordError _self;
+  final $Res Function(_ForgotPasswordError) _then;
+
+/// Create a copy of AuthState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+  return _then(_ForgotPasswordError(
+null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
 class _Error implements AuthState {
   const _Error(this.message);
   

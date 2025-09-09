@@ -715,6 +715,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search organizations...'**
   String get searchOrganizations;
+
+  /// Message indicating that a password reset email has been sent
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset email sent'**
+  String get password_reset_email_sent;
 }
 
 class _AppLocalizationsDelegate

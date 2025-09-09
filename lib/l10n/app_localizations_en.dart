@@ -318,4 +318,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchOrganizations => 'Search organizations...';
+
+  @override
+  String get password_reset_email_sent => 'Password reset email sent';
 }

@@ -316,4 +316,8 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get searchOrganizations => 'ابحث عن منظمات...';
+
+  @override
+  String get password_reset_email_sent =>
+      'تم إرسال بريد إعادة تعيين كلمة المرور';
 }

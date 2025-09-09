@@ -15,5 +15,8 @@ class AuthState with _$AuthState {
   const factory AuthState.loginError(String message) = _LoginError;
   const factory AuthState.registerError(String message) = _RegisterError;
   const factory AuthState.logoutError(String message) = _LogoutError;
+  const factory AuthState.forgotPasswordLoading() = _ForgotPasswordLoading;
+  const factory AuthState.forgotPasswordSuccess() = _ForgotPasswordSuccess;
+  const factory AuthState.forgotPasswordError(String message) = _ForgotPasswordError;
   const factory AuthState.error(String message) = _Error;
 }

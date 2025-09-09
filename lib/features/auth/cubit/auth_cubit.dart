@@ -105,6 +105,19 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  /// Send forgot password email
+  Future<void> forgotPassword({required String email}) async {
+    try {
+      emit(const AuthState.forgotPasswordLoading());
+      
+      await _authRepository.forgotPassword(email: email);
+      
+      emit(const AuthState.forgotPasswordSuccess());
+    } catch (error) {
+      emit(AuthState.forgotPasswordError(error.toString()));
+    }
+  }
+
   /// Clear error state
   void clearError() {
     emit(const AuthState.initial());
@@ -148,7 +161,8 @@ class AuthCubit extends Cubit<AuthState> {
     state is _Loading || 
     state is _LoggingIn || 
     state is _Registering || 
-    state is _LoggingOut;
+    state is _LoggingOut || 
+    state is _ForgotPasswordLoading;
 
   /// Get current access token if authenticated
   String? get accessToken {
