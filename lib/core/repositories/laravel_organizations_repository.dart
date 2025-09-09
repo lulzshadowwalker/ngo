@@ -53,4 +53,26 @@ final class LaravelOrganizationsRepository extends LaravelRepository
       throw Exception('Failed to unfollow organization: $error');
     }
   }
+
+  @override
+  Future<List<Organization>> search(
+    String query, {
+    String language = 'en',
+    String? sectorId,
+  }) {
+    final Map<String, String> params = {'query': query};
+    if (sectorId != null) {
+      params['sector'] = sectorId;
+    }
+    final queryString = Uri(queryParameters: params).query;
+    return get(
+      '/v1/organizations/search${queryString.isNotEmpty ? '?$queryString' : ''}',
+      headers: {'Accept-Language': language},
+    ).then((response) {
+      final data = response['data'] as List<dynamic>;
+      return data
+          .map((item) => Organization.fromLaravel(item as Map<String, dynamic>))
+          .toList();
+    });
+  }
 }

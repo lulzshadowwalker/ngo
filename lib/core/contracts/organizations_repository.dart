@@ -5,4 +5,9 @@ abstract interface class OrganizationsRepository {
   Future<Organization> fetch(String slug, {String language});
   Future<void> followOrganization(String organizationId);
   Future<void> unfollowOrganization(String organizationId);
+  Future<List<Organization>> search(
+    String query, {
+    String language,
+    String? sectorId,
+  });
 }
