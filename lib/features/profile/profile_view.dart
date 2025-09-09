@@ -64,7 +64,7 @@ class _ProfileViewContent extends HookWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: TextComponent(
-          title: 'Profile',
+          title: AppLocalizations.of(context)!.profile,
           style: MyFonts.font20Black.copyWith(
             fontWeight: FontWeight.w600,
           ),
@@ -92,7 +92,7 @@ class _ProfileViewContent extends HookWidget {
               SliverToBoxAdapter(child: _buildProfileHeader(context, state)),
 
               // Tab Navigation
-              SliverToBoxAdapter(child: _buildTabNavigation(selectedTab)),
+              SliverToBoxAdapter(child: _buildTabNavigation(selectedTab , context)),
 
               // Tab Content
               SliverToBoxAdapter(
@@ -385,11 +385,12 @@ class _ProfileViewContent extends HookWidget {
 
           // Stats Row
           Row(
+             
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildStatItem('24', 'Following'),
-              _buildStatItem('12', 'Evaluations'),
-              _buildStatItem('8', 'Applications'),
+              _buildStatItem('24', AppLocalizations.of(context)!.following,),
+              _buildStatItem('12',  AppLocalizations.of(context)!.my_evaluations),
+              _buildStatItem('8', AppLocalizations.of(context)!.my_applications,),
             ],
           ),
           const SizedBox(height: 20),
@@ -425,7 +426,7 @@ class _ProfileViewContent extends HookWidget {
                   ),
                 ),
                 child: TextComponent(
-                  title: "Edit Profile",
+                  title: AppLocalizations.of(context)!.edit_profile,
                   style: MyFonts.font16Black.copyWith(color: Colors.white),
                 ),
               ),
@@ -466,8 +467,8 @@ class _ProfileViewContent extends HookWidget {
     );
   }
 
-  Widget _buildTabNavigation(ValueNotifier<int> selectedTab) {
-    final tabs = ['Following', 'My Applications', 'My Evaluations'];
+  Widget _buildTabNavigation(ValueNotifier<int> selectedTab , BuildContext context) {
+    final tabs = [AppLocalizations.of(context)!.following, AppLocalizations.of(context)!.my_applications, AppLocalizations.of(context)!.my_evaluations];
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24),

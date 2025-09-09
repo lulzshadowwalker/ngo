@@ -134,10 +134,10 @@ class OrganizationView extends HookWidget {
       );
     }
 
-    var lang = AppLocalizations.of(context)!.localeName;
+    var lang = AppLocalizations.of(context)!;
     return BlocProvider(
       create: (context) =>
-          sl<OrganizationCubit>()..fetchAllOrganizations(language: lang),
+          sl<OrganizationCubit>()..fetchAllOrganizations(language: lang.localeName),
       child: Builder(
         builder: (context) {
           return Scaffold(
@@ -145,8 +145,8 @@ class OrganizationView extends HookWidget {
           backgroundColor: Colors.white,
           elevation: 0,
           leading: const BackButton(color: Colors.black),
-          title: const Text(
-            'Organizations',
+          title:  Text(
+           lang.organizations,
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           actions: [
@@ -170,10 +170,10 @@ class OrganizationView extends HookWidget {
                       controller: searchController,
                       onChanged: (query) {
                         // استخدام البحث مع الـ debounce
-                        context.read<OrganizationCubit>().searchOrganizationsWithDebounce(query , language: lang);
+                        context.read<OrganizationCubit>().searchOrganizationsWithDebounce(query , language: lang.localeName);
                       },
                       onSubmitted: (query) {
-                        context.read<OrganizationCubit>().searchOrganizations(query , language: lang);
+                        context.read<OrganizationCubit>().searchOrganizations(query , language: lang.localeName);
                       },
                       decoration: InputDecoration(
                         hintText: AppLocalizations.of(context)!.searchOrganizations,
@@ -186,7 +186,7 @@ class OrganizationView extends HookWidget {
                                 icon: const Icon(Icons.clear, color: Colors.grey),
                                 onPressed: () {
                                   searchController.clear();
-                                  context.read<OrganizationCubit>().clearSearch(language: lang);
+                                  context.read<OrganizationCubit>().clearSearch(language: lang.localeName);
                                 },
                               )
                             : null,
@@ -368,7 +368,7 @@ class OrganizationView extends HookWidget {
                             ElevatedButton(
                               onPressed: () => context
                                   .read<OrganizationCubit>()
-                                  .fetchAllOrganizations(language: 'en'),
+                                  .fetchAllOrganizations(language: lang.localeName),
                               child: const Text('Retry'),
                             ),
                           ],
