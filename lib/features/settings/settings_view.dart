@@ -1,183 +1,221 @@
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngo/export_tools.dart';
 
 import '../../core/theme/my_colors.dart';
+import '../../core/theme/my_fonts.dart';
+import '../../l10n/locale/cubit/locale_cubit.dart';
 import '../../service_locator.dart';
 import '../auth/cubit/auth_cubit.dart';
+import '../components/text_component.dart';
 import '../splash/splash.dart';
+import '../user_management/cubit/user_management_cubit.dart';
 
 class SettingsView extends HookWidget {
   const SettingsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final pushNotifications = useState(true);
-    final emailNotifications = useState(false);
-    final darkMode = useState(true);
+    return BlocProvider(
+      create: (context) => sl<UserManagementCubit>()..fetchUserPreferences(),
+      child: BlocBuilder<UserManagementCubit, UserManagementState>(
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              elevation: 0,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: Text(
+                AppLocalizations.of(context)!.settings,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              centerTitle: true,
+            ),
+            body: CustomScrollView(
+              slivers: [
+                // Account Section
+                SliverToBoxAdapter(
+                  child: _buildSection(
+                    title: AppLocalizations.of(context)!.account,
+                    items: [
+                      _buildSettingsItem(
+                        icon: Icons.person_outline,
+                        title: AppLocalizations.of(context)!.edit_profile,
+                        onTap: () {
+                          // Handle edit profile
+                        },
+                      ),
+                      _buildSettingsItem(
+                        icon: Icons.lock_outline,
+                        title: AppLocalizations.of(context)!.change_password,
+                        onTap: () {
+                          // Handle change password
+                        },
+                      ),
+                      _buildSettingsItem(
+                        icon: Icons.warning_outlined,
+                        title: AppLocalizations.of(context)!.deactivate_account,
+                        titleColor: Colors.red,
+                        onTap: () {
+                          // Handle deactivate account
+                        },
+                      ),
+                    ],
+                  ),
+                ),
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          AppLocalizations.of(context)!.settings,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: CustomScrollView(
-        slivers: [
-          // Account Section
-          SliverToBoxAdapter(
-            child: _buildSection(
-              title: AppLocalizations.of(context)!.account,
-              items: [
-                _buildSettingsItem(
-                  icon: Icons.person_outline,
-                  title: AppLocalizations.of(context)!.edit_profile,
-                  onTap: () {
-                    // Handle edit profile
-                  },
+                // Notifications Section
+                SliverToBoxAdapter(
+                  child: _buildSection(
+                    title: AppLocalizations.of(context)!.notifications,
+                    items: [
+                      _buildToggleItem(
+                        icon: Icons.notifications_outlined,
+                        title: AppLocalizations.of(context)!.push_notifications,
+                        value: (state.runtimeType.toString().contains('Loaded') && (state as dynamic).preferences != null) 
+                            ? (state as dynamic).preferences!.pushNotifications 
+                            : true,
+                        onChanged: (value) {
+                          final currentPrefs = (state.runtimeType.toString().contains('Loaded') && (state as dynamic).preferences != null) 
+                              ? (state as dynamic).preferences!
+                              : null;
+                          
+                          final updateData = <String, dynamic>{
+                            'pushNotifications': value,
+                            'emailNotifications': currentPrefs?.emailNotifications ?? false,
+                            'language': currentPrefs?.language ?? 'en',
+                          };
+                          
+                          // Remove null values
+                          updateData.removeWhere((key, value) => value == null);
+                          
+                          context.read<UserManagementCubit>().updatePreferences(updateData);
+                        },
+                      ),
+                      _buildToggleItem(
+                        icon: Icons.email_outlined,
+                        title: AppLocalizations.of(context)!.email_notifications,
+                        value: (state.runtimeType.toString().contains('Loaded') && (state as dynamic).preferences != null) 
+                            ? (state as dynamic).preferences!.emailNotifications 
+                            : false,
+                        onChanged: (value) {
+                          final currentPrefs = (state.runtimeType.toString().contains('Loaded') && (state as dynamic).preferences != null) 
+                              ? (state as dynamic).preferences!
+                              : null;
+                          
+                          final updateData = <String, dynamic>{
+                            'emailNotifications': value,
+                            'pushNotifications': currentPrefs?.pushNotifications ?? true,
+                            'language': currentPrefs?.language ?? 'en',
+                          };
+                          
+                          // Remove null values
+                          updateData.removeWhere((key, value) => value == null);
+                          
+                          context.read<UserManagementCubit>().updatePreferences(updateData);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-                _buildSettingsItem(
-                  icon: Icons.lock_outline,
-                  title: AppLocalizations.of(context)!.change_password,
-                  onTap: () {
-                    // Handle change password
-                  },
+
+                // Privacy Section
+                SliverToBoxAdapter(
+                  child: _buildSection(
+                    title: AppLocalizations.of(context)!.privacy,
+                    items: [
+                      _buildSettingsItem(
+                        icon: Icons.visibility_outlined,
+                        title: AppLocalizations.of(context)!.profile_visibility,
+                        onTap: () {
+                          // Handle profile visibility
+                        },
+                      ),
+                      _buildSettingsItem(
+                        icon: Icons.description_outlined,
+                        title: AppLocalizations.of(context)!.data_management,
+                        onTap: () {
+                          // Handle data management
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-                _buildSettingsItem(
-                  icon: Icons.warning_outlined,
-                  title: AppLocalizations.of(context)!.deactivate_account,
-                  titleColor: Colors.red,
-                  onTap: () {
-                    // Handle deactivate account
-                  },
+
+                // General Section
+                SliverToBoxAdapter(
+                  child: _buildSection(
+                    title: AppLocalizations.of(context)!.general,
+                    items: [
+                      BlocBuilder<LocaleCubit, LocaleState>(
+                        bloc: LocaleCubit(),
+                        builder: (context, localeState) {
+                          final languageText = localeState is LocaleSetSuccess && localeState.isArabic 
+                              ? 'العربية' 
+                              : 'English';
+                          
+                          return _buildSettingsItem(
+                            icon: Icons.translate_outlined,
+                            title: AppLocalizations.of(context)!.language,
+                            trailing: languageText,
+                            onTap: () {
+                              _showLanguageDialog(context);
+                            },
+                          );
+                        },
+                      ),
+                   
+                      _buildSettingsItem(
+                        icon: Icons.help_outline,
+                        title: AppLocalizations.of(context)!.help_center,
+                        onTap: () {
+                          // Handle help center
+                        },
+                      ),
+                      _buildSettingsItem(
+                        icon: Icons.report_outlined,
+                        title: AppLocalizations.of(context)!.report_problem,
+                        onTap: () {
+                          // Handle report problem
+                        },
+                      ),
+                      _buildSettingsItem(
+                        icon: Icons.info_outline,
+                        title: AppLocalizations.of(context)!.about_app,
+                        trailing: '1.0.0',
+                        onTap: () {
+                          // Handle about app
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Log Out Section
+                SliverToBoxAdapter(
+                  child: Container(
+                    margin: const EdgeInsets.all(16),
+                    child: _buildLogoutItem(context),
+                  ),
+                ),
+
+                // Bottom padding
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: 100),
                 ),
               ],
             ),
-          ),
-
-          // Notifications Section
-          SliverToBoxAdapter(
-            child: _buildSection(
-              title: AppLocalizations.of(context)!.notifications,
-              items: [
-                _buildToggleItem(
-                  icon: Icons.notifications_outlined,
-                  title: AppLocalizations.of(context)!.push_notifications,
-                  value: pushNotifications.value,
-                  onChanged: (value) {
-                    pushNotifications.value = value;
-                  },
-                ),
-                _buildToggleItem(
-                  icon: Icons.email_outlined,
-                  title: AppLocalizations.of(context)!.email_notifications,
-                  value: emailNotifications.value,
-                  onChanged: (value) {
-                    emailNotifications.value = value;
-                  },
-                ),
-              ],
-            ),
-          ),
-
-          // Privacy Section
-          SliverToBoxAdapter(
-            child: _buildSection(
-              title: AppLocalizations.of(context)!.privacy,
-              items: [
-                _buildSettingsItem(
-                  icon: Icons.visibility_outlined,
-                  title: AppLocalizations.of(context)!.profile_visibility,
-                  onTap: () {
-                    // Handle profile visibility
-                  },
-                ),
-                _buildSettingsItem(
-                  icon: Icons.description_outlined,
-                  title: AppLocalizations.of(context)!.data_management,
-                  onTap: () {
-                    // Handle data management
-                  },
-                ),
-              ],
-            ),
-          ),
-
-          // General Section
-          SliverToBoxAdapter(
-            child: _buildSection(
-              title: AppLocalizations.of(context)!.general,
-              items: [
-                _buildSettingsItem(
-                  icon: Icons.translate_outlined,
-                  title: AppLocalizations.of(context)!.language,
-                  trailing: AppLocalizations.of(context)!.english,
-                  onTap: () {
-                    // Handle language selection
-                  },
-                ),
-                _buildToggleItem(
-                  icon: Icons.dark_mode_outlined,
-                  title: AppLocalizations.of(context)!.appearance,
-                  value: darkMode.value,
-                  onChanged: (value) {
-                    darkMode.value = value;
-                  },
-                ),
-                _buildSettingsItem(
-                  icon: Icons.help_outline,
-                  title: AppLocalizations.of(context)!.help_center,
-                  onTap: () {
-                    // Handle help center
-                  },
-                ),
-                _buildSettingsItem(
-                  icon: Icons.report_outlined,
-                  title: AppLocalizations.of(context)!.report_problem,
-                  onTap: () {
-                    // Handle report problem
-                  },
-                ),
-                _buildSettingsItem(
-                  icon: Icons.info_outline,
-                  title: AppLocalizations.of(context)!.about_app,
-                  trailing: '1.0.0',
-                  onTap: () {
-                    // Handle about app
-                  },
-                ),
-              ],
-            ),
-          ),
-
-          // Log Out Section
-          SliverToBoxAdapter(
-            child: Container(
-              margin: const EdgeInsets.all(16),
-              child: _buildLogoutItem(context),
-            ),
-          ),
-
-          // Bottom padding
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 100),
-          ),
-        ],
+          );
+        }
       ),
     );
   }
@@ -222,7 +260,6 @@ class SettingsView extends HookWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         decoration: BoxDecoration(
-          
           border: Border(
               bottom: BorderSide(color: Colors.grey[200]!),
           ),
@@ -347,6 +384,110 @@ class SettingsView extends HookWidget {
         ),
       ),
     );
+  }
+
+  void _showLanguageDialog(BuildContext context) {
+    final userManagementCubit = context.read<UserManagementCubit>();
+    
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return BlocProvider.value(
+          value: LocaleCubit(),
+          child: AlertDialog(
+            title: Text(AppLocalizations.of(context)!.language),
+            content: SizedBox(
+              width: double.maxFinite,
+              child: _buildLanguageSelector(context, dialogContext, userManagementCubit),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                },
+                child: Text(AppLocalizations.of(context)!.cancel),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildLanguageSelector(BuildContext context, BuildContext dialogContext, UserManagementCubit userManagementCubit) {
+    var lang = AppLocalizations.of(context)!;
+    var cubit = context.read<LocaleCubit>();
+
+    return BlocBuilder<LocaleCubit, LocaleState>(
+      builder: (context, state) {
+        final isEnglish = state is LocaleSetSuccess && state.isEnglish;
+        final isArabic = state is LocaleSetSuccess && state.isArabic;
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: TextButton(
+                onPressed: isEnglish ? null : () {
+                  cubit.switchLanguage();
+                  _updateUserLanguagePreference(userManagementCubit, 'en');
+                  Navigator.of(dialogContext).pop();
+                },
+                child: TextComponent(
+                  title: lang.english,
+                  style: MyFonts.font14BlackBold.copyWith(
+                    color: isEnglish
+                        ? MyColors.primaryColor
+                        : MyColors.borderColor,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              height: 20,
+              width: 1,
+              color: MyColors.darkGrayColor,
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+            ),
+            Expanded(
+              child: TextButton(
+                onPressed: isArabic ? null : () {
+                  cubit.switchLanguage();
+                  _updateUserLanguagePreference(userManagementCubit, 'ar');
+                  Navigator.of(dialogContext).pop();
+                },
+                child: TextComponent(
+                  title: lang.arabic,
+                  style: MyFonts.font14BlackBold.copyWith(
+                    color: isArabic
+                        ? MyColors.primaryColor
+                        : MyColors.borderColor,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _updateUserLanguagePreference(UserManagementCubit userManagementCubit, String languageCode) {
+    final currentState = userManagementCubit.state;
+    final currentPrefs = (currentState.runtimeType.toString().contains('Loaded') && (currentState as dynamic).preferences != null) 
+        ? (currentState as dynamic).preferences!
+        : null;
+    
+    final updateData = <String, dynamic>{
+      'language': languageCode,
+      'emailNotifications': currentPrefs?.emailNotifications ?? false,
+      'pushNotifications': currentPrefs?.pushNotifications ?? true,
+    };
+    
+    // Remove null values
+    updateData.removeWhere((key, value) => value == null);
+    
+    userManagementCubit.updatePreferences(updateData);
   }
 
   void _showLogoutDialog(BuildContext context) {

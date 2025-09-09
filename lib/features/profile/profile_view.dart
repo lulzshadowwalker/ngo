@@ -436,7 +436,9 @@ class _ProfileViewContent extends HookWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const SettingsView(),
+                      builder: (context) =>  const SettingsView(
+                      
+                      ),
                     ),
                   );
                 },
