@@ -104,5 +104,6 @@
   "step_1_of_3": "الخطوة 1 من 3",
   "step_2_of_3": "الخطوة 2 من 3", 
   "step_3_of_3": "الخطوة 3 من 3",
-  "follow_interest_organizations" : "تابع منظمات تهمك"
+  "follow_interest_organizations" : "تابع منظمات تهمك",
+   "searchOrganizations" : "ابحث عن منظمات..."
 }

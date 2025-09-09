@@ -315,4 +315,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get follow_interest_organizations => 'Follow Interest Organizations';
+
+  @override
+  String get searchOrganizations => 'Search organizations...';
 }

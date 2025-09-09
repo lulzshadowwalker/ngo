@@ -709,6 +709,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Follow Interest Organizations'**
   String get follow_interest_organizations;
+
+  /// Search field hint for organizations
+  ///
+  /// In en, this message translates to:
+  /// **'Search organizations...'**
+  String get searchOrganizations;
 }
 
 class _AppLocalizationsDelegate

@@ -397,6 +397,10 @@
   "follow_interest_organizations" : "Follow Interest Organizations",
   "@follow_interest_organizations": {
     "description": "Prompt to follow organizations of interest"
+  },
+  "searchOrganizations" : "Search organizations...",
+  "@searchOrganizations": {
+    "description": "Search field hint for organizations"
   }
 
 }

@@ -313,4 +313,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get follow_interest_organizations => 'تابع منظمات تهمك';
+
+  @override
+  String get searchOrganizations => 'ابحث عن منظمات...';
 }

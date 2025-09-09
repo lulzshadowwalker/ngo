@@ -12,6 +12,17 @@ class OrganizationView extends HookWidget {
     final searchController = useTextEditingController();
     final selectedFilter = useState('All');
     final followedOrganizations = useState<List<String>>([]);
+    final showClearButton = useState(false);
+
+    // مراقبة تغييرات النص لإظهار/إخفاء زر المسح
+    useEffect(() {
+      void listener() {
+        showClearButton.value = searchController.text.isNotEmpty;
+      }
+      
+      searchController.addListener(listener);
+      return () => searchController.removeListener(listener);
+    }, [searchController]);
 
     Widget buildFilterChip(String label) {
       return GestureDetector(
@@ -70,16 +81,28 @@ class OrganizationView extends HookWidget {
           title: Text(
             name,
             style: const TextStyle(fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(description),
+              Text(
+                description,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
               Row(
                 children: [
                   const Icon(Icons.location_on, size: 16, color: Colors.grey),
                   const SizedBox(width: 4),
-                  Text(location),
+                  Expanded(
+                    child: Text(
+                      location,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -115,7 +138,9 @@ class OrganizationView extends HookWidget {
     return BlocProvider(
       create: (context) =>
           sl<OrganizationCubit>()..fetchAllOrganizations(language: lang),
-      child: Scaffold(
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
@@ -143,12 +168,28 @@ class OrganizationView extends HookWidget {
                   children: [
                     TextField(
                       controller: searchController,
+                      onChanged: (query) {
+                        // استخدام البحث مع الـ debounce
+                        context.read<OrganizationCubit>().searchOrganizationsWithDebounce(query , language: lang);
+                      },
+                      onSubmitted: (query) {
+                        context.read<OrganizationCubit>().searchOrganizations(query , language: lang);
+                      },
                       decoration: InputDecoration(
-                        hintText: 'Search organizations...',
+                        hintText: AppLocalizations.of(context)!.searchOrganizations,
                         prefixIcon: const Icon(
                           Icons.search,
                           color: Colors.grey,
                         ),
+                        suffixIcon: showClearButton.value
+                            ? IconButton(
+                                icon: const Icon(Icons.clear, color: Colors.grey),
+                                onPressed: () {
+                                  searchController.clear();
+                                  context.read<OrganizationCubit>().clearSearch(language: lang);
+                                },
+                              )
+                            : null,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide.none,
@@ -158,6 +199,35 @@ class OrganizationView extends HookWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
+                    
+                    // إظهار مؤشر البحث إذا كان المستخدم يبحث
+                    if (searchController.text.isNotEmpty)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.blue[50],
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.search, size: 16, color: Colors.blue[700]),
+                            const SizedBox(width: 4),
+                            Text(
+                              'البحث عن: "${searchController.text}"',
+                              style: TextStyle(
+                                color: Colors.blue[700],
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    
+                    if (searchController.text.isNotEmpty)
+                      const SizedBox(height: 12),
+                      
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
@@ -216,6 +286,47 @@ class OrganizationView extends HookWidget {
                   final organizations =
                       loadedState.organizations as List<dynamic>;
 
+                  // إذا كانت نتائج البحث فارغة
+                  if (organizations.isEmpty) {
+                    return SliverToBoxAdapter(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(32),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.search_off,
+                                size: 64,
+                                color: Colors.grey[400],
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                searchController.text.isNotEmpty 
+                                    ? 'لا توجد منظمات تطابق بحثك'
+                                    : 'لا توجد منظمات متاحة',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                searchController.text.isNotEmpty
+                                    ? 'جرب البحث بكلمات مختلفة'
+                                    : 'تحقق من الاتصال بالإنترنت',
+                                style: TextStyle(
+                                  color: Colors.grey[500],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+
                   return SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
                       final org = organizations[index];
@@ -225,8 +336,8 @@ class OrganizationView extends HookWidget {
                           name: org.name ?? 'Unknown Organization',
                           // Check what properties are available in your Organization model
                           // Replace 'description' with the correct property name
-                          description: 'No description available',
-                          location: 'Unknown location',
+                          description: org.sector ?? 'لا يوجد وصف',
+                          location: org.location ?? 'موقع غير محدد',
                           imageUrl:
                               org.logo ??
                               org.image ??
@@ -279,6 +390,8 @@ class OrganizationView extends HookWidget {
             ),
           ],
         ),
+        );
+        }
       ),
     );
   }
