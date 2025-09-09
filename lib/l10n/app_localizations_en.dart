@@ -74,9 +74,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get complete_your_profile => 'Complete Your Profile';
 
   @override
-  String get step_1_of_3 => 'Step 1 of 3';
-
-  @override
   String get following => 'Following';
 
   @override
@@ -249,4 +246,73 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recentlyNg => 'Recently';
+
+  @override
+  String get opptunity_seeker => 'Opportunity Seeker';
+
+  @override
+  String get consultant => 'Consultant';
+
+  @override
+  String get for_registered_as_consultant => 'For registered consultants';
+
+  @override
+  String get joinTheCommunity => 'Join the Community';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get enterFullName => 'Enter Full Name';
+
+  @override
+  String get emailAddress => 'Email Address';
+
+  @override
+  String get enterEmailAddress => 'Enter Email Address';
+
+  @override
+  String get enterPassword => 'Enter Password';
+
+  @override
+  String get create_account => 'Create Account';
+
+  @override
+  String get alreadyHaveAnAccount => 'Already have an account ? ';
+
+  @override
+  String get signIn => 'Sign In';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get andA => 'and';
+
+  @override
+  String get termsOfService => 'Terms of Service';
+
+  @override
+  String get iAgreeToThe => 'I agree to the';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get select_your_location => 'Select your location';
+
+  @override
+  String get add_skills => 'Add Skills';
+
+  @override
+  String get step_1_of_3 => 'Step 1 of 3';
+
+  @override
+  String get step_2_of_3 => 'Step 2 of 3';
+
+  @override
+  String get step_3_of_3 => 'Step 3 of 3';
+
+  @override
+  String get follow_interest_organizations => 'Follow Interest Organizations';
 }

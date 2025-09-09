@@ -51,27 +51,27 @@ class JoinTheCommunity extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-              const Text(
-                'Join the Community',
+               Text(
+                lang.joinTheCommunity,
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 32),
-              buildLabel('Full Name'),
+              buildLabel(lang.fullName),
               TextFormField(
                 controller: nameController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter your full name',
+                decoration:  InputDecoration(
+                  hintText: lang.enterFullName,
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) =>
                     value == null || value.isEmpty ? 'Required' : null,
               ),
               const SizedBox(height: 20),
-              buildLabel('Email Address'),
+              buildLabel(lang.emailAddress),
               TextFormField(
                 controller: emailController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter your email',
+                decoration:  InputDecoration(
+                  hintText: lang.enterEmailAddress,
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
@@ -79,12 +79,12 @@ class JoinTheCommunity extends HookWidget {
                     value == null || value.isEmpty ? 'Required' : null,
               ),
               const SizedBox(height: 20),
-              buildLabel('Password'),
+              buildLabel(lang.password),
               TextFormField(
                 controller: passwordController,
                 obscureText: obscurePassword.value,
                 decoration: InputDecoration(
-                  hintText: 'Create a password',
+                  hintText: lang.enterPassword,
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -109,11 +109,11 @@ class JoinTheCommunity extends HookWidget {
                   Expanded(
                     child: Wrap(
                       children: [
-                        const Text('I agree to the '),
+                         Text(lang.iAgreeToThe),
                         GestureDetector(
                           onTap: () {},
                           child: Text(
-                            'Terms of Service',
+                            lang.termsOfService,
                             style: TextStyle(
                               color: Colors.green[700],
                               fontWeight: FontWeight.bold,
@@ -121,11 +121,11 @@ class JoinTheCommunity extends HookWidget {
                             ),
                           ),
                         ),
-                        const Text(' and '),
+                         Text(lang.andA),
                         GestureDetector(
                           onTap: () {},
                           child: Text(
-                            'Privacy Policy',
+                            lang.privacyPolicy,
                             style: TextStyle(
                               color: Colors.green[700],
                               fontWeight: FontWeight.bold,
@@ -163,7 +163,7 @@ class JoinTheCommunity extends HookWidget {
                     }
                   },
                   child: Text(
-                    'Create Account',
+                    lang.create_account,
                     style: MyFonts.font16Black.copyWith(color: Colors.white),
                   ),
                 ),
@@ -172,13 +172,13 @@ class JoinTheCommunity extends HookWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Already have an account? '),
+                   Text(lang.alreadyHaveAnAccount),
                   GestureDetector(
                     onTap: () {
                       // Handle sign in navigation
                     },
                     child: Text(
-                      'Sign In',
+                      lang.signIn,
                       style: TextStyle(
                         color: Colors.green[700],
                         fontWeight: FontWeight.bold,

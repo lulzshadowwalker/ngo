@@ -78,10 +78,6 @@
   "@complete_your_profile": {
     "description": "Profile completion prompt"
   },
-  "step_1_of_3": "Step 1 of 3",
-  "@step_1_of_3": {
-    "description": "Progress indicator"
-  },
   "following": "Following",
   "@following": {
     "description": "Following status or tab"
@@ -309,5 +305,98 @@
   "recentlyNg": "Recently",
   "@recentlyNg": {
     "description": "Recently tab title"
+  },
+  "opptunity_seeker": "Opportunity Seeker",
+  "@opptunity_seeker": {
+    "description": "Text for opportunity seeker"
+  },
+  "consultant": "Consultant",
+  "@consultant": {
+    "description": "Text for consultant"
+  },
+  "for_registered_as_consultant": "For registered consultants",
+  "@for_registered_as_consultant": {
+    "description": "Description for consultants"
+  },
+  "joinTheCommunity": "Join the Community",
+  "@joinTheCommunity": {
+    "description": "Call to action for joining the community"
+  },
+  "fullName": "Full Name",
+  "@fullName": {
+    "description": "Label for full name input field"
+  },
+  "enterFullName": "Enter Full Name",
+  "@enterFullName": {
+    "description": "Hint text for full name input field"
+  },
+  "emailAddress": "Email Address",
+  "@emailAddress": {
+    "description": "Label for email address input field"
+  },
+  "enterEmailAddress": "Enter Email Address",
+  "@enterEmailAddress": {
+    "description": "Hint text for email address input field"
+  },
+  "enterPassword": "Enter Password",
+  "@enterPassword": {
+    "description": "Hint text for password input field"
+  },
+  "create_account": "Create Account",
+  "@create_account": {
+    "description": "Button text for creating an account"
+  },
+  "alreadyHaveAnAccount": "Already have an account ? ",
+  "@alreadyHaveAnAccount": {
+    "description": "Prompt for users who already have an account"
+  },
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "Button text for signing in"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Link text for privacy policy"
+  },
+  "andA": "and",
+  "@andA": {
+    "description": "Conjunction used in legal agreements"
+  },
+  "termsOfService": "Terms of Service",
+  "@termsOfService": {
+    "description": "Link text for terms of service"
+  },
+  "iAgreeToThe": "I agree to the",
+  "@iAgreeToThe": {
+    "description": "Text indicating agreement to terms and conditions"
+  },
+  "location" : "Location",
+  "@location" : {
+    "description": "Location field label"
+  },
+  "select_your_location" : "Select your location",
+  "@select_your_location" : {
+    "description": "Location field hint"
+  },
+  "add_skills": "Add Skills",
+  "@add_skills": {
+    "description": "Add skills field label"
+  },
+  "step_1_of_3": "Step 1 of 3",
+  "@step_1_of_3": {
+    "description": "Progress indicator for step 1"
+  },
+  "step_2_of_3": "Step 2 of 3",
+  "@step_2_of_3": {
+    "description": "Progress indicator for step 2"
+  },
+  "step_3_of_3": "Step 3 of 3",
+  "@step_3_of_3": {
+    "description": "Progress indicator for step 3"
+  },
+  "follow_interest_organizations" : "Follow Interest Organizations",
+  "@follow_interest_organizations": {
+    "description": "Prompt to follow organizations of interest"
   }
+
 }

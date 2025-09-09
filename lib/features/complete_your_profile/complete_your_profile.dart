@@ -10,6 +10,7 @@ import '../../export_tools.dart';
 import '../../models/location.dart';
 import '../../models/skill.dart';
 import '../../service_locator.dart';
+import '../organization/cubit/organization_cubit.dart';
 import '../skills/cubit/skills_cubit.dart';
 
 class CompleteYourProfile extends HookWidget {
@@ -29,6 +30,9 @@ class CompleteYourProfile extends HookWidget {
         BlocProvider(create: (context) => sl<SkillsCubit>()..fetchAllSkills()),
         BlocProvider(
           create: (context) => sl<LocationCubit>()..fetchAllLocation(),
+        ),
+        BlocProvider(
+          create: (context) => sl<OrganizationCubit>()..fetchAllOrganizations(),
         ),
       ],
       child: _CompleteYourProfileView(
@@ -60,11 +64,11 @@ class _CompleteYourProfileView extends HookWidget {
     final selectedLocation = useState<Location?>(null);
     final selectedSkills = useState<List<Skill>>([]);
     final interests = useState<List<String>>(['Education', 'Environment']);
-    final followedOrgs = useState<List<String>>([]);
+    final followedOrgs = useState<List<dynamic>>([]);
 
     // Use the custom image picker hook
     final imagePickerResult = useImagePicker(imageQuality: 80);
-
+    var lang = AppLocalizations.of(context)!;
     Widget stepIndicator(int step) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -97,8 +101,8 @@ class _CompleteYourProfileView extends HookWidget {
         leading: const BackButton(),
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: const Text(
-          'Complete Your Profile',
+        title:  Text(
+          lang.complete_your_profile,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -115,9 +119,9 @@ class _CompleteYourProfileView extends HookWidget {
               children: [
                 stepIndicator(0),
                 const SizedBox(height: 8),
-                const Center(
+                 Center(
                   child: Text(
-                    'Step 1 of 3',
+                    lang.step_1_of_3,
                     style: TextStyle(
                       color: Colors.green,
                       fontWeight: FontWeight.bold,
@@ -254,9 +258,9 @@ class _CompleteYourProfileView extends HookWidget {
               children: [
                 stepIndicator(1),
                 const SizedBox(height: 8),
-                const Center(
+                 Center(
                   child: Text(
-                    'Step 2 of 3',
+                     lang.step_2_of_3,
                     style: TextStyle(
                       color: Colors.green,
                       fontWeight: FontWeight.bold,
@@ -264,7 +268,7 @@ class _CompleteYourProfileView extends HookWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                const Text('Location'),
+                 Text(lang.location),
                 const SizedBox(height: 8),
 
                 BlocBuilder<LocationCubit, LocationState>(
@@ -334,7 +338,7 @@ class _CompleteYourProfileView extends HookWidget {
                         },
                         decoratorProps: DropDownDecoratorProps(
                           decoration: InputDecoration(
-                            hintText: 'Select your location',
+                            hintText: lang.select_your_location,
                             border: const OutlineInputBorder(),
                             suffixIcon: Icon(
                               Icons.location_on,
@@ -455,7 +459,7 @@ class _CompleteYourProfileView extends HookWidget {
                             Icon(Icons.add, color: Colors.green),
                             const SizedBox(width: 8),
                             Text(
-                              'Add Skills',
+                              lang.add_skills,
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.w500,
@@ -503,7 +507,7 @@ class _CompleteYourProfileView extends HookWidget {
                       curve: Curves.ease,
                     ),
                     child: Text(
-                      'Next',
+                      lang.next,
                       style: MyFonts.font16Black.copyWith(color: Colors.white),
                     ),
                   ),
@@ -519,9 +523,9 @@ class _CompleteYourProfileView extends HookWidget {
               children: [
                 stepIndicator(2),
                 const SizedBox(height: 8),
-                const Center(
+                 Center(
                   child: Text(
-                    'Step 3 of 3',
+                      lang.step_3_of_3,
                     style: TextStyle(
                       color: Colors.green,
                       fontWeight: FontWeight.bold,
@@ -529,87 +533,135 @@ class _CompleteYourProfileView extends HookWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                const Text(
-                  'Follow Interest Organizations',
+                 Text(
+                  lang.follow_interest_organizations,
                   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                 ),
                 const SizedBox(height: 16),
-                ...[
-                  {
-                    'name': 'Youth Empowerment Foundation',
-                    'desc': 'Education & Development',
-                    'location': 'Zarqa, Jordan',
-                    'img': null,
-                  },
-                  {
-                    'name': 'Green Earth Jordan',
-                    'desc': 'Environmental Conservation',
-                    'location': 'Amman, Jordan',
-                    'img': null,
-                  },
-                ].map(
-                  (org) => Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey[300]!, width: 1),
-                    ),
-                    margin: const EdgeInsets.only(bottom: 16),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: org['img'] == null
-                            ? null
-                            : NetworkImage(org['img'] as String),
-                        child: org['img'] == null
-                            ? const Icon(Icons.business, color: Colors.green)
-                            : null,
-                      ),
-                      title: Text(
-                        org['name'] as String,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(org['desc'] as String),
-                          Row(
+                Expanded(
+                  child: BlocBuilder<OrganizationCubit, OrganizationState>(
+                    builder: (context, state) {
+                      if (state.runtimeType.toString() == '_Loading') {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(
-                                Icons.location_on,
-                                size: 16,
-                                color: Colors.grey,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(org['location'] as String),
+                              CircularProgressIndicator(),
+                              SizedBox(height: 16),
+                              Text('Loading organizations...'),
                             ],
                           ),
-                        ],
-                      ),
-                      trailing: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              followedOrgs.value.contains(org['name'])
-                              ? Colors.grey[300]
-                              : Colors.green[700],
-                          foregroundColor:
-                              followedOrgs.value.contains(org['name'])
-                              ? Colors.black
-                              : Colors.white,
-                        ),
-                        onPressed: () {
-                          if (followedOrgs.value.contains(org['name'])) {
-                            followedOrgs.value = List.from(followedOrgs.value)
-                              ..remove(org['name']);
-                          } else {
-                            followedOrgs.value = List.from(followedOrgs.value)
-                              ..add(org['name'] as String);
-                          }
-                        },
-                        child: Text(
-                          followedOrgs.value.contains(org['name'])
-                              ? 'Following'
-                              : 'Follow',
-                        ),
-                      ),
-                    ),
+                        );
+                      } else if (state.runtimeType.toString() == '_Loaded') {
+                        final loadedState = state as dynamic;
+                        final organizations = loadedState.organizations as List<dynamic>;
+                        
+                        if (organizations.isEmpty) {
+                          return Center(
+                            child: Text('No organizations available'),
+                          );
+                        }
+                        
+                        return ListView.builder(
+                          itemCount: organizations.length,
+                          itemBuilder: (context, index) {
+                            final org = organizations[index];
+                            final isFollowed = followedOrgs.value.any((followed) => (followed as dynamic).id == org.id);
+                            
+                            return Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey[300]!, width: 1),
+                              ),
+                              margin: const EdgeInsets.only(bottom: 16),
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: org.logo.isNotEmpty
+                                      ? NetworkImage(org.logo)
+                                      : null,
+                                  child: org.logo.isEmpty
+                                      ? const Icon(Icons.business, color: Colors.green)
+                                      : null,
+                                ),
+                                title: Text(
+                                  org.name,
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(org.sector),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.location_on,
+                                          size: 16,
+                                          color: Colors.grey,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Expanded(child: Text(org.location)),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                trailing: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: isFollowed
+                                        ? Colors.grey[300]
+                                        : Colors.green[700],
+                                    foregroundColor: isFollowed
+                                        ? Colors.black
+                                        : Colors.white,
+                                  ),
+                                  onPressed: () async {
+                                    if (isFollowed) {
+                                      followedOrgs.value = followedOrgs.value
+                                          .where((followed) => (followed as dynamic).id != org.id)
+                                          .toList();
+                                      // Call API to unfollow
+                                      await context.read<OrganizationCubit>().unfollowOrganization(org.id);
+                                    } else {
+                                      followedOrgs.value = [...followedOrgs.value, org];
+                                      // Call API to follow
+                                      await context.read<OrganizationCubit>().followOrganization(org.id);
+                                    }
+                                  },
+                                  child: Text(
+                                    isFollowed ? 'Following' : 'Follow',
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      } else if (state.runtimeType.toString() == '_Error') {
+                        final errorState = state as dynamic;
+                        final message = errorState.message as String;
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.error, color: Colors.red, size: 48),
+                              SizedBox(height: 16),
+                              Text(
+                                'Error loading organizations',
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 8),
+                              Text(message, textAlign: TextAlign.center),
+                              SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: () => context.read<OrganizationCubit>().fetchAllOrganizations(),
+                                child: Text('Retry'),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return Center(
+                          child: Text('Loading organizations...'),
+                        );
+                      }
+                    },
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -637,7 +689,7 @@ class _CompleteYourProfileView extends HookWidget {
                         "Skills: ${selectedSkills.value.map((s) => s.name).toList()}",
                       );
                       log("Interests: ${interests.value}");
-                      log("Followed Orgs: ${followedOrgs.value}");
+                      log("Followed Orgs: ${followedOrgs.value.map((org) => (org as dynamic).name).toList()}");
 
                       /// print selected image path
                       log(

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 /// A base repository for Laravel-backed APIs using Dio.
 /// Extend this class to implement resource-specific repositories.
@@ -34,10 +35,21 @@ abstract class LaravelRepository {
               headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                
               },
             ),
-          );
+          ) {
+    this.dio.interceptors.add(
+      PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+        maxWidth: 90,
+      ),
+    );
+  }
 
   /// GET request to [endpoint] with optional [queryParameters] and [headers].
   Future<dynamic> get(

@@ -224,12 +224,6 @@ abstract class AppLocalizations {
   /// **'Complete Your Profile'**
   String get complete_your_profile;
 
-  /// Progress indicator
-  ///
-  /// In en, this message translates to:
-  /// **'Step 1 of 3'**
-  String get step_1_of_3;
-
   /// Following status or tab
   ///
   /// In en, this message translates to:
@@ -577,6 +571,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recently'**
   String get recentlyNg;
+
+  /// Text for opportunity seeker
+  ///
+  /// In en, this message translates to:
+  /// **'Opportunity Seeker'**
+  String get opptunity_seeker;
+
+  /// Text for consultant
+  ///
+  /// In en, this message translates to:
+  /// **'Consultant'**
+  String get consultant;
+
+  /// Description for consultants
+  ///
+  /// In en, this message translates to:
+  /// **'For registered consultants'**
+  String get for_registered_as_consultant;
+
+  /// Call to action for joining the community
+  ///
+  /// In en, this message translates to:
+  /// **'Join the Community'**
+  String get joinTheCommunity;
+
+  /// Label for full name input field
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullName;
+
+  /// Hint text for full name input field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Full Name'**
+  String get enterFullName;
+
+  /// Label for email address input field
+  ///
+  /// In en, this message translates to:
+  /// **'Email Address'**
+  String get emailAddress;
+
+  /// Hint text for email address input field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Email Address'**
+  String get enterEmailAddress;
+
+  /// Hint text for password input field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Password'**
+  String get enterPassword;
+
+  /// Button text for creating an account
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get create_account;
+
+  /// Prompt for users who already have an account
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account ? '**
+  String get alreadyHaveAnAccount;
+
+  /// Button text for signing in
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signIn;
+
+  /// Link text for privacy policy
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// Conjunction used in legal agreements
+  ///
+  /// In en, this message translates to:
+  /// **'and'**
+  String get andA;
+
+  /// Link text for terms of service
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfService;
+
+  /// Text indicating agreement to terms and conditions
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to the'**
+  String get iAgreeToThe;
+
+  /// Location field label
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// Location field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Select your location'**
+  String get select_your_location;
+
+  /// Add skills field label
+  ///
+  /// In en, this message translates to:
+  /// **'Add Skills'**
+  String get add_skills;
+
+  /// Progress indicator for step 1
+  ///
+  /// In en, this message translates to:
+  /// **'Step 1 of 3'**
+  String get step_1_of_3;
+
+  /// Progress indicator for step 2
+  ///
+  /// In en, this message translates to:
+  /// **'Step 2 of 3'**
+  String get step_2_of_3;
+
+  /// Progress indicator for step 3
+  ///
+  /// In en, this message translates to:
+  /// **'Step 3 of 3'**
+  String get step_3_of_3;
+
+  /// Prompt to follow organizations of interest
+  ///
+  /// In en, this message translates to:
+  /// **'Follow Interest Organizations'**
+  String get follow_interest_organizations;
 }
 
 class _AppLocalizationsDelegate

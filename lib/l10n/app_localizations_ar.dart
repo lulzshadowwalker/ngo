@@ -72,9 +72,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get complete_your_profile => 'أكمل ملفك الشخصي';
 
   @override
-  String get step_1_of_3 => 'الخطوة 1 من 3';
-
-  @override
   String get following => 'يتابع';
 
   @override
@@ -247,4 +244,73 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get recentlyNg => 'مؤخراً';
+
+  @override
+  String get opptunity_seeker => 'باحث عن الفرص';
+
+  @override
+  String get consultant => 'مستشار';
+
+  @override
+  String get for_registered_as_consultant => 'للمسجلين كمستشارين';
+
+  @override
+  String get joinTheCommunity => 'انضم إلى المجتمع';
+
+  @override
+  String get fullName => 'الاسم الكامل';
+
+  @override
+  String get enterFullName => 'أدخل الاسم الكامل';
+
+  @override
+  String get emailAddress => 'البريد الإلكتروني';
+
+  @override
+  String get enterEmailAddress => 'أدخل البريد الإلكتروني';
+
+  @override
+  String get enterPassword => 'أدخل كلمة المرور';
+
+  @override
+  String get create_account => 'إنشاء حساب';
+
+  @override
+  String get alreadyHaveAnAccount => 'هل لديك حساب؟ ';
+
+  @override
+  String get signIn => 'تسجيل الدخول';
+
+  @override
+  String get privacyPolicy => 'سياسة الخصوصية ';
+
+  @override
+  String get andA => 'و  ';
+
+  @override
+  String get termsOfService => 'شروط الخدمة ';
+
+  @override
+  String get iAgreeToThe => 'أوافق على ';
+
+  @override
+  String get location => 'الموقع';
+
+  @override
+  String get select_your_location => 'اختر موقعك';
+
+  @override
+  String get add_skills => 'أضف مهاراتك';
+
+  @override
+  String get step_1_of_3 => 'الخطوة 1 من 3';
+
+  @override
+  String get step_2_of_3 => 'الخطوة 2 من 3';
+
+  @override
+  String get step_3_of_3 => 'الخطوة 3 من 3';
+
+  @override
+  String get follow_interest_organizations => 'تابع منظمات تهمك';
 }

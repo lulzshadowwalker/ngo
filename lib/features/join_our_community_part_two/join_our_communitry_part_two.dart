@@ -45,7 +45,7 @@ class JoinOurCommunitryPartTwo extends StatelessWidget {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> JoinTheCommunity()));
               },
-              title: "Opprtunity seeker",
+              title: lang.opptunity_seeker,
               description: AppLocalizations.of(
                 context,
               )!.for_personal_use_and_volunteering,
@@ -54,8 +54,8 @@ class JoinOurCommunitryPartTwo extends StatelessWidget {
             const SizedBox(height: 20),
             IamJoiningAsAnSection(
               onTap: () {},
-              title: "Consultant",
-              description: "For registered as a Consultant",
+              title: lang.consultant,
+              description: lang.for_registered_as_consultant,
               icon: Icons.business,
             ),
             const SizedBox(height: 20),

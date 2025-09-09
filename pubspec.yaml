@@ -24,6 +24,7 @@ dependencies:
   hugeicons: ^0.0.11
   image_picker: ^1.0.7
   intl: any
+  pretty_dio_logger: ^1.4.0
   shared_preferences: ^2.5.3
   skeletonizer: ^2.0.1
 
