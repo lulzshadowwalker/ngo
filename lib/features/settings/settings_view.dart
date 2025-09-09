@@ -8,6 +8,7 @@ import '../../service_locator.dart';
 import '../auth/cubit/auth_cubit.dart';
 import '../components/text_component.dart';
 import '../splash/splash.dart';
+import '../static_page_features/about.dart';
 import '../user_management/cubit/user_management_cubit.dart';
 
 class SettingsView extends HookWidget {
@@ -193,6 +194,12 @@ class SettingsView extends HookWidget {
                         title: AppLocalizations.of(context)!.about_app,
                         trailing: '1.0.0',
                         onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AboutSection(),
+                            ),
+                          );
                           // Handle about app
                         },
                       ),
