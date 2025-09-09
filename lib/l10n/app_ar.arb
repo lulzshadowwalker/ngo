@@ -102,9 +102,15 @@
   "select_your_location": "اختر موقعك",
   "add_skills": "أضف مهاراتك",
   "step_1_of_3": "الخطوة 1 من 3",
-  "step_2_of_3": "الخطوة 2 من 3", 
+  "step_2_of_3": "الخطوة 2 من 3",
   "step_3_of_3": "الخطوة 3 من 3",
-  "follow_interest_organizations" : "تابع منظمات تهمك",
-   "searchOrganizations" : "ابحث عن منظمات...",
-   "password_reset_email_sent"  : "تم إرسال بريد إعادة تعيين كلمة المرور"
+  "follow_interest_organizations": "تابع منظمات تهمك",
+  "searchOrganizations": "ابحث عن منظمات...",
+  "password_reset_email_sent": "تم إرسال بريد إعادة تعيين كلمة المرور",
+  "this_email_is_registered": "إذا كان هذا البريد الإلكتروني مسجلاً، ستصلك رابط لإعادة تعيين كلمة المرور قريبًا.",
+  "enter_your_email_to_reevie": "أدخل عنوان بريدك الإلكتروني لاستلام رابط إعادة تعيين كلمة المرور.",
+  "btn_send": "إرسال",
+  "btn_cancel": "إلغاء",
+  "plase_enter_a_valid_email": "يرجى إدخال بريد إلكتروني صالح",
+  "failed_to_send_reset_email": "فشل في إرسال بريد إعادة التعيين. يرجى المحاولة مرة أخرى."
 }

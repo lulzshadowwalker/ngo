@@ -321,4 +321,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get password_reset_email_sent => 'Password reset email sent';
+
+  @override
+  String get this_email_is_registered =>
+      'If this email is registered, you will receive a password reset link shortly.';
+
+  @override
+  String get enter_your_email_to_reevie =>
+      'Enter your email address to receive a password reset link.';
+
+  @override
+  String get btn_send => 'Send';
+
+  @override
+  String get btn_cancel => 'Cancel';
+
+  @override
+  String get plase_enter_a_valid_email => 'Please enter a valid email';
+
+  @override
+  String get failed_to_send_reset_email =>
+      'Failed to send reset email. Please try again.';
 }

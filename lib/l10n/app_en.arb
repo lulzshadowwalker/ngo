@@ -370,12 +370,12 @@
   "@iAgreeToThe": {
     "description": "Text indicating agreement to terms and conditions"
   },
-  "location" : "Location",
-  "@location" : {
+  "location": "Location",
+  "@location": {
     "description": "Location field label"
   },
-  "select_your_location" : "Select your location",
-  "@select_your_location" : {
+  "select_your_location": "Select your location",
+  "@select_your_location": {
     "description": "Location field hint"
   },
   "add_skills": "Add Skills",
@@ -394,17 +394,28 @@
   "@step_3_of_3": {
     "description": "Progress indicator for step 3"
   },
-  "follow_interest_organizations" : "Follow Interest Organizations",
+  "follow_interest_organizations": "Follow Interest Organizations",
   "@follow_interest_organizations": {
     "description": "Prompt to follow organizations of interest"
   },
-  "searchOrganizations" : "Search organizations...",
+  "searchOrganizations": "Search organizations...",
   "@searchOrganizations": {
     "description": "Search field hint for organizations"
   },
   "password_reset_email_sent": "Password reset email sent",
   "@password_reset_email_sent": {
     "description": "Message indicating that a password reset email has been sent"
-  }
-
+  },
+  "this_email_is_registered": "If this email is registered, you will receive a password reset link shortly.",
+  "@this_email_is_registered": {},
+  "enter_your_email_to_reevie": "Enter your email address to receive a password reset link.",
+  "@enter_your_email_to_reevie": {},
+  "btn_send": "Send",
+  "@btn_send": {},
+  "btn_cancel": "Cancel",
+  "@btn_cancel": {},
+  "plase_enter_a_valid_email" : "Please enter a valid email",
+  "@plase_enter_a_valid_email": {},
+  "failed_to_send_reset_email" : "Failed to send reset email. Please try again.",
+  "@failed_to_send_reset_email": {}
 }

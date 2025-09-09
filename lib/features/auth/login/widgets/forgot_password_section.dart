@@ -47,22 +47,22 @@ class ForgotPasswordDialog extends HookWidget {
   Widget build(BuildContext context) {
     final emailController = useTextEditingController();
     final formKey = useMemoized(() => GlobalKey<FormState>());
-
+    var lang = AppLocalizations.of(context)!;
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         final stateType = state.runtimeType.toString();
         if (stateType.contains('ForgotPasswordSuccess')) {
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('If this email is registered, you will receive a password reset link shortly.'),
+             SnackBar(
+              content: Text(lang.this_email_is_registered),
               backgroundColor: Colors.green,
             ),
           );
         } else if (stateType.contains('ForgotPasswordError')) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to send reset email. Please try again.'),
+             SnackBar(
+              content: Text(lang.failed_to_send_reset_email),
               backgroundColor: Colors.red,
             ),
           );
@@ -87,7 +87,7 @@ class ForgotPasswordDialog extends HookWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Enter your email address to receive a password reset link.',
+                  lang.enter_your_email_to_reevie,
                   style: MyFonts.font14Black.copyWith(color: Colors.grey[600]),
                   textAlign: TextAlign.center,
                 ),
@@ -98,10 +98,10 @@ class ForgotPasswordDialog extends HookWidget {
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return lang.enterEmailAddress;
                     }
                     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                      return 'Please enter a valid email';
+                      return lang.plase_enter_a_valid_email;
                     }
                     return null;
                   },
@@ -117,7 +117,7 @@ class ForgotPasswordDialog extends HookWidget {
                           child: TextButton(
                             onPressed: isLoading ? null : () => Navigator.of(context).pop(),
                             child: Text(
-                              'Cancel',
+                              lang.btn_cancel,
                               style: MyFonts.font14BlackBold,
                             ),
                           ),
@@ -150,7 +150,7 @@ class ForgotPasswordDialog extends HookWidget {
                                     ),
                                   )
                                 : Text(
-                                    'Send',
+                                    lang.btn_send,
                                     style: MyFonts.font14BlackBold.copyWith(color: Colors.white),
                                   ),
                           ),

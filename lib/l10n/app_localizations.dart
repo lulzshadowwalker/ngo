@@ -721,6 +721,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password reset email sent'**
   String get password_reset_email_sent;
+
+  /// No description provided for @this_email_is_registered.
+  ///
+  /// In en, this message translates to:
+  /// **'If this email is registered, you will receive a password reset link shortly.'**
+  String get this_email_is_registered;
+
+  /// No description provided for @enter_your_email_to_reevie.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address to receive a password reset link.'**
+  String get enter_your_email_to_reevie;
+
+  /// No description provided for @btn_send.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get btn_send;
+
+  /// No description provided for @btn_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get btn_cancel;
+
+  /// No description provided for @plase_enter_a_valid_email.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email'**
+  String get plase_enter_a_valid_email;
+
+  /// No description provided for @failed_to_send_reset_email.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send reset email. Please try again.'**
+  String get failed_to_send_reset_email;
 }
 
 class _AppLocalizationsDelegate

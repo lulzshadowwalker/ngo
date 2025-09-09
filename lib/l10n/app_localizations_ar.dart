@@ -320,4 +320,25 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get password_reset_email_sent =>
       'تم إرسال بريد إعادة تعيين كلمة المرور';
+
+  @override
+  String get this_email_is_registered =>
+      'إذا كان هذا البريد الإلكتروني مسجلاً، ستصلك رابط لإعادة تعيين كلمة المرور قريبًا.';
+
+  @override
+  String get enter_your_email_to_reevie =>
+      'أدخل عنوان بريدك الإلكتروني لاستلام رابط إعادة تعيين كلمة المرور.';
+
+  @override
+  String get btn_send => 'إرسال';
+
+  @override
+  String get btn_cancel => 'إلغاء';
+
+  @override
+  String get plase_enter_a_valid_email => 'يرجى إدخال بريد إلكتروني صالح';
+
+  @override
+  String get failed_to_send_reset_email =>
+      'فشل في إرسال بريد إعادة التعيين. يرجى المحاولة مرة أخرى.';
 }
