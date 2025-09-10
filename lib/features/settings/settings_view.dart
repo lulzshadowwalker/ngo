@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ngo/core/constant/app_assets.dart';
 import 'package:ngo/export_tools.dart';
 import 'package:ngo/features/support_ticket/support_ticket_view.dart';
 
@@ -52,7 +54,7 @@ class SettingsView extends HookWidget {
                     title: AppLocalizations.of(context)!.account,
                     items: [
                       _buildSettingsItem(
-                        icon: Icons.person_outline,
+                        assetName: AppIconsSettings.profileSettings,
                         title: AppLocalizations.of(context)!.edit_profile,
                         onTap: () {
                           Navigator.push(
@@ -64,14 +66,19 @@ class SettingsView extends HookWidget {
                         },
                       ),
                       _buildSettingsItem(
-                        icon: Icons.lock_outline,
+                        assetName: AppIconsSettings.change,
                         title: AppLocalizations.of(context)!.change_password,
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> ChangePasswordSection()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChangePasswordSection(),
+                            ),
+                          );
                         },
                       ),
                       _buildSettingsItem(
-                        icon: Icons.warning_outlined,
+                        assetName: AppIconsSettings.deleteAccount,
                         title: AppLocalizations.of(context)!.deactivate_account,
                         titleColor: Colors.red,
                         onTap: () {
@@ -88,7 +95,7 @@ class SettingsView extends HookWidget {
                     title: AppLocalizations.of(context)!.notifications,
                     items: [
                       _buildToggleItem(
-                        icon: Icons.notifications_outlined,
+                        assetName: AppIconsSettings.push,
                         title: AppLocalizations.of(context)!.push_notifications,
                         value:
                             (state.runtimeType.toString().contains('Loaded') &&
@@ -120,7 +127,8 @@ class SettingsView extends HookWidget {
                         },
                       ),
                       _buildToggleItem(
-                        icon: Icons.email_outlined,
+                        assetName: AppIconsSettings.email,
+
                         title: AppLocalizations.of(
                           context,
                         )!.email_notifications,
@@ -163,14 +171,16 @@ class SettingsView extends HookWidget {
                     title: AppLocalizations.of(context)!.privacy,
                     items: [
                       _buildSettingsItem(
-                        icon: Icons.visibility_outlined,
+                        assetName: AppIconsSettings.visibility,
+
                         title: AppLocalizations.of(context)!.profile_visibility,
                         onTap: () {
                           // Handle profile visibility
                         },
                       ),
                       _buildSettingsItem(
-                        icon: Icons.description_outlined,
+                        assetName: AppIconsSettings.dataManagement,
+
                         title: AppLocalizations.of(context)!.data_management,
                         onTap: () {
                           // Handle data management
@@ -195,7 +205,8 @@ class SettingsView extends HookWidget {
                               : 'English';
 
                           return _buildSettingsItem(
-                            icon: Icons.translate_outlined,
+                            assetName: AppIconsSettings.language,
+
                             title: AppLocalizations.of(context)!.language,
                             trailing: languageText,
                             onTap: () {
@@ -206,7 +217,8 @@ class SettingsView extends HookWidget {
                       ),
 
                       _buildSettingsItem(
-                        icon: Icons.help_outline,
+                        assetName: AppIconsSettings.helpCenter,
+
                         title: AppLocalizations.of(context)!.help_center,
                         onTap: () {
                           // Handle help center
@@ -219,14 +231,16 @@ class SettingsView extends HookWidget {
                         },
                       ),
                       _buildSettingsItem(
-                        icon: Icons.report_outlined,
+                        assetName: AppIconsSettings.report,
+
                         title: AppLocalizations.of(context)!.report_problem,
                         onTap: () {
                           // Handle report problem
                         },
                       ),
                       _buildSettingsItem(
-                        icon: Icons.info_outline,
+                        assetName: AppIconsSettings.aboutApp,
+
                         title: AppLocalizations.of(context)!.about_app,
                         trailing: '1.0.0',
                         onTap: () {
@@ -285,7 +299,7 @@ class SettingsView extends HookWidget {
   }
 
   Widget _buildSettingsItem({
-    required IconData icon,
+    required String assetName,
     required String title,
     String? trailing,
     Color? titleColor,
@@ -300,7 +314,7 @@ class SettingsView extends HookWidget {
         ),
         child: Row(
           children: [
-            Icon(icon, size: 24, color: titleColor ?? Colors.black87),
+            SvgPicture.asset(assetName, width: 28, height: 28),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
@@ -327,7 +341,7 @@ class SettingsView extends HookWidget {
   }
 
   Widget _buildToggleItem({
-    required IconData icon,
+    required String assetName,
     required String title,
     required bool value,
     required ValueChanged<bool> onChanged,
@@ -341,7 +355,7 @@ class SettingsView extends HookWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, size: 24, color: Colors.black87),
+          SvgPicture.asset(assetName, width: 28, height: 28),
           const SizedBox(width: 16),
           Expanded(
             child: Text(
@@ -353,13 +367,32 @@ class SettingsView extends HookWidget {
               ),
             ),
           ),
-          Switch(
-            value: value,
-            onChanged: onChanged,
-            activeColor: MyColors.primaryColor,
-            activeTrackColor: MyColors.primaryColor.withValues(alpha: 0.3),
-            inactiveTrackColor: Colors.grey[300],
-            inactiveThumbColor: Colors.white,
+          Theme(
+            data: ThemeData(
+              switchTheme: SwitchThemeData(
+                
+                thumbColor: MaterialStateProperty.resolveWith<Color>((states) {
+                  if (states.contains(MaterialState.selected)) {
+                    return Colors.white;
+                  }
+                  return Colors.white;
+                }),
+                trackColor: MaterialStateProperty.resolveWith<Color>((states) {
+                  if (states.contains(MaterialState.selected)) {
+                    return MyColors.primaryColor;
+                  }
+                  
+                  return Colors.grey[300]!;
+                }),
+                overlayColor: MaterialStateProperty.all(Colors.transparent),
+                // splashRadius: 0,
+                // materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+            ),
+            child: Switch(
+              value: value,
+              onChanged: onChanged,
+            ),
           ),
         ],
       ),

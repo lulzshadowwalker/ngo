@@ -1,12 +1,26 @@
-
-
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ngo/features/auth/login/login_export.dart';
 
 import '../../core/theme/my_fonts.dart';
 import '../../export_tools.dart';
+import '../../service_locator.dart';
+import '../auth/cubit/auth_cubit.dart';
 
 class ChangePasswordSection extends HookWidget {
   const ChangePasswordSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Use the existing AuthCubit from the parent context instead of creating a new one
+    return BlocProvider(
+      create: (context) => sl<AuthCubit>(),
+      child: const _ChangePasswordView(),
+    );
+  }
+}
+
+class _ChangePasswordView extends HookWidget {
+  const _ChangePasswordView();
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +28,7 @@ class ChangePasswordSection extends HookWidget {
     final oldPasswordController = useTextEditingController();
     final newPasswordController = useTextEditingController();
     final confirmPasswordController = useTextEditingController();
-    
+
     final showOldPassword = useState(false);
     final showNewPassword = useState(false);
     final showConfirmPassword = useState(false);
@@ -47,12 +61,10 @@ class ChangePasswordSection extends HookWidget {
               const SizedBox(height: 8),
               Text(
                 'Please enter your current password and choose a new secure password.',
-                style: MyFonts.font14Black.copyWith(
-                  color: Colors.grey[600],
-                ),
+                style: MyFonts.font14Black.copyWith(color: Colors.grey[600]),
               ),
               const SizedBox(height: 32),
-              
+
               // Old Password Field
               Text(
                 'Current Password',
@@ -72,10 +84,15 @@ class ChangePasswordSection extends HookWidget {
                 },
                 decoration: InputDecoration(
                   hintText: 'Enter your current password',
-                  prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
+                  prefixIcon: const Icon(
+                    Icons.lock_outline,
+                    color: Colors.grey,
+                  ),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      showOldPassword.value ? Icons.visibility : Icons.visibility_off,
+                      showOldPassword.value
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                       color: Colors.grey,
                     ),
                     onPressed: () {
@@ -93,7 +110,7 @@ class ChangePasswordSection extends HookWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              
+
               // New Password Field
               Text(
                 'New Password',
@@ -122,7 +139,9 @@ class ChangePasswordSection extends HookWidget {
                   prefixIcon: const Icon(Icons.lock, color: Colors.grey),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      showNewPassword.value ? Icons.visibility : Icons.visibility_off,
+                      showNewPassword.value
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                       color: Colors.grey,
                     ),
                     onPressed: () {
@@ -140,7 +159,7 @@ class ChangePasswordSection extends HookWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              
+
               // Confirm Password Field
               Text(
                 'Confirm New Password',
@@ -166,7 +185,9 @@ class ChangePasswordSection extends HookWidget {
                   prefixIcon: const Icon(Icons.lock_clock, color: Colors.grey),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      showConfirmPassword.value ? Icons.visibility : Icons.visibility_off,
+                      showConfirmPassword.value
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                       color: Colors.grey,
                     ),
                     onPressed: () {
@@ -184,7 +205,11 @@ class ChangePasswordSection extends HookWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [ForgotPasswordSection()],
+              ),
+              const SizedBox(height: 16),
               // Password Requirements
               Container(
                 padding: const EdgeInsets.all(16),
@@ -211,98 +236,149 @@ class ChangePasswordSection extends HookWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              
+
               // Update Password Button
-              SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[700],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: BlocConsumer<AuthCubit, AuthState>(
+                      listener: (context, state) {
+                        final stateType = state.runtimeType.toString();
+                        if (stateType.contains('PasswordChangeSuccess')) {
+                          // Show success message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text(
+                                'Password updated successfully!',
+                              ),
+                              backgroundColor: Colors.green[700],
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+
+                          // Clear form
+                          oldPasswordController.clear();
+                          newPasswordController.clear();
+                          confirmPasswordController.clear();
+
+                          // Navigate back
+                          Navigator.pop(context);
+                        } else if (stateType.contains('PasswordChangeError')) {
+                          isLoading.value = false;
+                          final errorState = state as dynamic;
+                          final message = errorState.message as String;
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(message),
+                              backgroundColor: Colors.red,
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        final stateType = state.runtimeType.toString();
+                        final isAuthLoading = stateType.contains(
+                          'PasswordChangeLoading',
+                        );
+
+                        return SizedBox(
+                          width: double.infinity,
+                          height: 54,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green[700],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: (isLoading.value || isAuthLoading)
+                                ? null
+                                : () async {
+                                    if (formKey.currentState!.validate()) {
+                                      isLoading.value = true;
+
+                                      try {
+                                        // Call AuthCubit to change password
+                                        await context
+                                            .read<AuthCubit>()
+                                            .changePassword(
+                                              currentPassword:
+                                                  oldPasswordController.text,
+                                              newPassword:
+                                                  newPasswordController.text,
+                                              confirmPassword:
+                                                  confirmPasswordController
+                                                      .text,
+                                            );
+                                      } catch (error) {
+                                        // Error handling is done in BlocListener
+                                        // This catch block is for any unexpected errors
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'An unexpected error occurred: ${error.toString()}',
+                                            ),
+                                            backgroundColor: Colors.red,
+                                            behavior: SnackBarBehavior.floating,
+                                          ),
+                                        );
+                                        isLoading.value = false;
+                                      }
+                                    }
+                                  },
+                            child: (isLoading.value || isAuthLoading)
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Text(
+                                    'Update Password',
+                                    style: MyFonts.font16Black.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 13
+                                    ),
+                                  ),
+                          ),
+                        );
+                      },
                     ),
                   ),
-                  onPressed: isLoading.value ? null : () async {
-                    if (formKey.currentState!.validate()) {
-                      isLoading.value = true;
-                      
-                      try {
-                        // TODO: Implement password change API call
-                        await Future.delayed(const Duration(seconds: 2)); // Simulate API call
-                        
-                        // Show success message
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text('Password updated successfully!'),
-                            backgroundColor: Colors.green[700],
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                        
-                        // Clear form
-                        oldPasswordController.clear();
-                        newPasswordController.clear();
-                        confirmPasswordController.clear();
-                        
-                        // Navigate back
-                        Navigator.pop(context);
-                        
-                      } catch (error) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Failed to update password: ${error.toString()}'),
-                            backgroundColor: Colors.red,
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                      } finally {
-                        isLoading.value = false;
-                      }
-                    }
-                  },
-                  child: isLoading.value
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
-                          ),
-                        )
-                      : Text(
-                          'Update Password',
-                          style: MyFonts.font16Black.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(color: Colors.grey[300]!),
                           ),
                         ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              
-              // Cancel Button
-              SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(color: Colors.grey[300]!),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: MyFonts.font16Black.copyWith(
+                            color: Colors.grey[700],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Cancel',
-                    style: MyFonts.font16Black.copyWith(
-                      color: Colors.grey[700],
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
+                ],
               ),
             ],
           ),
@@ -310,24 +386,18 @@ class ChangePasswordSection extends HookWidget {
       ),
     );
   }
-  
+
   Widget _buildRequirement(String requirement) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: Row(
         children: [
-          Icon(
-            Icons.check_circle_outline,
-            size: 16,
-            color: Colors.green[600],
-          ),
+          Icon(Icons.check_circle_outline, size: 16, color: Colors.green[600]),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               requirement,
-              style: MyFonts.font12Black.copyWith(
-                color: Colors.green[700],
-              ),
+              style: MyFonts.font12Black.copyWith(color: Colors.green[700]),
             ),
           ),
         ],

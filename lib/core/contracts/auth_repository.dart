@@ -48,6 +48,17 @@ abstract class AuthRepository {
   });
 
 
+  /// Change password for the user with given [currentPassword] and [newPassword].
+  /// 
+  /// Returns a [Future<void>] that completes when the password change is successful.
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmPassword,
+    String? accessToken,
+  });
+
+
   Future<void> forgotPassword({String email});
 
 

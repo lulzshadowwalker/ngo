@@ -10,7 +10,7 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository _authRepository;
-  
+
   AuthCubit(this._authRepository) : super(const AuthState.initial());
 
   /// Initialize AuthCubit and restore auth state from SharedPreferences
@@ -32,23 +32,20 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       emit(const AuthState.loggingIn());
-      
+
       final (accessToken, role) = await _authRepository.login(
         email,
         password,
         deviceToken: deviceToken,
       );
-      
+
       // Save auth data to SharedPreferences
       await SharedPrefHelper.saveAuthData(
         accessToken: accessToken,
         role: role.name,
       );
-      
-      emit(AuthState.authenticated(
-        accessToken: accessToken,
-        role: role,
-      ));
+
+      emit(AuthState.authenticated(accessToken: accessToken, role: role));
     } catch (error) {
       emit(AuthState.loginError(error.toString()));
     }
@@ -64,7 +61,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       emit(const AuthState.registering());
-      
+
       final (accessToken, role) = await _authRepository.registerIndividual(
         name: name,
         email: email,
@@ -72,17 +69,14 @@ class AuthCubit extends Cubit<AuthState> {
         locationId: locationId,
         avatar: avatar,
       );
-      
+
       // Save auth data to SharedPreferences
       await SharedPrefHelper.saveAuthData(
         accessToken: accessToken,
         role: role.name,
       );
-      
-      emit(AuthState.authenticated(
-        accessToken: accessToken,
-        role: role,
-      ));
+
+      emit(AuthState.authenticated(accessToken: accessToken, role: role));
     } catch (error) {
       emit(AuthState.registerError(error.toString()));
     }
@@ -117,10 +111,7 @@ class AuthCubit extends Cubit<AuthState> {
         accessToken: accessToken,
         role: role.name,
       );
-      emit(AuthState.authenticated(
-        accessToken: accessToken,
-        role: role,
-      ));
+      emit(AuthState.authenticated(accessToken: accessToken, role: role));
     } catch (error) {
       emit(AuthState.registerError(error.toString()));
     }
@@ -131,10 +122,10 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       emit(const AuthState.loggingOut());
       // await _authRepository.logout();
-      
+
       // Clear auth data from SharedPreferences
       await SharedPrefHelper.clearAuthData();
-      
+
       emit(const AuthState.unauthenticated());
     } catch (error) {
       emit(AuthState.logoutError(error.toString()));
@@ -145,12 +136,40 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> forgotPassword({required String email}) async {
     try {
       emit(const AuthState.forgotPasswordLoading());
-      
+
       await _authRepository.forgotPassword(email: email);
-      
+
       emit(const AuthState.forgotPasswordSuccess());
     } catch (error) {
       emit(AuthState.forgotPasswordError(error.toString()));
+    }
+  }
+
+  /// Change user password
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    try {
+      emit(const AuthState.passwordChangeLoading());
+      final accessToken = await SharedPrefHelper.getAccessToken();
+      // Get the current access token
+
+      await _authRepository.changePassword(
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+        confirmPassword: confirmPassword,
+        accessToken: accessToken,
+      );
+
+      emit(const AuthState.passwordChangeSuccess());
+    } catch (e) {
+      emit(
+        AuthState.passwordChangeError(
+          'An unexpected error occurred: ${e.toString()}',
+        ),
+      );
     }
   }
 
@@ -163,17 +182,14 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> restoreAuthState() async {
     try {
       final isLoggedIn = await SharedPrefHelper.isLoggedIn();
-      
+
       if (isLoggedIn) {
         final accessToken = await SharedPrefHelper.getAccessToken();
         final roleString = await SharedPrefHelper.getUserRole();
-        
+
         if (accessToken.isNotEmpty && roleString.isNotEmpty) {
           final role = Role.from(roleString);
-          emit(AuthState.authenticated(
-            accessToken: accessToken,
-            role: role,
-          ));
+          emit(AuthState.authenticated(accessToken: accessToken, role: role));
         } else {
           // Clear invalid auth data
           await SharedPrefHelper.clearAuthData();
@@ -193,12 +209,13 @@ class AuthCubit extends Cubit<AuthState> {
   bool get isAuthenticated => state is _Authenticated;
 
   /// Check if any operation is in progress
-  bool get isLoading => 
-    state is _Loading || 
-    state is _LoggingIn || 
-    state is _Registering || 
-    state is _LoggingOut || 
-    state is _ForgotPasswordLoading;
+  bool get isLoading =>
+      state is _Loading ||
+      state is _LoggingIn ||
+      state is _Registering ||
+      state is _LoggingOut ||
+      state is _ForgotPasswordLoading ||
+      state is _PasswordChangeLoading;
 
   /// Get current access token if authenticated
   String? get accessToken {

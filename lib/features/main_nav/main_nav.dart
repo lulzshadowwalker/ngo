@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hugeicons/hugeicons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ngo/core/constant/app_assets.dart';
 import 'package:ngo/features/main_nav/cubit/main_nav_cubit.dart';
 import 'package:ngo/features/main_nav/cubit/main_nav_state.dart';
 
@@ -21,9 +22,7 @@ class MainNav extends HookWidget {
           bottomNavigationBar: BottomNavigationBar(
             selectedItemColor: MyColors.primaryColor,
             type: BottomNavigationBarType.fixed,
-            selectedLabelStyle: MyFonts.font12Black.copyWith(
-              color: Colors.red,
-            ),
+            selectedLabelStyle: MyFonts.font12Black.copyWith(color: Colors.red),
             unselectedLabelStyle: MyFonts.font11Black.copyWith(
               color: Colors.black,
             ),
@@ -35,47 +34,39 @@ class MainNav extends HookWidget {
             },
             items: [
               BottomNavigationBarItem(
-                icon: HugeIcon(
-                  icon: HugeIcons.strokeRoundedHome06,
-                  color: cubit.currentIndex == 0
-                      ? MyColors.primaryColor
-                      : Colors.black,
+                icon: SvgPicture.asset(
+                  cubit.currentIndex == 0 ? AppIcons.homeFill : AppIcons.home,
                 ),
                 label: AppLocalizations.of(context)!.home,
               ),
               BottomNavigationBarItem(
-                icon: HugeIcon(
-                  icon: HugeIcons.strokeRoundedAppointment01,
-                    color: cubit.currentIndex == 1
-                      ? MyColors.primaryColor
-                      : Colors.black,
+                icon: SvgPicture.asset(
+                  cubit.currentIndex == 1
+                      ? AppIcons.organizationsFill
+                      : AppIcons.organizations,
                 ),
                 label: AppLocalizations.of(context)!.organizations,
               ),
               BottomNavigationBarItem(
-                icon: HugeIcon(
-                  icon: HugeIcons.strokeRoundedQuestion,
-                       color: cubit.currentIndex == 2
-                      ? MyColors.primaryColor
-                      : Colors.black,
+                icon: SvgPicture.asset(
+                  cubit.currentIndex == 2
+                      ? AppIcons.opportunitiesFill
+                      : AppIcons.opportunities,
                 ),
                 label: AppLocalizations.of(context)!.opportunities,
               ),
               BottomNavigationBarItem(
-                icon: HugeIcon(
-                  icon: HugeIcons.strokeRoundedLicense,
-                      color: cubit.currentIndex == 3
-                      ? MyColors.primaryColor
-                      : Colors.black,
+                icon: SvgPicture.asset(
+                  cubit.currentIndex == 3 ? AppIcons.blogFill : AppIcons.blog,
                 ),
                 label: AppLocalizations.of(context)!.blog,
               ),
+
               BottomNavigationBarItem(
-                icon: HugeIcon(
-                  icon: HugeIcons.strokeRoundedUser,
-                    color: cubit.currentIndex == 4
-                      ? MyColors.primaryColor
-                      : Colors.black,
+                icon: SvgPicture.asset(
+                  cubit.currentIndex == 4
+                      ? AppIcons.profileFill
+                      : AppIcons.profile,
                 ),
                 label: AppLocalizations.of(context)!.profile,
               ),

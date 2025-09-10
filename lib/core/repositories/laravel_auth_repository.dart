@@ -131,6 +131,11 @@ class LaravelLoginRepository extends LaravelRepository
     return (accessToken, role);
   }
 
+
+
+
+
+
   @override
   Future<void> forgotPassword({String? email}) async {
     if (email == null) {
@@ -162,6 +167,80 @@ class LaravelLoginRepository extends LaravelRepository
 
       // Re-throw other errors (like rate limiting, server errors)
       rethrow;
+    }
+  }
+  
+  @override
+  Future<void> changePassword({
+    required String currentPassword, 
+    required String newPassword, 
+    required String confirmPassword,
+    String? accessToken,
+  }) async {
+    try {
+      await post(
+        '/v1/auth/change-password',
+        data: {
+          'data': {
+            'attributes': {
+              'current_password': currentPassword,
+              'new_password': newPassword,
+              'new_password_confirmation': confirmPassword,
+            },
+          },
+        },
+        headers: accessToken != null 
+            ? {'Authorization': 'Bearer $accessToken'}
+            : null,
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      // API returns 200 on success with message
+      // No need to process response data for password change
+      
+    } on DioException catch (e) {
+      // Handle specific API errors based on status codes
+      if (e.response?.statusCode == 422) {
+        final errors = e.response?.data['errors'];
+        if (errors != null && errors is List && errors.isNotEmpty) {
+          final firstError = errors[0];
+          final detail = firstError['detail'] as String?;
+          
+          // Handle specific validation errors
+          if (detail != null) {
+            if (detail.contains('current password is incorrect')) {
+              throw Exception('Current password is incorrect');
+            } else if (detail.contains('confirmation does not match')) {
+              throw Exception('Password confirmation does not match');
+            } else if (detail.contains('must be different from the current password')) {
+              throw Exception('New password must be different from current password');
+            } else if (detail.contains('min:8')) {
+              throw Exception('Password must be at least 8 characters long');
+            } else {
+              throw Exception(detail);
+            }
+          }
+        }
+        throw Exception('Password validation failed');
+      } else if (e.response?.statusCode == 401) {
+        throw Exception('Authentication failed. Please log in again');
+      } else if (e.response?.statusCode == 403) {
+        throw Exception('You are not authorized to change this password');
+      } else if (e.response?.statusCode == 429) {
+        throw Exception('Too many password change attempts. Please try again later');
+      } else if (e.response?.statusCode == 500) {
+        throw Exception('Server error occurred. Please try again later');
+      } else {
+        throw Exception('Failed to change password: ${e.message}');
+      }
+    } catch (e) {
+      // Handle any other unexpected errors
+      throw Exception('An unexpected error occurred: ${e.toString()}');
     }
   }
 }
