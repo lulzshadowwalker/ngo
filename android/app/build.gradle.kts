@@ -7,8 +7,10 @@ plugins {
 
 android {
     namespace = "online.lulzie.ngo962.ngo"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 35
+    ndkVersion = "28.0.12674087"
+
+    useLegacyPackaging = false
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -24,8 +26,8 @@ android {
         applicationId = "online.lulzie.ngo962.ngo"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdk = 24
+        targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
