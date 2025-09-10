@@ -1,8 +1,9 @@
-import 'package:hugeicons/hugeicons.dart';
 import 'package:ngo/export_tools.dart';
 import 'package:ngo/features/join_our_community_part_two/join_our_communitry_part_two.dart';
 
 import '../../core/core_export.dart';
+import '../../core/widgets/back_button.dart';
+import '../register_organization/register_organization_view.dart';
 import 'join_our_export.dart';
 
 class JionOurCommunity extends StatelessWidget {
@@ -15,21 +16,7 @@ class JionOurCommunity extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         scrolledUnderElevation: 0,
-        leading: IconButton(
-          icon: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: MyColors.darkGrayColor, width: 0.4),
-            ),
-            child: HugeIcon(
-              icon: lang.localeName == "ar"
-                  ? HugeIcons.strokeRoundedArrowRight01
-                  : HugeIcons.strokeRoundedArrowLeft01,
-              color: MyColors.primaryColor,
-              size: 30,
-            ),
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        leading: BackButtonWidgets(lang: lang),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -63,7 +50,14 @@ class JionOurCommunity extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             IamJoiningAsAnSection(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RegisterOrganizationView(),
+                  ),
+                );
+              },
               title: AppLocalizations.of(context)!.organization,
               description: AppLocalizations.of(
                 context,

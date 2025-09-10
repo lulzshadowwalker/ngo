@@ -8,9 +8,13 @@ import '../../core/hooks/use_image_picker.dart';
 import '../../core/theme/my_fonts.dart';
 import '../../export_tools.dart';
 import '../../models/location.dart';
+import '../../models/sectors.dart';
 import '../../models/skill.dart';
 import '../../service_locator.dart';
+import '../auth/cubit/auth_cubit.dart';
+import '../main_nav/main_nav.dart';
 import '../organization/cubit/organization_cubit.dart';
+import '../sectors_features/cubit/sectors_cubit.dart';
 import '../skills/cubit/skills_cubit.dart';
 
 class CompleteYourProfile extends HookWidget {
@@ -25,14 +29,26 @@ class CompleteYourProfile extends HookWidget {
   final String password;
   @override
   Widget build(BuildContext context) {
+    var lang = AppLocalizations.of(context)!;
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => sl<SkillsCubit>()..fetchAllSkills()),
+        BlocProvider(create: (context) => sl<SkillsCubit>()..fetchAllSkills(
+          language: lang.localeName,
+        )),
         BlocProvider(
-          create: (context) => sl<LocationCubit>()..fetchAllLocation(),
+          create: (context) => sl<LocationCubit>()..fetchAllLocation(
+            language: lang.localeName,
+          ),
         ),
         BlocProvider(
-          create: (context) => sl<OrganizationCubit>()..fetchAllOrganizations(),
+          create: (context) => sl<OrganizationCubit>()..fetchAllOrganizations(
+            language: lang.localeName,
+          ),
+        ),
+          BlocProvider(
+          create: (context) => sl<SectorsCubit>()..fetchAllSectors(
+            language: lang.localeName,
+          ),
         ),
       ],
       child: _CompleteYourProfileView(
@@ -63,7 +79,7 @@ class _CompleteYourProfileView extends HookWidget {
     final selectedDate = useState<DateTime?>(null);
     final selectedLocation = useState<Location?>(null);
     final selectedSkills = useState<List<Skill>>([]);
-    final interests = useState<List<String>>(['Education', 'Environment']);
+    final selectedSectors = useState<List<Sector>>([]);
     final followedOrgs = useState<List<dynamic>>([]);
 
     // Use the custom image picker hook
@@ -472,24 +488,60 @@ class _CompleteYourProfileView extends HookWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                const Text('Volunteering Interests'),
+                const Text('Volunteering Interests (Sectors)'),
                 const SizedBox(height: 8),
-                Wrap(
-                  spacing: 8,
-                  children: interests.value
-                      .map(
-                        (interest) => Chip(
-                          label: Text(interest),
-                          backgroundColor: Colors.green[50],
-                          labelStyle: const TextStyle(color: Colors.green),
-                          deleteIcon: const Icon(Icons.close, size: 18),
-                          onDeleted: () {
-                            interests.value = List.from(interests.value)
-                              ..remove(interest);
-                          },
+                // Selected sectors display
+                if (selectedSectors.value.isNotEmpty) ...[
+                  Wrap(
+                    spacing: 8,
+                    children: selectedSectors.value
+                        .map(
+                          (sector) => Chip(
+                            label: Text(sector.name),
+                            backgroundColor: Colors.green[50],
+                            labelStyle: const TextStyle(color: Colors.green),
+                            deleteIcon: const Icon(Icons.close, size: 18),
+                            onDeleted: () {
+                              selectedSectors.value = List.from(selectedSectors.value)
+                                ..remove(sector);
+                            },
+                          ),
+                        )
+                        .toList(),
+                  ),
+                  const SizedBox(height: 8),
+                ],
+                // Add sectors button
+                BlocBuilder<SectorsCubit, SectorsState>(
+                  builder: (context, state) {
+                    return GestureDetector(
+                      onTap: () => _showSectorsBottomSheet(context, state, selectedSectors),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 16,
                         ),
-                      )
-                      .toList(),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Theme.of(context).primaryColor),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add, color: Colors.green),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Add Interests',
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 32),
                 SizedBox(
@@ -665,44 +717,92 @@ class _CompleteYourProfileView extends HookWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
-                SizedBox(
-                  width: double.infinity,
-                  height: 54,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[700],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () {
-                      /// print all collected data
-                      log("Full Name: $fullName");
-                      log("Email: $email");
-                      log("Password: $password");
-                      log("About: ${aboutController.text}");
-                      log("DOB: ${selectedDate.value}");
-                      log(
-                        "Location: ${selectedLocation.value != null ? '${selectedLocation.value!.city}, ${selectedLocation.value!.country}' : locationController.text}",
-                      );
-                      log(
-                        "Skills: ${selectedSkills.value.map((s) => s.name).toList()}",
-                      );
-                      log("Interests: ${interests.value}");
-                      log("Followed Orgs: ${followedOrgs.value.map((org) => (org as dynamic).name).toList()}");
 
-                      /// print selected image path
-                      log(
-                        "Profile Image Path: ${imagePickerResult.selectedImage?.path}",
-                      );
-                      // Navigator.push(context, MaterialPageRoute(builder: (context)=> MainNav()));
+                BlocProvider(
+                  create: (context) => sl<AuthCubit>(),
+                  child: BlocConsumer<AuthCubit, AuthState>(
+                    listener: (context, state) {
+                      final stateType = state.runtimeType.toString();
+                      if (stateType.contains('Authenticated')) {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => MainNav()),
+                          (route) => false,
+                        );
+                      } else if (stateType.contains('RegisterError')) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Registration failed. Please try again.'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
                     },
-                    child: Text(
-                      'Save Profile',
-                      style: MyFonts.font16Black.copyWith(color: Colors.white),
-                    ),
+                    builder: (context, state) {
+                      final stateType = state.runtimeType.toString();
+                      final isLoading = stateType.contains('Registering');
+                      
+                      return SizedBox(
+                        width: double.infinity,
+                        height: 54,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green[700],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: isLoading ? null : () async {
+                            // Validate required fields
+                            if (selectedLocation.value == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Please select a location'),
+                                  backgroundColor: Colors.orange,
+                                ),
+                              );
+                              return;
+                            }
+
+                            try {
+                              await context.read<AuthCubit>().registerIndividual(
+                                name: fullName,
+                                email: email,
+                                password: password,
+                                locationId: int.tryParse(selectedLocation.value!.id) ?? 0,
+                                avatar: imagePickerResult.selectedImage?.path,
+                              );
+                            } catch (e) {
+                              log("Registration error: $e");
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Registration failed: ${e.toString()}'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          },
+                          child: isLoading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  'Save Profile',
+                                  style: MyFonts.font16Black.copyWith(color: Colors.white),
+                                ),
+                        ),
+                      );
+                    },
                   ),
                 ),
+        
+        
+        
               ],
             ),
           ),
@@ -841,4 +941,137 @@ class _CompleteYourProfileView extends HookWidget {
       ),
     );
   }
+
+  void _showSectorsBottomSheet(
+    BuildContext context,
+    SectorsState state,
+    ValueNotifier<List<Sector>> selectedSectors,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setModalState) => DraggableScrollableSheet(
+          initialChildSize: 0.7,
+          maxChildSize: 0.9,
+          minChildSize: 0.5,
+          expand: false,
+          builder: (context, scrollController) {
+            return Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Select Interests',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: () {
+                      if (state.runtimeType.toString() == '_Loading') {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (state.runtimeType.toString() == '_Loaded') {
+                        final loadedState = state as dynamic;
+                        final sectors = loadedState.sectors as List<Sector>;
+                        return ListView.builder(
+                          controller: scrollController,
+                          itemCount: sectors.length,
+                          itemBuilder: (context, index) {
+                            final sector = sectors[index];
+                            final isSelected = selectedSectors.value.any(
+                              (s) => s.id == sector.id,
+                            );
+                            return CheckboxListTile(
+                              title: Text(sector.name),
+                              subtitle: Text(sector.description),
+                              value: isSelected,
+                              activeColor: Colors.green,
+                              onChanged: (bool? value) {
+                                if (value == true) {
+                                  selectedSectors.value = [
+                                    ...selectedSectors.value,
+                                    sector,
+                                  ];
+                                } else {
+                                  selectedSectors.value = selectedSectors.value
+                                      .where((s) => s.id != sector.id)
+                                      .toList();
+                                }
+                                // Trigger modal state update
+                                setModalState(() {});
+                              },
+                            );
+                          },
+                        );
+                      } else if (state.runtimeType.toString() == '_Error') {
+                        final errorState = state as dynamic;
+                        final message = errorState.message as String;
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.error, color: Colors.red, size: 48),
+                              const SizedBox(height: 16),
+                              Text(
+                                'Error loading sectors',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(message),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: () =>
+                                    sl<SectorsCubit>().fetchAllSectors(),
+                                child: Text('Retry'),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return const Center(child: Text('Loading sectors...'));
+                      }
+                    }(),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green[700],
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        'Done',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
 }

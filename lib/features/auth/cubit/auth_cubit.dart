@@ -88,6 +88,44 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  /// Register new organization user
+  Future<void> registerOrganization({
+    required String name,
+    required String email,
+    required String password,
+    required int locationId,
+    required int sectorId,
+    String? bio,
+    String? contactEmail,
+    String? website,
+    String? logo,
+  }) async {
+    try {
+      emit(const AuthState.registering());
+      final (accessToken, role) = await _authRepository.registerOrganization(
+        name: name,
+        email: email,
+        password: password,
+        locationId: locationId,
+        sectorId: sectorId,
+        bio: bio,
+        contactEmail: contactEmail,
+        website: website,
+        logo: logo,
+      );
+      await SharedPrefHelper.saveAuthData(
+        accessToken: accessToken,
+        role: role.name,
+      );
+      emit(AuthState.authenticated(
+        accessToken: accessToken,
+        role: role,
+      ));
+    } catch (error) {
+      emit(AuthState.registerError(error.toString()));
+    }
+  }
+
   /// Logout current user
   Future<void> logout() async {
     try {

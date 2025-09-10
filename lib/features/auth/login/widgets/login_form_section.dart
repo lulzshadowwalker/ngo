@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:ngo/core/theme/my_colors.dart';
@@ -26,6 +28,7 @@ class LoginFromSection extends HookWidget {
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           final stateType = state.runtimeType.toString();
+          log("State: $stateType");
           if (stateType.contains('Authenticated')) {
             CustomSnackBar.showSuccess(context, message: AppLocalizations.of(context)!.login_successful);
             Navigator.pushAndRemoveUntil(
@@ -38,6 +41,7 @@ class LoginFromSection extends HookWidget {
           } else if (stateType.contains('RegisterError')) {
             CustomSnackBar.showError(context, message: AppLocalizations.of(context)!.registration_failed);
           } else if (stateType.contains('LogoutError')) {
+            
             CustomSnackBar.showError(context, message: AppLocalizations.of(context)!.logout_failed);
           } else if (stateType.contains('Error')) {
             CustomSnackBar.showWarning(context, message: AppLocalizations.of(context)!.error_occurred);

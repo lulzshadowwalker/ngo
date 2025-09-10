@@ -1,13 +1,13 @@
 import 'dart:developer';
 
-import 'package:hugeicons/hugeicons.dart';
+import 'package:ngo/core/theme/my_fonts.dart';
+import 'package:ngo/export_tools.dart';
 
-import '../../core/core_export.dart';
-import '../../export_tools.dart';
-import '../complete_your_profile/complete_your_profile_export.dart';
+import '../../core/widgets/back_button.dart';
+import 'compelete_register_organization.dart';
 
-class JoinTheCommunity extends HookWidget {
-  const JoinTheCommunity({super.key});
+class RegisterOrganizationView extends HookWidget {
+  const RegisterOrganizationView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +30,7 @@ class JoinTheCommunity extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: HugeIcon(
-            icon: lang.localeName == "ar"
-                ? HugeIcons.strokeRoundedArrowRight01
-                : HugeIcons.strokeRoundedArrowLeft01,
-            color: MyColors.primaryColor,
-            size: 30,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        leading: BackButtonWidgets(lang: lang),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
@@ -51,17 +42,20 @@ class JoinTheCommunity extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-               Text(
+              Text(
                 lang.joinTheCommunity,
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 32),
               buildLabel(lang.fullName),
               TextFormField(
                 controller: nameController,
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                   hintText: lang.enterFullName,
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
                 validator: (value) =>
                     value == null || value.isEmpty ? 'Required' : null,
@@ -70,9 +64,9 @@ class JoinTheCommunity extends HookWidget {
               buildLabel(lang.emailAddress),
               TextFormField(
                 controller: emailController,
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                   hintText: lang.enterEmailAddress,
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) =>
@@ -109,7 +103,7 @@ class JoinTheCommunity extends HookWidget {
                   Expanded(
                     child: Wrap(
                       children: [
-                         Text(lang.iAgreeToThe),
+                        Text(lang.iAgreeToThe),
                         GestureDetector(
                           onTap: () {},
                           child: Text(
@@ -121,7 +115,7 @@ class JoinTheCommunity extends HookWidget {
                             ),
                           ),
                         ),
-                         Text(lang.andA),
+                        Text(lang.andA),
                         GestureDetector(
                           onTap: () {},
                           child: Text(
@@ -155,11 +149,16 @@ class JoinTheCommunity extends HookWidget {
                     log("This Name is: ${nameController.text}");
                     if (formKey.currentState?.validate() == true &&
                         agreedToTerms.value) {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> CompleteYourProfile(
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CompeleteRegisterOrganization(
                             fullName: nameController.text,
                             email: emailController.text,
                             password: passwordController.text,
-                          )));
+                          ),
+                        ),
+                      );
                     }
                   },
                   child: Text(
@@ -172,15 +171,15 @@ class JoinTheCommunity extends HookWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                   Text(lang.alreadyHaveAnAccount),
+                  Text(lang.alreadyHaveAnAccount),
                   GestureDetector(
                     onTap: () {
                       // Handle sign in navigation
                     },
                     child: Text(
                       lang.signIn,
-                      style: TextStyle(
-                        color: Colors.green[700],
+                      style: const TextStyle(
+                        color: Colors.green,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -193,8 +192,5 @@ class JoinTheCommunity extends HookWidget {
         ),
       ),
     );
-  
-  
-  
   }
 }

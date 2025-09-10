@@ -6,8 +6,10 @@ import '../../core/theme/my_colors.dart';
 import '../../core/theme/my_fonts.dart';
 import '../../export_tools.dart';
 import '../../service_locator.dart';
+import '../auth/cubit/auth_cubit.dart';
 import '../edit_proflie/edit_profle_export.dart';
 import '../settings/settings_export.dart';
+import '../splash/splash.dart';
 import '../user_management/cubit/user_management_cubit.dart';
 
 class ProfileView extends HookWidget {
@@ -80,6 +82,12 @@ class _ProfileViewContent extends HookWidget {
             icon: const Icon(Icons.search, color: Colors.black),
             onPressed: () {
               // Handle search action
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.black),
+            onPressed: () {
+              _showLogoutDialog(context);
             },
           ),
         ],
@@ -695,4 +703,86 @@ class _ProfileViewContent extends HookWidget {
       ),
     );
   }
+
+
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return BlocProvider.value(
+          value: sl<AuthCubit>(),
+          child: BlocListener<AuthCubit, AuthState>(
+            listener: (context, state) {
+              final stateType = state.runtimeType.toString();
+              if (stateType.contains('Unauthenticated')) {
+                // Close dialog first
+                Navigator.of(dialogContext).pop();
+                // Navigate to splash screen and remove all routes
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const Splash()),
+                  (route) => false,
+                );
+              } else if (stateType.contains('LogoutError')) {
+                // Close dialog and show error
+                Navigator.of(dialogContext).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Logout failed. Please try again.'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+            child: BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) {
+                final stateType = state.runtimeType.toString();
+                final isLoggingOut = stateType.contains('LoggingOut');
+
+                return AlertDialog(
+                  title: Text(AppLocalizations.of(context)!.logout),
+                  content: isLoggingOut
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                            SizedBox(width: 16),
+                            Text(AppLocalizations.of(context)!.logging_out),
+                          ],
+                        )
+                      : Text(AppLocalizations.of(context)!.are_you_sure_logout),
+                  actions: isLoggingOut
+                      ? []
+                      : [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop();
+                            },
+                            child: Text(AppLocalizations.of(context)!.cancel),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              final authCubit = context.read<AuthCubit>();
+                              authCubit.logout();
+                            },
+                            child: Text(AppLocalizations.of(context)!.logout),
+                          ),
+                        ],
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+
+
+
 }

@@ -1,6 +1,7 @@
 enum Role {
   individual,
-  organizer;
+  organizer,
+  organization;
 
   static Role? tryFrom(String value) {
     for (Role role in Role.values) {

@@ -8,6 +8,7 @@ final class LaravelUserManagementRepository extends LaravelRepository
   
   @override
   Future<User> getCurrentUser(String accessToken) async {
+    
     final response = await get(
       '/v1/me',
       headers: {'Authorization': 'Bearer $accessToken'},

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ngo/core/contracts/user_management_regpository.dart';
@@ -16,6 +18,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
 
   Future<void> fetchCurrentUser() async {
     final accessToken = await SharedPrefHelper.getAccessToken();
+    log("Token: $accessToken");
     try {
       emit(const UserManagementState.loading());
       
