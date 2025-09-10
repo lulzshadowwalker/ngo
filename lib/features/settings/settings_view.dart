@@ -8,9 +8,11 @@ import '../../l10n/locale/cubit/locale_cubit.dart';
 import '../../service_locator.dart';
 import '../auth/cubit/auth_cubit.dart';
 import '../components/text_component.dart';
+import '../edit_proflie/edit_profile_view.dart';
 import '../splash/splash.dart';
 import '../static_page_features/about.dart';
 import '../user_management/cubit/user_management_cubit.dart';
+import 'change_password_section.dart';
 
 class SettingsView extends HookWidget {
   const SettingsView({super.key});
@@ -53,14 +55,19 @@ class SettingsView extends HookWidget {
                         icon: Icons.person_outline,
                         title: AppLocalizations.of(context)!.edit_profile,
                         onTap: () {
-                          // Handle edit profile
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const EditProfileView(),
+                            ),
+                          );
                         },
                       ),
                       _buildSettingsItem(
                         icon: Icons.lock_outline,
                         title: AppLocalizations.of(context)!.change_password,
                         onTap: () {
-                          // Handle change password
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> ChangePasswordSection()));
                         },
                       ),
                       _buildSettingsItem(
@@ -592,8 +599,4 @@ class SettingsView extends HookWidget {
       },
     );
   }
-
-
-
-
 }
