@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ngo/models/organization.dart';
+import 'package:ngo/models/sectors.dart';
 
 part 'post.freezed.dart';
 
@@ -12,6 +13,7 @@ abstract class Post with _$Post {
     required String content,
     required String cover,
     required Organization? organization,
+    required Sector? sector,
     required DateTime createdAt,
     required String createdAtReadable,
     required DateTime updatedAt,
@@ -36,6 +38,9 @@ abstract class Post with _$Post {
       organization: includes['organization'] == null
           ? null
           : Organization.fromLaravel(includes['organization']),
+      sector: includes['sector'] == null
+          ? null
+          : Sector.fromLaravel(includes['sector']),
     );
   }
 }

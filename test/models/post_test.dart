@@ -42,6 +42,18 @@ void main() {
             },
           },
           "includes": {
+            "sector": {
+              "type": "sectors",
+              "id": "1",
+              "attributes": {
+                "name": "Informatics",
+                "description":
+                    "Eum et et et. Quisquam et est et. Quisquam aut et et. Quisquam aut et et.",
+                "createdAt": "2025-06-05T12:27:15+00:00",
+                "updatedAt": "2025-06-05T12:27:15+00:00",
+              },
+              "relationships": {},
+            },
             "organization": {
               "type": "organizations",
               "id": "1",
