@@ -181,6 +181,81 @@ as List<Post>,
 /// @nodoc
 
 
+class LoadedSinglePost implements PostState {
+  const LoadedSinglePost(this.post);
+  
+
+ final  Post post;
+
+/// Create a copy of PostState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$LoadedSinglePostCopyWith<LoadedSinglePost> get copyWith => _$LoadedSinglePostCopyWithImpl<LoadedSinglePost>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadedSinglePost&&(identical(other.post, post) || other.post == post));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,post);
+
+@override
+String toString() {
+  return 'PostState.loadedSinglePost(post: $post)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $LoadedSinglePostCopyWith<$Res> implements $PostStateCopyWith<$Res> {
+  factory $LoadedSinglePostCopyWith(LoadedSinglePost value, $Res Function(LoadedSinglePost) _then) = _$LoadedSinglePostCopyWithImpl;
+@useResult
+$Res call({
+ Post post
+});
+
+
+$PostCopyWith<$Res> get post;
+
+}
+/// @nodoc
+class _$LoadedSinglePostCopyWithImpl<$Res>
+    implements $LoadedSinglePostCopyWith<$Res> {
+  _$LoadedSinglePostCopyWithImpl(this._self, this._then);
+
+  final LoadedSinglePost _self;
+  final $Res Function(LoadedSinglePost) _then;
+
+/// Create a copy of PostState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? post = null,}) {
+  return _then(LoadedSinglePost(
+null == post ? _self.post : post // ignore: cast_nullable_to_non_nullable
+as Post,
+  ));
+}
+
+/// Create a copy of PostState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PostCopyWith<$Res> get post {
+  
+  return $PostCopyWith<$Res>(_self.post, (value) {
+    return _then(_self.copyWith(post: value));
+  });
+}
+}
+
+/// @nodoc
+
+
 class Error implements PostState {
   const Error(this.message);
   

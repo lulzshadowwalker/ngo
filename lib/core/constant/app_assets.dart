@@ -22,6 +22,7 @@ class AppIcons {
   static const String profile = 'assets/icons/profile_icons.svg';
   static const String programsFill = 'assets/icons/programs_fill.svg';
   static const String programs = 'assets/icons/programs_icons.svg';
+  static const String sharedICon = 'assets/icons/shered_article.svg';
 }
 
 class AppIconsSettings {

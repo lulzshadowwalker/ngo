@@ -65,9 +65,8 @@ class PostCubit extends Cubit<PostState> {
       );
       log('Fetched single post: ${singlePost.title}, slug: $slug');
       
-      // Create a list with the single post to maintain consistency with state
-      post = [singlePost];
-      emit(PostState.loaded(post!));
+    
+      emit(PostState.loadedSinglePost(singlePost));
     } catch (e) {
       log('Error fetching single post: $e');
       emit(PostState.error(e.toString()));

@@ -26,8 +26,10 @@ dependencies:
   image_picker: ^1.0.7
   intl: any
   pretty_dio_logger: ^1.4.0
+  share_plus: ^12.0.0
   shared_preferences: ^2.5.3
   skeletonizer: ^2.0.1
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:

@@ -8,5 +8,6 @@ class PostState with _$PostState {
   const factory PostState.initial() = _Initial;
   const factory PostState.loading() = Loading;
   const factory PostState.loaded(List<Post> posts) = Loaded;
+  const factory PostState.loadedSinglePost(Post post) = LoadedSinglePost;
   const factory PostState.error(String message) = Error;
 }

@@ -12,6 +12,8 @@ import 'package:ngo/features/sectors_features/cubit/sectors_cubit.dart';
 import 'package:ngo/service_locator.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import 'blog_post_details_page.dart';
+
 class BlogView extends HookWidget {
   const BlogView({super.key});
 
@@ -70,7 +72,9 @@ class _BlogContent extends HookWidget {
                 searchController.clear();
                 // Reset to all posts when closing search
                 final lang = AppLocalizations.of(context)!;
-                context.read<PostCubit>().fetchAllPost(language: lang.localeName);
+                context.read<PostCubit>().fetchAllPost(
+                  language: lang.localeName,
+                );
               }
             },
           ),
@@ -93,7 +97,9 @@ class _BlogContent extends HookWidget {
                           onPressed: () {
                             searchController.clear();
                             final lang = AppLocalizations.of(context)!;
-                            context.read<PostCubit>().fetchAllPost(language: lang.localeName);
+                            context.read<PostCubit>().fetchAllPost(
+                              language: lang.localeName,
+                            );
                           },
                         )
                       : null,
@@ -116,7 +122,9 @@ class _BlogContent extends HookWidget {
                 onChanged: (query) {
                   if (query.isEmpty) {
                     final lang = AppLocalizations.of(context)!;
-                    context.read<PostCubit>().fetchAllPost(language: lang.localeName);
+                    context.read<PostCubit>().fetchAllPost(
+                      language: lang.localeName,
+                    );
                   }
                 },
                 onSubmitted: (query) {
@@ -126,7 +134,7 @@ class _BlogContent extends HookWidget {
                 },
               ),
             ),
-          
+
           // Filter Chips Section
           Container(
             height: 50,
@@ -137,7 +145,7 @@ class _BlogContent extends HookWidget {
               },
             ),
           ),
-          
+
           // Posts List Section
           Expanded(
             child: BlocBuilder<PostCubit, PostState>(
@@ -164,7 +172,7 @@ class _BlogContent extends HookWidget {
         onTap: () {
           selectedFilter.value = label;
           final lang = AppLocalizations.of(context)!;
-          
+
           if (label == 'All') {
             context.read<PostCubit>().fetchAllPost(language: lang.localeName);
           } else {
@@ -197,26 +205,23 @@ class _BlogContent extends HookWidget {
     if (sectorsState.runtimeType.toString().contains('Loaded')) {
       final loadedState = sectorsState as dynamic;
       final sectors = loadedState.sectors as List<dynamic>;
-      
+
       return ListView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         children: [
           buildFilterChip('All'),
-          ...sectors.map((sector) => buildFilterChip(
-            sector.name ?? 'Unknown',
-            sectorId: sector.id,
-          )),
+          ...sectors.map(
+            (sector) =>
+                buildFilterChip(sector.name ?? 'Unknown', sectorId: sector.id),
+          ),
         ],
       );
     } else if (sectorsState.runtimeType.toString().contains('Loading')) {
       return const Center(child: CircularProgressIndicator());
     } else if (sectorsState.runtimeType.toString().contains('Error')) {
       return Center(
-        child: Text(
-          'Error loading categories',
-          style: MyFonts.font12Black,
-        ),
+        child: Text('Error loading categories', style: MyFonts.font12Black),
       );
     } else {
       return const SizedBox.shrink();
@@ -329,11 +334,7 @@ class _BlogContent extends HookWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.article_outlined,
-            size: 80,
-            color: Colors.grey[400],
-          ),
+          Icon(Icons.article_outlined, size: 80, color: Colors.grey[400]),
           const SizedBox(height: 16),
           Text(
             'No Posts Available',
@@ -347,10 +348,7 @@ class _BlogContent extends HookWidget {
           Text(
             'There are no blog posts to display at the moment.',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[500],
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
           ),
           const SizedBox(height: 24),
           ElevatedButton(
@@ -424,7 +422,7 @@ class AnimatedPostTile extends HookWidget {
       CurvedAnimation(parent: controller, curve: Curves.easeOut),
     );
 
-    return Opacity(  
+    return Opacity(
       opacity: animation,
       child: Transform.translate(
         offset: Offset(0, 20 * (1 - animation)),
@@ -445,6 +443,12 @@ class PostCard extends StatelessWidget {
       onTap: () {
         log("Post tapped: ${post.slug}");
         // Navigate to post details page
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PostDetailsPage(slug: post.slug),
+          ),
+        );
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 20),
