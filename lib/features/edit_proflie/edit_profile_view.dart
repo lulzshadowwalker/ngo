@@ -1,18 +1,37 @@
 
 
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../core/theme/my_colors.dart';
 import '../../export_tools.dart';
+import '../../models/user.dart';
+import '../../service_locator.dart';
+import '../user_management/cubit/user_management_cubit.dart';
 
 class EditProfileView extends HookWidget {
   const EditProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final fullNameController = useTextEditingController(text: 'Sarah Johnson');
-    final bioController = useTextEditingController(text: 'Passionate about making a difference in education and youth development. Currently volunteering with local NGOs.');
-    final emailController = useTextEditingController(text: 'sarah.johnson@email.com');
-    final phoneController = useTextEditingController(text: '+1 234 567');
+    return BlocProvider(
+      create: (context) => sl<UserManagementCubit>()..fetchCurrentUser(),
+      child: const _EditProfileContent(),
+    );
+  }
+}
+
+class _EditProfileContent extends HookWidget {
+  const _EditProfileContent();
+
+  @override
+  Widget build(BuildContext context) {
+    // Initialize all hooks at the top level of build method
+    final fullNameController = useTextEditingController();
+    final bioController = useTextEditingController();
+    final emailController = useTextEditingController();
+    final phoneController = useTextEditingController();
+    
     
     final selectedSkills = useState<Set<String>>({
       'Leadership', 
@@ -27,6 +46,101 @@ class EditProfileView extends HookWidget {
     
     final phoneError = useState<String?>(null);
 
+    return BlocConsumer<UserManagementCubit, UserManagementState>(
+      listener: (context, state) {
+        // Handle error states
+        if (state.toString().contains('error')) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Error loading profile data')),
+          );
+        }
+      },
+      builder: (context, state) {
+        // Handle loading state
+        if (state.toString().contains('loading') ||
+            state.toString().contains('initial')) {
+          return _buildLoadingScaffold(context);
+        }
+        
+        // Handle error state
+        if (state.toString().contains('error')) {
+          return _buildErrorScaffold(context);
+        }
+        
+        // Handle loaded state - extract user data
+        User? user;
+        if (state.toString().contains('loaded')) {
+          user = _extractUserFromState(state);
+          
+          // Update controllers with user data when loaded
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            fullNameController.text = user?.name ?? '';
+            bioController.text = user?.bio ?? '';
+            emailController.text = user?.email ?? '';
+            
+            
+          });
+        }
+        
+        return _buildMainScaffoldWithUserData(
+          context, 
+          user,
+          fullNameController,
+          bioController,
+          emailController,
+          phoneController,
+          selectedSkills,
+          selectedInterests,
+          phoneError,
+        );
+      },
+    );
+  }
+  
+  // Helper method to extract user from state string
+  User? _extractUserFromState(UserManagementState state) {
+    try {
+      final stateString = state.toString();
+      
+      if (stateString.contains('User(')) {
+        // Extract user data using regex similar to profile_view.dart
+        final nameMatch = RegExp(r'name: ([^,\)]+)').firstMatch(stateString);
+        final emailMatch = RegExp(r'email: ([^,\)]+)').firstMatch(stateString);
+        final bioMatch = RegExp(r'bio: ([^,\)]+)').firstMatch(stateString);
+        final avatarMatch = RegExp(r'avatar: ([^,\)]+)').firstMatch(stateString);
+        final idMatch = RegExp(r'id: ([^,\)]+)').firstMatch(stateString);
+        
+        // Create a basic user object with available data
+        if (nameMatch != null) {
+          return User(
+            id: idMatch?.group(1) ?? '0',
+            name: nameMatch.group(1)?.trim() ?? '',
+            email: emailMatch?.group(1)?.trim() ?? '',
+            bio: bioMatch?.group(1)?.trim() != 'null' ? bioMatch?.group(1)?.trim() : null,
+            avatar: avatarMatch?.group(1)?.trim() != 'null' ? avatarMatch?.group(1)?.trim() : null,
+            birthdate: null,
+            location: null,
+            skills: [],
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('Error extracting user from state: $e');
+    }
+    return null;
+  }
+
+  Widget _buildMainScaffoldWithUserData(
+    BuildContext context, 
+    User? user,
+    TextEditingController fullNameController,
+    TextEditingController bioController,
+    TextEditingController emailController,
+    TextEditingController phoneController,
+    ValueNotifier<Set<String>> selectedSkills,
+    ValueNotifier<Set<String>> selectedInterests,
+    ValueNotifier<String?> phoneError,
+  ) {
     final skills = [
       'Leadership', 'Communication', 'Project Management', 'Public Speaking',
       'Social Media', 'Event Planning'
@@ -48,6 +162,90 @@ class EditProfileView extends HookWidget {
       }
     }
 
+    return _buildMainScaffold(
+      context,
+      user: user,
+      fullNameController: fullNameController,
+      bioController: bioController,
+      emailController: emailController,
+      phoneController: phoneController,
+      selectedSkills: selectedSkills,
+      selectedInterests: selectedInterests,
+      skills: skills,
+      interests: interests,
+      phoneError: phoneError,
+      validatePhone: validatePhone,
+    );
+  }
+
+  Widget _buildErrorScaffold(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Profile'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Error loading profile data'),
+            ElevatedButton(
+              onPressed: () => context.read<UserManagementCubit>().fetchCurrentUser(),
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoadingScaffold(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text(
+          'Edit Profile',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+
+
+  Widget _buildMainScaffold(
+    BuildContext context, {
+    User? user,
+    required TextEditingController fullNameController,
+    required TextEditingController bioController,
+    required TextEditingController emailController,
+    required TextEditingController phoneController,
+    required ValueNotifier<Set<String>> selectedSkills,
+    required ValueNotifier<Set<String>> selectedInterests,
+    required List<String> skills,
+    required List<String> interests,
+    required ValueNotifier<String?> phoneError,
+    required Function(String) validatePhone,
+  }) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -73,7 +271,7 @@ class EditProfileView extends HookWidget {
         slivers: [
           // Profile Photo Section
           SliverToBoxAdapter(
-            child: _buildProfilePhotoSection(),
+            child: _buildProfilePhotoSection(context, user),
           ),
           
           // Form Fields
@@ -188,7 +386,7 @@ class EditProfileView extends HookWidget {
     );
   }
 
-  Widget _buildProfilePhotoSection() {
+  Widget _buildProfilePhotoSection(BuildContext context, User? user) {
     return Container(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -207,31 +405,51 @@ class EditProfileView extends HookWidget {
                   ),
                 ),
                 child: ClipOval(
-                  child: Container(
-                    color: Colors.grey[200],
-                    child: const Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.grey,
-                    ),
-                  ),
+                  child: user?.avatar != null && user!.avatar!.isNotEmpty
+                      ? Image.network(
+                          user.avatar!,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: Colors.grey[200],
+                              child: const Icon(
+                                Icons.person,
+                                size: 50,
+                                color: Colors.grey,
+                              ),
+                            );
+                          },
+                        )
+                      : Container(
+                          color: Colors.grey[200],
+                          child: const Icon(
+                            Icons.person,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
+                        ),
                 ),
               ),
               Positioned(
                 bottom: 0,
                 right: 0,
-                child: Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: MyColors.primaryColor,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 2),
-                  ),
-                  child: const Icon(
-                    Icons.camera_alt,
-                    size: 16,
-                    color: Colors.white,
+                child: GestureDetector(
+                  onTap: () => _showImageSourceDialog(context),
+                  child: Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: MyColors.primaryColor,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 2),
+                    ),
+                    child: const Icon(
+                      Icons.camera_alt,
+                      size: 16,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -241,9 +459,7 @@ class EditProfileView extends HookWidget {
           
           // Change Photo Text
           GestureDetector(
-            onTap: () {
-              // Handle change photo
-            },
+            onTap: () => _showImageSourceDialog(context),
             child: const Text(
               'Change Photo',
               style: TextStyle(
@@ -382,5 +598,63 @@ class EditProfileView extends HookWidget {
       ),
     );
     Navigator.pop(context);
+  }
+
+  void _showImageSourceDialog(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Camera'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImageFromCamera(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Gallery'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImageFromGallery(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.cancel),
+                title: const Text('Cancel'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _pickImageFromCamera(BuildContext context) {
+    // TODO: Implement camera image picker
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Camera functionality will be implemented'),
+        backgroundColor: MyColors.primaryColor,
+      ),
+    );
+  }
+
+  void _pickImageFromGallery(BuildContext context) {
+    // TODO: Implement gallery image picker
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Gallery functionality will be implemented'),
+        backgroundColor: MyColors.primaryColor,
+      ),
+    );
   }
 }
