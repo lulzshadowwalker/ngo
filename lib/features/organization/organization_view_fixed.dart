@@ -7,8 +7,6 @@ import 'package:ngo/features/sectors_features/cubit/sectors_cubit.dart';
 import 'package:ngo/service_locator.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../core/theme/my_colors.dart';
-
 class OrganizationView extends HookWidget {
   const OrganizationView({super.key});
 
@@ -163,7 +161,7 @@ class OrganizationView extends HookWidget {
                       child: ElevatedButton(
                         onPressed: () => Navigator.pop(bottomSheetContext),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: MyColors.primaryColor,
+                          backgroundColor: Colors.green,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           shape: RoundedRectangleBorder(
@@ -189,10 +187,10 @@ class OrganizationView extends HookWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? MyColors.primaryColor : Colors.grey[200],
+          color: isSelected ? Colors.green : Colors.grey[200],
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? MyColors.primaryColor : Colors.grey[300]!,
+            color: isSelected ? Colors.green : Colors.grey[300]!,
             width: 1,
           ),
         ),
@@ -266,7 +264,7 @@ class OrganizationView extends HookWidget {
           ),
           trailing: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: isFollowing ? Colors.grey[300] : MyColors.primaryColor,
+              backgroundColor: isFollowing ? Colors.grey[300] : Colors.green,
               foregroundColor: isFollowing ? Colors.black : Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -409,7 +407,7 @@ class OrganizationView extends HookWidget {
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25),
-                              borderSide: const BorderSide(color: MyColors.primaryColor),
+                              borderSide: const BorderSide(color: Colors.green),
                             ),
                             filled: true,
                             fillColor: Colors.grey[50],
@@ -477,7 +475,7 @@ class OrganizationView extends HookWidget {
                               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                               decoration: BoxDecoration(
                                 color: selectedFilter.value == label
-                                    ? MyColors.primaryColor
+                                    ? Colors.green
                                     : Colors.grey[200],
                                 borderRadius: BorderRadius.circular(20),
                               ),

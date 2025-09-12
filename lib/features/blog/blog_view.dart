@@ -423,7 +423,7 @@ class AnimatedPostTile extends HookWidget {
       CurvedAnimation(parent: controller, curve: Curves.easeOut),
     );
 
-    return Opacity(
+    return Opacity(  
       opacity: animation,
       child: Transform.translate(
         offset: Offset(0, 20 * (1 - animation)),
