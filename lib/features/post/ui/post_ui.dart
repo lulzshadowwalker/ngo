@@ -20,7 +20,8 @@ class PostUi extends HookWidget {
     return BlocProvider(
       create: (context) =>
           sl<PostCubit>()..fetchAllPost(language: lang.localeName),
-      child: BlocBuilder<PostCubit, PostState>(
+      child:
+      BlocBuilder<PostCubit, PostState>(
         buildWhen: (previous, current) =>
             current is Loading || current is Loaded || current is Error,
         builder: (context, state) {
@@ -45,6 +46,7 @@ class PostUi extends HookWidget {
                         ),
                         createdAtReadable: '2 hours ago',
                         updatedAt: DateTime.now(),
+                        sector: null,
                       ),
                       index: 0,
                     );
@@ -74,6 +76,9 @@ class PostUi extends HookWidget {
           }
         },
       ),
+   
+   
+   
     );
   }
 }

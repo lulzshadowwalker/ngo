@@ -12,6 +12,7 @@ class PostCubit extends Cubit<PostState> {
 
   final PostsRepository postsRepository;
   List<Post>? post;
+  
   Future<void> fetchAllPost({String language = 'en'}) async {
     try {
       emit(PostState.loading());
@@ -26,4 +27,54 @@ class PostCubit extends Cubit<PostState> {
       emit(PostState.error(e.toString()));
     }
   }
+
+  Future<void> searchPosts({
+    String query = '',
+    String language = 'en',
+    String? sectorId,
+  }) async {
+    try {
+      emit(PostState.loading());
+      
+      post = await postsRepository.search(
+        query,
+        language: language,
+        sectorId: sectorId,
+      );
+      log('Searched posts: ${post?.length}, query: "$query", sectorId: $sectorId');
+      emit(PostState.loaded(post!));
+    } catch (e) {
+      log('Error searching posts: $e');
+      emit(PostState.error(e.toString()));
+    }
+  }
+
+  Future<void> fetchSinglePost({
+    required String slug,
+    String language = 'en',
+  }) async {
+    try {
+      emit(PostState.loading());
+      
+      final accessToken = await SharedPrefHelper.getAccessToken();
+      
+      final singlePost = await postsRepository.fetch(
+        accessToken,
+        slug,
+        language: language,
+      );
+      log('Fetched single post: ${singlePost.title}, slug: $slug');
+      
+      // Create a list with the single post to maintain consistency with state
+      post = [singlePost];
+      emit(PostState.loaded(post!));
+    } catch (e) {
+      log('Error fetching single post: $e');
+      emit(PostState.error(e.toString()));
+    }
+  }
+
+
+
+
 }
