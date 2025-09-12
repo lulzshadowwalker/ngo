@@ -8,6 +8,7 @@ import 'package:ngo/core/repositories/laravel_applications_repository.dart';
 import 'package:ngo/core/repositories/laravel_opportunities_repository.dart';
 import 'package:ngo/core/repositories/laravel_sector_repository.dart';
 import 'package:ngo/core/repositories/laravel_static_page_repository.dart';
+import 'package:ngo/features/applications/cubit/application_cubit.dart';
 import 'package:ngo/features/location_section/cubit/location_cubit.dart';
 import 'package:ngo/features/notifications/cubit/notifications_cubit.dart';
 import 'package:ngo/features/opportunities/cubit/opportunities_cubit.dart';
@@ -75,6 +76,7 @@ void setupServiceLocator() {
   sl.registerFactory(() => PostCubit(postsRepository: sl<PostsRepository>()));
   sl.registerFactory(() => OrganizationCubit(sl<OrganizationsRepository>()));
   sl.registerFactory(() => OpportunitiesCubit(sl<OpportunitiesRepository>()));
+  sl.registerFactory(() => ApplicationCubit(sl<ApplicationsRepository>()));
   sl.registerFactory(() => NotificationsCubit(sl<NotificationRepository>()));
   sl.registerFactory(() => UserManagementCubit(sl<UserManagementRepository>()));
 
