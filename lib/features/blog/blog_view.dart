@@ -47,6 +47,7 @@ class _BlogContent extends HookWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        centerTitle: false,
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(

@@ -212,7 +212,7 @@ class OrganizationView extends HookWidget {
     final searchController = useTextEditingController();
     final selectedFilter = useState('All');
     final selectedFilterId = useState<String?>(null);
-    final followedOrganizations = useState<List<String>>([]);
+    final followedOrganizations = useState<Set<String>>({});
     final showSearchField = useState(false);
 
     Widget buildOrganizationCard({
@@ -220,20 +220,24 @@ class OrganizationView extends HookWidget {
       required String description,
       required String location,
       required String? imageUrl,
-      required bool isFollowing,
       required String organizationId,
       required BuildContext context,
     }) {
+      final isFollowing = followedOrganizations.value.contains(organizationId);
+      
       return Card(
         margin: const EdgeInsets.symmetric(vertical: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 2,
         child: ListTile(
+          contentPadding: const EdgeInsets.all(16),
           leading: CircleAvatar(
+            radius: 30,
             backgroundImage: NetworkImage(
               imageUrl ?? "https://placehold.co/100",
             ),
             onBackgroundImageError: (exception, stackTrace) {
-              // Handle image loading error silently
+              log('Failed to load image: $imageUrl');
             },
             child: imageUrl == null || imageUrl.isEmpty
                 ? const Icon(Icons.business, color: Colors.white, size: 30)
@@ -241,55 +245,108 @@ class OrganizationView extends HookWidget {
           ),
           title: Text(
             name,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(description, overflow: TextOverflow.ellipsis, maxLines: 2),
+              const SizedBox(height: 4),
+              Text(
+                description,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 8),
               Row(
                 children: [
-                  const Icon(Icons.location_on, size: 16, color: Colors.grey),
+                  Icon(Icons.location_on, size: 16, color: Colors.grey[500]),
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
                       location,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
+                      style: TextStyle(
+                        color: Colors.grey[500],
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ],
               ),
             ],
           ),
-          trailing: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: isFollowing ? Colors.grey[300] : MyColors.primaryColor,
-              foregroundColor: isFollowing ? Colors.black : Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+          trailing: SizedBox(
+            width: 100,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isFollowing ? Colors.grey[300] : MyColors.primaryColor,
+                foregroundColor: isFollowing ? Colors.black : Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
+              onPressed: () async {
+                try {
+                  if (isFollowing) {
+                    await context.read<OrganizationCubit>().unfollowOrganization(organizationId);
+                    followedOrganizations.value = Set.from(followedOrganizations.value)
+                      ..remove(organizationId);
+                    
+                    // Show success message
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Unfollowed $name'),
+                          backgroundColor: Colors.orange,
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  } else {
+                    await context.read<OrganizationCubit>().followOrganization(organizationId);
+                    followedOrganizations.value = Set.from(followedOrganizations.value)
+                      ..add(organizationId);
+                    
+                    // Show success message
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Following $name'),
+                          backgroundColor: MyColors.primaryColor,
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  }
+                } catch (e) {
+                  // Show error message
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Failed to ${isFollowing ? 'unfollow' : 'follow'} $name'),
+                        backgroundColor: Colors.red,
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                }
+              },
+              child: Text(
+                isFollowing ? 'Following' : 'Follow',
+                style: const TextStyle(fontSize: 12),
               ),
             ),
-            onPressed: () {
-              if (isFollowing) {
-                context.read<OrganizationCubit>().unfollowOrganization(
-                  organizationId,
-                );
-                followedOrganizations.value = List.from(
-                  followedOrganizations.value,
-                )..remove(name);
-              } else {
-                context.read<OrganizationCubit>().followOrganization(
-                  organizationId,
-                );
-                followedOrganizations.value = List.from(
-                  followedOrganizations.value,
-                )..add(name);
-              }
-            },
-            child: Text(isFollowing ? 'Following' : 'Follow'),
           ),
         ),
       );
@@ -299,20 +356,18 @@ class OrganizationView extends HookWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              sl<OrganizationCubit>()
-                ..fetchAllOrganizations(language: lang.localeName),
+          create: (context) => sl<OrganizationCubit>()
+            ..fetchAllOrganizations(language: lang.localeName),
         ),
         BlocProvider(
-          create: (context) =>
-              sl<SectorsCubit>()..fetchAllSectors(language: lang.localeName),
+          create: (context) => sl<SectorsCubit>()
+            ..fetchAllSectors(language: lang.localeName),
         ),
       ],
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
-          leading: const BackButton(color: Colors.black),
           title: Text(
             lang.organizations,
             style: const TextStyle(
@@ -370,14 +425,14 @@ class OrganizationView extends HookWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Search TextField Section (like blog_view)
+                    // Search TextField Section
                     if (showSearchField.value)
                       Container(
                         margin: const EdgeInsets.only(bottom: 16),
                         child: TextField(
                           controller: searchController,
                           decoration: InputDecoration(
-                            hintText: lang.searchOrganizations,
+                            hintText: 'Search organizations...',
                             prefixIcon: const Icon(Icons.search),
                             suffixIcon: searchController.text.isNotEmpty
                                 ? IconButton(
@@ -518,9 +573,19 @@ class OrganizationView extends HookWidget {
                               ],
                             ),
                           );
+                        } else if (sectorsState.runtimeType.toString().contains('Loading')) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (sectorsState.runtimeType.toString().contains('Error')) {
+                          final errorState = sectorsState as dynamic;
+                          return Center(
+                            child: Text(
+                              'Failed to load sectors: ${errorState.message}',
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                          );
                         }
                         
-                        return const Center(child: CircularProgressIndicator());
+                        return Container(); // Initial state
                       },
                     ),
                   ],
@@ -534,7 +599,7 @@ class OrganizationView extends HookWidget {
                     child: Center(
                       child: Padding(
                         padding: EdgeInsets.all(20),
-                        child: Text('No data available'),
+                        child: Text('Welcome! Loading organizations...'),
                       ),
                     ),
                   );
@@ -546,17 +611,16 @@ class OrganizationView extends HookWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: buildOrganizationCard(
-                            name: 'Unknown Organization',
-                            description: 'No description available',
-                            location: 'Unknown location',
+                            name: 'Loading Organization',
+                            description: 'Loading description and details...',
+                            location: 'Loading location...',
                             imageUrl: 'https://placehold.co/100',
-                            isFollowing: false,
-                            organizationId: '0',
+                            organizationId: 'loading_$index',
                             context: context,
                           ),
                         ),
                       );
-                    }, childCount: 10),
+                    }, childCount: 6),
                   );
                 } else if (state.runtimeType.toString().contains('Loaded')) {
                   final loadedState = state as dynamic;
@@ -571,7 +635,9 @@ class OrganizationView extends HookWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
-                                Icons.search_off,
+                                searchController.text.isNotEmpty
+                                    ? Icons.search_off
+                                    : Icons.business_center_outlined,
                                 size: 64,
                                 color: Colors.grey[400],
                               ),
@@ -579,7 +645,9 @@ class OrganizationView extends HookWidget {
                               Text(
                                 searchController.text.isNotEmpty
                                     ? 'No organizations match your search'
-                                    : 'No organizations available',
+                                    : selectedFilter.value != 'All'
+                                        ? 'No organizations in ${selectedFilter.value}'
+                                        : 'No organizations available',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -590,7 +658,7 @@ class OrganizationView extends HookWidget {
                               Text(
                                 searchController.text.isNotEmpty
                                     ? 'Try different search terms'
-                                    : 'Check your internet connection',
+                                    : 'Check back later for updates',
                                 style: TextStyle(color: Colors.grey[500]),
                               ),
                             ],
@@ -607,11 +675,10 @@ class OrganizationView extends HookWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: buildOrganizationCard(
                           name: org.name ?? 'Unknown Organization',
-                          description: org.sector ?? 'No description',
-                          location: org.location ?? 'Unknown location',
-                          imageUrl: org.logo ?? org.image ?? org.avatar ?? 'https://placehold.co/100',
-                          isFollowing: followedOrganizations.value.contains(org.name),
-                          organizationId: org.slug ?? '0',
+                          description: org.sector ?? org.description ?? 'No description available',
+                          location: org.location ?? 'Location not specified',
+                          imageUrl: org.logo ?? org.image ?? org.avatar,
+                          organizationId: org.slug ?? org.id ?? 'unknown_$index',
                           context: context,
                         ),
                       );
@@ -619,8 +686,6 @@ class OrganizationView extends HookWidget {
                   );
                 } else if (state.runtimeType.toString().contains('Error')) {
                   final errorState = state as dynamic;
-                  final message = errorState.message ?? 'Unknown error';
-
                   return SliverToBoxAdapter(
                     child: Center(
                       child: Padding(
@@ -628,14 +693,46 @@ class OrganizationView extends HookWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Error: $message'),
+                            Icon(
+                              Icons.error_outline,
+                              size: 64,
+                              color: Colors.red[300],
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Error loading organizations',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red[600],
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              errorState.message ?? 'Unknown error',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.grey[600]),
+                            ),
                             const SizedBox(height: 16),
                             ElevatedButton(
-                              onPressed: () => context
-                                  .read<OrganizationCubit>()
-                                  .fetchAllOrganizations(
+                              onPressed: () {
+                                // Retry with current filter settings
+                                if (selectedFilterId.value != null) {
+                                  context.read<OrganizationCubit>().searchOrganizations(
+                                    searchController.text,
                                     language: lang.localeName,
-                                  ),
+                                    sectorId: selectedFilterId.value,
+                                  );
+                                } else {
+                                  context.read<OrganizationCubit>().fetchAllOrganizations(
+                                    language: lang.localeName,
+                                  );
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: MyColors.primaryColor,
+                                foregroundColor: Colors.white,
+                              ),
                               child: const Text('Retry'),
                             ),
                           ],
