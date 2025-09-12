@@ -25,4 +25,14 @@ abstract class Sector with _$Sector {
       updatedAt: DateTime.parse(attributes['updatedAt'] as String),
     );
   }
+
+  factory Sector.fromJson(Map<String, dynamic> json) {
+    return Sector(
+      id: json['id'].toString(),
+      name: json['name'] as String,
+      description: '', // Default since not provided in API response
+      createdAt: DateTime.now(), // Default since not provided
+      updatedAt: DateTime.now(),
+    );
+  }
 }

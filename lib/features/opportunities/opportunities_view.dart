@@ -1,8 +1,10 @@
-
-
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngo/core/theme/my_colors.dart';
 import 'package:ngo/export_tools.dart';
+import 'package:ngo/features/opportunities/cubit/opportunities_cubit.dart';
+import 'package:ngo/features/opportunities/opportunity_detail_view.dart';
+import 'package:ngo/models/opportunity.dart';
+import 'package:ngo/service_locator.dart';
 
 class OpportunitiesView extends HookWidget {
   const OpportunitiesView({super.key});
@@ -10,146 +12,277 @@ class OpportunitiesView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final searchController = useTextEditingController();
-    final selectedFilter = useState('All');
+    final scrollController = useScrollController();
+    var lang = AppLocalizations.of(context)!;
 
-    // Sample opportunities data
-    final opportunities = [
-      {
-        'title': 'Youth Education Program',
-        'organization': 'Jordan Education Initiative',
-        'description': 'Support local students with their studies and help develop educational',
-        'location': 'Amman, Jordan',
-        'duration': '6 months',
-        'image': 'assets/images/education.jpg',
-        'category': 'Education',
-      },
-      {
-        'title': 'Community Health Outreach',
-        'organization': 'Health Care Society',
-        'description': 'Assist in organizing health awareness campaigns and medical',
-        'location': 'Zarqa, Jordan',
-        'duration': '6 months',
-        'image': 'assets/images/health.jpg',
-        'category': 'Healthcare',
-      },
-      {
-        'title': 'Environmental Conservation',
-        'organization': 'Green Jordan',
-        'description': 'Help teach basic computer skills to underprivileged communities.',
-        'location': 'Aqaba, Jordan',
-        'duration': '1 month',
-        'image': 'assets/images/environment.jpg',
-        'category': 'Environmental',
-      },
-      {
-        'title': 'Digital Skills Workshop',
-        'organization': 'Tech for All',
-        'description': 'Help teach basic computer skills to underprivileged communities.',
-        'location': 'Irbid, Jordan',
-        'duration': '1 month',
-        'image': 'assets/images/digital.jpg',
-        'category': 'Education',
-      },
-    ];
+    // Listen for scroll to implement pagination
+    useEffect(() {
+      void onScroll() {
+        if (scrollController.position.pixels >= 
+            scrollController.position.maxScrollExtent * 0.9) {
+          final cubit = sl<OpportunitiesCubit>();
+          if (cubit.hasMorePages) {
+            cubit.loadMore(language: lang.localeName);
+          }
+        }
+      }
+      
+      scrollController.addListener(onScroll);
+      return () => scrollController.removeListener(onScroll);
+    }, [scrollController]);
 
-    // Filter opportunities based on selected filter
-    final filteredOpportunities = opportunities.where((opportunity) {
-      if (selectedFilter.value == 'All') return true;
-      return opportunity['category'] == selectedFilter.value;
-    }).toList();
-
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+    return BlocProvider(
+      create: (context) => sl<OpportunitiesCubit>()
+        ..fetchOpportunities(language: lang.localeName),
+      child: Scaffold(
         backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          'Volunteer Opportunities',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.filter_list, color: Colors.black),
-            onPressed: () {
-              // Handle filter action
-            },
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Search Bar
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: TextField(
-                controller: searchController,
-                decoration: const InputDecoration(
-                  hintText: 'Search opportunities...',
-                  hintStyle: TextStyle(color: Colors.grey),
-                  prefixIcon: Icon(Icons.search, color: Colors.grey),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                ),
-              ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: const Text(
+            'Volunteer Opportunities',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
             ),
-            const SizedBox(height: 16),
-            
-            // Filter Chips
-            SizedBox(
-              height: 40,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  _buildFilterChip('All', selectedFilter),
-                  const SizedBox(width: 8),
-                  _buildFilterChip('Environmental', selectedFilter),
-                  const SizedBox(width: 8),
-                  _buildFilterChip('Education', selectedFilter),
-                  const SizedBox(width: 8),
-                  _buildFilterChip('Healthcare', selectedFilter),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            
-            // Opportunities List
-            Expanded(
-              child: ListView.builder(
-                itemCount: filteredOpportunities.length,
-                itemBuilder: (context, index) {
-                  final opportunity = filteredOpportunities[index];
-                  return _buildOpportunityCard(
-                    title: opportunity['title'] as String,
-                    organization: opportunity['organization'] as String,
-                    description: opportunity['description'] as String,
-                    location: opportunity['location'] as String,
-                    duration: opportunity['duration'] as String,
-                    image: opportunity['image'] as String,
-                  );
+          ),
+          actions: [
+            Builder(
+              builder: (context) => IconButton(
+                icon: const Icon(Icons.tune, color: Colors.black),
+                onPressed: () {
+                  _showFilterBottomSheet(context, lang);
                 },
               ),
             ),
           ],
         ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              // Search Bar
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: TextField(
+                  controller: searchController,
+                  decoration: const InputDecoration(
+                    hintText: 'Search opportunities...',
+                    hintStyle: TextStyle(color: Colors.grey),
+                    prefixIcon: Icon(Icons.search, color: Colors.grey),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                  onChanged: (value) {
+                    if (value.isNotEmpty) {
+                      context.read<OpportunitiesCubit>().searchOpportunities(
+                        value,
+                        language: lang.localeName,
+                      );
+                    } else {
+                      context.read<OpportunitiesCubit>().clearFilters(language: lang.localeName);
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+              
+              // Filter Chips
+              BlocBuilder<OpportunitiesCubit, OpportunitiesState>(
+                builder: (context, state) {
+                  final stateType = state.runtimeType.toString();
+                  final isLoaded = stateType.contains('Loaded');
+                  
+                  int? selectedSectorId;
+                  bool isFeatured = false;
+                  
+                  if (isLoaded) {
+                    final loadedState = state as dynamic;
+                    selectedSectorId = loadedState.selectedSectorId;
+                    isFeatured = loadedState.isFeatured ?? false;
+                  }
+                  
+                  return SizedBox(
+                    height: 40,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        _buildFilterChip(
+                          'All',
+                          isSelected: isLoaded && selectedSectorId == null && !isFeatured,
+                          onTap: () => context.read<OpportunitiesCubit>()
+                              .clearFilters(language: lang.localeName),
+                        ),
+                        const SizedBox(width: 8),
+                        _buildFilterChip(
+                          'Environmental',
+                          isSelected: isLoaded && selectedSectorId == 1,
+                          onTap: () => context.read<OpportunitiesCubit>()
+                              .filterBySector(1, language: lang.localeName),
+                        ),
+                        const SizedBox(width: 8),
+                        _buildFilterChip(
+                          'Education',
+                          isSelected: isLoaded && selectedSectorId == 2,
+                          onTap: () => context.read<OpportunitiesCubit>()
+                              .filterBySector(2, language: lang.localeName),
+                        ),
+                        const SizedBox(width: 8),
+                        _buildFilterChip(
+                          'Healthcare',
+                          isSelected: isLoaded && selectedSectorId == 3,
+                          onTap: () => context.read<OpportunitiesCubit>()
+                              .filterBySector(3, language: lang.localeName),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              
+              // Opportunities List
+              Expanded(
+                child: BlocBuilder<OpportunitiesCubit, OpportunitiesState>(
+                  builder: (context, state) {
+                    final stateType = state.runtimeType.toString();
+                    
+                    if (stateType.contains('Initial') || stateType.contains('Loading')) {
+                      return _buildLoadingState();
+                    }
+                    
+                    if (stateType.contains('Error')) {
+                      return _buildErrorState(context, lang);
+                    }
+                    
+                    if (stateType.contains('Loaded')) {
+                      // Extract opportunities using reflection-like approach
+                      final loadedState = state as dynamic;
+                      final opportunities = loadedState.opportunities as List<Opportunity>;
+                      
+                      if (opportunities.isEmpty) {
+                        return _buildEmptyState();
+                      }
+                      
+                      return ListView.builder(
+                        controller: scrollController,
+                        itemCount: opportunities.length + (context.read<OpportunitiesCubit>().hasMorePages ? 1 : 0),
+                        itemBuilder: (context, index) {
+                          if (index >= opportunities.length) {
+                            return const Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Center(child: CircularProgressIndicator()),
+                            );
+                          }
+                          
+                          final opportunity = opportunities[index];
+                          return _buildOpportunityCard(opportunity, context);
+                        },
+                      );
+                    }
+                    
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildFilterChip(String label, ValueNotifier<String> selectedFilter) {
-    final isSelected = selectedFilter.value == label;
+  Widget _buildLoadingState() {
+    return ListView.builder(
+      itemCount: 6,
+      itemBuilder: (context, index) => _buildOpportunityCardSkeleton(),
+    );
+  }
+
+  Widget _buildErrorState(BuildContext context, AppLocalizations lang) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.error_outline,
+            size: 80,
+            color: Colors.red[400],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Oops! Something went wrong',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Please check your connection and try again',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[500],
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              context.read<OpportunitiesCubit>()
+                  .fetchOpportunities(language: lang.localeName);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: MyColors.primaryColor,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Try Again'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.search_off,
+            size: 80,
+            color: Colors.grey[400],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'No opportunities found',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Try adjusting your search or filters',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[500],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterChip(String label, {required bool isSelected, required VoidCallback onTap}) {
     return GestureDetector(
-      onTap: () {
-        selectedFilter.value = label;
-      },
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
@@ -167,17 +300,161 @@ class OpportunitiesView extends HookWidget {
     );
   }
 
-  Widget _buildOpportunityCard({
-    required String title,
-    required String organization,
-    required String description,
-    required String location,
-    required String duration,
-    required String image,
-  }) {
+  Widget _buildOpportunityCard(Opportunity opportunity, BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OpportunityDetailView(
+              opportunityId: opportunity.id,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withValues(alpha: 0.1),
+              spreadRadius: 1,
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Opportunity Image
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                bottomLeft: Radius.circular(12),
+              ),
+              child: SizedBox(
+                width: 80,
+                height: 100,
+                child: _buildOpportunityImage(opportunity),
+              ),
+            ),
+            
+            // Opportunity Details
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      opportunity.title,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      opportunity.organization.name,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: MyColors.primaryColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      opportunity.description,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey,
+                        height: 1.3,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          size: 14,
+                          color: Colors.grey,
+                        ),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            opportunity.locationDescription ?? 'Location ID: ${opportunity.locationId}',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        const Icon(
+                          Icons.access_time,
+                          size: 14,
+                          color: Colors.grey,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${opportunity.duration} ${opportunity.duration == 1 ? 'month' : 'months'}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOpportunityImage(Opportunity opportunity) {
+    // For now, just use placeholder images
+    // In the future, you can add imageUrl field to Program model or Opportunity model
+    return _buildPlaceholderImage(opportunity);
+  }
+
+  Widget _buildPlaceholderImage(Opportunity opportunity) {
+    // Create different colored placeholders based on opportunity type/sector
+    final colors = [
+      MyColors.primaryColor,
+      Colors.green,
+      Colors.blue,
+      Colors.orange,
+      Colors.purple,
+    ];
+    
+    final color = colors[opportunity.id.hashCode % colors.length];
+    
+    return Container(
+      color: color.withValues(alpha: 0.1),
+      child: Icon(
+        Icons.volunteer_activism,
+        color: color,
+        size: 30,
+      ),
+    );
+  }
+
+  Widget _buildOpportunityCardSkeleton() {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -193,91 +470,185 @@ class OpportunitiesView extends HookWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Opportunity Image
+          // Image skeleton
           Container(
-            width: 60,
-            height: 60,
+            width: 80,
+            height: 100,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: MyColors.primaryColor.withValues(alpha: 0.1),
-            ),
-            child: const Icon(
-              Icons.volunteer_activism,
-              color: MyColors.primaryColor,
-              size: 30,
+              color: Colors.grey[300],
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                bottomLeft: Radius.circular(12),
+              ),
             ),
           ),
-          const SizedBox(width: 12),
           
-          // Opportunity Details
+          // Content skeleton
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 16,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(4),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  organization,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: MyColors.primaryColor,
-                    fontWeight: FontWeight.w500,
+                  const SizedBox(height: 8),
+                  Container(
+                    height: 14,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(4),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  description,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                    height: 1.3,
+                  const SizedBox(height: 8),
+                  Container(
+                    height: 12,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(4),
+                    ),
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.location_on,
-                      size: 16,
-                      color: Colors.grey,
+                  const SizedBox(height: 4),
+                  Container(
+                    height: 12,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(4),
                     ),
-                    const SizedBox(width: 4),
-                    Text(
-                      location,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    const Icon(
-                      Icons.access_time,
-                      size: 16,
-                      color: Colors.grey,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      duration,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showFilterBottomSheet(BuildContext context, AppLocalizations lang) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: DraggableScrollableSheet(
+          initialChildSize: 0.6,
+          maxChildSize: 0.9,
+          minChildSize: 0.3,
+          expand: false,
+          builder: (context, scrollController) {
+            return Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  height: 4,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                    'Filter Opportunities',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Sector',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: [
+                            _buildFilterChip('All', isSelected: true, onTap: () {}),
+                            _buildFilterChip('Environmental', isSelected: false, onTap: () {}),
+                            _buildFilterChip('Education', isSelected: false, onTap: () {}),
+                            _buildFilterChip('Healthcare', isSelected: false, onTap: () {}),
+                            _buildFilterChip('Technology', isSelected: false, onTap: () {}),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+                        const Text(
+                          'Duration',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: [
+                            _buildFilterChip('Any duration', isSelected: true, onTap: () {}),
+                            _buildFilterChip('1-3 months', isSelected: false, onTap: () {}),
+                            _buildFilterChip('3-6 months', isSelected: false, onTap: () {}),
+                            _buildFilterChip('6+ months', isSelected: false, onTap: () {}),
+                          ],
+                        ),
+                        const SizedBox(height: 32),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: OutlinedButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Clear Filters'),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () => Navigator.pop(context),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: MyColors.primaryColor,
+                                  foregroundColor: Colors.white,
+                                ),
+                                child: const Text('Apply Filters'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

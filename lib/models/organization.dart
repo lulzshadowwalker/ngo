@@ -15,6 +15,7 @@ abstract class Organization with _$Organization {
     required String? website,
     required DateTime createdAt,
     required DateTime updatedAt,
+    @Default(false) bool isFollowed,
   }) = _Organization;
 
   factory Organization.fromLaravel(Map<String, dynamic> data) {
@@ -31,6 +32,23 @@ abstract class Organization with _$Organization {
       website: attributes['website'] as String?,
       createdAt: DateTime.parse(attributes['createdAt'] as String),
       updatedAt: DateTime.parse(attributes['updatedAt'] as String),
+      isFollowed: attributes['isFollowed'] as bool? ?? false,
+    );
+  }
+
+  factory Organization.fromJson(Map<String, dynamic> json) {
+    return Organization(
+      id: json['id'].toString(),
+      name: json['name'] as String,
+      slug: '', // Default values for API response that doesn't include these fields
+      logo: '',
+      sector: '',
+      location: '',
+      bio: null,
+      website: null,
+      createdAt: DateTime.now(), // Default since not provided in API
+      updatedAt: DateTime.now(),
+      isFollowed: false,
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:ngo/export_tools.dart';
 import 'package:ngo/features/organization/cubit/organization_cubit.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/constant/app_assets.dart';
 import '../../core/theme/my_colors.dart';
@@ -18,6 +19,8 @@ class OrgnizationDetlisView extends HookWidget {
   Widget build(BuildContext context) {
     var lang = AppLocalizations.of(context)!;
     final selectedTabIndex = useState(0);
+    final isFollowLoading = useState(false);
+    final isAboutExpanded = useState(false);
     
     return BlocProvider(
       create: (context) => sl<OrganizationCubit>()..fetchOrganization(slug, language: lang.localeName),
@@ -77,13 +80,13 @@ class OrgnizationDetlisView extends HookWidget {
                       _buildOrganizationHeader(organization),
                       
                       // Organization Info Card
-                      _buildOrganizationInfo(organization),
+                      _buildOrganizationInfo(organization, isFollowLoading),
                       
                       // Contact Buttons
                       _buildContactButtons(organization),
                       
                       // About Us Section
-                      _buildAboutSection(organization),
+                      _buildAboutSection(organization, isAboutExpanded),
                       
                       // Tab Navigation
                       _buildTabNavigation(selectedTabIndex),
@@ -148,7 +151,7 @@ class OrgnizationDetlisView extends HookWidget {
     );
   }
 
-  Widget _buildOrganizationInfo(dynamic organization) {
+  Widget _buildOrganizationInfo(dynamic organization, ValueNotifier<bool> isFollowLoading) {
     return Container(
       margin: const EdgeInsets.all(16),
       child: Row(
@@ -248,26 +251,42 @@ class OrgnizationDetlisView extends HookWidget {
           ),
           
           // Follow Button
-          SizedBox(
-            width: 80,
-            child: ElevatedButton(
-              onPressed: () {
-                // TODO: Implement follow/unfollow functionality
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              child: const Text(
-                'Follow',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                ),
+          Builder(
+            builder: (context) => SizedBox(
+              width: 80,
+              child: ValueListenableBuilder<bool>(
+                valueListenable: isFollowLoading,
+                builder: (context, loading, child) {
+                  return ElevatedButton(
+                    onPressed: loading ? null : () {
+                      _handleFollowToggle(context, organization, isFollowLoading);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: organization.isFollowed ? Colors.grey[600] : MyColors.primaryColor,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    child: loading 
+                        ? const SizedBox(
+                            width: 12,
+                            height: 12,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          )
+                        : Text(
+                            organization.isFollowed ? 'Following' : 'Follow',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                            ),
+                          ),
+                  );
+                },
               ),
             ),
           ),
@@ -279,47 +298,52 @@ class OrgnizationDetlisView extends HookWidget {
   Widget _buildContactButtons(dynamic organization) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        children: [
-          Expanded(
-            child: OutlinedButton.icon(
-              onPressed: () {
-                // TODO: Implement contact functionality
-              },
-              icon: const Icon(Icons.email, size: 18),
-              label: const Text('Contact'),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                side: BorderSide(color: Colors.grey[400]!),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+      child: Builder(
+        builder: (context) => Row(
+          children: [
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  _launchEmail(context, organization.name);
+                },
+                icon: const Icon(Icons.email, size: 18),
+                label: const Text('Contact'),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  side: BorderSide(color: Colors.grey[400]!),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: OutlinedButton.icon(
-              onPressed: organization.website != null ? () {
-                // TODO: Implement website opening functionality
-              } : null,
-              icon: const Icon(Icons.language, size: 18),
-              label: const Text('Website'),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                side: BorderSide(color: Colors.grey[400]!),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+            const SizedBox(width: 12),
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: organization.website != null && organization.website!.isNotEmpty ? () {
+                  _launchWebsite(context, organization.website!);
+                } : null,
+                icon: const Icon(Icons.language, size: 18),
+                label: const Text('Website'),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  side: BorderSide(color: Colors.grey[400]!),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildAboutSection(dynamic organization) {
+  Widget _buildAboutSection(dynamic organization, ValueNotifier<bool> isExpanded) {
+    const int maxLines = 3; // Number of lines to show when collapsed
+    final String bioText = organization.bio ?? 'No description available.';
+    
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -334,26 +358,81 @@ class OrgnizationDetlisView extends HookWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            organization.bio ?? 'No description available.',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[700],
-              height: 1.5,
-            ),
-          ),
-          const SizedBox(height: 8),
-          GestureDetector(
-            onTap: () {
-              // TODO: Implement read more functionality
+          ValueListenableBuilder<bool>(
+            valueListenable: isExpanded,
+            builder: (context, expanded, child) {
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  // Create a TextPainter to measure text
+                  final textPainter = TextPainter(
+                    text: TextSpan(
+                      text: bioText,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[700],
+                        height: 1.5,
+                      ),
+                    ),
+                    maxLines: maxLines,
+                    textDirection: TextDirection.ltr,
+                  );
+                  textPainter.layout(maxWidth: constraints.maxWidth);
+                  
+                  final bool isTextOverflowing = textPainter.didExceedMaxLines;
+                  
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AnimatedSize(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                        child: Text(
+                          bioText,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[700],
+                            height: 1.5,
+                          ),
+                          maxLines: expanded ? null : maxLines,
+                          overflow: expanded ? TextOverflow.visible : TextOverflow.ellipsis,
+                        ),
+                      ),
+                      if (isTextOverflowing) // Only show read more if text actually overflows
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: GestureDetector(
+                            onTap: () {
+                              isExpanded.value = !isExpanded.value;
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  expanded ? 'Read less' : 'Read more',
+                                  style: const TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                AnimatedRotation(
+                                  turns: expanded ? 0.5 : 0,
+                                  duration: const Duration(milliseconds: 300),
+                                  child: const Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: Colors.blue,
+                                    size: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              );
             },
-            child: const Text(
-              'Read more',
-              style: TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
           ),
         ],
       ),
@@ -383,7 +462,7 @@ class OrgnizationDetlisView extends HookWidget {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: isSelected ? Colors.green : Colors.transparent,
+                color: isSelected ? MyColors.primaryColor : Colors.transparent,
                 width: 2,
               ),
             ),
@@ -393,7 +472,7 @@ class OrgnizationDetlisView extends HookWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              color: isSelected ? Colors.green : Colors.grey[600],
+              color: isSelected ? MyColors.primaryColor : Colors.grey[600],
             ),
           ),
         ),
@@ -422,7 +501,7 @@ class OrgnizationDetlisView extends HookWidget {
           description: 'Developing tomorrow\'s leaders through workshops and mentorship',
           duration: 'Sep 2025 - Dec 2027',
           status: 'Ongoing',
-          statusColor: Colors.green,
+          statusColor: MyColors.primaryColor,
           imageUrl: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400',
         ),
         _buildProgramCard(
@@ -672,13 +751,137 @@ class OrgnizationDetlisView extends HookWidget {
             ElevatedButton(
               onPressed: onRetry,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: MyColors.primaryColor,
                 foregroundColor: Colors.white,
               ),
               child: const Text('Try Again'),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // Helper methods for launching external apps
+  void _handleFollowToggle(BuildContext context, dynamic organization, ValueNotifier<bool> isFollowLoading) {
+    final organizationCubit = context.read<OrganizationCubit>();
+    
+    if (organization.isFollowed) {
+      // Show confirmation dialog for unfollowing
+      _showUnfollowConfirmation(context, organization, organizationCubit, isFollowLoading);
+    } else {
+      // Follow immediately
+      _performFollowAction(context, organizationCubit, organization, isFollowLoading, true);
+    }
+  }
+
+  Future<void> _performFollowAction(
+    BuildContext context,
+    OrganizationCubit cubit, 
+    dynamic organization, 
+    ValueNotifier<bool> isFollowLoading, 
+    bool isFollow
+  ) async {
+    isFollowLoading.value = true;
+    
+    try {
+      if (isFollow) {
+        await cubit.followOrganization(organization.id);
+        _showSuccessSnackBar(context, 'You are now following ${organization.name}');
+      } else {
+        await cubit.unfollowOrganization(organization.id);
+        _showSuccessSnackBar(context, 'You unfollowed ${organization.name}');
+      }
+    } catch (e) {
+      _showErrorSnackBar(context, 'Something went wrong. Please try again.');
+    } finally {
+      isFollowLoading.value = false;
+    }
+  }
+
+  void _showUnfollowConfirmation(BuildContext context, dynamic organization, OrganizationCubit cubit, ValueNotifier<bool> isFollowLoading) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Unfollow Organization'),
+          content: Text('Are you sure you want to unfollow ${organization.name}?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                _performFollowAction(context, cubit, organization, isFollowLoading, false);
+              },
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: const Text('Unfollow'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showSuccessSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: MyColors.primaryColor,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  Future<void> _launchEmail(BuildContext context, String organizationName) async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: '', // You can add a default email here if available
+      query: 'subject=Contact Request for $organizationName&body=Hello $organizationName,\n\nI would like to get in touch with your organization.\n\nBest regards,',
+    );
+
+    try {
+      if (await canLaunchUrl(emailUri)) {
+        await launchUrl(emailUri);
+      } else {
+        _showErrorSnackBar(context, 'Could not open email app');
+      }
+    } catch (e) {
+      _showErrorSnackBar(context, 'Error opening email: $e');
+    }
+  }
+
+  Future<void> _launchWebsite(BuildContext context, String websiteUrl) async {
+    // Ensure the URL has a proper scheme
+    String url = websiteUrl;
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'https://$url';
+    }
+
+    final Uri websiteUri = Uri.parse(url);
+
+    try {
+      if (await canLaunchUrl(websiteUri)) {
+        await launchUrl(
+          websiteUri,
+          mode: LaunchMode.externalApplication,
+        );
+      } else {
+        _showErrorSnackBar(context, 'Could not open website');
+      }
+    } catch (e) {
+      _showErrorSnackBar(context, 'Error opening website: $e');
+    }
+  }
+
+  void _showErrorSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red[600],
+        duration: const Duration(seconds: 3),
       ),
     );
   }
