@@ -32,7 +32,7 @@ class OrganizationCubit extends Cubit<OrganizationState> {
       
       final organization = await _repository.fetch(slug, language: language);
       
-      emit(OrganizationState.loaded([organization]));
+      emit(OrganizationState.loadedSingleOrgnization(organization));
     } catch (error) {
       emit(OrganizationState.error(error.toString()));
     }

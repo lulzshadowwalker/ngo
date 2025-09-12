@@ -181,6 +181,81 @@ as List<Organization>,
 /// @nodoc
 
 
+class _LoadedSingleOrganization implements OrganizationState {
+  const _LoadedSingleOrganization(this.organization);
+  
+
+ final  Organization organization;
+
+/// Create a copy of OrganizationState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$LoadedSingleOrganizationCopyWith<_LoadedSingleOrganization> get copyWith => __$LoadedSingleOrganizationCopyWithImpl<_LoadedSingleOrganization>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoadedSingleOrganization&&(identical(other.organization, organization) || other.organization == organization));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,organization);
+
+@override
+String toString() {
+  return 'OrganizationState.loadedSingleOrgnization(organization: $organization)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$LoadedSingleOrganizationCopyWith<$Res> implements $OrganizationStateCopyWith<$Res> {
+  factory _$LoadedSingleOrganizationCopyWith(_LoadedSingleOrganization value, $Res Function(_LoadedSingleOrganization) _then) = __$LoadedSingleOrganizationCopyWithImpl;
+@useResult
+$Res call({
+ Organization organization
+});
+
+
+$OrganizationCopyWith<$Res> get organization;
+
+}
+/// @nodoc
+class __$LoadedSingleOrganizationCopyWithImpl<$Res>
+    implements _$LoadedSingleOrganizationCopyWith<$Res> {
+  __$LoadedSingleOrganizationCopyWithImpl(this._self, this._then);
+
+  final _LoadedSingleOrganization _self;
+  final $Res Function(_LoadedSingleOrganization) _then;
+
+/// Create a copy of OrganizationState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? organization = null,}) {
+  return _then(_LoadedSingleOrganization(
+null == organization ? _self.organization : organization // ignore: cast_nullable_to_non_nullable
+as Organization,
+  ));
+}
+
+/// Create a copy of OrganizationState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$OrganizationCopyWith<$Res> get organization {
+  
+  return $OrganizationCopyWith<$Res>(_self.organization, (value) {
+    return _then(_self.copyWith(organization: value));
+  });
+}
+}
+
+/// @nodoc
+
+
 class _Error implements OrganizationState {
   const _Error(this.message);
   

@@ -8,6 +8,7 @@ import 'package:ngo/service_locator.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../core/theme/my_colors.dart';
+import 'orgnization_detlis_view.dart';
 
 class OrganizationView extends HookWidget {
   const OrganizationView({super.key});
@@ -218,6 +219,7 @@ class OrganizationView extends HookWidget {
     Widget buildOrganizationCard({
       required String name,
       required String description,
+      required String slug,
       required String location,
       required String? imageUrl,
       required String organizationId,
@@ -225,126 +227,138 @@ class OrganizationView extends HookWidget {
     }) {
       final isFollowing = followedOrganizations.value.contains(organizationId);
       
-      return Card(
-        margin: const EdgeInsets.symmetric(vertical: 8),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 2,
-        child: ListTile(
-          contentPadding: const EdgeInsets.all(16),
-          leading: CircleAvatar(
-            radius: 30,
-            backgroundImage: NetworkImage(
-              imageUrl ?? "https://placehold.co/100",
-            ),
-            onBackgroundImageError: (exception, stackTrace) {
-              log('Failed to load image: $imageUrl');
-            },
-            child: imageUrl == null || imageUrl.isEmpty
-                ? const Icon(Icons.business, color: Colors.white, size: 30)
-                : null,
-          ),
-          title: Text(
-            name,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 4),
-              Text(
-                description,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: 14,
-                ),
+      return GestureDetector(
+        onTap: slug == "loading_slug" ? null : () {
+            log("This is a message");
+
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) => OrgnizationDetlisView(
+                slug: slug,
               ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Icon(Icons.location_on, size: 16, color: Colors.grey[500]),
-                  const SizedBox(width: 4),
-                  Expanded(
-                    child: Text(
-                      location,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: Colors.grey[500],
-                        fontSize: 12,
+            ));
+          // Handle organization card tap if needed
+        },
+        child: Card(
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          elevation: 2,
+          child: ListTile(
+            contentPadding: const EdgeInsets.all(16),
+            leading: CircleAvatar(
+              radius: 30,
+              backgroundImage: NetworkImage(
+                imageUrl ?? "https://placehold.co/100",
+              ),
+              onBackgroundImageError: (exception, stackTrace) {
+                log('Failed to load image: $imageUrl');
+              },
+              child: imageUrl == null || imageUrl.isEmpty
+                  ? const Icon(Icons.business, color: Colors.white, size: 30)
+                  : null,
+            ),
+            title: Text(
+              name,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 4),
+                Text(
+                  description,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(Icons.location_on, size: 16, color: Colors.grey[500]),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        location,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: Colors.grey[500],
+                          fontSize: 12,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          trailing: SizedBox(
-            width: 100,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isFollowing ? Colors.grey[300] : MyColors.primaryColor,
-                foregroundColor: isFollowing ? Colors.black : Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  ],
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              ),
-              onPressed: () async {
-                try {
-                  if (isFollowing) {
-                    await context.read<OrganizationCubit>().unfollowOrganization(organizationId);
-                    followedOrganizations.value = Set.from(followedOrganizations.value)
-                      ..remove(organizationId);
-                    
-                    // Show success message
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Unfollowed $name'),
-                          backgroundColor: Colors.orange,
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
+              ],
+            ),
+            trailing: SizedBox(
+              width: 100,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: isFollowing ? Colors.grey[300] : MyColors.primaryColor,
+                  foregroundColor: isFollowing ? Colors.black : Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                ),
+                onPressed: () async {
+                  try {
+                    if (isFollowing) {
+                      await context.read<OrganizationCubit>().unfollowOrganization(organizationId);
+                      followedOrganizations.value = Set.from(followedOrganizations.value)
+                        ..remove(organizationId);
+                      
+                      // Show success message
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Unfollowed $name'),
+                            backgroundColor: Colors.orange,
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    } else {
+                      await context.read<OrganizationCubit>().followOrganization(organizationId);
+                      followedOrganizations.value = Set.from(followedOrganizations.value)
+                        ..add(organizationId);
+                      
+                      // Show success message
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Following $name'),
+                            backgroundColor: MyColors.primaryColor,
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
                     }
-                  } else {
-                    await context.read<OrganizationCubit>().followOrganization(organizationId);
-                    followedOrganizations.value = Set.from(followedOrganizations.value)
-                      ..add(organizationId);
-                    
-                    // Show success message
+                  } catch (e) {
+                    // Show error message
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Following $name'),
-                          backgroundColor: MyColors.primaryColor,
+                          content: Text('Failed to ${isFollowing ? 'unfollow' : 'follow'} $name'),
+                          backgroundColor: Colors.red,
                           duration: const Duration(seconds: 2),
                         ),
                       );
                     }
                   }
-                } catch (e) {
-                  // Show error message
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Failed to ${isFollowing ? 'unfollow' : 'follow'} $name'),
-                        backgroundColor: Colors.red,
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
-                  }
-                }
-              },
-              child: Text(
-                isFollowing ? 'Following' : 'Follow',
-                style: const TextStyle(fontSize: 12),
+                },
+                child: Text(
+                  isFollowing ? 'Following' : 'Follow',
+                  style: const TextStyle(fontSize: 12),
+                ),
               ),
             ),
           ),
@@ -616,6 +630,7 @@ class OrganizationView extends HookWidget {
                             location: 'Loading location...',
                             imageUrl: 'https://placehold.co/100',
                             organizationId: 'loading_$index',
+                            slug: 'loading_slug',
                             context: context,
                           ),
                         ),
@@ -680,6 +695,7 @@ class OrganizationView extends HookWidget {
                           imageUrl: org.logo ?? org.image ?? org.avatar,
                           organizationId: org.slug ?? org.id ?? 'unknown_$index',
                           context: context,
+                            slug: org.slug ?? 'unknown_slug',
                         ),
                       );
                     }, childCount: organizations.length),
