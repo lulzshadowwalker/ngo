@@ -786,10 +786,10 @@ class OrgnizationDetlisView extends HookWidget {
     
     try {
       if (isFollow) {
-        await cubit.followOrganization(organization.id);
+        await cubit.followOrganization(organization.slug);
         _showSuccessSnackBar(context, 'You are now following ${organization.name}');
       } else {
-        await cubit.unfollowOrganization(organization.id);
+        await cubit.unfollowOrganization(organization.slug);
         _showSuccessSnackBar(context, 'You unfollowed ${organization.name}');
       }
     } catch (e) {

@@ -87,7 +87,7 @@ as bool,
 
 
 class _Organization implements Organization {
-  const _Organization({required this.id, required this.name, required this.slug, required this.logo, required this.sector, required this.location, required this.bio, required this.website, required this.createdAt, required this.updatedAt, this.isFollowed = false});
+  const _Organization({required this.id, required this.name, required this.slug, required this.logo, required this.sector, required this.location, required this.bio, required this.website, required this.createdAt, required this.updatedAt, required this.isFollowed});
   
 
 @override final  String id;
@@ -100,7 +100,7 @@ class _Organization implements Organization {
 @override final  String? website;
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
-@override@JsonKey() final  bool isFollowed;
+@override final  bool isFollowed;
 
 /// Create a copy of Organization
 /// with the given fields replaced by the non-null parameter values.

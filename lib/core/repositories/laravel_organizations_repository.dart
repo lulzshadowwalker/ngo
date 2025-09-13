@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ngo/core/contracts/organizations_repository.dart';
 import 'package:ngo/core/helpers/helper.dart';
 import 'package:ngo/core/repositories/laravel_repository.dart';
@@ -7,9 +9,19 @@ final class LaravelOrganizationsRepository extends LaravelRepository
     implements OrganizationsRepository {
   @override
   Future<Organization> fetch(String slug, {String language = 'en'}) async {
+    final authorization = await SharedPrefHelper.getAccessToken();
+    
+    // Clean the token in case it already has "Bearer " prefix
+    final cleanToken = authorization.startsWith('Bearer ') 
+        ? authorization.substring(7) 
+        : authorization;
+        
     final response = await get(
       '/v1/organizations/$slug',
-      headers: {'Accept-Language': language},
+      headers: {
+        'Accept-Language': language,
+        'Authorization': 'Bearer $cleanToken',
+      },
     );
     final data = response['data'] as Map<String, dynamic>;
     return Organization.fromLaravel(data);
@@ -17,9 +29,19 @@ final class LaravelOrganizationsRepository extends LaravelRepository
 
   @override
   Future<List<Organization>> fetchAll({String language = 'en'}) async {
+    final authorization = await SharedPrefHelper.getAccessToken();
+
+    // Clean the token in case it already has "Bearer " prefix
+    final cleanToken = authorization.startsWith('Bearer ') 
+        ? authorization.substring(7) 
+        : authorization;
+
     final response = await get(
       '/v1/organizations',
-      headers: {'Accept-Language': language},
+      headers: {
+        'Accept-Language': language,
+        'Authorization': 'Bearer $cleanToken',
+      },
     );
 
     final data = response['data'] as List<dynamic>;
@@ -31,26 +53,71 @@ final class LaravelOrganizationsRepository extends LaravelRepository
   @override
   Future<void> followOrganization(String organizationId) async {
     final authorization = await SharedPrefHelper.getAccessToken();
+    log('Raw authorization token: "$authorization"');
+    log('Token length: ${authorization.length}');
+    log('Token starts with Bearer: ${authorization.startsWith('Bearer ')}');
+    
+    if (authorization.isEmpty) {
+      throw Exception('Authentication required. Please log in again.');
+    }
+    
+    // Clean the token in case it already has "Bearer " prefix
+    final cleanToken = authorization.startsWith('Bearer ') 
+        ? authorization.substring(7) 
+        : authorization;
+    
+    log('Clean token: "$cleanToken"');
+    log('Final header will be: "Bearer $cleanToken"');
+    
     try {
       await post(
         '/v1/organizations/$organizationId/follows',
-        headers: {'Authorization': 'Bearer $authorization'},
+        headers: {'Authorization': 'Bearer $cleanToken'},
       );
+      log('Successfully followed organization: $organizationId');
     } catch (error) {
-      throw Exception('Failed to follow organization: $error');
+      log('Error following organization: $error');
+      if (error.toString().contains('401')) {
+        throw Exception('Authentication failed. Please log in again.');
+      } else if (error.toString().contains('404')) {
+        throw Exception('Organization not found.');
+      } else if (error.toString().contains('409')) {
+        throw Exception('You are already following this organization.');
+      } else {
+        throw Exception('Failed to follow organization. Please try again.');
+      }
     }
   }
 
   @override
   Future<void> unfollowOrganization(String organizationId) async {
     final authorization = await SharedPrefHelper.getAccessToken();
+    log("Raw authorization token: $authorization");
+    
+    if (authorization.isEmpty) {
+      throw Exception('Authentication required. Please log in again.');
+    }
+    
+    // Clean the token in case it already has "Bearer " prefix
+    final cleanToken = authorization.startsWith('Bearer ') 
+        ? authorization.substring(7) 
+        : authorization;
+    
     try {
       await delete(
         '/v1/organizations/$organizationId/follows',
-        headers: {'Authorization': 'Bearer $authorization'},
+        headers: {'Authorization': 'Bearer $cleanToken'},
       );
+      log('Successfully unfollowed organization: $organizationId');
     } catch (error) {
-      throw Exception('Failed to unfollow organization: $error');
+      log('Error unfollowing organization: $error');
+      if (error.toString().contains('401')) {
+        throw Exception('Authentication failed. Please log in again.');
+      } else if (error.toString().contains('404')) {
+        throw Exception('Organization not found or you are not following it.');
+      } else {
+        throw Exception('Failed to unfollow organization. Please try again.');
+      }
     }
   }
 

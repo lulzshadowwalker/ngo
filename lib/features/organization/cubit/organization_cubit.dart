@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -40,13 +41,31 @@ class OrganizationCubit extends Cubit<OrganizationState> {
 
   Future<void> followOrganization(String organizationId) async {
     try {
+      log('Following organization with ID: $organizationId');
       await _repository.followOrganization(organizationId);
       
-      // Update the current organization state if it's the one being followed
+      // Update the current state
       final currentState = state;
-      if (currentState is _LoadedSingleOrganization && currentState.organization.id == organizationId) {
+      log('Current state type: ${currentState.runtimeType}');
+      
+      if (currentState is _LoadedSingleOrganization && 
+          currentState.organization.id == organizationId) {
+        log('Updating single organization view');
+        // Update single organization view
         final updatedOrganization = currentState.organization.copyWith(isFollowed: true);
         emit(OrganizationState.loadedSingleOrgnization(updatedOrganization));
+      } else if (currentState is _Loaded) {
+        log('Updating organization list. Current orgs count: ${currentState.organizations.length}');
+        // Update organization in the list
+        final updatedOrganizations = currentState.organizations.map((org) {
+          log('Comparing org.id "${org.id}" with organizationId "$organizationId"');
+          if (org.id == organizationId) {
+            log('Found matching organization, updating isFollowed to true');
+            return org.copyWith(isFollowed: true);
+          }
+          return org;
+        }).toList();
+        emit(OrganizationState.loaded(updatedOrganizations));
       }
     } catch (error) {
       emit(OrganizationState.error('Failed to follow organization: ${error.toString()}'));
@@ -55,18 +74,40 @@ class OrganizationCubit extends Cubit<OrganizationState> {
 
   Future<void> unfollowOrganization(String organizationId) async {
     try {
+      log('Unfollowing organization with ID: $organizationId');
       await _repository.unfollowOrganization(organizationId);
       
-      // Update the current organization state if it's the one being unfollowed
+      // Update the current state
       final currentState = state;
-      if (currentState is _LoadedSingleOrganization && currentState.organization.id == organizationId) {
+      log('Current state type: ${currentState.runtimeType}');
+      
+      if (currentState is _LoadedSingleOrganization && 
+          currentState.organization.id == organizationId) {
+        log('Updating single organization view');
+        // Update single organization view
         final updatedOrganization = currentState.organization.copyWith(isFollowed: false);
         emit(OrganizationState.loadedSingleOrgnization(updatedOrganization));
+      } else if (currentState is _Loaded) {
+        log('Updating organization list. Current orgs count: ${currentState.organizations.length}');
+        // Update organization in the list
+        final updatedOrganizations = currentState.organizations.map((org) {
+          log('Comparing org.id "${org.id}" with organizationId "$organizationId"');
+          if (org.id == organizationId) {
+            log('Found matching organization, updating isFollowed to false');
+            return org.copyWith(isFollowed: false);
+          }
+          return org;
+        }).toList();
+        emit(OrganizationState.loaded(updatedOrganizations));
       }
     } catch (error) {
       emit(OrganizationState.error('Failed to unfollow organization: ${error.toString()}'));
     }
   }
+
+
+
+
 
   Future<void> searchOrganizations(
     String query, {

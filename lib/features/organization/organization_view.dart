@@ -50,7 +50,7 @@ class OrganizationView extends HookWidget {
                     ),
                   ],
                 ),
-                
+
                 Text(
                   'Filter by Sector:',
                   style: const TextStyle(
@@ -59,53 +59,63 @@ class OrganizationView extends HookWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                
-                sectors.isEmpty 
-                  ? const Column(
-                      children: [
-                        Icon(Icons.hourglass_empty, size: 48, color: Colors.grey),
-                        SizedBox(height: 16),
-                        Text(
-                          'Loading sectors...',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
-                        ),
-                      ],
-                    )
-                  : Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        _buildFilterOption(
-                          'All',
-                          selectedFilter.value == 'All',
-                          () {
-                            selectedFilter.value = 'All';
-                            selectedFilterId.value = null;
-                            context.read<OrganizationCubit>().fetchAllOrganizations(
-                              language: lang.localeName,
-                            );
-                            Navigator.pop(bottomSheetContext);
-                          },
-                        ),
-                        ...sectors.map((sector) => _buildFilterOption(
-                          sector.name ?? 'Unknown',
-                          selectedFilter.value == sector.name,
-                          () {
-                            selectedFilter.value = sector.name ?? 'Unknown';
-                            selectedFilterId.value = sector.id;
-                            context.read<OrganizationCubit>().searchOrganizations(
-                              '',
-                              language: lang.localeName,
-                              sectorId: sector.id,
-                            );
-                            Navigator.pop(bottomSheetContext);
-                          },
-                        )),
-                      ],
-                    ),
-                
+
+                sectors.isEmpty
+                    ? const Column(
+                        children: [
+                          Icon(
+                            Icons.hourglass_empty,
+                            size: 48,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            'Loading sectors...',
+                            style: TextStyle(color: Colors.grey, fontSize: 16),
+                          ),
+                        ],
+                      )
+                    : Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          _buildFilterOption(
+                            'All',
+                            selectedFilter.value == 'All',
+                            () {
+                              selectedFilter.value = 'All';
+                              selectedFilterId.value = null;
+                              context
+                                  .read<OrganizationCubit>()
+                                  .fetchAllOrganizations(
+                                    language: lang.localeName,
+                                  );
+                              Navigator.pop(bottomSheetContext);
+                            },
+                          ),
+                          ...sectors.map(
+                            (sector) => _buildFilterOption(
+                              sector.name ?? 'Unknown',
+                              selectedFilter.value == sector.name,
+                              () {
+                                selectedFilter.value = sector.name ?? 'Unknown';
+                                selectedFilterId.value = sector.id;
+                                context
+                                    .read<OrganizationCubit>()
+                                    .searchOrganizations(
+                                      '',
+                                      language: lang.localeName,
+                                      sectorId: sector.id,
+                                    );
+                                Navigator.pop(bottomSheetContext);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+
                 const SizedBox(height: 16),
-                
+
                 // Current filter status
                 Container(
                   padding: const EdgeInsets.all(12),
@@ -116,13 +126,17 @@ class OrganizationView extends HookWidget {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.info_outline, color: Colors.blue[700], size: 18),
+                      Icon(
+                        Icons.info_outline,
+                        color: Colors.blue[700],
+                        size: 18,
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          selectedFilter.value == 'All' 
-                            ? 'Showing all organizations' 
-                            : 'Filtered by: ${selectedFilter.value}',
+                          selectedFilter.value == 'All'
+                              ? 'Showing all organizations'
+                              : 'Filtered by: ${selectedFilter.value}',
                           style: TextStyle(
                             color: Colors.blue[700],
                             fontSize: 13,
@@ -133,9 +147,9 @@ class OrganizationView extends HookWidget {
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 Row(
                   children: [
                     Expanded(
@@ -143,9 +157,9 @@ class OrganizationView extends HookWidget {
                         onPressed: () {
                           selectedFilter.value = 'All';
                           selectedFilterId.value = null;
-                          context.read<OrganizationCubit>().fetchAllOrganizations(
-                            language: lang.localeName,
-                          );
+                          context
+                              .read<OrganizationCubit>()
+                              .fetchAllOrganizations(language: lang.localeName);
                           Navigator.pop(bottomSheetContext);
                         },
                         style: ElevatedButton.styleFrom(
@@ -213,7 +227,6 @@ class OrganizationView extends HookWidget {
     final searchController = useTextEditingController();
     final selectedFilter = useState('All');
     final selectedFilterId = useState<String?>(null);
-    final followedOrganizations = useState<Set<String>>({});
     final showSearchField = useState(false);
 
     Widget buildOrganizationCard({
@@ -224,24 +237,32 @@ class OrganizationView extends HookWidget {
       required String? imageUrl,
       required String organizationId,
       required BuildContext context,
+      required bool isFollowing,
+      bool isLoading = false,
     }) {
-      final isFollowing = followedOrganizations.value.contains(organizationId);
-      
-      return GestureDetector(
-        onTap: slug == "loading_slug" ? null : () {
-            log("This is a message");
+      // final isFollowing = followedOrganizations.value.contains(organizationId);
 
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) => OrgnizationDetlisView(
-                slug: slug,
-              ),
-            ));
-          // Handle organization card tap if needed
-        },
-        child: Card(
+      return GestureDetector(
+        onTap: slug == "loading_slug"
+            ? null
+            : () {
+                log("This is a message");
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrgnizationDetlisView(slug: slug),
+                  ),
+                );
+                // Handle organization card tap if needed
+              },
+        child: Container(
           margin: const EdgeInsets.symmetric(vertical: 8),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          elevation: 2,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.withValues(alpha: 0.5)),
+            borderRadius: BorderRadius.circular(12),
+          ),
+
           child: ListTile(
             contentPadding: const EdgeInsets.all(16),
             leading: CircleAvatar(
@@ -258,10 +279,7 @@ class OrganizationView extends HookWidget {
             ),
             title: Text(
               name,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),
@@ -273,12 +291,10 @@ class OrganizationView extends HookWidget {
                   description,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14,
-                  ),
+                  style: TextStyle(color: Colors.grey[600], fontSize: 14),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
+
                 Row(
                   children: [
                     Icon(Icons.location_on, size: 16, color: Colors.grey[500]),
@@ -288,10 +304,7 @@ class OrganizationView extends HookWidget {
                         location,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        style: TextStyle(
-                          color: Colors.grey[500],
-                          fontSize: 12,
-                        ),
+                        style: TextStyle(color: Colors.grey[500], fontSize: 12),
                       ),
                     ),
                   ],
@@ -300,66 +313,127 @@ class OrganizationView extends HookWidget {
             ),
             trailing: SizedBox(
               width: 100,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isFollowing ? Colors.grey[300] : MyColors.primaryColor,
-                  foregroundColor: isFollowing ? Colors.black : Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                ),
-                onPressed: () async {
-                  try {
-                    if (isFollowing) {
-                      await context.read<OrganizationCubit>().unfollowOrganization(organizationId);
-                      followedOrganizations.value = Set.from(followedOrganizations.value)
-                        ..remove(organizationId);
-                      
-                      // Show success message
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Unfollowed $name'),
-                            backgroundColor: Colors.orange,
-                            duration: const Duration(seconds: 2),
+              child: isLoading
+                  ? Container(
+                      height: 45,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Center(
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.grey,
+                            ),
                           ),
-                        );
-                      }
-                    } else {
-                      await context.read<OrganizationCubit>().followOrganization(organizationId);
-                      followedOrganizations.value = Set.from(followedOrganizations.value)
-                        ..add(organizationId);
-                      
-                      // Show success message
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Following $name'),
-                            backgroundColor: MyColors.primaryColor,
-                            duration: const Duration(seconds: 2),
-                          ),
-                        );
-                      }
-                    }
-                  } catch (e) {
-                    // Show error message
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Failed to ${isFollowing ? 'unfollow' : 'follow'} $name'),
-                          backgroundColor: Colors.red,
-                          duration: const Duration(seconds: 2),
                         ),
-                      );
-                    }
-                  }
-                },
-                child: Text(
-                  isFollowing ? 'Following' : 'Follow',
-                  style: const TextStyle(fontSize: 12),
-                ),
-              ),
+                      ),
+                    )
+                  : isFollowing
+                  ? Container(
+                      height: 45,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: MyColors.primaryColor),
+                      ),
+                      child: GestureDetector(
+                        onTap: () async {
+                          log("Unfollowing organization ID: $organizationId");
+                          try {
+                            await context
+                                .read<OrganizationCubit>()
+                                .unfollowOrganization(organizationId);
+
+                            // Show success message
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Unfollowed $name'),
+                                  backgroundColor: Colors.orange,
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Failed to unfollow $name: ${e.toString()}',
+                                  ),
+                                  backgroundColor: Colors.red,
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          }
+                        },
+                        child: Center(
+                          child: Text(
+                            'Following',
+                            style: TextStyle(
+                              color: MyColors.primaryColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: MyColors.primaryColor,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                      ),
+                      onPressed: () async {
+                        log("Following organization ID: $organizationId");
+                        try {
+                          await context
+                              .read<OrganizationCubit>()
+                              .followOrganization(organizationId);
+
+                          // Show success message
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Following $name'),
+                                backgroundColor: MyColors.primaryColor,
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          // Show error message
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Failed to follow $name: ${e.toString()}',
+                                ),
+                                backgroundColor: Colors.red,
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      child: Text(
+                        'Follow',
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ),
             ),
           ),
         ),
@@ -370,12 +444,13 @@ class OrganizationView extends HookWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => sl<OrganizationCubit>()
-            ..fetchAllOrganizations(language: lang.localeName),
+          create: (context) =>
+              sl<OrganizationCubit>()
+                ..fetchAllOrganizations(language: lang.localeName),
         ),
         BlocProvider(
-          create: (context) => sl<SectorsCubit>()
-            ..fetchAllSectors(language: lang.localeName),
+          create: (context) =>
+              sl<SectorsCubit>()..fetchAllSectors(language: lang.localeName),
         ),
       ],
       child: Scaffold(
@@ -420,11 +495,19 @@ class OrganizationView extends HookWidget {
                   icon: const Icon(Icons.filter_list, color: Colors.black),
                   onPressed: () {
                     List<dynamic> sectors = [];
-                    if (sectorsState.runtimeType.toString().contains('Loaded')) {
+                    if (sectorsState.runtimeType.toString().contains(
+                      'Loaded',
+                    )) {
                       final loadedState = sectorsState as dynamic;
                       sectors = loadedState.sectors as List<dynamic>;
                     }
-                    _showFilterBottomSheet(context, lang, selectedFilter, selectedFilterId, sectors);
+                    _showFilterBottomSheet(
+                      context,
+                      lang,
+                      selectedFilter,
+                      selectedFilterId,
+                      sectors,
+                    );
                   },
                 );
               },
@@ -455,15 +538,19 @@ class OrganizationView extends HookWidget {
                                       searchController.clear();
                                       // When clearing search, respect current filter
                                       if (selectedFilterId.value != null) {
-                                        context.read<OrganizationCubit>().searchOrganizations(
-                                          '',
-                                          language: lang.localeName,
-                                          sectorId: selectedFilterId.value,
-                                        );
+                                        context
+                                            .read<OrganizationCubit>()
+                                            .searchOrganizations(
+                                              '',
+                                              language: lang.localeName,
+                                              sectorId: selectedFilterId.value,
+                                            );
                                       } else {
-                                        context.read<OrganizationCubit>().fetchAllOrganizations(
-                                          language: lang.localeName,
-                                        );
+                                        context
+                                            .read<OrganizationCubit>()
+                                            .fetchAllOrganizations(
+                                              language: lang.localeName,
+                                            );
                                       }
                                     },
                                   )
@@ -478,7 +565,9 @@ class OrganizationView extends HookWidget {
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25),
-                              borderSide: const BorderSide(color: MyColors.primaryColor),
+                              borderSide: const BorderSide(
+                                color: MyColors.primaryColor,
+                              ),
                             ),
                             filled: true,
                             fillColor: Colors.grey[50],
@@ -487,31 +576,39 @@ class OrganizationView extends HookWidget {
                           onChanged: (query) {
                             if (query.isEmpty) {
                               if (selectedFilterId.value != null) {
-                                context.read<OrganizationCubit>().searchOrganizations(
-                                  '',
-                                  language: lang.localeName,
-                                  sectorId: selectedFilterId.value,
-                                );
+                                context
+                                    .read<OrganizationCubit>()
+                                    .searchOrganizations(
+                                      '',
+                                      language: lang.localeName,
+                                      sectorId: selectedFilterId.value,
+                                    );
                               } else {
-                                context.read<OrganizationCubit>().fetchAllOrganizations(
-                                  language: lang.localeName,
-                                );
+                                context
+                                    .read<OrganizationCubit>()
+                                    .fetchAllOrganizations(
+                                      language: lang.localeName,
+                                    );
                               }
                             } else {
-                              context.read<OrganizationCubit>().searchOrganizationsWithDebounce(
-                                query,
-                                language: lang.localeName,
-                                sectorId: selectedFilterId.value,
-                              );
+                              context
+                                  .read<OrganizationCubit>()
+                                  .searchOrganizationsWithDebounce(
+                                    query,
+                                    language: lang.localeName,
+                                    sectorId: selectedFilterId.value,
+                                  );
                             }
                           },
                           onSubmitted: (query) {
                             if (query.trim().isNotEmpty) {
-                              context.read<OrganizationCubit>().searchOrganizations(
-                                query,
-                                language: lang.localeName,
-                                sectorId: selectedFilterId.value,
-                              );
+                              context
+                                  .read<OrganizationCubit>()
+                                  .searchOrganizations(
+                                    query,
+                                    language: lang.localeName,
+                                    sectorId: selectedFilterId.value,
+                                  );
                             }
                           },
                         ),
@@ -520,30 +617,42 @@ class OrganizationView extends HookWidget {
                     // Filter Chips Section
                     BlocBuilder<SectorsCubit, SectorsState>(
                       builder: (context, sectorsState) {
-                        Widget buildFilterChipWithContext(String label, {String? sectorId}) {
+                        Widget buildFilterChipWithContext(
+                          String label, {
+                          String? sectorId,
+                        }) {
                           return GestureDetector(
                             onTap: () {
                               // Clear search text when switching filters
                               searchController.clear();
                               selectedFilter.value = label;
                               selectedFilterId.value = sectorId;
-                              
-                              log("Selected filter: $label, Sector ID: $sectorId");
+
+                              log(
+                                "Selected filter: $label, Sector ID: $sectorId",
+                              );
                               if (label == 'All') {
                                 selectedFilterId.value = null;
-                                context.read<OrganizationCubit>().fetchAllOrganizations(
-                                  language: lang.localeName,
-                                );
+                                context
+                                    .read<OrganizationCubit>()
+                                    .fetchAllOrganizations(
+                                      language: lang.localeName,
+                                    );
                               } else {
-                                context.read<OrganizationCubit>().searchOrganizations(
-                                  '',
-                                  language: lang.localeName,
-                                  sectorId: sectorId,
-                                );
+                                context
+                                    .read<OrganizationCubit>()
+                                    .searchOrganizations(
+                                      '',
+                                      language: lang.localeName,
+                                      sectorId: sectorId,
+                                    );
                               }
                             },
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
                               decoration: BoxDecoration(
                                 color: selectedFilter.value == label
                                     ? MyColors.primaryColor
@@ -563,10 +672,12 @@ class OrganizationView extends HookWidget {
                           );
                         }
 
-                        if (sectorsState.runtimeType.toString().contains('Loaded')) {
+                        if (sectorsState.runtimeType.toString().contains(
+                          'Loaded',
+                        )) {
                           final loadedState = sectorsState as dynamic;
                           final sectors = loadedState.sectors as List<dynamic>;
-                    
+
                           return SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
@@ -587,9 +698,15 @@ class OrganizationView extends HookWidget {
                               ],
                             ),
                           );
-                        } else if (sectorsState.runtimeType.toString().contains('Loading')) {
-                          return const Center(child: CircularProgressIndicator());
-                        } else if (sectorsState.runtimeType.toString().contains('Error')) {
+                        } else if (sectorsState.runtimeType.toString().contains(
+                          'Loading',
+                        )) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (sectorsState.runtimeType.toString().contains(
+                          'Error',
+                        )) {
                           final errorState = sectorsState as dynamic;
                           return Center(
                             child: Text(
@@ -598,7 +715,7 @@ class OrganizationView extends HookWidget {
                             ),
                           );
                         }
-                        
+
                         return Container(); // Initial state
                       },
                     ),
@@ -632,6 +749,7 @@ class OrganizationView extends HookWidget {
                             organizationId: 'loading_$index',
                             slug: 'loading_slug',
                             context: context,
+                            isFollowing: false,
                           ),
                         ),
                       );
@@ -639,7 +757,8 @@ class OrganizationView extends HookWidget {
                   );
                 } else if (state.runtimeType.toString().contains('Loaded')) {
                   final loadedState = state as dynamic;
-                  final organizations = loadedState.organizations as List<dynamic>;
+                  final organizations =
+                      loadedState.organizations as List<dynamic>;
 
                   if (organizations.isEmpty) {
                     return SliverToBoxAdapter(
@@ -661,8 +780,8 @@ class OrganizationView extends HookWidget {
                                 searchController.text.isNotEmpty
                                     ? 'No organizations match your search'
                                     : selectedFilter.value != 'All'
-                                        ? 'No organizations in ${selectedFilter.value}'
-                                        : 'No organizations available',
+                                    ? 'No organizations in ${selectedFilter.value}'
+                                    : 'No organizations available',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -690,12 +809,16 @@ class OrganizationView extends HookWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: buildOrganizationCard(
                           name: org.name ?? 'Unknown Organization',
-                          description: org.sector ?? org.description ?? 'No description available',
+                          description:
+                              org.sector ??
+                              org.description ??
+                              'No description available',
                           location: org.location ?? 'Location not specified',
                           imageUrl: org.logo ?? org.image ?? org.avatar,
-                          organizationId: org.slug ?? org.id ?? 'unknown_$index',
+                          organizationId: org.slug ?? 'unknown_id',
                           context: context,
-                            slug: org.slug ?? 'unknown_slug',
+                          slug: org.slug ?? 'unknown_slug',
+                          isFollowing: org.isFollowed ?? false,
                         ),
                       );
                     }, childCount: organizations.length),
@@ -734,15 +857,19 @@ class OrganizationView extends HookWidget {
                               onPressed: () {
                                 // Retry with current filter settings
                                 if (selectedFilterId.value != null) {
-                                  context.read<OrganizationCubit>().searchOrganizations(
-                                    searchController.text,
-                                    language: lang.localeName,
-                                    sectorId: selectedFilterId.value,
-                                  );
+                                  context
+                                      .read<OrganizationCubit>()
+                                      .searchOrganizations(
+                                        searchController.text,
+                                        language: lang.localeName,
+                                        sectorId: selectedFilterId.value,
+                                      );
                                 } else {
-                                  context.read<OrganizationCubit>().fetchAllOrganizations(
-                                    language: lang.localeName,
-                                  );
+                                  context
+                                      .read<OrganizationCubit>()
+                                      .fetchAllOrganizations(
+                                        language: lang.localeName,
+                                      );
                                 }
                               },
                               style: ElevatedButton.styleFrom(
