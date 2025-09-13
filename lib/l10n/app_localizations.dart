@@ -805,6 +805,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{days} days left to apply'**
   String days_left_to_apply(Object days);
+
+  /// No description provided for @already_applied.
+  ///
+  /// In en, this message translates to:
+  /// **'Already Applied'**
+  String get already_applied;
+
+  /// No description provided for @apply_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Now'**
+  String get apply_now;
+
+  /// Label for tags section
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get tags;
 }
 
 class _AppLocalizationsDelegate

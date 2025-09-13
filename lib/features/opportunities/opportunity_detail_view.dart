@@ -229,6 +229,13 @@ class OpportunityDetailView extends HookWidget {
               // Benefits
               if (opportunity.benefits.isNotEmpty)
                 _buildBenefitsSection(opportunity.benefits, context),
+             
+
+               // Benefits
+              if (opportunity.tags.isNotEmpty)
+                _buildTageSection(opportunity.tags, context),
+
+
 
               // Application Deadline
               _buildDeadlineSection(opportunity.expiryDate , context),
@@ -513,6 +520,73 @@ class OpportunityDetailView extends HookWidget {
       ),
     );
   }
+// _buildTageSection
+
+
+  Widget _buildTageSection(List<String> tags, BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.tags,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: tags
+                .map(
+                  (tag) => Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
+                       decoration: BoxDecoration(
+                      color: MyColors.primaryColor.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: MyColors.primaryColor.withValues(alpha: 0.3),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.local_offer,
+                          size: 14,
+                          color: MyColors.primaryColor,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          tag,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: MyColors.primaryColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+ 
+
+
+
 
   Widget _buildDeadlineSection(DateTime expiryDate , BuildContext context) {
     final daysLeft = expiryDate.difference(DateTime.now()).inDays;
@@ -622,7 +696,7 @@ class OpportunityDetailView extends HookWidget {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : Text(
-                            'Save',
+                            AppLocalizations.of(context)!.save,
                             style: TextStyle(
                               color: MyColors.primaryColor,
                               fontWeight: FontWeight.w600,
@@ -661,7 +735,7 @@ class OpportunityDetailView extends HookWidget {
                             ),
                           )
                         : Text(
-                            isAlreadyApplied ? 'Already Applied' : 'Apply Now',
+                            isAlreadyApplied ? AppLocalizations.of(context)!.already_applied :AppLocalizations.of(context)!.apply_now,
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                   ),

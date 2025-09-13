@@ -368,4 +368,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String days_left_to_apply(Object days) {
     return '$days days left to apply';
   }
+
+  @override
+  String get already_applied => 'Already Applied';
+
+  @override
+  String get apply_now => 'Apply Now';
+
+  @override
+  String get tags => 'Tags';
 }

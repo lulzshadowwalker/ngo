@@ -450,6 +450,14 @@
     "placeholders": {
       "days": {}
     }
+  },
+  "already_applied" : "Already Applied",
+  "@already_applied": {},
+  "apply_now" : "Apply Now",
+  "@apply_now": {},
+  "tags" : "Tags",
+  "@tags": {
+    "description": "Label for tags section"
   }
 
 }

@@ -367,4 +367,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String days_left_to_apply(Object days) {
     return 'أيام متبقية للتقديم $days';
   }
+
+  @override
+  String get already_applied => 'تم التقديم بالفعل';
+
+  @override
+  String get apply_now => 'قدّم الآن';
+
+  @override
+  String get tags => 'العلامات';
 }
