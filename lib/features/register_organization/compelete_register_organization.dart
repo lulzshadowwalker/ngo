@@ -298,8 +298,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                       return sectors.where((sector) {
                         if (filter.isEmpty) return true;
                         final searchTerm = filter.toLowerCase();
-                        return sector.name.toLowerCase().contains(searchTerm) ||
-                               sector.description.toLowerCase().contains(searchTerm);
+                        return sector.name.toLowerCase().contains(searchTerm) ;
                       }).toList();
                     },
                     itemAsString: (Sector sector) => sector.name,

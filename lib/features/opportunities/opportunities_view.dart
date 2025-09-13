@@ -6,6 +6,8 @@ import 'package:ngo/features/opportunities/opportunity_detail_view.dart';
 import 'package:ngo/models/opportunity.dart';
 import 'package:ngo/service_locator.dart';
 
+import '../sectors_features/cubit/sectors_cubit.dart';
+
 class OpportunitiesView extends HookWidget {
   const OpportunitiesView({super.key});
 
@@ -18,7 +20,7 @@ class OpportunitiesView extends HookWidget {
     // Listen for scroll to implement pagination
     useEffect(() {
       void onScroll() {
-        if (scrollController.position.pixels >= 
+        if (scrollController.position.pixels >=
             scrollController.position.maxScrollExtent * 0.9) {
           final cubit = sl<OpportunitiesCubit>();
           if (cubit.hasMorePages) {
@@ -26,14 +28,24 @@ class OpportunitiesView extends HookWidget {
           }
         }
       }
-      
+
       scrollController.addListener(onScroll);
       return () => scrollController.removeListener(onScroll);
     }, [scrollController]);
 
-    return BlocProvider(
-      create: (context) => sl<OpportunitiesCubit>()
-        ..fetchOpportunities(language: lang.localeName),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              sl<OpportunitiesCubit>()
+                ..fetchOpportunities(language: lang.localeName),
+        ),
+        BlocProvider(
+          create: (context) =>
+              sl<SectorsCubit>()..fetchAllSectors(language: lang.localeName),
+        ),
+      ],
+
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -75,7 +87,10 @@ class OpportunitiesView extends HookWidget {
                     hintStyle: TextStyle(color: Colors.grey),
                     prefixIcon: Icon(Icons.search, color: Colors.grey),
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                   ),
                   onChanged: (value) {
                     if (value.isNotEmpty) {
@@ -84,93 +99,59 @@ class OpportunitiesView extends HookWidget {
                         language: lang.localeName,
                       );
                     } else {
-                      context.read<OpportunitiesCubit>().clearFilters(language: lang.localeName);
+                      context.read<OpportunitiesCubit>().clearFilters(
+                        language: lang.localeName,
+                      );
                     }
                   },
                 ),
               ),
               const SizedBox(height: 16),
-              
+
               // Filter Chips
-              BlocBuilder<OpportunitiesCubit, OpportunitiesState>(
-                builder: (context, state) {
-                  final stateType = state.runtimeType.toString();
-                  final isLoaded = stateType.contains('Loaded');
-                  
-                  int? selectedSectorId;
-                  bool isFeatured = false;
-                  
-                  if (isLoaded) {
-                    final loadedState = state as dynamic;
-                    selectedSectorId = loadedState.selectedSectorId;
-                    isFeatured = loadedState.isFeatured ?? false;
-                  }
-                  
-                  return SizedBox(
-                    height: 40,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        _buildFilterChip(
-                          'All',
-                          isSelected: isLoaded && selectedSectorId == null && !isFeatured,
-                          onTap: () => context.read<OpportunitiesCubit>()
-                              .clearFilters(language: lang.localeName),
-                        ),
-                        const SizedBox(width: 8),
-                        _buildFilterChip(
-                          'Environmental',
-                          isSelected: isLoaded && selectedSectorId == 1,
-                          onTap: () => context.read<OpportunitiesCubit>()
-                              .filterBySector(1, language: lang.localeName),
-                        ),
-                        const SizedBox(width: 8),
-                        _buildFilterChip(
-                          'Education',
-                          isSelected: isLoaded && selectedSectorId == 2,
-                          onTap: () => context.read<OpportunitiesCubit>()
-                              .filterBySector(2, language: lang.localeName),
-                        ),
-                        const SizedBox(width: 8),
-                        _buildFilterChip(
-                          'Healthcare',
-                          isSelected: isLoaded && selectedSectorId == 3,
-                          onTap: () => context.read<OpportunitiesCubit>()
-                              .filterBySector(3, language: lang.localeName),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+              Container(
+                height: 50,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: BlocBuilder<SectorsCubit, SectorsState>(
+                  builder: (context, sectorsState) {
+                    return _buildFilterChips(context, sectorsState);
+                  },
+                ),
               ),
               const SizedBox(height: 20),
-              
+
               // Opportunities List
               Expanded(
                 child: BlocBuilder<OpportunitiesCubit, OpportunitiesState>(
                   builder: (context, state) {
                     final stateType = state.runtimeType.toString();
-                    
-                    if (stateType.contains('Initial') || stateType.contains('Loading')) {
+
+                    if (stateType.contains('Initial') ||
+                        stateType.contains('Loading')) {
                       return _buildLoadingState();
                     }
-                    
+
                     if (stateType.contains('Error')) {
                       return _buildErrorState(context, lang);
                     }
-                    
+
                     if (stateType.contains('Loaded')) {
                       // Extract opportunities using reflection-like approach
                       final loadedState = state as dynamic;
-                      final opportunities = loadedState.opportunities as List<Opportunity>;
-                      
+                      final opportunities =
+                          loadedState.opportunities as List<Opportunity>;
+
                       if (opportunities.isEmpty) {
                         return _buildEmptyState();
                       }
-                      
+
                       return ListView.builder(
                         controller: scrollController,
-                        itemCount: opportunities.length + (context.read<OpportunitiesCubit>().hasMorePages ? 1 : 0),
+                        itemCount:
+                            opportunities.length +
+                            (context.read<OpportunitiesCubit>().hasMorePages
+                                ? 1
+                                : 0),
                         itemBuilder: (context, index) {
                           if (index >= opportunities.length) {
                             return const Padding(
@@ -178,13 +159,13 @@ class OpportunitiesView extends HookWidget {
                               child: Center(child: CircularProgressIndicator()),
                             );
                           }
-                          
+
                           final opportunity = opportunities[index];
                           return _buildOpportunityCard(opportunity, context);
                         },
                       );
                     }
-                    
+
                     return const SizedBox.shrink();
                   },
                 ),
@@ -208,11 +189,7 @@ class OpportunitiesView extends HookWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.error_outline,
-            size: 80,
-            color: Colors.red[400],
-          ),
+          Icon(Icons.error_outline, size: 80, color: Colors.red[400]),
           const SizedBox(height: 16),
           Text(
             'Oops! Something went wrong',
@@ -225,17 +202,15 @@ class OpportunitiesView extends HookWidget {
           const SizedBox(height: 8),
           Text(
             'Please check your connection and try again',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[500],
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              context.read<OpportunitiesCubit>()
-                  .fetchOpportunities(language: lang.localeName);
+              context.read<OpportunitiesCubit>().fetchOpportunities(
+                language: lang.localeName,
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: MyColors.primaryColor,
@@ -253,11 +228,7 @@ class OpportunitiesView extends HookWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.search_off,
-            size: 80,
-            color: Colors.grey[400],
-          ),
+          Icon(Icons.search_off, size: 80, color: Colors.grey[400]),
           const SizedBox(height: 16),
           Text(
             'No opportunities found',
@@ -270,17 +241,18 @@ class OpportunitiesView extends HookWidget {
           const SizedBox(height: 8),
           Text(
             'Try adjusting your search or filters',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[500],
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFilterChip(String label, {required bool isSelected, required VoidCallback onTap}) {
+  Widget _buildFilterChip(
+    String label, {
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -300,15 +272,96 @@ class OpportunitiesView extends HookWidget {
     );
   }
 
+  Widget _buildFilterChips(
+    BuildContext context,
+    SectorsState sectorsState,
+  ) {
+    final lang = AppLocalizations.of(context)!;
+
+    Widget buildFilterChip(String label, {String? sectorId}) {
+      // Get current selected sector from OpportunitiesCubit state
+      return BlocBuilder<OpportunitiesCubit, OpportunitiesState>(
+        builder: (context, opportunitiesState) {
+          final stateType = opportunitiesState.runtimeType.toString();
+          final isLoaded = stateType.contains('Loaded');
+          
+          int? selectedSectorId;
+          if (isLoaded) {
+            final loadedState = opportunitiesState as dynamic;
+            selectedSectorId = loadedState.selectedSectorId;
+          }
+          
+          final isSelected = (label == 'All' && selectedSectorId == null) ||
+                           (sectorId != null && selectedSectorId.toString() == sectorId);
+
+          return GestureDetector(
+            onTap: () {
+              if (label == 'All') {
+                context.read<OpportunitiesCubit>().clearFilters(language: lang.localeName);
+              } else {
+                context.read<OpportunitiesCubit>().filterBySector(
+                  int.tryParse(sectorId ?? ''),
+                  language: lang.localeName,
+                );
+              }
+            },
+            child: Container(
+              margin: const EdgeInsets.only(right: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              decoration: BoxDecoration(
+                color: isSelected ? MyColors.primaryColor : Colors.grey[200],
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: Text(
+                label,
+                style: TextStyle(
+                  color: isSelected ? Colors.white : Colors.black87,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+
+    if (sectorsState.runtimeType.toString().contains('Loaded')) {
+      final loadedState = sectorsState as dynamic;
+      final sectors = loadedState.sectors as List<dynamic>;
+
+      return ListView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        children: [
+          buildFilterChip('All'),
+          ...sectors.map(
+            (sector) => buildFilterChip(
+              sector.name ?? 'Unknown',
+              sectorId: sector.id?.toString(),
+            ),
+          ),
+        ],
+      );
+    } else if (sectorsState.runtimeType.toString().contains('Loading')) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (sectorsState.runtimeType.toString().contains('Error')) {
+      return const Center(
+        child: Text('Error loading categories'),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
   Widget _buildOpportunityCard(Opportunity opportunity, BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => OpportunityDetailView(
-              opportunityId: opportunity.id,
-            ),
+            builder: (context) =>
+                OpportunityDetailView(opportunityId: opportunity.id),
           ),
         );
       },
@@ -341,7 +394,7 @@ class OpportunitiesView extends HookWidget {
                 child: _buildOpportunityImage(opportunity),
               ),
             ),
-            
+
             // Opportunity Details
             Expanded(
               child: Padding(
@@ -390,7 +443,8 @@ class OpportunitiesView extends HookWidget {
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            opportunity.locationDescription ?? 'Location ID: ${opportunity.locationId}',
+                            opportunity.locationDescription ??
+                                'Location ID: ${opportunity.locationId}',
                             style: const TextStyle(
                               fontSize: 12,
                               color: Colors.grey,
@@ -439,16 +493,12 @@ class OpportunitiesView extends HookWidget {
       Colors.orange,
       Colors.purple,
     ];
-    
+
     final color = colors[opportunity.id.hashCode % colors.length];
-    
+
     return Container(
       color: color.withValues(alpha: 0.1),
-      child: Icon(
-        Icons.volunteer_activism,
-        color: color,
-        size: 30,
-      ),
+      child: Icon(Icons.volunteer_activism, color: color, size: 30),
     );
   }
 
@@ -482,7 +532,7 @@ class OpportunitiesView extends HookWidget {
               ),
             ),
           ),
-          
+
           // Content skeleton
           Expanded(
             child: Padding(
@@ -568,10 +618,7 @@ class OpportunitiesView extends HookWidget {
                   padding: EdgeInsets.all(16),
                   child: Text(
                     'Filter Opportunities',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ),
                 Expanded(
@@ -593,11 +640,31 @@ class OpportunitiesView extends HookWidget {
                           spacing: 8,
                           runSpacing: 8,
                           children: [
-                            _buildFilterChip('All', isSelected: true, onTap: () {}),
-                            _buildFilterChip('Environmental', isSelected: false, onTap: () {}),
-                            _buildFilterChip('Education', isSelected: false, onTap: () {}),
-                            _buildFilterChip('Healthcare', isSelected: false, onTap: () {}),
-                            _buildFilterChip('Technology', isSelected: false, onTap: () {}),
+                            _buildFilterChip(
+                              'All',
+                              isSelected: true,
+                              onTap: () {},
+                            ),
+                            _buildFilterChip(
+                              'Environmental',
+                              isSelected: false,
+                              onTap: () {},
+                            ),
+                            _buildFilterChip(
+                              'Education',
+                              isSelected: false,
+                              onTap: () {},
+                            ),
+                            _buildFilterChip(
+                              'Healthcare',
+                              isSelected: false,
+                              onTap: () {},
+                            ),
+                            _buildFilterChip(
+                              'Technology',
+                              isSelected: false,
+                              onTap: () {},
+                            ),
                           ],
                         ),
                         const SizedBox(height: 24),
@@ -613,10 +680,26 @@ class OpportunitiesView extends HookWidget {
                           spacing: 8,
                           runSpacing: 8,
                           children: [
-                            _buildFilterChip('Any duration', isSelected: true, onTap: () {}),
-                            _buildFilterChip('1-3 months', isSelected: false, onTap: () {}),
-                            _buildFilterChip('3-6 months', isSelected: false, onTap: () {}),
-                            _buildFilterChip('6+ months', isSelected: false, onTap: () {}),
+                            _buildFilterChip(
+                              'Any duration',
+                              isSelected: true,
+                              onTap: () {},
+                            ),
+                            _buildFilterChip(
+                              '1-3 months',
+                              isSelected: false,
+                              onTap: () {},
+                            ),
+                            _buildFilterChip(
+                              '3-6 months',
+                              isSelected: false,
+                              onTap: () {},
+                            ),
+                            _buildFilterChip(
+                              '6+ months',
+                              isSelected: false,
+                              onTap: () {},
+                            ),
                           ],
                         ),
                         const SizedBox(height: 32),

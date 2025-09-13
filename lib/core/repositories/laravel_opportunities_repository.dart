@@ -5,7 +5,6 @@ import 'package:ngo/models/opportunity.dart';
 
 final class LaravelOpportunitiesRepository extends LaravelRepository
     implements OpportunitiesRepository {
-  
   @override
   Future<PaginatedResponse<Opportunity>> fetchAll({
     String language = 'en',
@@ -25,10 +24,7 @@ final class LaravelOpportunitiesRepository extends LaravelRepository
     String? sort,
     String? direction,
   }) async {
-    final queryParams = <String, dynamic>{
-      'page': page,
-      'per_page': perPage,
-    };
+    final queryParams = <String, dynamic>{'page': page, 'per_page': perPage};
 
     if (search != null) queryParams['search'] = search;
     if (tags != null) {
@@ -70,10 +66,7 @@ final class LaravelOpportunitiesRepository extends LaravelRepository
   }) async {
     final response = await get(
       '/v1/opportunities/featured',
-      queryParameters: {
-        'page': page,
-        'per_page': perPage,
-      },
+      queryParameters: {'page': page, 'per_page': perPage},
       headers: {'Accept-Language': language},
     );
 
@@ -84,10 +77,7 @@ final class LaravelOpportunitiesRepository extends LaravelRepository
   }
 
   @override
-  Future<Opportunity> fetch(
-    String id, {
-    String language = 'en',
-  }) async {
+  Future<Opportunity> fetch(String id, {String language = 'en'}) async {
     final response = await get(
       '/v1/opportunities/$id',
       headers: {'Accept-Language': language},
@@ -104,23 +94,29 @@ final class LaravelOpportunitiesRepository extends LaravelRepository
   }
 
   @override
-  Future<PaginatedResponse<Opportunity>> search(
+  Future<List<Opportunity>> search(
     String query, {
     String language = 'en',
-    int page = 1,
-    int perPage = 20,
-    List<String>? tags,
+
     int? sectorId,
-    int? locationId,
   }) async {
-    return fetchAll(
-      language: language,
-      page: page,
-      perPage: perPage,
-      search: query,
-      tags: tags,
-      sectorId: sectorId,
-      locationId: locationId,
-    );
+    final queryParams = <String, dynamic>{'query': query};
+
+    if (sectorId != null) {
+      queryParams['section'] =
+          sectorId; // Changed to 'section' to match your endpoint
+    }
+
+    return
+        await get(
+          '/v1/opportunities/search',
+          queryParameters: queryParams,
+          headers: {'Accept-Language': language},
+        ).then((response) {
+          final data = response['data'] as List<dynamic>;
+          return data
+              .map((item) => Opportunity.fromJson(item as Map<String, dynamic>))
+              .toList();
+        });
   }
 }

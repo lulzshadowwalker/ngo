@@ -121,34 +121,39 @@ class OpportunitiesCubit extends Cubit<OpportunitiesState> {
   Future<void> searchOpportunities(
     String query, {
     String language = 'en',
-    int page = 1,
-    int perPage = 20,
-    List<String>? tags,
     int? sectorId,
-    int? locationId,
   }) async {
     try {
       emit(const OpportunitiesState.loading());
 
-      final response = await _repository.search(
+      final opportunities = await _repository.search(
         query,
         language: language,
-        page: page,
-        perPage: perPage,
-        tags: tags,
         sectorId: sectorId,
-        locationId: locationId,
       );
 
       emit(OpportunitiesState.loaded(
-        opportunities: response.data,
-        meta: response.meta,
-        links: response.links,
-        currentPage: page,
+        opportunities: opportunities,
+        meta: const ApiMeta(
+          total: 0,
+          perPage: 20,
+          currentPage: 1,
+          lastPage: 1,
+          from: 1,
+          to: 0,
+        ),
+        links: const ApiLinks(
+          first: '',
+          last: '',
+          prev: null,
+          next: null,
+        ),
+        currentPage: 1,
         searchQuery: query,
-        selectedTags: tags ?? [],
+        selectedTags: [],
         selectedSectorId: sectorId,
-        selectedLocationId: locationId,
+        selectedLocationId: null,
+        isFeatured: false,
       ));
     } catch (e) {
       emit(OpportunitiesState.error(e.toString()));

@@ -995,7 +995,7 @@ class _CompleteYourProfileView extends HookWidget {
                             );
                             return CheckboxListTile(
                               title: Text(sector.name),
-                              subtitle: Text(sector.description),
+                          
                               value: isSelected,
                               activeColor: Colors.green,
                               onChanged: (bool? value) {

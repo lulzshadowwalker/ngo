@@ -39,13 +39,11 @@ abstract interface class OpportunitiesRepository {
   Future<Map<String, dynamic>> getStats();
 
   /// Search opportunities by query
-  Future<PaginatedResponse<Opportunity>> search(
+  Future<List<Opportunity>> search(
     String query, {
     String language = 'en',
-    int page = 1,
-    int perPage = 20,
-    List<String>? tags,
+  
     int? sectorId,
-    int? locationId,
+
   });
 }
