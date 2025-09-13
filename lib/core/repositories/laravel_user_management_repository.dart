@@ -44,11 +44,6 @@ final class LaravelUserManagementRepository extends LaravelRepository
             'profileVisibility': preferences['profileVisibility'],
           },
         },
-        'language': preferences['language'],
-        'appearance': preferences['appearance'],
-        'email_notifications': preferences['emailNotifications'],
-        'push_notifications': preferences['pushNotifications'],
-        'profile_visibility': preferences['profileVisibility'],
       },
     );
 
