@@ -376,4 +376,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get tags => 'العلامات';
+
+  @override
+  String get additional_information => 'معلومات إضافية';
 }

@@ -15,8 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserPreferences {
 
- String get id; String get language; bool get emailNotifications; bool get pushNotifications;// required bool? profileVisibility,
- DateTime get createdAt; DateTime get updatedAt;
+ String get id; String get language; bool get emailNotifications; bool get pushNotifications; bool? get profileVisibility; DateTime get createdAt; DateTime get updatedAt;
 /// Create a copy of UserPreferences
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,16 +26,16 @@ $UserPreferencesCopyWith<UserPreferences> get copyWith => _$UserPreferencesCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserPreferences&&(identical(other.id, id) || other.id == id)&&(identical(other.language, language) || other.language == language)&&(identical(other.emailNotifications, emailNotifications) || other.emailNotifications == emailNotifications)&&(identical(other.pushNotifications, pushNotifications) || other.pushNotifications == pushNotifications)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserPreferences&&(identical(other.id, id) || other.id == id)&&(identical(other.language, language) || other.language == language)&&(identical(other.emailNotifications, emailNotifications) || other.emailNotifications == emailNotifications)&&(identical(other.pushNotifications, pushNotifications) || other.pushNotifications == pushNotifications)&&(identical(other.profileVisibility, profileVisibility) || other.profileVisibility == profileVisibility)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,language,emailNotifications,pushNotifications,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,language,emailNotifications,pushNotifications,profileVisibility,createdAt,updatedAt);
 
 @override
 String toString() {
-  return 'UserPreferences(id: $id, language: $language, emailNotifications: $emailNotifications, pushNotifications: $pushNotifications, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'UserPreferences(id: $id, language: $language, emailNotifications: $emailNotifications, pushNotifications: $pushNotifications, profileVisibility: $profileVisibility, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -47,7 +46,7 @@ abstract mixin class $UserPreferencesCopyWith<$Res>  {
   factory $UserPreferencesCopyWith(UserPreferences value, $Res Function(UserPreferences) _then) = _$UserPreferencesCopyWithImpl;
 @useResult
 $Res call({
- String id, String language, bool emailNotifications, bool pushNotifications, DateTime createdAt, DateTime updatedAt
+ String id, String language, bool emailNotifications, bool pushNotifications, bool? profileVisibility, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -64,13 +63,14 @@ class _$UserPreferencesCopyWithImpl<$Res>
 
 /// Create a copy of UserPreferences
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? language = null,Object? emailNotifications = null,Object? pushNotifications = null,Object? createdAt = null,Object? updatedAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? language = null,Object? emailNotifications = null,Object? pushNotifications = null,Object? profileVisibility = freezed,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,language: null == language ? _self.language : language // ignore: cast_nullable_to_non_nullable
 as String,emailNotifications: null == emailNotifications ? _self.emailNotifications : emailNotifications // ignore: cast_nullable_to_non_nullable
 as bool,pushNotifications: null == pushNotifications ? _self.pushNotifications : pushNotifications // ignore: cast_nullable_to_non_nullable
-as bool,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as bool,profileVisibility: freezed == profileVisibility ? _self.profileVisibility : profileVisibility // ignore: cast_nullable_to_non_nullable
+as bool?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
@@ -83,14 +83,14 @@ as DateTime,
 
 
 class _UserPreferences implements UserPreferences {
-  const _UserPreferences({required this.id, required this.language, required this.emailNotifications, required this.pushNotifications, required this.createdAt, required this.updatedAt});
+  const _UserPreferences({required this.id, required this.language, required this.emailNotifications, required this.pushNotifications, required this.profileVisibility, required this.createdAt, required this.updatedAt});
   
 
 @override final  String id;
 @override final  String language;
 @override final  bool emailNotifications;
 @override final  bool pushNotifications;
-// required bool? profileVisibility,
+@override final  bool? profileVisibility;
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
 
@@ -104,16 +104,16 @@ _$UserPreferencesCopyWith<_UserPreferences> get copyWith => __$UserPreferencesCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserPreferences&&(identical(other.id, id) || other.id == id)&&(identical(other.language, language) || other.language == language)&&(identical(other.emailNotifications, emailNotifications) || other.emailNotifications == emailNotifications)&&(identical(other.pushNotifications, pushNotifications) || other.pushNotifications == pushNotifications)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserPreferences&&(identical(other.id, id) || other.id == id)&&(identical(other.language, language) || other.language == language)&&(identical(other.emailNotifications, emailNotifications) || other.emailNotifications == emailNotifications)&&(identical(other.pushNotifications, pushNotifications) || other.pushNotifications == pushNotifications)&&(identical(other.profileVisibility, profileVisibility) || other.profileVisibility == profileVisibility)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,language,emailNotifications,pushNotifications,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,language,emailNotifications,pushNotifications,profileVisibility,createdAt,updatedAt);
 
 @override
 String toString() {
-  return 'UserPreferences(id: $id, language: $language, emailNotifications: $emailNotifications, pushNotifications: $pushNotifications, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'UserPreferences(id: $id, language: $language, emailNotifications: $emailNotifications, pushNotifications: $pushNotifications, profileVisibility: $profileVisibility, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -124,7 +124,7 @@ abstract mixin class _$UserPreferencesCopyWith<$Res> implements $UserPreferences
   factory _$UserPreferencesCopyWith(_UserPreferences value, $Res Function(_UserPreferences) _then) = __$UserPreferencesCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String language, bool emailNotifications, bool pushNotifications, DateTime createdAt, DateTime updatedAt
+ String id, String language, bool emailNotifications, bool pushNotifications, bool? profileVisibility, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -141,13 +141,14 @@ class __$UserPreferencesCopyWithImpl<$Res>
 
 /// Create a copy of UserPreferences
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? language = null,Object? emailNotifications = null,Object? pushNotifications = null,Object? createdAt = null,Object? updatedAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? language = null,Object? emailNotifications = null,Object? pushNotifications = null,Object? profileVisibility = freezed,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(_UserPreferences(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,language: null == language ? _self.language : language // ignore: cast_nullable_to_non_nullable
 as String,emailNotifications: null == emailNotifications ? _self.emailNotifications : emailNotifications // ignore: cast_nullable_to_non_nullable
 as bool,pushNotifications: null == pushNotifications ? _self.pushNotifications : pushNotifications // ignore: cast_nullable_to_non_nullable
-as bool,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as bool,profileVisibility: freezed == profileVisibility ? _self.profileVisibility : profileVisibility // ignore: cast_nullable_to_non_nullable
+as bool?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));

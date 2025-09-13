@@ -458,6 +458,10 @@
   "tags" : "Tags",
   "@tags": {
     "description": "Label for tags section"
+  },
+  "additional_information" : "Additional Information",
+  "@additional_information": {
+    "description": "Label for additional information section"
   }
 
 }

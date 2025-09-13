@@ -170,12 +170,38 @@ class SettingsView extends HookWidget {
                   child: _buildSection(
                     title: AppLocalizations.of(context)!.privacy,
                     items: [
-                      _buildSettingsItem(
+                      _buildToggleItem(
                         assetName: AppIconsSettings.visibility,
-
                         title: AppLocalizations.of(context)!.profile_visibility,
-                        onTap: () {
-                          // Handle profile visibility
+                        value:
+                            (state.runtimeType.toString().contains('Loaded') &&
+                                (state as dynamic).preferences != null)
+                            ? (state as dynamic).preferences!.profileVisibility ?? true
+                            : true,
+                        onChanged: (value) {
+                          final currentPrefs =
+                              (state.runtimeType.toString().contains(
+                                    'Loaded',
+                                  ) &&
+                                  (state as dynamic).preferences != null)
+                              ? (state as dynamic).preferences!
+                              : null;
+
+                          final updateData = <String, dynamic>{
+                            'profileVisibility': value,
+                            'emailNotifications':
+                                currentPrefs?.emailNotifications ?? false,
+                            'pushNotifications':
+                                currentPrefs?.pushNotifications ?? true,
+                            'language': currentPrefs?.language ?? 'en',
+                          };
+
+                          // Remove null values
+                          updateData.removeWhere((key, value) => value == null);
+
+                          context.read<UserManagementCubit>().updatePreferences(
+                            updateData,
+                          );
                         },
                       ),
                       _buildSettingsItem(

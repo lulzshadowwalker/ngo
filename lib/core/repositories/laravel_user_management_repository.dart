@@ -41,6 +41,7 @@ final class LaravelUserManagementRepository extends LaravelRepository
             if (preferences['language'] != null) 'language': preferences['language'],
             if (preferences['pushNotifications'] != null) 'pushNotifications': preferences['pushNotifications'],
             if (preferences['emailNotifications'] != null) 'emailNotifications': preferences['emailNotifications'],
+            if (preferences['profileVisibility'] != null) 'profileVisibility': preferences['profileVisibility'],
           },
         },
       },

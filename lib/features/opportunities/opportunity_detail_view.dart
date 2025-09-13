@@ -235,7 +235,11 @@ class OpportunityDetailView extends HookWidget {
               if (opportunity.tags.isNotEmpty)
                 _buildTageSection(opportunity.tags, context),
 
-
+             if(opportunity.extra != null && opportunity.extra!.isNotEmpty)
+                _buildSection(
+                  AppLocalizations.of(context)!.additional_information,
+                  opportunity.extra!,
+                ),
 
               // Application Deadline
               _buildDeadlineSection(opportunity.expiryDate , context),

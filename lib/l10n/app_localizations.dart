@@ -823,6 +823,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tags'**
   String get tags;
+
+  /// Label for additional information section
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Information'**
+  String get additional_information;
 }
 
 class _AppLocalizationsDelegate

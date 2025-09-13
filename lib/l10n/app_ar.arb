@@ -123,5 +123,7 @@
   "days_left_to_apply" : "أيام متبقية للتقديم {days}",
     "already_applied" : "تم التقديم بالفعل",
       "apply_now" : "قدّم الآن",
-        "tags" : "العلامات"
+        "tags" : "العلامات",
+          "additional_information" : "معلومات إضافية"
+           
 }
