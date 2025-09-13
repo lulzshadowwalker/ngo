@@ -112,5 +112,13 @@
   "btn_send": "إرسال",
   "btn_cancel": "إلغاء",
   "plase_enter_a_valid_email": "يرجى إدخال بريد إلكتروني صالح",
-  "failed_to_send_reset_email": "فشل في إرسال بريد إعادة التعيين. يرجى المحاولة مرة أخرى."
+  "failed_to_send_reset_email": "فشل في إرسال بريد إعادة التعيين. يرجى المحاولة مرة أخرى.",
+  "required_skills": "المهارات المطلوبة",
+  "time_commitment": "الالتزام بالوقت",
+  "benefits": "الفوائد",
+  "key_responsibilities": "المسؤوليات الرئيسية",
+  "about_the_role": "حول الدور",
+  "months_duration": "مدة الشهور",
+  "applications_close": "إغلاق الطلبات",
+  "days_left_to_apply" : "أيام متبقية للتقديم {days}"
 }

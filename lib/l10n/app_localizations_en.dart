@@ -342,4 +342,30 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get failed_to_send_reset_email =>
       'Failed to send reset email. Please try again.';
+
+  @override
+  String get required_skills => 'Required Skills';
+
+  @override
+  String get time_commitment => 'Time Commitment';
+
+  @override
+  String get benefits => 'Benefits';
+
+  @override
+  String get key_responsibilities => 'Key Responsibilities';
+
+  @override
+  String get about_the_role => 'About the Role';
+
+  @override
+  String get months_duration => 'Months Duration';
+
+  @override
+  String get applications_close => 'Applications close:';
+
+  @override
+  String days_left_to_apply(Object days) {
+    return '$days days left to apply';
+  }
 }

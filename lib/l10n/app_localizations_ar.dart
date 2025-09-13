@@ -341,4 +341,30 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get failed_to_send_reset_email =>
       'فشل في إرسال بريد إعادة التعيين. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get required_skills => 'المهارات المطلوبة';
+
+  @override
+  String get time_commitment => 'الالتزام بالوقت';
+
+  @override
+  String get benefits => 'الفوائد';
+
+  @override
+  String get key_responsibilities => 'المسؤوليات الرئيسية';
+
+  @override
+  String get about_the_role => 'حول الدور';
+
+  @override
+  String get months_duration => 'مدة الشهور';
+
+  @override
+  String get applications_close => 'إغلاق الطلبات';
+
+  @override
+  String days_left_to_apply(Object days) {
+    return 'أيام متبقية للتقديم $days';
+  }
 }

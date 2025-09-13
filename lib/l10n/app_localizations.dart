@@ -757,6 +757,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to send reset email. Please try again.'**
   String get failed_to_send_reset_email;
+
+  /// Label for required skills section
+  ///
+  /// In en, this message translates to:
+  /// **'Required Skills'**
+  String get required_skills;
+
+  /// Label for time commitment section
+  ///
+  /// In en, this message translates to:
+  /// **'Time Commitment'**
+  String get time_commitment;
+
+  /// Label for benefits section
+  ///
+  /// In en, this message translates to:
+  /// **'Benefits'**
+  String get benefits;
+
+  /// Label for key responsibilities section
+  ///
+  /// In en, this message translates to:
+  /// **'Key Responsibilities'**
+  String get key_responsibilities;
+
+  /// Label for about the role section
+  ///
+  /// In en, this message translates to:
+  /// **'About the Role'**
+  String get about_the_role;
+
+  /// No description provided for @months_duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Months Duration'**
+  String get months_duration;
+
+  /// Label for application closing date
+  ///
+  /// In en, this message translates to:
+  /// **'Applications close:'**
+  String get applications_close;
+
+  /// Indicates the number of days left to apply
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days left to apply'**
+  String days_left_to_apply(Object days);
 }
 
 class _AppLocalizationsDelegate

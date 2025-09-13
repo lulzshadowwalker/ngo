@@ -15,7 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserPreferences {
 
- String get id; String get language; bool get emailNotifications; bool get pushNotifications; DateTime get createdAt; DateTime get updatedAt;
+ String get id; String get language; bool get emailNotifications; bool get pushNotifications;// required bool? profileVisibility,
+ DateTime get createdAt; DateTime get updatedAt;
 /// Create a copy of UserPreferences
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -89,6 +90,7 @@ class _UserPreferences implements UserPreferences {
 @override final  String language;
 @override final  bool emailNotifications;
 @override final  bool pushNotifications;
+// required bool? profileVisibility,
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
 

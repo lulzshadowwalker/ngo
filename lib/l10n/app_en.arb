@@ -417,5 +417,39 @@
   "plase_enter_a_valid_email" : "Please enter a valid email",
   "@plase_enter_a_valid_email": {},
   "failed_to_send_reset_email" : "Failed to send reset email. Please try again.",
-  "@failed_to_send_reset_email": {}
+  "@failed_to_send_reset_email": {},
+  "required_skills" : "Required Skills",
+  "@required_skills": {
+    "description": "Label for required skills section"
+  },
+  "time_commitment": "Time Commitment",
+  "@time_commitment": {
+    "description": "Label for time commitment section"
+  },
+  "benefits" : "Benefits",
+  "@benefits": {
+    "description": "Label for benefits section"
+  },
+  "key_responsibilities" : "Key Responsibilities",
+  "@key_responsibilities": {
+    "description": "Label for key responsibilities section"
+  },
+  "about_the_role" : "About the Role",
+  "@about_the_role": {
+    "description": "Label for about the role section"
+  },
+  "months_duration" : "Months Duration",
+  "@months_duration": {},
+  "applications_close" : "Applications close:",
+  "@applications_close": {
+    "description": "Label for application closing date"
+  },
+  "days_left_to_apply" : "{days} days left to apply",
+  "@days_left_to_apply": {
+    "description": "Indicates the number of days left to apply",
+    "placeholders": {
+      "days": {}
+    }
+  }
+
 }

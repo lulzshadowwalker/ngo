@@ -111,54 +111,25 @@ class OpportunityDetailView extends HookWidget {
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
           ),
           flexibleSpace: FlexibleSpaceBar(
-            background: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    MyColors.primaryColor.withValues(alpha: 0.8),
-                    MyColors.primaryColor.withValues(alpha: 0.6),
-                  ],
+            background: Stack(
+              children: [
+                // Background image placeholder
+                Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(opportunity.cover),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(
+                        Colors.black.withValues(alpha: 0.3),
+                        BlendMode.darken,
+                      ),
+                      onError: (exception, stackTrace) {},
+                    ),
+                  ),
                 ),
-              ),
-              child: Stack(
-                children: [
-                  // Background image placeholder
-                  Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: const AssetImage(
-                          'assets/images/hands_together.jpg',
-                        ),
-                        fit: BoxFit.cover,
-                        colorFilter: ColorFilter.mode(
-                          Colors.black.withValues(alpha: 0.3),
-                          BlendMode.darken,
-                        ),
-                        onError: (exception, stackTrace) {},
-                      ),
-                    ),
-                  ),
-                  // Fallback gradient if image fails to load
-                  Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          MyColors.primaryColor.withValues(alpha: 0.8),
-                          Colors.green.withValues(alpha: 0.6),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              ],
             ),
           ),
         ),
@@ -207,60 +178,60 @@ class OpportunityDetailView extends HookWidget {
                     const SizedBox(height: 16),
 
                     // Duration and Time Info
-                    Row(
-                      children: [
-                        _buildInfoItem(
-                          Icons.access_time,
-                          '${(opportunity.duration / 30).round()} Months Duration',
-                        ),
-                        const SizedBox(width: 24),
-                        _buildInfoItem(Icons.schedule, '5 hrs/week'),
-                        const SizedBox(width: 24),
-                        _buildInfoItem(Icons.location_on, 'On site'),
-                      ],
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          _buildInfoItem(
+                            Icons.access_time,
+                            '${(opportunity.duration / 30).round()} ${AppLocalizations.of(context)!.months_duration}',
+                          ),
+                          const SizedBox(width: 10),
+                          _buildInfoItem(Icons.schedule, '5 hrs/week'),
+                          const SizedBox(width: 10),
+                          _buildInfoItem(Icons.location_on, 'On site'),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
 
-              const Divider(height: 1),
-
-              // About the Role Section
               _buildSection(
-                'About the Role',
+                AppLocalizations.of(context)!.about_the_role,
                 opportunity.aboutTheRole ?? opportunity.description,
               ),
 
               // Key Responsibilities
               if (opportunity.keyResponsibilities.isNotEmpty)
                 _buildListSection(
-                  'Key Responsibilities',
+                  AppLocalizations.of(context)!.key_responsibilities,
                   opportunity.keyResponsibilities,
                 ),
 
               // Required Skills
               if (opportunity.requiredSkills.isNotEmpty)
                 _buildSkillsSection(
-                  'Required Skills',
+                  AppLocalizations.of(context)!.required_skills,
                   opportunity.requiredSkills,
                 ),
 
               // Time Commitment
               if (opportunity.timeCommitment.isNotEmpty)
                 _buildListSection(
-                  'Time Commitment',
+                  AppLocalizations.of(context)!.time_commitment,
                   opportunity.timeCommitment,
                 ),
 
               // Location Section
-              _buildLocationSection(opportunity),
+              _buildLocationSection(opportunity, context),
 
               // Benefits
               if (opportunity.benefits.isNotEmpty)
-                _buildBenefitsSection(opportunity.benefits),
+                _buildBenefitsSection(opportunity.benefits, context),
 
               // Application Deadline
-              _buildDeadlineSection(opportunity.expiryDate),
+              _buildDeadlineSection(opportunity.expiryDate , context),
 
               const SizedBox(height: 100), // Space for bottom buttons
             ],
@@ -271,20 +242,27 @@ class OpportunityDetailView extends HookWidget {
   }
 
   Widget _buildInfoItem(IconData icon, String text) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 16, color: Colors.grey[600]),
-        const SizedBox(width: 4),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[600],
-            fontWeight: FontWeight.w500,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: Colors.grey[600]),
+          const SizedBox(width: 4),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey[600],
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -417,15 +395,15 @@ class OpportunityDetailView extends HookWidget {
     );
   }
 
-  Widget _buildLocationSection(Opportunity opportunity) {
+  Widget _buildLocationSection(Opportunity opportunity, BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Location',
+          Text(
+            AppLocalizations.of(context)!.location,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -493,15 +471,15 @@ class OpportunityDetailView extends HookWidget {
     );
   }
 
-  Widget _buildBenefitsSection(List<String> benefits) {
+  Widget _buildBenefitsSection(List<String> benefits, BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Benefits',
+          Text(
+            AppLocalizations.of(context)!.benefits,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -536,7 +514,7 @@ class OpportunityDetailView extends HookWidget {
     );
   }
 
-  Widget _buildDeadlineSection(DateTime expiryDate) {
+  Widget _buildDeadlineSection(DateTime expiryDate , BuildContext context) {
     final daysLeft = expiryDate.difference(DateTime.now()).inDays;
 
     return Container(
@@ -557,7 +535,7 @@ class OpportunityDetailView extends HookWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Applications close: ${expiryDate.day}/${expiryDate.month}/${expiryDate.year}',
+                  '${AppLocalizations.of(context)!.applications_close} ${expiryDate.day}/${expiryDate.month}/${expiryDate.year}',
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.red[700],
@@ -566,7 +544,7 @@ class OpportunityDetailView extends HookWidget {
                 ),
                 if (daysLeft > 0)
                   Text(
-                    '$daysLeft days left to apply',
+                    AppLocalizations.of(context)!.days_left_to_apply(daysLeft),
                     style: TextStyle(fontSize: 12, color: Colors.red[600]),
                   ),
               ],

@@ -38,10 +38,9 @@ final class LaravelUserManagementRepository extends LaravelRepository
       data: {
         'data': {
           'attributes': {
-            'language': preferences['language'],
-            'pushNotifications': preferences['pushNotifications'],
-            'emailNotifications': preferences['emailNotifications'],
-            'profileVisibility': preferences['profileVisibility'],
+            if (preferences['language'] != null) 'language': preferences['language'],
+            if (preferences['pushNotifications'] != null) 'pushNotifications': preferences['pushNotifications'],
+            if (preferences['emailNotifications'] != null) 'emailNotifications': preferences['emailNotifications'],
           },
         },
       },
