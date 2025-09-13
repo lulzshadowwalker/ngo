@@ -1,7 +1,10 @@
 
 
 
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../core/theme/my_colors.dart';
 import '../../export_tools.dart';
@@ -32,7 +35,7 @@ class _EditProfileContent extends HookWidget {
     final emailController = useTextEditingController();
     final phoneController = useTextEditingController();
     
-    
+
     final selectedSkills = useState<Set<String>>({
       'Leadership', 
       'Communication', 
@@ -43,6 +46,8 @@ class _EditProfileContent extends HookWidget {
       'Education', 
       'Environment'
     });
+    
+    final selectedImage = useState<File?>(null);
     
     final phoneError = useState<String?>(null);
 
@@ -61,29 +66,29 @@ class _EditProfileContent extends HookWidget {
             state.toString().contains('initial')) {
           return _buildLoadingScaffold(context);
         }
-        
+
         // Handle error state
         if (state.toString().contains('error')) {
           return _buildErrorScaffold(context);
         }
-        
+
         // Handle loaded state - extract user data
         User? user;
         if (state.toString().contains('loaded')) {
           user = _extractUserFromState(state);
-          
+
           // Update controllers with user data when loaded
           WidgetsBinding.instance.addPostFrameCallback((_) {
             fullNameController.text = user?.name ?? '';
             bioController.text = user?.bio ?? '';
             emailController.text = user?.email ?? '';
-            
-            
+
+
           });
         }
-        
+
         return _buildMainScaffoldWithUserData(
-          context, 
+          context,
           user,
           fullNameController,
           bioController,
@@ -91,17 +96,18 @@ class _EditProfileContent extends HookWidget {
           phoneController,
           selectedSkills,
           selectedInterests,
+          selectedImage,
           phoneError,
         );
       },
     );
   }
-  
+
   // Helper method to extract user from state string
   User? _extractUserFromState(UserManagementState state) {
     try {
       final stateString = state.toString();
-      
+
       if (stateString.contains('User(')) {
         // Extract user data using regex similar to profile_view.dart
         final nameMatch = RegExp(r'name: ([^,\)]+)').firstMatch(stateString);
@@ -109,7 +115,7 @@ class _EditProfileContent extends HookWidget {
         final bioMatch = RegExp(r'bio: ([^,\)]+)').firstMatch(stateString);
         final avatarMatch = RegExp(r'avatar: ([^,\)]+)').firstMatch(stateString);
         final idMatch = RegExp(r'id: ([^,\)]+)').firstMatch(stateString);
-        
+
         // Create a basic user object with available data
         if (nameMatch != null) {
           return User(
@@ -139,6 +145,7 @@ class _EditProfileContent extends HookWidget {
     TextEditingController phoneController,
     ValueNotifier<Set<String>> selectedSkills,
     ValueNotifier<Set<String>> selectedInterests,
+    ValueNotifier<File?> selectedImage,
     ValueNotifier<String?> phoneError,
   ) {
     final skills = [
@@ -171,6 +178,7 @@ class _EditProfileContent extends HookWidget {
       phoneController: phoneController,
       selectedSkills: selectedSkills,
       selectedInterests: selectedInterests,
+      selectedImage: selectedImage,
       skills: skills,
       interests: interests,
       phoneError: phoneError,
@@ -241,6 +249,7 @@ class _EditProfileContent extends HookWidget {
     required TextEditingController phoneController,
     required ValueNotifier<Set<String>> selectedSkills,
     required ValueNotifier<Set<String>> selectedInterests,
+    required ValueNotifier<File?> selectedImage,
     required List<String> skills,
     required List<String> interests,
     required ValueNotifier<String?> phoneError,
@@ -271,7 +280,7 @@ class _EditProfileContent extends HookWidget {
         slivers: [
           // Profile Photo Section
           SliverToBoxAdapter(
-            child: _buildProfilePhotoSection(context, user),
+            child: _buildProfilePhotoSection(context, user, selectedImage),
           ),
           
           // Form Fields
@@ -355,8 +364,20 @@ class _EditProfileContent extends HookWidget {
                       onPressed: () {
                         validatePhone(phoneController.text);
                         if (phoneError.value == null) {
-                          // Handle save changes
-                          _saveChanges(context);
+                          // Handle save changes - need to pass user data
+                          if (user != null) {
+                            _saveChanges(
+                              context,
+                              user,
+                              fullNameController,
+                              bioController,
+                              emailController,
+                              phoneController,
+                              selectedSkills,
+                              selectedInterests,
+                              selectedImage,
+                            );
+                          }
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -386,7 +407,7 @@ class _EditProfileContent extends HookWidget {
     );
   }
 
-  Widget _buildProfilePhotoSection(BuildContext context, User? user) {
+  Widget _buildProfilePhotoSection(BuildContext context, User? user, ValueNotifier<File?> selectedImage) {
     return Container(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -405,38 +426,45 @@ class _EditProfileContent extends HookWidget {
                   ),
                 ),
                 child: ClipOval(
-                  child: user?.avatar != null && user!.avatar!.isNotEmpty
-                      ? Image.network(
-                          user.avatar!,
+                  child: selectedImage.value != null
+                      ? Image.file(
+                          selectedImage.value!,
                           width: 100,
                           height: 100,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
+                        )
+                      : user?.avatar != null && user!.avatar!.isNotEmpty
+                          ? Image.network(
+                              user.avatar!,
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: Colors.grey[200],
+                                  child: const Icon(
+                                    Icons.person,
+                                    size: 50,
+                                    color: Colors.grey,
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(
                               color: Colors.grey[200],
                               child: const Icon(
                                 Icons.person,
                                 size: 50,
                                 color: Colors.grey,
                               ),
-                            );
-                          },
-                        )
-                      : Container(
-                          color: Colors.grey[200],
-                          child: const Icon(
-                            Icons.person,
-                            size: 50,
-                            color: Colors.grey,
-                          ),
-                        ),
+                            ),
                 ),
               ),
               Positioned(
                 bottom: 0,
                 right: 0,
                 child: GestureDetector(
-                  onTap: () => _showImageSourceDialog(context),
+                  onTap: () => _showImageSourceDialog(context, selectedImage),
                   child: Container(
                     width: 32,
                     height: 32,
@@ -459,7 +487,7 @@ class _EditProfileContent extends HookWidget {
           
           // Change Photo Text
           GestureDetector(
-            onTap: () => _showImageSourceDialog(context),
+            onTap: () => _showImageSourceDialog(context, selectedImage),
             child: const Text(
               'Change Photo',
               style: TextStyle(
@@ -589,18 +617,29 @@ class _EditProfileContent extends HookWidget {
     );
   }
 
-  void _saveChanges(BuildContext context) {
-    // Handle save changes logic
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Profile updated successfully!'),
-        backgroundColor: MyColors.primaryColor,
-      ),
+  void _saveChanges(
+    BuildContext context,
+    User user,
+    TextEditingController fullNameController,
+    TextEditingController bioController,
+    TextEditingController emailController,
+    TextEditingController phoneController,
+    ValueNotifier<Set<String>> selectedSkills,
+    ValueNotifier<Set<String>> selectedInterests,
+    ValueNotifier<File?> selectedImage
+  ) {
+    // Call the API to update profile
+    context.read<UserManagementCubit>().updateProfile(
+      name: fullNameController.text.trim().isEmpty ? null : fullNameController.text.trim(),
+      email: emailController.text.trim().isEmpty ? null : emailController.text.trim(),
+      bio: bioController.text.trim().isEmpty ? null : bioController.text.trim(),
+      // TODO: Add other fields like birthdate, website, etc. when UI fields are added
+      // For now, we're only updating the basic fields that are in the current UI
+      avatarFile: selectedImage.value,
     );
-    Navigator.pop(context);
   }
 
-  void _showImageSourceDialog(BuildContext context) {
+  void _showImageSourceDialog(BuildContext context, ValueNotifier<File?> selectedImage) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -613,7 +652,7 @@ class _EditProfileContent extends HookWidget {
                 title: const Text('Camera'),
                 onTap: () {
                   Navigator.pop(context);
-                  _pickImageFromCamera(context);
+                  _pickImageFromCamera(context, selectedImage);
                 },
               ),
               ListTile(
@@ -621,7 +660,7 @@ class _EditProfileContent extends HookWidget {
                 title: const Text('Gallery'),
                 onTap: () {
                   Navigator.pop(context);
-                  _pickImageFromGallery(context);
+                  _pickImageFromGallery(context, selectedImage);
                 },
               ),
               ListTile(
@@ -638,23 +677,52 @@ class _EditProfileContent extends HookWidget {
     );
   }
 
-  void _pickImageFromCamera(BuildContext context) {
-    // TODO: Implement camera image picker
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Camera functionality will be implemented'),
-        backgroundColor: MyColors.primaryColor,
-      ),
-    );
+  void _pickImageFromCamera(BuildContext context, ValueNotifier<File?> selectedImage) async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.camera);
+      if (image != null) {
+        selectedImage.value = File(image.path);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Image selected from camera'),
+            backgroundColor: MyColors.primaryColor,
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error accessing camera: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
-  void _pickImageFromGallery(BuildContext context) {
-    // TODO: Implement gallery image picker
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Gallery functionality will be implemented'),
-        backgroundColor: MyColors.primaryColor,
-      ),
-    );
+  void _pickImageFromGallery(BuildContext context, ValueNotifier<File?> selectedImage) async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        selectedImage.value = File(image.path);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Image selected from gallery'),
+            backgroundColor: MyColors.primaryColor,
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error accessing gallery: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
+
+
+
 }

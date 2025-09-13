@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$User {
 
- String get id; String get name; String get email; String? get avatar; String? get bio; DateTime? get birthdate; Location? get location; List<String>? get skills;
+ String get id; String get name; String get email; String? get avatar; String? get bio; DateTime? get birthdate; Location? get location; List<String>? get skills; List<Organization>? get following;
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $UserCopyWith<User> get copyWith => _$UserCopyWithImpl<User>(this as User, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.birthdate, birthdate) || other.birthdate == birthdate)&&(identical(other.location, location) || other.location == location)&&const DeepCollectionEquality().equals(other.skills, skills));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.birthdate, birthdate) || other.birthdate == birthdate)&&(identical(other.location, location) || other.location == location)&&const DeepCollectionEquality().equals(other.skills, skills)&&const DeepCollectionEquality().equals(other.following, following));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,email,avatar,bio,birthdate,location,const DeepCollectionEquality().hash(skills));
+int get hashCode => Object.hash(runtimeType,id,name,email,avatar,bio,birthdate,location,const DeepCollectionEquality().hash(skills),const DeepCollectionEquality().hash(following));
 
 @override
 String toString() {
-  return 'User(id: $id, name: $name, email: $email, avatar: $avatar, bio: $bio, birthdate: $birthdate, location: $location, skills: $skills)';
+  return 'User(id: $id, name: $name, email: $email, avatar: $avatar, bio: $bio, birthdate: $birthdate, location: $location, skills: $skills, following: $following)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $UserCopyWith<$Res>  {
   factory $UserCopyWith(User value, $Res Function(User) _then) = _$UserCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String email, String? avatar, String? bio, DateTime? birthdate, Location? location, List<String>? skills
+ String id, String name, String email, String? avatar, String? bio, DateTime? birthdate, Location? location, List<String>? skills, List<Organization>? following
 });
 
 
@@ -63,7 +63,7 @@ class _$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? email = null,Object? avatar = freezed,Object? bio = freezed,Object? birthdate = freezed,Object? location = freezed,Object? skills = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? email = null,Object? avatar = freezed,Object? bio = freezed,Object? birthdate = freezed,Object? location = freezed,Object? skills = freezed,Object? following = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -73,7 +73,8 @@ as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non
 as String?,birthdate: freezed == birthdate ? _self.birthdate : birthdate // ignore: cast_nullable_to_non_nullable
 as DateTime?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as Location?,skills: freezed == skills ? _self.skills : skills // ignore: cast_nullable_to_non_nullable
-as List<String>?,
+as List<String>?,following: freezed == following ? _self.following : following // ignore: cast_nullable_to_non_nullable
+as List<Organization>?,
   ));
 }
 /// Create a copy of User
@@ -96,7 +97,7 @@ $LocationCopyWith<$Res>? get location {
 
 
 class _User implements User {
-  const _User({required this.id, required this.name, required this.email, required this.avatar, required this.bio, required this.birthdate, this.location, final  List<String>? skills}): _skills = skills;
+  const _User({required this.id, required this.name, required this.email, required this.avatar, required this.bio, required this.birthdate, this.location, final  List<String>? skills, final  List<Organization>? following}): _skills = skills,_following = following;
   
 
 @override final  String id;
@@ -115,6 +116,15 @@ class _User implements User {
   return EqualUnmodifiableListView(value);
 }
 
+ final  List<Organization>? _following;
+@override List<Organization>? get following {
+  final value = _following;
+  if (value == null) return null;
+  if (_following is EqualUnmodifiableListView) return _following;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
@@ -126,16 +136,16 @@ _$UserCopyWith<_User> get copyWith => __$UserCopyWithImpl<_User>(this, _$identit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.birthdate, birthdate) || other.birthdate == birthdate)&&(identical(other.location, location) || other.location == location)&&const DeepCollectionEquality().equals(other._skills, _skills));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.birthdate, birthdate) || other.birthdate == birthdate)&&(identical(other.location, location) || other.location == location)&&const DeepCollectionEquality().equals(other._skills, _skills)&&const DeepCollectionEquality().equals(other._following, _following));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,email,avatar,bio,birthdate,location,const DeepCollectionEquality().hash(_skills));
+int get hashCode => Object.hash(runtimeType,id,name,email,avatar,bio,birthdate,location,const DeepCollectionEquality().hash(_skills),const DeepCollectionEquality().hash(_following));
 
 @override
 String toString() {
-  return 'User(id: $id, name: $name, email: $email, avatar: $avatar, bio: $bio, birthdate: $birthdate, location: $location, skills: $skills)';
+  return 'User(id: $id, name: $name, email: $email, avatar: $avatar, bio: $bio, birthdate: $birthdate, location: $location, skills: $skills, following: $following)';
 }
 
 
@@ -146,7 +156,7 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) _then) = __$UserCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String email, String? avatar, String? bio, DateTime? birthdate, Location? location, List<String>? skills
+ String id, String name, String email, String? avatar, String? bio, DateTime? birthdate, Location? location, List<String>? skills, List<Organization>? following
 });
 
 
@@ -163,7 +173,7 @@ class __$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? email = null,Object? avatar = freezed,Object? bio = freezed,Object? birthdate = freezed,Object? location = freezed,Object? skills = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? email = null,Object? avatar = freezed,Object? bio = freezed,Object? birthdate = freezed,Object? location = freezed,Object? skills = freezed,Object? following = freezed,}) {
   return _then(_User(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -173,7 +183,8 @@ as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non
 as String?,birthdate: freezed == birthdate ? _self.birthdate : birthdate // ignore: cast_nullable_to_non_nullable
 as DateTime?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as Location?,skills: freezed == skills ? _self._skills : skills // ignore: cast_nullable_to_non_nullable
-as List<String>?,
+as List<String>?,following: freezed == following ? _self._following : following // ignore: cast_nullable_to_non_nullable
+as List<Organization>?,
   ));
 }
 

@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ngo/models/location.dart';
+import 'package:ngo/models/organization.dart';
 
 part 'user.freezed.dart';
 
@@ -14,6 +15,7 @@ abstract class User with _$User {
     required DateTime? birthdate,
     Location? location,
     List<String>? skills,
+    List<Organization>? following,
   }) = _User;
 
   factory User.fromLaravel(Map<String, dynamic> data) {
@@ -31,6 +33,14 @@ abstract class User with _$User {
       skills = skillsList.map((skill) => skill.toString()).toList();
     }
 
+    List<Organization>? following;
+    if (includes?['following'] != null) {
+      final followingList = includes!['following'] as List<dynamic>;
+      following = followingList
+          .map((org) => Organization.fromLaravel(org as Map<String, dynamic>))
+          .toList();
+    }
+
     return User(
       id: data['id'] as String,
       name: attributes['name'] as String? ?? '',
@@ -42,6 +52,7 @@ abstract class User with _$User {
           : null,
       location: location,
       skills: skills,
+      following: following,
     );
   }
 }

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngo/features/location_section/cubit/location_cubit.dart';
+import 'package:ngo/features/main_nav/main_nav.dart';
 
 import '../../core/hooks/use_image_picker.dart';
 import '../../core/theme/my_fonts.dart';
@@ -12,7 +13,6 @@ import '../../models/sectors.dart';
 import '../../models/skill.dart';
 import '../../service_locator.dart';
 import '../auth/cubit/auth_cubit.dart';
-import '../main_nav/main_nav.dart';
 import '../organization/cubit/organization_cubit.dart';
 import '../sectors_features/cubit/sectors_cubit.dart';
 import '../skills/cubit/skills_cubit.dart';
@@ -32,23 +32,22 @@ class CompleteYourProfile extends HookWidget {
     var lang = AppLocalizations.of(context)!;
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => sl<SkillsCubit>()..fetchAllSkills(
-          language: lang.localeName,
-        )),
         BlocProvider(
-          create: (context) => sl<LocationCubit>()..fetchAllLocation(
-            language: lang.localeName,
-          ),
+          create: (context) =>
+              sl<SkillsCubit>()..fetchAllSkills(language: lang.localeName),
         ),
         BlocProvider(
-          create: (context) => sl<OrganizationCubit>()..fetchAllOrganizations(
-            language: lang.localeName,
-          ),
+          create: (context) =>
+              sl<LocationCubit>()..fetchAllLocation(language: lang.localeName),
         ),
-          BlocProvider(
-          create: (context) => sl<SectorsCubit>()..fetchAllSectors(
-            language: lang.localeName,
-          ),
+        BlocProvider(
+          create: (context) =>
+              sl<OrganizationCubit>()
+                ..fetchAllOrganizations(language: lang.localeName),
+        ),
+        BlocProvider(
+          create: (context) =>
+              sl<SectorsCubit>()..fetchAllSectors(language: lang.localeName),
         ),
       ],
       child: _CompleteYourProfileView(
@@ -117,7 +116,7 @@ class _CompleteYourProfileView extends HookWidget {
         leading: const BackButton(),
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title:  Text(
+        title: Text(
           lang.complete_your_profile,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
@@ -135,7 +134,7 @@ class _CompleteYourProfileView extends HookWidget {
               children: [
                 stepIndicator(0),
                 const SizedBox(height: 8),
-                 Center(
+                Center(
                   child: Text(
                     lang.step_1_of_3,
                     style: TextStyle(
@@ -252,17 +251,6 @@ class _CompleteYourProfileView extends HookWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      // Handle skip
-                    },
-                    child: const Text(
-                      'Skip for Now',
-                      style: TextStyle(color: Colors.grey, fontSize: 16),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -274,9 +262,9 @@ class _CompleteYourProfileView extends HookWidget {
               children: [
                 stepIndicator(1),
                 const SizedBox(height: 8),
-                 Center(
+                Center(
                   child: Text(
-                     lang.step_2_of_3,
+                    lang.step_2_of_3,
                     style: TextStyle(
                       color: Colors.green,
                       fontWeight: FontWeight.bold,
@@ -284,7 +272,7 @@ class _CompleteYourProfileView extends HookWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                 Text(lang.location),
+                Text(lang.location),
                 const SizedBox(height: 8),
 
                 BlocBuilder<LocationCubit, LocationState>(
@@ -502,8 +490,9 @@ class _CompleteYourProfileView extends HookWidget {
                             labelStyle: const TextStyle(color: Colors.green),
                             deleteIcon: const Icon(Icons.close, size: 18),
                             onDeleted: () {
-                              selectedSectors.value = List.from(selectedSectors.value)
-                                ..remove(sector);
+                              selectedSectors.value = List.from(
+                                selectedSectors.value,
+                              )..remove(sector);
                             },
                           ),
                         )
@@ -515,14 +504,20 @@ class _CompleteYourProfileView extends HookWidget {
                 BlocBuilder<SectorsCubit, SectorsState>(
                   builder: (context, state) {
                     return GestureDetector(
-                      onTap: () => _showSectorsBottomSheet(context, state, selectedSectors),
+                      onTap: () => _showSectorsBottomSheet(
+                        context,
+                        state,
+                        selectedSectors,
+                      ),
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                           vertical: 12,
                           horizontal: 16,
                         ),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Theme.of(context).primaryColor),
+                          border: Border.all(
+                            color: Theme.of(context).primaryColor,
+                          ),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
@@ -544,24 +539,126 @@ class _CompleteYourProfileView extends HookWidget {
                   },
                 ),
                 const SizedBox(height: 32),
-                SizedBox(
-                  width: double.infinity,
-                  height: 54,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[700],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () => pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.ease,
-                    ),
-                    child: Text(
-                      lang.next,
-                      style: MyFonts.font16Black.copyWith(color: Colors.white),
-                    ),
+
+                BlocProvider(
+                  create: (context) => sl<AuthCubit>(),
+                  child: BlocConsumer<AuthCubit, AuthState>(
+                    listener: (context, state) {
+                      final stateType = state.runtimeType.toString();
+                      if (stateType.contains('Authenticated')) {
+                        pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.ease,
+                        );
+                      } else if (stateType.contains('RegisterError')) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Registration failed. Please try again.',
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      final stateType = state.runtimeType.toString();
+                      final isLoading = stateType.contains('Registering');
+
+                      return SizedBox(
+                        width: double.infinity,
+                        height: 54,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green[700],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: isLoading
+                              ? null
+                              : () async {
+                                  // Validate required fields
+                                  if (selectedLocation.value == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Please select a location',
+                                        ),
+                                        backgroundColor: Colors.orange,
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                  if (selectedSkills.value.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Please add at least one skill',
+                                        ),
+                                        backgroundColor: Colors.orange,
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                  if (selectedSectors.value.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Please add at least one interest',
+                                        ),
+                                        backgroundColor: Colors.orange,
+                                      ),
+                                    );
+                                    return;
+                                  }
+
+                                  try {
+                                    await context
+                                        .read<AuthCubit>()
+                                        .registerIndividual(
+                                          name: fullName,
+                                          email: email,
+                                          password: password,
+                                          locationId:
+                                              int.tryParse(
+                                                selectedLocation.value!.id,
+                                              ) ??
+                                              0,
+                                          avatar: imagePickerResult
+                                              .selectedImage
+                                              ?.path,
+                                        );
+                                  } catch (e) {
+                                    log("Registration error: $e");
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Registration failed: ${e.toString()}',
+                                        ),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+                                },
+                          child: isLoading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  lang.next,
+                                  style: MyFonts.font16Black.copyWith(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -575,9 +672,9 @@ class _CompleteYourProfileView extends HookWidget {
               children: [
                 stepIndicator(2),
                 const SizedBox(height: 8),
-                 Center(
+                Center(
                   child: Text(
-                      lang.step_3_of_3,
+                    lang.step_3_of_3,
                     style: TextStyle(
                       color: Colors.green,
                       fontWeight: FontWeight.bold,
@@ -585,7 +682,7 @@ class _CompleteYourProfileView extends HookWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                 Text(
+                Text(
                   lang.follow_interest_organizations,
                   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                 ),
@@ -606,23 +703,29 @@ class _CompleteYourProfileView extends HookWidget {
                         );
                       } else if (state.runtimeType.toString() == '_Loaded') {
                         final loadedState = state as dynamic;
-                        final organizations = loadedState.organizations as List<dynamic>;
-                        
+                        final organizations =
+                            loadedState.organizations as List<dynamic>;
+
                         if (organizations.isEmpty) {
                           return Center(
                             child: Text('No organizations available'),
                           );
                         }
-                        
+
                         return ListView.builder(
                           itemCount: organizations.length,
                           itemBuilder: (context, index) {
                             final org = organizations[index];
-                            final isFollowed = followedOrgs.value.any((followed) => (followed as dynamic).id == org.id);
-                            
+                            final isFollowed = followedOrgs.value.any(
+                              (followed) => (followed as dynamic).id == org.id,
+                            );
+
                             return Container(
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey[300]!, width: 1),
+                                border: Border.all(
+                                  color: Colors.grey[300]!,
+                                  width: 1,
+                                ),
                               ),
                               margin: const EdgeInsets.only(bottom: 16),
                               child: ListTile(
@@ -631,12 +734,17 @@ class _CompleteYourProfileView extends HookWidget {
                                       ? NetworkImage(org.logo)
                                       : null,
                                   child: org.logo.isEmpty
-                                      ? const Icon(Icons.business, color: Colors.green)
+                                      ? const Icon(
+                                          Icons.business,
+                                          color: Colors.green,
+                                        )
                                       : null,
                                 ),
                                 title: Text(
                                   org.name,
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -667,18 +775,33 @@ class _CompleteYourProfileView extends HookWidget {
                                   onPressed: () async {
                                     if (isFollowed) {
                                       followedOrgs.value = followedOrgs.value
-                                          .where((followed) => (followed as dynamic).id != org.id)
+                                          .where(
+                                            (followed) =>
+                                                (followed as dynamic).slug !=
+                                                org.slug,
+                                          )
                                           .toList();
                                       // Call API to unfollow
-                                      await context.read<OrganizationCubit>().unfollowOrganization(org.id);
+                                      await context
+                                          .read<OrganizationCubit>()
+                                          .unfollowOrganization(org.slug);
                                     } else {
-                                      followedOrgs.value = [...followedOrgs.value, org];
+                                      followedOrgs.value = [
+                                        ...followedOrgs.value,
+                                        org,
+                                      ];
                                       // Call API to follow
-                                      await context.read<OrganizationCubit>().followOrganization(org.id);
+                                      await context
+                                          .read<OrganizationCubit>()
+                                          .followOrganization(org.slug);
                                     }
                                   },
                                   child: Text(
-                                    isFollowed ? 'Following' : 'Follow',
+                                    isFollowed
+                                        ? AppLocalizations.of(
+                                            context,
+                                          )!.following
+                                        : AppLocalizations.of(context)!.follow,
                                   ),
                                 ),
                               ),
@@ -696,113 +819,53 @@ class _CompleteYourProfileView extends HookWidget {
                               SizedBox(height: 16),
                               Text(
                                 'Error loading organizations',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               SizedBox(height: 8),
                               Text(message, textAlign: TextAlign.center),
                               SizedBox(height: 16),
                               ElevatedButton(
-                                onPressed: () => context.read<OrganizationCubit>().fetchAllOrganizations(),
+                                onPressed: () => context
+                                    .read<OrganizationCubit>()
+                                    .fetchAllOrganizations(),
                                 child: Text('Retry'),
                               ),
                             ],
                           ),
                         );
                       } else {
-                        return Center(
-                          child: Text('Loading organizations...'),
-                        );
+                        return Center(child: Text('Loading organizations...'));
                       }
                     },
+                  ),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 54,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green[700],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: () {
+                      // Navigate to main app screen
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => MainNav()),
+                        (route) => false,
+                      );
+                    },
+                    child: Text(
+                      lang.next,
+                      style: MyFonts.font16Black.copyWith(color: Colors.white),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 32),
-
-                BlocProvider(
-                  create: (context) => sl<AuthCubit>(),
-                  child: BlocConsumer<AuthCubit, AuthState>(
-                    listener: (context, state) {
-                      final stateType = state.runtimeType.toString();
-                      if (stateType.contains('Authenticated')) {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => MainNav()),
-                          (route) => false,
-                        );
-                      } else if (stateType.contains('RegisterError')) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Registration failed. Please try again.'),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                      }
-                    },
-                    builder: (context, state) {
-                      final stateType = state.runtimeType.toString();
-                      final isLoading = stateType.contains('Registering');
-                      
-                      return SizedBox(
-                        width: double.infinity,
-                        height: 54,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green[700],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          onPressed: isLoading ? null : () async {
-                            // Validate required fields
-                            if (selectedLocation.value == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Please select a location'),
-                                  backgroundColor: Colors.orange,
-                                ),
-                              );
-                              return;
-                            }
-
-                            try {
-                              await context.read<AuthCubit>().registerIndividual(
-                                name: fullName,
-                                email: email,
-                                password: password,
-                                locationId: int.tryParse(selectedLocation.value!.id) ?? 0,
-                                avatar: imagePickerResult.selectedImage?.path,
-                              );
-                            } catch (e) {
-                              log("Registration error: $e");
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Registration failed: ${e.toString()}'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            }
-                          },
-                          child: isLoading
-                              ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : Text(
-                                  'Save Profile',
-                                  style: MyFonts.font16Black.copyWith(color: Colors.white),
-                                ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-        
-        
-        
               ],
             ),
           ),
@@ -995,7 +1058,7 @@ class _CompleteYourProfileView extends HookWidget {
                             );
                             return CheckboxListTile(
                               title: Text(sector.name),
-                          
+
                               value: isSelected,
                               activeColor: Colors.green,
                               onChanged: (bool? value) {
@@ -1073,5 +1136,4 @@ class _CompleteYourProfileView extends HookWidget {
       ),
     );
   }
-
 }

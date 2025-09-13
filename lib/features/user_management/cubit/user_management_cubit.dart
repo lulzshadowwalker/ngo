@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -81,6 +82,48 @@ class UserManagementCubit extends Cubit<UserManagementState> {
       emit(UserManagementState.loaded(user: user, preferences: preferences));
     } catch (error) {
       emit(UserManagementState.error(error.toString()));
+    }
+  }
+
+  Future<void> updateProfile({
+    String? name,
+    String? email,
+    String? bio,
+    String? birthdate,
+    String? website,
+    String? contactEmail,
+    int? locationId,
+    List<int>? skillIds,
+    int? sectorId,
+    File? avatarFile,
+  }) async {
+    final accessToken = await SharedPrefHelper.getAccessToken();
+
+    try {
+      emit(const UserManagementState.loading());
+
+      final profileData = <String, dynamic>{};
+
+      if (name != null) profileData['name'] = name;
+      if (email != null) profileData['email'] = email;
+      if (bio != null) profileData['bio'] = bio;
+      if (birthdate != null) profileData['birthdate'] = birthdate;
+      if (website != null) profileData['website'] = website;
+      if (contactEmail != null) profileData['contactEmail'] = contactEmail;
+      if (locationId != null) profileData['locationId'] = locationId;
+      if (skillIds != null) profileData['skillIds'] = skillIds;
+      if (sectorId != null) profileData['sectorId'] = sectorId;
+
+      final updatedUser = await _repository.updateProfile(
+        accessToken,
+        profileData,
+        avatarFile: avatarFile,
+      );
+
+      emit(UserManagementState.loaded(user: updatedUser));
+    } catch (error) {
+      log("Error updating profile: $error");
+      emit(UserManagementState.error('Failed to update profile: ${error.toString()}'));
     }
   }
 }

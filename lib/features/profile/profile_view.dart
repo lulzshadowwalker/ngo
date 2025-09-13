@@ -5,9 +5,13 @@ import 'package:skeletonizer/skeletonizer.dart';
 import '../../core/theme/my_colors.dart';
 import '../../core/theme/my_fonts.dart';
 import '../../export_tools.dart';
+import '../../models/organization.dart';
+import '../../models/user.dart';
 import '../../service_locator.dart';
 import '../auth/cubit/auth_cubit.dart';
 import '../edit_proflie/edit_profle_export.dart';
+import '../organization/cubit/organization_cubit.dart';
+import '../organization/orgnization_detlis_view.dart';
 import '../settings/settings_export.dart';
 import '../splash/splash.dart';
 import '../user_management/cubit/user_management_cubit.dart';
@@ -21,8 +25,15 @@ class ProfileView extends HookWidget {
       0,
     ); // 0: Following, 1: My Applications, 2: My Evaluations
 
-    return BlocProvider(
-      create: (context) => sl<UserManagementCubit>()..fetchUserData(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<UserManagementCubit>()..fetchUserData(),
+        ),
+        BlocProvider(
+          create: (context) => sl<OrganizationCubit>(),
+        ),
+      ],
       child: _ProfileViewContent(selectedTab: selectedTab),
     );
   }
@@ -35,31 +46,6 @@ class _ProfileViewContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Sample following organizations data
-    final followingOrganizations = [
-      {
-        'name': 'Youth Empowerment Foundation',
-        'description': 'Education & Development',
-        'location': 'Zarqa, Jordan',
-        'image': 'assets/images/youth_foundation.jpg',
-        'isVerified': true,
-      },
-      {
-        'name': 'Global Health Connect',
-        'description': 'Healthcare & Development',
-        'location': 'Aqaba, Jordan',
-        'image': 'assets/images/health_connect.jpg',
-        'isVerified': false,
-      },
-      {
-        'name': 'Green Earth Jordan',
-        'description': 'Environmental Conservation',
-        'location': 'Amman, Jordan',
-        'image': 'assets/images/green_earth.jpg',
-        'isVerified': true,
-      },
-    ];
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -67,9 +53,7 @@ class _ProfileViewContent extends HookWidget {
         elevation: 0,
         title: TextComponent(
           title: AppLocalizations.of(context)!.profile,
-          style: MyFonts.font20Black.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: MyFonts.font20Black.copyWith(fontWeight: FontWeight.w600),
         ),
         actions: [
           IconButton(
@@ -92,85 +76,67 @@ class _ProfileViewContent extends HookWidget {
           ),
         ],
       ),
-      body: BlocBuilder<UserManagementCubit, UserManagementState>(
-        builder: (context, state) {
-          return CustomScrollView(
-            slivers: [
-              // Profile Header Section
-              SliverToBoxAdapter(child: _buildProfileHeader(context, state)),
-
-              // Tab Navigation
-              SliverToBoxAdapter(child: _buildTabNavigation(selectedTab , context)),
-
-              // Tab Content
-              SliverToBoxAdapter(
-                child: _buildTabContent(selectedTab, followingOrganizations),
+      body: BlocListener<OrganizationCubit, OrganizationState>(
+        listener: (context, orgState) {
+          final stateType = orgState.runtimeType.toString();
+          // Listen for successful unfollow operations
+          if (stateType.contains('LoadedSingleOrganization') || stateType.contains('Loaded')) {
+            // Refresh user data to update the following list
+            context.read<UserManagementCubit>().fetchUserData();
+          } else if (stateType.contains('Error')) {
+            final errorState = orgState as dynamic;
+            // Show error message
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(errorState.message ?? 'An error occurred'),
+                backgroundColor: Colors.red,
               ),
-
-              // Bottom padding
-              const SliverToBoxAdapter(child: SizedBox(height: 100)),
-            ],
-          );
+            );
+          }
         },
+        child: BlocBuilder<UserManagementCubit, UserManagementState>(
+          builder: (context, state) {
+            return CustomScrollView(
+              slivers: [
+                // Profile Header Section
+                SliverToBoxAdapter(child: _buildProfileHeader(context, state)),
+
+                // Tab Navigation
+                SliverToBoxAdapter(
+                  child: _buildTabNavigation(selectedTab, context),
+                ),
+
+                // Tab Content
+                SliverToBoxAdapter(child: _buildTabContent(context, selectedTab, state)),
+
+                // Bottom padding
+                const SliverToBoxAdapter(child: SizedBox(height: 100)),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
 
   Widget _buildProfileHeader(BuildContext context, UserManagementState state) {
-    // Handle different states properly
-    if (state.toString().contains('loading') ||
-        state.toString().contains('initial')) {
+    final stateType = state.runtimeType.toString();
+
+    if (stateType.contains('Loading') || stateType.contains('Initial')) {
       return _buildLoadingHeader();
-    } else if (state.toString().contains('error')) {
+    } else if (stateType.contains('Error')) {
       return _buildErrorHeader(context, 'Error loading profile');
-    } else if (state.toString().contains('loaded')) {
-      // Extract user data from the loaded state
-      return _buildUserHeaderFromState(context, state);
+    } else if (stateType.contains('Loaded')) {
+      // Cast the state to access the user data
+      final loadedState = state as dynamic;
+      if (loadedState.user != null) {
+        return _buildUserHeaderWithData(context, loadedState.user);
+      } else {
+        return _buildErrorHeader(context, 'No user data available');
+      }
     } else {
       return _buildLoadingHeader();
     }
-  }
-
-  Widget _buildUserHeaderFromState(
-    BuildContext context,
-    UserManagementState state,
-  ) {
-    Map<String, dynamic>? userData;
-
-    try {
-      final stateString = state.toString();
-
-      if (stateString.contains('User(')) {
-        // Extract user name
-        final nameMatch = RegExp(r'name: ([^,\)]+)').firstMatch(stateString);
-        final emailMatch = RegExp(r'email: ([^,\)]+)').firstMatch(stateString);
-        final avatarMatch = RegExp(
-          r'avatar: ([^,\)]+)',
-        ).firstMatch(stateString);
-        final locationMatch = RegExp(
-          r'Location\([^)]*city: ([^,\)]+)',
-        ).firstMatch(stateString);
-        final bioMatch = RegExp(r'bio: ([^,\)]+)').firstMatch(stateString);
-
-        userData = {
-          'name': nameMatch?.group(1)?.trim() ?? 'User Name',
-          'email': emailMatch?.group(1)?.trim() ?? '@username',
-          'avatar': avatarMatch?.group(1)?.trim() != 'null'
-              ? avatarMatch?.group(1)?.trim()
-              : null,
-          'location': locationMatch?.group(1)?.trim() != 'null'
-              ? locationMatch?.group(1)?.trim()
-              : null,
-          'bio': bioMatch?.group(1)?.trim() != 'null'
-              ? bioMatch?.group(1)?.trim()
-              : null,
-        };
-      }
-    } catch (e) {
-      debugPrint('Error parsing user data: $e');
-    }
-
-    return _buildUserHeaderWithData(context, userData);
   }
 
   Widget _buildLoadingHeader() {
@@ -200,9 +166,7 @@ class _ProfileViewContent extends HookWidget {
             // Name and Email
             TextComponent(
               title: 'User Name',
-              style: MyFonts.font20BlackBold.copyWith(
-                color: Colors.black87,
-              ),
+              style: MyFonts.font20BlackBold.copyWith(color: Colors.black87),
             ),
             const SizedBox(height: 4),
             TextComponent(
@@ -239,7 +203,8 @@ class _ProfileViewContent extends HookWidget {
 
             // Bio
             TextComponent(
-              title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+              title:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
               style: MyFonts.font14Black.copyWith(
                 color: Colors.black54,
                 height: 1.4,
@@ -320,7 +285,7 @@ class _ProfileViewContent extends HookWidget {
     );
   }
 
-  Widget _buildUserHeaderWithData(BuildContext context, dynamic user) {
+  Widget _buildUserHeaderWithData(BuildContext context, User user) {
     return Container(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -334,9 +299,9 @@ class _ProfileViewContent extends HookWidget {
               border: Border.all(color: MyColors.primaryColor, width: 3),
             ),
             child: ClipOval(
-              child: user != null && user['avatar'] != null
+              child: user.avatar != null && user.avatar!.isNotEmpty
                   ? Image.network(
-                      user['avatar'],
+                      user.avatar!,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
@@ -363,28 +328,28 @@ class _ProfileViewContent extends HookWidget {
 
           // Name and Email
           TextComponent(
-            title: user != null ? user['name'] ?? 'User Name' : 'User Name',
+            title: user.name.isNotEmpty ? user.name : 'User Name',
             style: MyFonts.font20BlackBold,
           ),
 
           const SizedBox(height: 4),
 
           TextComponent(
-            title: user != null ? user['email'] ?? '@username' : '@username',
+            title: user.email.isNotEmpty ? user.email : '@username',
             style: MyFonts.font14Black.copyWith(color: Colors.grey),
           ),
 
           const SizedBox(height: 8),
 
           // Location
-          if (user != null && user['location'] != null)
+          if (user.location != null)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.location_on, size: 16, color: Colors.grey),
                 const SizedBox(width: 4),
                 TextComponent(
-                  title: user['location'],
+                  title: user.location!.city,
                   style: MyFonts.font14Black.copyWith(color: Colors.grey),
                 ),
               ],
@@ -393,19 +358,23 @@ class _ProfileViewContent extends HookWidget {
 
           // Stats Row
           Row(
-             
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildStatItem('24', AppLocalizations.of(context)!.following,),
-              _buildStatItem('12',  AppLocalizations.of(context)!.my_evaluations),
-              _buildStatItem('8', AppLocalizations.of(context)!.my_applications,),
+              _buildStatItem(
+                (user.following?.length ?? 0).toString(),
+                AppLocalizations.of(context)!.following,
+              ),
+              _buildStatItem(
+                '8',
+                AppLocalizations.of(context)!.my_applications,
+              ),
             ],
           ),
           const SizedBox(height: 20),
 
           // Bio
-          if (user != null && user['bio'] != null)
-            TextComponent(title: user['bio'], style: MyFonts.font14Black),
+          if (user.bio != null && user.bio!.isNotEmpty)
+            TextComponent(title: user.bio!, style: MyFonts.font14Black),
 
           const SizedBox(height: 24),
 
@@ -444,9 +413,7 @@ class _ProfileViewContent extends HookWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>  const SettingsView(
-                      
-                      ),
+                      builder: (context) => const SettingsView(),
                     ),
                   );
                 },
@@ -464,9 +431,7 @@ class _ProfileViewContent extends HookWidget {
       children: [
         TextComponent(
           title: number,
-          style: MyFonts.font20BlackBold.copyWith(
-            color: Colors.black87,
-          ),
+          style: MyFonts.font20BlackBold.copyWith(color: Colors.black87),
         ),
         const SizedBox(height: 4),
         TextComponent(
@@ -477,8 +442,14 @@ class _ProfileViewContent extends HookWidget {
     );
   }
 
-  Widget _buildTabNavigation(ValueNotifier<int> selectedTab , BuildContext context) {
-    final tabs = [AppLocalizations.of(context)!.following, AppLocalizations.of(context)!.my_applications, AppLocalizations.of(context)!.my_evaluations];
+  Widget _buildTabNavigation(
+    ValueNotifier<int> selectedTab,
+    BuildContext context,
+  ) {
+    final tabs = [
+      AppLocalizations.of(context)!.following,
+      AppLocalizations.of(context)!.my_applications,
+    ];
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -521,133 +492,204 @@ class _ProfileViewContent extends HookWidget {
   }
 
   Widget _buildTabContent(
+    BuildContext context,
     ValueNotifier<int> selectedTab,
-    List<Map<String, dynamic>> followingOrganizations,
+    UserManagementState state,
   ) {
+    // Extract following organizations from state
+    List<Organization> followingOrganizations = [];
+    if (state.runtimeType.toString().contains('Loaded')) {
+      final loadedState = state as dynamic;
+      if (loadedState.user?.following != null) {
+        followingOrganizations =
+            loadedState.user.following as List<Organization>;
+      }
+    }
+
     switch (selectedTab.value) {
       case 0:
-        return _buildFollowingTab(followingOrganizations);
+        return _buildFollowingTab(context, followingOrganizations);
       case 1:
         return _buildMyApplicationsTab();
-      case 2:
-        return _buildMyEvaluationsTab();
+      // case 2:
+      //   return _buildMyEvaluationsTab();
       default:
         return Container();
     }
   }
 
-  Widget _buildFollowingTab(List<Map<String, dynamic>> organizations) {
+  Widget _buildFollowingTab(BuildContext context, List<Organization> organizations) {
+    if (organizations.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(24),
+        child: Center(
+          child: Column(
+            children: [
+              const Icon(Icons.people_outline, size: 64, color: Colors.grey),
+              const SizedBox(height: 16),
+              TextComponent(
+                title: 'No Organizations Followed',
+                style: MyFonts.font18BlackBold.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextComponent(
+                title: 'Start following organizations to see them here',
+                style: MyFonts.font14Black.copyWith(color: Colors.grey),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
         children: organizations
-            .map(
-              (org) => _buildOrganizationCard(
-                name: org['name'] as String,
-                description: org['description'] as String,
-                location: org['location'] as String,
-                image: org['image'] as String,
-                isVerified: org['isVerified'] as bool,
-              ),
-            )
+            .map((org) => _buildOrganizationCard(context, organization: org))
             .toList(),
       ),
     );
   }
 
-  Widget _buildOrganizationCard({
-    required String name,
-    required String description,
-    required String location,
-    required String image,
-    required bool isVerified,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
-      ),
-      child: Row(
-        children: [
-          // Organization Image
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: MyColors.primaryColor.withValues(alpha: 0.1),
-            ),
-            child: const Icon(
-              Icons.business,
-              color: MyColors.primaryColor,
-              size: 24,
-            ),
+  Widget _buildOrganizationCard(BuildContext context, {required Organization organization}) {
+    return GestureDetector(
+      onTap: () {
+        // Navigate to organization details page
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OrgnizationDetlisView(slug: organization.slug),
           ),
-          const SizedBox(width: 12),
-
-          // Organization Details
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: TextComponent(
-                        textAlign: TextAlign.start,
-                        title: name,
-                        style: MyFonts.font16Black.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey[200]!),
+        ),
+        child: Row(
+          children: [
+            // Organization Image
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: MyColors.primaryColor.withValues(alpha: 0.1),
+              ),
+              child: organization.logo.isNotEmpty
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        organization.logo,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(
+                            Icons.business,
+                            color: MyColors.primaryColor,
+                            size: 24,
+                          );
+                        },
+                      ),
+                    )
+                  : const Icon(
+                      Icons.business,
+                      color: MyColors.primaryColor,
+                      size: 24,
+                    ),
+            ),
+            const SizedBox(width: 12),
+      
+            // Organization Details
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: TextComponent(
+                          textAlign: TextAlign.start,
+                          title: organization.name,
+                          style: MyFonts.font16Black.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 2),
-                    if (isVerified)
-                      const Icon(Icons.verified, size: 16, color: Colors.blue),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                TextComponent(
-                  textAlign: TextAlign.start,
-                  title: description,
-                  style: MyFonts.font14Black.copyWith(color: Colors.black54),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    const Icon(Icons.location_on, size: 14, color: Colors.grey),
-                    const SizedBox(width: 4),
+                      const SizedBox(width: 2),
+                      if (organization.isFollowed)
+                        const Icon(Icons.verified, size: 16, color: Colors.blue),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  if (organization.bio != null && organization.bio!.isNotEmpty)
                     TextComponent(
-                      title: location,
-                      style: MyFonts.font12Black.copyWith(color: Colors.grey),
+                      textAlign: TextAlign.start,
+                      title: organization.bio!,
+                      style: MyFonts.font14Black.copyWith(
+                        color: Colors.black54,
+                        fontSize: 12,
+                      ),
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-
-          // Following Button
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            decoration: BoxDecoration(
-              border: Border.all(color: MyColors.primaryColor),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: TextComponent(
-              title: 'Following',
-              style: MyFonts.font12Black.copyWith(
-                color: MyColors.primaryColor,
-                fontWeight: FontWeight.w500,
+                  const SizedBox(height: 4),
+                  if (organization.location.isNotEmpty)
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          size: 14,
+                          color: Colors.grey,
+                        ),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: TextComponent(
+                            title: organization.location,
+                            style: MyFonts.font12Black.copyWith(
+                              color: Colors.grey,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
               ),
             ),
-          ),
-        ],
+      
+            // Following Button
+            GestureDetector(
+              onTap: () {
+                _showUnfollowDialog(context, organization);
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                decoration: BoxDecoration(
+                  border: Border.all(color: MyColors.primaryColor),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: TextComponent(
+                  title: 'Following',
+                  style: MyFonts.font12Black.copyWith(
+                    color: MyColors.primaryColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -703,8 +745,6 @@ class _ProfileViewContent extends HookWidget {
       ),
     );
   }
-
-
 
   void _showLogoutDialog(BuildContext context) {
     showDialog(
@@ -781,8 +821,42 @@ class _ProfileViewContent extends HookWidget {
     );
   }
 
-
-
-
-
+  void _showUnfollowDialog(BuildContext context, Organization organization) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text('Unfollow ${organization.name}?'),
+          content: Text('Are you sure you want to unfollow this organization?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              child: Text(AppLocalizations.of(context)!.cancel),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                // Call the unfollow method
+                context.read<OrganizationCubit>().unfollowOrganization(organization.slug);
+                
+                // Show loading indicator
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Unfollowing organization...'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              },
+              child: Text(
+                'Unfollow',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

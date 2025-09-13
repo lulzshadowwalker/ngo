@@ -389,10 +389,7 @@ class OpportunitiesView extends HookWidget {
 
     final color = colors[opportunity.id.hashCode % colors.length];
 
-    return Container(
-  
-      child: Icon(Icons.volunteer_activism, color: color, size: 30),
-    );
+    return Icon(Icons.volunteer_activism, color: color, size: 30);
   }
 
   Widget _buildOpportunityCardSkeleton() {

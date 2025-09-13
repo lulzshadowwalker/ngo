@@ -1,14 +1,17 @@
 import 'package:get_it/get_it.dart';
 import 'package:ngo/core/contracts/applications_repository.dart';
+import 'package:ngo/core/contracts/feed_repository.dart';
 import 'package:ngo/core/contracts/opportunities_repository.dart';
 import 'package:ngo/core/contracts/sectors_repository.dart';
 import 'package:ngo/core/contracts/static_page_repository.dart';
 import 'package:ngo/core/contracts/support_ticket_repository.dart';
 import 'package:ngo/core/repositories/laravel_applications_repository.dart';
+import 'package:ngo/core/repositories/laravel_feed_repository.dart';
 import 'package:ngo/core/repositories/laravel_opportunities_repository.dart';
 import 'package:ngo/core/repositories/laravel_sector_repository.dart';
 import 'package:ngo/core/repositories/laravel_static_page_repository.dart';
 import 'package:ngo/features/applications/cubit/application_cubit.dart';
+import 'package:ngo/features/home/cubit/home_cubit.dart';
 import 'package:ngo/features/location_section/cubit/location_cubit.dart';
 import 'package:ngo/features/notifications/cubit/notifications_cubit.dart';
 import 'package:ngo/features/opportunities/cubit/opportunities_cubit.dart';
@@ -70,6 +73,9 @@ void setupServiceLocator() {
   sl.registerLazySingleton<ApplicationsRepository>(
     () => LaravelApplicationsRepository(),
   );
+  sl.registerLazySingleton<FeedRepository>(
+    () => LaravelFeedRepository(),
+  );
 
   // Register cubits as factories (new instance per injection)
   sl.registerFactory(() => AuthCubit(sl<AuthRepository>()));
@@ -79,6 +85,7 @@ void setupServiceLocator() {
   sl.registerFactory(() => ApplicationCubit(sl<ApplicationsRepository>()));
   sl.registerFactory(() => NotificationsCubit(sl<NotificationRepository>()));
   sl.registerFactory(() => UserManagementCubit(sl<UserManagementRepository>()));
+  sl.registerFactory(() => HomeCubit(sl<FeedRepository>()));
 
   sl.registerFactory(() => SkillsCubit(sl<SkillsRepository>()));
   sl.registerFactory(() => LocationCubit(sl<LocationsRepository>()));

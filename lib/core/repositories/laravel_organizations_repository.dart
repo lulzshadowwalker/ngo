@@ -11,16 +11,13 @@ final class LaravelOrganizationsRepository extends LaravelRepository
   Future<Organization> fetch(String slug, {String language = 'en'}) async {
     final authorization = await SharedPrefHelper.getAccessToken();
     
-    // Clean the token in case it already has "Bearer " prefix
-    final cleanToken = authorization.startsWith('Bearer ') 
-        ? authorization.substring(7) 
-        : authorization;
+
         
     final response = await get(
       '/v1/organizations/$slug',
       headers: {
         'Accept-Language': language,
-        'Authorization': 'Bearer $cleanToken',
+        'Authorization': 'Bearer $authorization',
       },
     );
     final data = response['data'] as Map<String, dynamic>;
@@ -31,16 +28,12 @@ final class LaravelOrganizationsRepository extends LaravelRepository
   Future<List<Organization>> fetchAll({String language = 'en'}) async {
     final authorization = await SharedPrefHelper.getAccessToken();
 
-    // Clean the token in case it already has "Bearer " prefix
-    final cleanToken = authorization.startsWith('Bearer ') 
-        ? authorization.substring(7) 
-        : authorization;
 
     final response = await get(
       '/v1/organizations',
       headers: {
         'Accept-Language': language,
-        'Authorization': 'Bearer $cleanToken',
+        'Authorization': 'Bearer $authorization',
       },
     );
 
@@ -61,18 +54,13 @@ final class LaravelOrganizationsRepository extends LaravelRepository
       throw Exception('Authentication required. Please log in again.');
     }
     
-    // Clean the token in case it already has "Bearer " prefix
-    final cleanToken = authorization.startsWith('Bearer ') 
-        ? authorization.substring(7) 
-        : authorization;
-    
-    log('Clean token: "$cleanToken"');
-    log('Final header will be: "Bearer $cleanToken"');
+
+  
     
     try {
       await post(
         '/v1/organizations/$organizationId/follows',
-        headers: {'Authorization': 'Bearer $cleanToken'},
+        headers: {'Authorization': 'Bearer $authorization'},
       );
       log('Successfully followed organization: $organizationId');
     } catch (error) {
@@ -98,15 +86,12 @@ final class LaravelOrganizationsRepository extends LaravelRepository
       throw Exception('Authentication required. Please log in again.');
     }
     
-    // Clean the token in case it already has "Bearer " prefix
-    final cleanToken = authorization.startsWith('Bearer ') 
-        ? authorization.substring(7) 
-        : authorization;
+
     
     try {
       await delete(
         '/v1/organizations/$organizationId/follows',
-        headers: {'Authorization': 'Bearer $cleanToken'},
+        headers: {'Authorization': 'Bearer $authorization'},
       );
       log('Successfully unfollowed organization: $organizationId');
     } catch (error) {

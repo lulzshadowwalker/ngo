@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'dart:io';
 
 /// A base repository for Laravel-backed APIs using Dio.
 /// Extend this class to implement resource-specific repositories.
@@ -129,6 +130,70 @@ abstract class LaravelRepository {
       data: data,
       options: options,
     );
+  }
+
+  /// PATCH request with multipart form data support for file uploads.
+  /// Uses POST with X-HTTP-Method-Override header as required by Laravel for file uploads.
+  Future<dynamic> patchMultipart(
+    String endpoint, {
+    Map<String, String>? headers,
+    Map<String, dynamic>? data,
+    Map<String, File>? files,
+  }) async {
+    final formData = FormData();
+
+    // Add the method override header for PATCH
+    final mergedHeaders = {
+      ...defaultHeaders,
+      'X-HTTP-Method-Override': 'PATCH',
+      if (headers != null) ...headers,
+    };
+
+    // Remove Content-Type header to let Dio set it automatically for multipart
+    mergedHeaders.remove('Content-Type');
+
+    // Add files to form data
+    if (files != null) {
+      for (final entry in files.entries) {
+        formData.files.add(MapEntry(
+          entry.key,
+          await MultipartFile.fromFile(entry.value.path),
+        ));
+      }
+    }
+
+    // Add JSON data as nested form fields
+    if (data != null) {
+      _addNestedFormData(formData, data, '');
+    }
+
+    return _request(
+      endpoint,
+      method: 'POST', // Using POST with method override
+      headers: mergedHeaders,
+      data: formData,
+    );
+  }
+
+  /// Helper method to add nested JSON data to FormData
+  void _addNestedFormData(FormData formData, Map<String, dynamic> data, String prefix) {
+    data.forEach((key, value) {
+      final fieldName = prefix.isEmpty ? key : '$prefix[$key]';
+
+      if (value is Map<String, dynamic>) {
+        _addNestedFormData(formData, value, fieldName);
+      } else if (value is List) {
+        for (int i = 0; i < value.length; i++) {
+          if (value[i] is Map<String, dynamic>) {
+            _addNestedFormData(formData, value[i], '$fieldName[$i]');
+          } else {
+            formData.fields.add(MapEntry('$fieldName[$i]', value[i].toString()));
+          }
+        }
+      } else if (value != null) {
+        formData.fields.add(MapEntry(fieldName, value.toString()));
+      }
+    });
   }
 
   /// Override this to customize error handling or response parsing.
