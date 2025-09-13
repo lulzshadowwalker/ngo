@@ -9,7 +9,7 @@ abstract class UserPreferences with _$UserPreferences {
     required String language,
     required bool emailNotifications,
     required bool pushNotifications,
-    required bool? profileVisibility,
+    required String? profileVisibility,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _UserPreferences;
@@ -22,7 +22,7 @@ abstract class UserPreferences with _$UserPreferences {
       language: attributes['language'] as String? ?? 'en',
       emailNotifications: attributes['emailNotifications'] as bool? ?? true,
       pushNotifications: attributes['pushNotifications'] as bool? ?? true,
-      profileVisibility: attributes['profileVisibility'] as bool?,
+      profileVisibility: attributes['profileVisibility'] as String? ?? 'public',
       createdAt: DateTime.parse(attributes['createdAt'] as String),
       updatedAt: DateTime.parse(attributes['updatedAt'] as String),
     );

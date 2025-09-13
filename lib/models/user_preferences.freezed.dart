@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserPreferences {
 
- String get id; String get language; bool get emailNotifications; bool get pushNotifications; bool? get profileVisibility; DateTime get createdAt; DateTime get updatedAt;
+ String get id; String get language; bool get emailNotifications; bool get pushNotifications; String? get profileVisibility; DateTime get createdAt; DateTime get updatedAt;
 /// Create a copy of UserPreferences
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -46,7 +46,7 @@ abstract mixin class $UserPreferencesCopyWith<$Res>  {
   factory $UserPreferencesCopyWith(UserPreferences value, $Res Function(UserPreferences) _then) = _$UserPreferencesCopyWithImpl;
 @useResult
 $Res call({
- String id, String language, bool emailNotifications, bool pushNotifications, bool? profileVisibility, DateTime createdAt, DateTime updatedAt
+ String id, String language, bool emailNotifications, bool pushNotifications, String? profileVisibility, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -70,7 +70,7 @@ as String,language: null == language ? _self.language : language // ignore: cast
 as String,emailNotifications: null == emailNotifications ? _self.emailNotifications : emailNotifications // ignore: cast_nullable_to_non_nullable
 as bool,pushNotifications: null == pushNotifications ? _self.pushNotifications : pushNotifications // ignore: cast_nullable_to_non_nullable
 as bool,profileVisibility: freezed == profileVisibility ? _self.profileVisibility : profileVisibility // ignore: cast_nullable_to_non_nullable
-as bool?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
@@ -90,7 +90,7 @@ class _UserPreferences implements UserPreferences {
 @override final  String language;
 @override final  bool emailNotifications;
 @override final  bool pushNotifications;
-@override final  bool? profileVisibility;
+@override final  String? profileVisibility;
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
 
@@ -124,7 +124,7 @@ abstract mixin class _$UserPreferencesCopyWith<$Res> implements $UserPreferences
   factory _$UserPreferencesCopyWith(_UserPreferences value, $Res Function(_UserPreferences) _then) = __$UserPreferencesCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String language, bool emailNotifications, bool pushNotifications, bool? profileVisibility, DateTime createdAt, DateTime updatedAt
+ String id, String language, bool emailNotifications, bool pushNotifications, String? profileVisibility, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -148,7 +148,7 @@ as String,language: null == language ? _self.language : language // ignore: cast
 as String,emailNotifications: null == emailNotifications ? _self.emailNotifications : emailNotifications // ignore: cast_nullable_to_non_nullable
 as bool,pushNotifications: null == pushNotifications ? _self.pushNotifications : pushNotifications // ignore: cast_nullable_to_non_nullable
 as bool,profileVisibility: freezed == profileVisibility ? _self.profileVisibility : profileVisibility // ignore: cast_nullable_to_non_nullable
-as bool?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));

@@ -176,9 +176,28 @@ class SettingsView extends HookWidget {
                         value:
                             (state.runtimeType.toString().contains('Loaded') &&
                                 (state as dynamic).preferences != null)
-                            ? (state as dynamic).preferences!.profileVisibility ?? true
-                            : true,
+                            ? ((state as dynamic).preferences!.profileVisibility ?? 'public') == 'public'
+                            : true, // Default to public (true)
                         onChanged: (value) {
+                          // Temporary: Only allow setting to public due to API limitations
+                          if (!value) {
+                            // Show dialog explaining the limitation
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('Feature Not Available'),
+                                content: Text('Private profile visibility is not currently supported by the server. Please contact support for more information.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                            return;
+                          }
+
                           final currentPrefs =
                               (state.runtimeType.toString().contains(
                                     'Loaded',
@@ -188,7 +207,7 @@ class SettingsView extends HookWidget {
                               : null;
 
                           final updateData = <String, dynamic>{
-                            'profileVisibility': value,
+                            'profileVisibility': 'public', // Only send public for now
                             'emailNotifications':
                                 currentPrefs?.emailNotifications ?? false,
                             'pushNotifications':

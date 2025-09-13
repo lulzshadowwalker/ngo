@@ -49,6 +49,7 @@ class UserManagementCubit extends Cubit<UserManagementState> {
   ) async {
     try {
        final accessToken = await SharedPrefHelper.getAccessToken();
+      log("Updating preferences with data: $preferences");
       emit(const UserManagementState.loading());
       
       final updatedPreferences = await _repository.updateUserPreferences(
@@ -56,9 +57,16 @@ class UserManagementCubit extends Cubit<UserManagementState> {
         preferences,
       );
       
+      log("Updated preferences received: ${updatedPreferences.toString()}");
       emit(UserManagementState.loaded(preferences: updatedPreferences));
     } catch (error) {
-      emit(UserManagementState.error('Failed to update preferences: ${error.toString()}'));
+      log("Error updating preferences: $error");
+      // If it's a profileVisibility validation error, provide specific feedback
+      if (error.toString().contains('profile visibility is invalid')) {
+        emit(UserManagementState.error('Profile visibility setting not supported. Please contact support.'));
+      } else {
+        emit(UserManagementState.error('Failed to update preferences: ${error.toString()}'));
+      }
     }
   }
 
