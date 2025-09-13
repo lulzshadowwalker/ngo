@@ -5,10 +5,8 @@ import 'package:ngo/models/user_preferences.dart';
 
 final class LaravelUserManagementRepository extends LaravelRepository
     implements UserManagementRepository {
-  
   @override
   Future<User> getCurrentUser(String accessToken) async {
-    
     final response = await get(
       '/v1/me',
       headers: {'Authorization': 'Bearer $accessToken'},
@@ -43,7 +41,8 @@ final class LaravelUserManagementRepository extends LaravelRepository
             'language': preferences['language'],
             'pushNotifications': preferences['pushNotifications'],
             'emailNotifications': preferences['emailNotifications'],
-          }
+            'profileVisibility': preferences['profileVisibility'],
+          },
         },
         'language': preferences['language'],
         'appearance': preferences['appearance'],
