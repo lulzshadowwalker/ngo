@@ -4,11 +4,7 @@ import 'package:ngo/models/opportunity.dart';
 
 part 'application.freezed.dart';
 
-enum ApplicationStatus {
-  pending,
-  approved,
-  rejected,
-}
+enum ApplicationStatus { pending, approved, rejected }
 
 @freezed
 abstract class Application with _$Application {
@@ -36,13 +32,18 @@ abstract class Application with _$Application {
         orElse: () => ApplicationStatus.pending,
       ),
       submittedAt: DateTime.parse(json['submittedAt'] as String),
-      reviewedAt: json['reviewedAt'] != null 
-          ? DateTime.parse(json['reviewedAt'] as String) 
+      reviewedAt: json['reviewedAt'] != null
+          ? DateTime.parse(json['reviewedAt'] as String)
           : null,
       reviewerNotes: json['reviewerNotes'] as String?,
-      opportunity: Opportunity.fromJson(json['opportunity'] as Map<String, dynamic>),
+      opportunity: Opportunity.fromLaravel(
+        json['opportunity'] as Map<String, dynamic>,
+      ),
       responses: (json['responses'] as List<dynamic>)
-          .map((response) => ApplicationResponse.fromJson(response as Map<String, dynamic>))
+          .map(
+            (response) =>
+                ApplicationResponse.fromJson(response as Map<String, dynamic>),
+          )
           .toList(),
     );
   }

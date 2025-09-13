@@ -54,7 +54,7 @@ final class LaravelOpportunitiesRepository extends LaravelRepository
 
     return PaginatedResponse.fromJson(
       response,
-      (json) => Opportunity.fromJson(json),
+      (json) => Opportunity.fromLaravel(json),
     );
   }
 
@@ -72,7 +72,7 @@ final class LaravelOpportunitiesRepository extends LaravelRepository
 
     return PaginatedResponse.fromJson(
       response,
-      (json) => Opportunity.fromJson(json),
+      (json) => Opportunity.fromLaravel(json),
     );
   }
 
@@ -84,7 +84,7 @@ final class LaravelOpportunitiesRepository extends LaravelRepository
     );
 
     final data = response['data'] as Map<String, dynamic>;
-    return Opportunity.fromJson(data);
+    return Opportunity.fromLaravel(data);
   }
 
   @override
@@ -107,16 +107,15 @@ final class LaravelOpportunitiesRepository extends LaravelRepository
           sectorId; // Changed to 'section' to match your endpoint
     }
 
-    return
-        await get(
-          '/v1/opportunities/search',
-          queryParameters: queryParams,
-          headers: {'Accept-Language': language},
-        ).then((response) {
-          final data = response['data'] as List<dynamic>;
-          return data
-              .map((item) => Opportunity.fromJson(item as Map<String, dynamic>))
-              .toList();
-        });
+    return await get(
+      '/v1/opportunities/search',
+      queryParameters: queryParams,
+      headers: {'Accept-Language': language},
+    ).then((response) {
+      final data = response['data'] as List<dynamic>;
+      return data
+          .map((item) => Opportunity.fromLaravel(item as Map<String, dynamic>))
+          .toList();
+    });
   }
 }

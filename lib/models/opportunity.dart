@@ -6,11 +6,7 @@ import 'package:ngo/models/sectors.dart';
 
 part 'opportunity.freezed.dart';
 
-enum OpportunityStatus {
-  active,
-  inactive,
-  expired,
-}
+enum OpportunityStatus { active, inactive, expired }
 
 @freezed
 abstract class Opportunity with _$Opportunity {
@@ -45,8 +41,7 @@ abstract class Opportunity with _$Opportunity {
 
   // Helper method to get tags as a list
 
-
-  factory Opportunity.fromJson(Map<String, dynamic> json) {
+  factory Opportunity.fromLaravel(Map<String, dynamic> json) {
     return Opportunity(
       id: json['id'] as String,
       title: json['title'] as String,
@@ -58,8 +53,10 @@ abstract class Opportunity with _$Opportunity {
       latitude: json['latitude'] as String?,
       longitude: json['longitude'] as String?,
       locationDescription: json['locationDescription'] as String?,
-      tags: (json['tags'] as List<dynamic>).cast<String>(), // Changed to handle string instead of list
-      keyResponsibilities: (json['keyResponsibilities'] as List<dynamic>).cast<String>(),
+      tags: (json['tags'] as List<dynamic>)
+          .cast<String>(), // Changed to handle string instead of list
+      keyResponsibilities: (json['keyResponsibilities'] as List<dynamic>)
+          .cast<String>(),
       requiredSkills: (json['requiredSkills'] as List<dynamic>).cast<String>(),
       timeCommitment: (json['timeCommitment'] as List<dynamic>).cast<String>(),
       benefits: (json['benefits'] as List<dynamic>).cast<String>(),
@@ -71,15 +68,21 @@ abstract class Opportunity with _$Opportunity {
       ),
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
-      organization: Organization.fromJson(json['organization'] as Map<String, dynamic>),
+      organization: Organization.fromJson(
+        json['organization'] as Map<String, dynamic>,
+      ),
       sector: Sector.fromJson(json['sector'] as Map<String, dynamic>),
-      locationId: json['locationId'] as int, // Updated to handle int instead of Location object
+      locationId:
+          json['locationId']
+              as int, // Updated to handle int instead of Location object
       programId: json['programId'] as int?, // Added programId handling
-      program: json['program'] != null 
+      program: json['program'] != null
           ? Program.fromJson(json['program'] as Map<String, dynamic>)
           : null,
-      applicationForm: json['applicationForm'] != null 
-          ? ApplicationForm.fromJson(json['applicationForm'] as Map<String, dynamic>)
+      applicationForm: json['applicationForm'] != null
+          ? ApplicationForm.fromJson(
+              json['applicationForm'] as Map<String, dynamic>,
+            )
           : null,
     );
   }
