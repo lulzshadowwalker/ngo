@@ -318,13 +318,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get searchOrganizations => 'ابحث عن منظمات...';
 
   @override
-  String get password_reset_email_sent => 'تم إرسال بريد إعادة تعيين كلمة المرور';
+  String get password_reset_email_sent =>
+      'تم إرسال بريد إعادة تعيين كلمة المرور';
 
   @override
-  String get this_email_is_registered => 'إذا كان هذا البريد الإلكتروني مسجلاً، ستصلك رابط لإعادة تعيين كلمة المرور قريبًا.';
+  String get this_email_is_registered =>
+      'إذا كان هذا البريد الإلكتروني مسجلاً، ستصلك رابط لإعادة تعيين كلمة المرور قريبًا.';
 
   @override
-  String get enter_your_email_to_reevie => 'أدخل عنوان بريدك الإلكتروني لاستلام رابط إعادة تعيين كلمة المرور.';
+  String get enter_your_email_to_reevie =>
+      'أدخل عنوان بريدك الإلكتروني لاستلام رابط إعادة تعيين كلمة المرور.';
 
   @override
   String get btn_send => 'إرسال';
@@ -336,7 +339,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get plase_enter_a_valid_email => 'يرجى إدخال بريد إلكتروني صالح';
 
   @override
-  String get failed_to_send_reset_email => 'فشل في إرسال بريد إعادة التعيين. يرجى المحاولة مرة أخرى.';
+  String get failed_to_send_reset_email =>
+      'فشل في إرسال بريد إعادة التعيين. يرجى المحاولة مرة أخرى.';
 
   @override
   String get required_skills => 'المهارات المطلوبة';
@@ -392,26 +396,57 @@ class AppLocalizationsAr extends AppLocalizations {
   String get no_following_content_yet => 'لا يوجد محتوى تتابعه بعد';
 
   @override
-  String get follow_organizations_to_see_their_posts_here => 'تابع منظمات لرؤية منشوراتها هنا';
+  String get follow_organizations_to_see_their_posts_here =>
+      'تابع منظمات لرؤية منشوراتها هنا';
 
   @override
-  String get password_required => 'Password is required';
+  String get password_required => 'كلمة المرور مطلوبة';
 
   @override
-  String get password_min_length => 'Password must be at least 8 characters';
+  String get password_min_length => 'يجب أن تكون كلمة المرور 8 أحرف على الأقل';
 
   @override
-  String get password_max_length => 'Password must not exceed 128 characters';
+  String get password_max_length => 'يجب ألا تتجاوز كلمة المرور 128 حرفًا';
 
   @override
-  String get password_uppercase => 'Password must contain at least one uppercase letter';
+  String get password_uppercase =>
+      'يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل';
 
   @override
-  String get password_lowercase => 'Password must contain at least one lowercase letter';
+  String get password_lowercase =>
+      'يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل';
 
   @override
-  String get password_number => 'Password must contain at least one number';
+  String get password_number =>
+      'يجب أن تحتوي كلمة المرور على رقم واحد على الأقل';
 
   @override
-  String get password_special_char => 'Password must contain at least one special character';
+  String get password_special_char =>
+      'يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل';
+
+  @override
+  String get terms_required => 'الشروط مطلوبة';
+
+  @override
+  String get plase_agree_to_terms =>
+      'يرجى الموافقة على شروط الخدمة وسياسة الخصوصية';
+
+  @override
+  String get fullNameRequired => 'الاسم الكامل مطلوب';
+
+  @override
+  String get fullNameMinLength => 'يجب أن يكون الاسم الكامل 3 أحرف على الأقل';
+
+  @override
+  String get fullNameMaxLength => 'يجب ألا يتجاوز الاسم الكامل 50 حرفًا';
+
+  @override
+  String get nameOnlyContainsLetters =>
+      'يجب أن يحتوي الاسم على أحرف ومسافات فقط';
+
+  @override
+  String get emailRequired => 'البريد الإلكتروني مطلوب';
+
+  @override
+  String get invalidEmail => 'البريد الإلكتروني غير صالح';
 }

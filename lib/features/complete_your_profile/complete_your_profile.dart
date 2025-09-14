@@ -255,6 +255,7 @@ class _CompleteYourProfileView extends HookWidget {
             ),
           ),
           // Step 2
+          
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             child: ListView(
@@ -664,6 +665,7 @@ class _CompleteYourProfileView extends HookWidget {
               ],
             ),
           ),
+          
           // Step 3
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),

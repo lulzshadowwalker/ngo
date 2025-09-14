@@ -52,7 +52,7 @@ class JoinTheCommunity extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-               Text(
+              Text(
                 lang.joinTheCommunity,
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
@@ -60,22 +60,24 @@ class JoinTheCommunity extends HookWidget {
               buildLabel(lang.fullName),
               TextFormField(
                 controller: nameController,
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                   hintText: lang.enterFullName,
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${lang.fullName} is required';
+                    return lang.fullNameRequired;
                   }
-                  if (value.trim().length < 2) {
-                    return 'Name must be at least 2 characters';
+                  if (value.trim().length < 3) {
+                    return lang.fullNameMinLength;
                   }
                   if (value.trim().length > 50) {
-                    return 'Name must not exceed 50 characters';
+                    return lang.fullNameMaxLength;
                   }
-                  if (!RegExp(r'^[a-zA-Z\s\u0600-\u06FF]+$').hasMatch(value.trim())) {
-                    return 'Name can only contain letters and spaces';
+                  if (!RegExp(
+                    r'^[a-zA-Z\s\u0600-\u06FF]+$',
+                  ).hasMatch(value.trim())) {
+                    return lang.nameOnlyContainsLetters;
                   }
                   return null;
                 },
@@ -84,18 +86,20 @@ class JoinTheCommunity extends HookWidget {
               buildLabel(lang.emailAddress),
               TextFormField(
                 controller: emailController,
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                   hintText: lang.enterEmailAddress,
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${lang.emailAddress} is required';
+                    return lang.emailRequired;
                   }
                   // Email format validation
-                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value.trim())) {
-                    return 'Please enter a valid email address';
+                  if (!RegExp(
+                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                  ).hasMatch(value.trim())) {
+                    return lang.invalidEmail;
                   }
                   return null;
                 },
@@ -120,29 +124,29 @@ class JoinTheCommunity extends HookWidget {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '${lang.password} is required';
+                    return lang.password_required;
                   }
                   if (value.length < 8) {
-                    return 'Password must be at least 8 characters';
+                    return lang.password_min_length;
                   }
                   if (value.length > 128) {
-                    return 'Password must not exceed 128 characters';
+                    return lang.password_max_length;
                   }
                   // Check for at least one uppercase letter
                   if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                    return 'Password must contain at least one uppercase letter';
+                    return lang.password_uppercase;
                   }
                   // Check for at least one lowercase letter
                   if (!RegExp(r'[a-z]').hasMatch(value)) {
-                    return 'Password must contain at least one lowercase letter';
+                    return lang.password_lowercase;
                   }
                   // Check for at least one digit
                   if (!RegExp(r'[0-9]').hasMatch(value)) {
-                    return 'Password must contain at least one number';
+                    return lang.password_number;
                   }
                   // Check for at least one special character
                   if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-                    return 'Password must contain at least one special character';
+                    return lang.password_special_char;
                   }
                   return null;
                 },
@@ -158,7 +162,7 @@ class JoinTheCommunity extends HookWidget {
                   Expanded(
                     child: Wrap(
                       children: [
-                         Text(lang.iAgreeToThe),
+                        Text(lang.iAgreeToThe),
                         GestureDetector(
                           onTap: () {
                             // TODO: Navigate to Terms of Service
@@ -172,7 +176,7 @@ class JoinTheCommunity extends HookWidget {
                             ),
                           ),
                         ),
-                         Text(lang.andA),
+                        Text(lang.andA),
                         GestureDetector(
                           onTap: () {
                             // TODO: Navigate to Privacy Policy
@@ -206,31 +210,34 @@ class JoinTheCommunity extends HookWidget {
                     log("This Email is: ${emailController.text}");
                     log("This Password is: ${passwordController.text}");
                     log("This Name is: ${nameController.text}");
-                    
+
                     // Validate form first
                     if (formKey.currentState?.validate() != true) {
                       // Show error toast for form validation
-                   
+
                       return;
                     }
-                    
+
                     // Check terms agreement
                     if (!agreedToTerms.value) {
                       ToastMessage.showWarning(
                         context,
-                        title: 'Terms Required',
-                        message: 'Please agree to the Terms of Service and Privacy Policy',
+                        title: lang.terms_required,
+                        message: lang.plase_agree_to_terms,
                       );
                       return;
                     }
-                    
-                    
-                    
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> CompleteYourProfile(
-                      fullName: nameController.text.trim(),
-                      email: emailController.text.trim().toLowerCase(),
-                      password: passwordController.text,
-                    )));
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CompleteYourProfile(
+                          fullName: nameController.text.trim(),
+                          email: emailController.text.trim().toLowerCase(),
+                          password: passwordController.text,
+                        ),
+                      ),
+                    );
                   },
                   child: Text(
                     lang.create_account,
@@ -242,7 +249,7 @@ class JoinTheCommunity extends HookWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                   Text(lang.alreadyHaveAnAccount),
+                  Text(lang.alreadyHaveAnAccount),
                   GestureDetector(
                     onTap: () {
                       // Handle sign in navigation
@@ -263,8 +270,5 @@ class JoinTheCommunity extends HookWidget {
         ),
       ),
     );
-  
-  
-  
   }
 }

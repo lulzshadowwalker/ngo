@@ -42,13 +42,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get individual => 'Individual';
 
   @override
-  String get for_personal_use_and_volunteering => 'For personal use and volunteering';
+  String get for_personal_use_and_volunteering =>
+      'For personal use and volunteering';
 
   @override
   String get organization => 'Organization (NGO)';
 
   @override
-  String get for_registered_organizations => 'For registered non-profie organizations';
+  String get for_registered_organizations =>
+      'For registered non-profie organizations';
 
   @override
   String get by_continuing_you_agree_to => 'By continuing, you agree to our';
@@ -321,10 +323,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get password_reset_email_sent => 'Password reset email sent';
 
   @override
-  String get this_email_is_registered => 'If this email is registered, you will receive a password reset link shortly.';
+  String get this_email_is_registered =>
+      'If this email is registered, you will receive a password reset link shortly.';
 
   @override
-  String get enter_your_email_to_reevie => 'Enter your email address to receive a password reset link.';
+  String get enter_your_email_to_reevie =>
+      'Enter your email address to receive a password reset link.';
 
   @override
   String get btn_send => 'Send';
@@ -336,7 +340,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get plase_enter_a_valid_email => 'Please enter a valid email';
 
   @override
-  String get failed_to_send_reset_email => 'Failed to send reset email. Please try again.';
+  String get failed_to_send_reset_email =>
+      'Failed to send reset email. Please try again.';
 
   @override
   String get required_skills => 'Required Skills';
@@ -392,7 +397,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no_following_content_yet => 'No following content yet';
 
   @override
-  String get follow_organizations_to_see_their_posts_here => 'Follow organizations to see their posts here';
+  String get follow_organizations_to_see_their_posts_here =>
+      'Follow organizations to see their posts here';
 
   @override
   String get password_required => 'Password is required';
@@ -404,14 +410,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String get password_max_length => 'Password must not exceed 128 characters';
 
   @override
-  String get password_uppercase => 'Password must contain at least one uppercase letter';
+  String get password_uppercase =>
+      'Password must contain at least one uppercase letter';
 
   @override
-  String get password_lowercase => 'Password must contain at least one lowercase letter';
+  String get password_lowercase =>
+      'Password must contain at least one lowercase letter';
 
   @override
   String get password_number => 'Password must contain at least one number';
 
   @override
-  String get password_special_char => 'Password must contain at least one special character';
+  String get password_special_char =>
+      'Password must contain at least one special character';
+
+  @override
+  String get terms_required => 'Terms Required';
+
+  @override
+  String get plase_agree_to_terms =>
+      'Please agree to the Terms of Service and Privacy Policy';
+
+  @override
+  String get fullNameRequired => 'Full name is required';
+
+  @override
+  String get fullNameMinLength => 'Full name must be at least 3 characters';
+
+  @override
+  String get fullNameMaxLength => 'Full name must not exceed 50 characters';
+
+  @override
+  String get nameOnlyContainsLetters =>
+      'Name must contain only letters and spaces';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get invalidEmail => 'Invalid email format';
 }

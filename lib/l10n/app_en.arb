@@ -414,11 +414,11 @@
   "@btn_send": {},
   "btn_cancel": "Cancel",
   "@btn_cancel": {},
-  "plase_enter_a_valid_email" : "Please enter a valid email",
+  "plase_enter_a_valid_email": "Please enter a valid email",
   "@plase_enter_a_valid_email": {},
-  "failed_to_send_reset_email" : "Failed to send reset email. Please try again.",
+  "failed_to_send_reset_email": "Failed to send reset email. Please try again.",
   "@failed_to_send_reset_email": {},
-  "required_skills" : "Required Skills",
+  "required_skills": "Required Skills",
   "@required_skills": {
     "description": "Label for required skills section"
   },
@@ -426,74 +426,97 @@
   "@time_commitment": {
     "description": "Label for time commitment section"
   },
-  "benefits" : "Benefits",
+  "benefits": "Benefits",
   "@benefits": {
     "description": "Label for benefits section"
   },
-  "key_responsibilities" : "Key Responsibilities",
+  "key_responsibilities": "Key Responsibilities",
   "@key_responsibilities": {
     "description": "Label for key responsibilities section"
   },
-  "about_the_role" : "About the Role",
+  "about_the_role": "About the Role",
   "@about_the_role": {
     "description": "Label for about the role section"
   },
-  "months_duration" : "Months Duration",
+  "months_duration": "Months Duration",
   "@months_duration": {},
-  "applications_close" : "Applications close:",
+  "applications_close": "Applications close:",
   "@applications_close": {
     "description": "Label for application closing date"
   },
-  "days_left_to_apply" : "{days} days left to apply",
+  "days_left_to_apply": "{days} days left to apply",
   "@days_left_to_apply": {
     "description": "Indicates the number of days left to apply",
     "placeholders": {
       "days": {}
     }
   },
-  "already_applied" : "Already Applied",
+  "already_applied": "Already Applied",
   "@already_applied": {},
-  "apply_now" : "Apply Now",
+  "apply_now": "Apply Now",
   "@apply_now": {},
-  "tags" : "Tags",
+  "tags": "Tags",
   "@tags": {
     "description": "Label for tags section"
   },
-  "additional_information" : "Additional Information",
+  "additional_information": "Additional Information",
   "@additional_information": {
     "description": "Label for additional information section"
   },
-  "clear_filters" : "Clear Filters",
+  "clear_filters": "Clear Filters",
   "@clear_filters": {
     "description": "Button text for clearing filters"
   },
-  "apply_filters" : "Apply Filters",
+  "apply_filters": "Apply Filters",
   "@apply_filters": {
     "description": "Button text for applying filters"
   },
-  "filter_opportunities" : "Filter Opportunities",
+  "filter_opportunities": "Filter Opportunities",
   "@filter_opportunities": {
     "description": "Title for the filter opportunities modal"
   },
-  "sector" : "Sector",
+  "sector": "Sector",
   "@sector": {
     "description": "Label for sector filter"
   },
-  "no_following_content_yet" : "No following content yet",
+  "no_following_content_yet": "No following content yet",
   "@no_following_content_yet": {
     "description": "Message indicating no content in following tab"
   },
-  "follow_organizations_to_see_their_posts_here" : "Follow organizations to see their posts here",
+  "follow_organizations_to_see_their_posts_here": "Follow organizations to see their posts here",
   "@follow_organizations_to_see_their_posts_here": {
     "description": "Prompt to follow organizations to see posts"
   },
-
   "password_required": "Password is required",
+  "@password_required": {},
   "password_min_length": "Password must be at least 8 characters",
+  "@password_min_length": {},
   "password_max_length": "Password must not exceed 128 characters",
+  "@password_max_length": {},
   "password_uppercase": "Password must contain at least one uppercase letter",
+  "@password_uppercase": {},
   "password_lowercase": "Password must contain at least one lowercase letter",
+  "@password_lowercase": {},
   "password_number": "Password must contain at least one number",
-  "password_special_char": "Password must contain at least one special character"
+  "@password_number": {},
+  "password_special_char": "Password must contain at least one special character",
+  "@password_special_char": {},
+  "terms_required" : "Terms Required",
+  "@terms_required" : {
 
+  },
+  "plase_agree_to_terms": "Please agree to the Terms of Service and Privacy Policy",
+  "@plase_agree_to_terms": {},
+    "fullNameRequired": "Full name is required",
+  "@fullNameRequired": {},
+  "fullNameMinLength": "Full name must be at least 3 characters",
+  "@fullNameMinLength": {},
+  "fullNameMaxLength": "Full name must not exceed 50 characters",
+  "@fullNameMaxLength": {},
+  "nameOnlyContainsLetters": "Name must contain only letters and spaces",
+  "@nameOnlyContainsLetters": {},
+  "emailRequired": "Email is required",
+  "@emailRequired": {},
+  "invalidEmail": "Invalid email format",
+  "@invalidEmail": {}
 }
