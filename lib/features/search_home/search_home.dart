@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:ngo/export_tools.dart';
 
 class SearchHome extends HookWidget {
   const SearchHome({super.key});
@@ -8,6 +7,7 @@ class SearchHome extends HookWidget {
   Widget build(BuildContext context) {
     final searchController = useTextEditingController();
     final selectedFilter = useState('All');
+    final lang = AppLocalizations.of(context)!;
 
     Widget buildFilterChip(String label) {
       return GestureDetector(
@@ -39,6 +39,7 @@ class SearchHome extends HookWidget {
       required String location,
       required String imageUrl,
       required bool isFollowing,
+      required AppLocalizations lang,
     }) {
       return Card(
         margin: const EdgeInsets.symmetric(vertical: 8),
@@ -77,7 +78,7 @@ class SearchHome extends HookWidget {
             onPressed: () {
               // Handle follow/unfollow action
             },
-            child: Text(isFollowing ? 'Following' : 'Follow'),
+            child: Text(isFollowing ? lang.following_status : lang.follow_action),
           ),
         ),
       );
@@ -90,7 +91,7 @@ class SearchHome extends HookWidget {
         title: TextField(
           controller: searchController,
           decoration: InputDecoration(
-            hintText: 'Search NGOs, programs, opportunities.',
+            hintText: lang.search_ngos_programs,
             prefixIcon: const Icon(Icons.search, color: Colors.grey),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
@@ -116,9 +117,9 @@ class SearchHome extends HookWidget {
               ],
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Search Results',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            Text(
+              lang.search_results,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
             const SizedBox(height: 8),
             Expanded(
@@ -131,6 +132,7 @@ class SearchHome extends HookWidget {
                     imageUrl:
                         'https://randomuser.me/api/portraits/men/45.jpg',
                     isFollowing: true,
+                    lang: lang,
                   ),
                   buildSearchResultCard(
                     title: 'Green Earth Jordan',
@@ -139,6 +141,7 @@ class SearchHome extends HookWidget {
                     imageUrl:
                         'https://randomuser.me/api/portraits/men/32.jpg',
                     isFollowing: true,
+                    lang: lang,
                   ),
                   Card(
                     margin: const EdgeInsets.symmetric(vertical: 8),
@@ -216,6 +219,7 @@ class SearchHome extends HookWidget {
                     imageUrl:
                         'https://randomuser.me/api/portraits/men/45.jpg',
                     isFollowing: false,
+                    lang: lang,
                   ),
                 ],
               ),

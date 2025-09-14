@@ -518,4 +518,170 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get message_required => 'الرسالة مطلوبة';
+
+  @override
+  String get about => 'حول';
+
+  @override
+  String get version => 'الإصدار 1.0.0';
+
+  @override
+  String get our_mission => 'مهمتنا';
+
+  @override
+  String get mission_description =>
+      'جوردان لينك يربط الشباب بفرص تطوعية ذات مغزى والمنظمات غير الحكومية في جميع أنحاء الأردن. نحن نمكن الشباب من إحداث فرق بينما نساعد المنظمات على قياس تأثيرها وتحقيق أهدافها.';
+
+  @override
+  String get youth_engagement => 'مشاركة الشباب';
+
+  @override
+  String get youth_engagement_description =>
+      'التواصل مع فرص تطوعية ذات مغزى في جميع أنحاء الأردن';
+
+  @override
+  String get ngo_evaluation => 'تقييم المنظمات غير الحكومية';
+
+  @override
+  String get ngo_evaluation_description => 'تتبع وقياس تأثير المنظمة بفعالية';
+
+  @override
+  String get community_building => 'بناء المجتمع';
+
+  @override
+  String get community_building_description =>
+      'تعزيز الروابط بين المتطوعين والمنظمات';
+
+  @override
+  String get privacy_policy_title => 'سياسة الخصوصية';
+
+  @override
+  String get terms_of_service_title => 'شروط الخدمة';
+
+  @override
+  String get all_rights_reserved => '© 2025 جميع الحقوق محفوظة';
+
+  @override
+  String get mark_all_as_read => 'وضع علامة مقروء على الكل';
+
+  @override
+  String get no_notifications_available => 'لا توجد إشعارات متاحة';
+
+  @override
+  String get no_notifications => 'لا توجد إشعارات';
+
+  @override
+  String get no_unread_notifications => 'لا توجد إشعارات غير مقروءة';
+
+  @override
+  String get no_title => 'لا يوجد عنوان';
+
+  @override
+  String get no_message => 'لا توجد رسالة';
+
+  @override
+  String get unknown_error => 'خطأ غير معروف';
+
+  @override
+  String get unknown_state => 'حالة غير معروفة';
+
+  @override
+  String get just_now => 'الآن';
+
+  @override
+  String get following_status => 'يتابع';
+
+  @override
+  String get follow_action => 'متابعة';
+
+  @override
+  String get camera_option => 'الكاميرا';
+
+  @override
+  String get gallery_option => 'المعرض';
+
+  @override
+  String get cancel_action => 'إلغاء';
+
+  @override
+  String get submit_action => 'إرسال';
+
+  @override
+  String get file_size_error => 'يجب أن يكون حجم الملف أقل من 10 ميجابايت';
+
+  @override
+  String get registration_failed_message =>
+      'فشل في إنشاء الحساب. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get add_interests => 'إضافة اهتمامات';
+
+  @override
+  String get no_applications_yet => 'لا توجد طلبات بعد';
+
+  @override
+  String get applications_description => 'ستظهر طلبات التطوع الخاصة بك هنا';
+
+  @override
+  String get evaluations => 'التقييمات';
+
+  @override
+  String get applications => 'الطلبات';
+
+  @override
+  String get error_loading_profile => 'خطأ في تحميل الملف الشخصي';
+
+  @override
+  String get no_user_data => 'لا تتوفر بيانات المستخدم';
+
+  @override
+  String get leadership => 'القيادة';
+
+  @override
+  String get communication => 'التواصل';
+
+  @override
+  String get project_management => 'إدارة المشاريع';
+
+  @override
+  String get public_speaking => 'التحدث أمام الجمهور';
+
+  @override
+  String get social_media => 'وسائل التواصل الاجتماعي';
+
+  @override
+  String get event_planning => 'تخطيط الفعاليات';
+
+  @override
+  String get education => 'التعليم';
+
+  @override
+  String get environment => 'البيئة';
+
+  @override
+  String get healthcare => 'الرعاية الصحية';
+
+  @override
+  String get social_justice => 'العدالة الاجتماعية';
+
+  @override
+  String get youth_development => 'تنمية الشباب';
+
+  @override
+  String get arts_culture => 'الفنون والثقافة';
+
+  @override
+  String get interests => 'الاهتمامات';
+
+  @override
+  String get save_changes => 'حفظ التغييرات';
+
+  @override
+  String get sectors_label => 'القطاعات *';
+
+  @override
+  String get all_filter => 'الكل';
+
+  @override
+  String get unread_filter => 'غير مقروء';
 }

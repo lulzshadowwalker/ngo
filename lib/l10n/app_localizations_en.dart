@@ -518,4 +518,172 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get message_required => 'Message is required';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get version => 'Version 1.0.0';
+
+  @override
+  String get our_mission => 'Our Mission';
+
+  @override
+  String get mission_description =>
+      'JordanLink connects youth with meaningful volunteer opportunities and NGOs across Jordan. We empower young people to make a difference while helping organizations measure their impact and reach their goals.';
+
+  @override
+  String get youth_engagement => 'Youth Engagement';
+
+  @override
+  String get youth_engagement_description =>
+      'Connect with meaningful volunteer opportunities across Jordan';
+
+  @override
+  String get ngo_evaluation => 'NGO Evaluation';
+
+  @override
+  String get ngo_evaluation_description =>
+      'Track and measure organizational impact effectively';
+
+  @override
+  String get community_building => 'Community Building';
+
+  @override
+  String get community_building_description =>
+      'Foster connections between volunteers and organizations';
+
+  @override
+  String get privacy_policy_title => 'Privacy Policy';
+
+  @override
+  String get terms_of_service_title => 'Terms of Service';
+
+  @override
+  String get all_rights_reserved => '© 2025 All rights reserved';
+
+  @override
+  String get mark_all_as_read => 'Mark all as read';
+
+  @override
+  String get no_notifications_available => 'No notifications available';
+
+  @override
+  String get no_notifications => 'No notifications';
+
+  @override
+  String get no_unread_notifications => 'No unread notifications';
+
+  @override
+  String get no_title => 'No title';
+
+  @override
+  String get no_message => 'No message';
+
+  @override
+  String get unknown_error => 'Unknown error';
+
+  @override
+  String get unknown_state => 'Unknown state';
+
+  @override
+  String get just_now => 'Just now';
+
+  @override
+  String get following_status => 'Following';
+
+  @override
+  String get follow_action => 'Follow';
+
+  @override
+  String get camera_option => 'Camera';
+
+  @override
+  String get gallery_option => 'Gallery';
+
+  @override
+  String get cancel_action => 'Cancel';
+
+  @override
+  String get submit_action => 'Submit';
+
+  @override
+  String get file_size_error => 'File size must be less than 10MB';
+
+  @override
+  String get registration_failed_message =>
+      'Registration failed. Please try again.';
+
+  @override
+  String get add_interests => 'Add Interests';
+
+  @override
+  String get no_applications_yet => 'No Applications Yet';
+
+  @override
+  String get applications_description =>
+      'Your volunteer applications will appear here';
+
+  @override
+  String get evaluations => 'Evaluations';
+
+  @override
+  String get applications => 'Applications';
+
+  @override
+  String get error_loading_profile => 'Error loading profile';
+
+  @override
+  String get no_user_data => 'No user data available';
+
+  @override
+  String get leadership => 'Leadership';
+
+  @override
+  String get communication => 'Communication';
+
+  @override
+  String get project_management => 'Project Management';
+
+  @override
+  String get public_speaking => 'Public Speaking';
+
+  @override
+  String get social_media => 'Social Media';
+
+  @override
+  String get event_planning => 'Event Planning';
+
+  @override
+  String get education => 'Education';
+
+  @override
+  String get environment => 'Environment';
+
+  @override
+  String get healthcare => 'Healthcare';
+
+  @override
+  String get social_justice => 'Social Justice';
+
+  @override
+  String get youth_development => 'Youth Development';
+
+  @override
+  String get arts_culture => 'Arts & Culture';
+
+  @override
+  String get interests => 'Interests';
+
+  @override
+  String get save_changes => 'Save Changes';
+
+  @override
+  String get sectors_label => 'Sectors *';
+
+  @override
+  String get all_filter => 'All';
+
+  @override
+  String get unread_filter => 'Unread';
 }

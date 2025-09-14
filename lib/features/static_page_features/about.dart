@@ -10,10 +10,12 @@ class AboutSection extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = AppLocalizations.of(context)!;
+    
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
-        title: const Text('About'),
+        title: Text(lang.about),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.white,
@@ -30,7 +32,7 @@ class AboutSection extends HookWidget {
               Image.asset("assets/images/aboutLogo.png", height: 150),
               const SizedBox(height: 16),
               Text(
-                'Version 1.0.0',
+                lang.version,
                 style: MyFonts.font14Black.copyWith(color: Colors.grey[700]),
                 textAlign: TextAlign.center,
               ),
@@ -38,11 +40,11 @@ class AboutSection extends HookWidget {
               // Mission
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Our Mission', style: MyFonts.font16BlackBold),
+                child: Text(lang.our_mission, style: MyFonts.font16BlackBold),
               ),
               const SizedBox(height: 8),
               Text(
-                'JordanLink connects youth with meaningful volunteer opportunities and NGOs across Jordan. We empower young people to make a difference while helping organizations measure their impact and reach their goals.',
+                lang.mission_description,
                 style: MyFonts.font14Black.copyWith(
                   color: Colors.black87,
                   height: 1.5,
@@ -53,27 +55,24 @@ class AboutSection extends HookWidget {
               // Features
               _AboutFeature(
                 icon: Icons.groups,
-                title: 'Youth Engagement',
-                description:
-                    'Connect with meaningful volunteer opportunities across Jordan',
+                title: lang.youth_engagement,
+                description: lang.youth_engagement_description,
               ),
               _AboutFeature(
                 icon: Icons.bar_chart,
-                title: 'NGO Evaluation',
-                description:
-                    'Track and measure organizational impact effectively',
+                title: lang.ngo_evaluation,
+                description: lang.ngo_evaluation_description,
               ),
               _AboutFeature(
                 icon: Icons.people_alt,
-                title: 'Community Building',
-                description:
-                    'Foster connections between volunteers and organizations',
+                title: lang.community_building,
+                description: lang.community_building_description,
               ),
               const SizedBox(height: 32),
               // Links
               Divider(height: 32),
               ListTile(
-                title: Text('Privacy Policy', style: MyFonts.font14BlackBold),
+                title: Text(lang.privacy_policy_title, style: MyFonts.font14BlackBold),
                 trailing: const Icon(Icons.chevron_right, color: Colors.grey),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacyPolicyView()));
@@ -82,7 +81,7 @@ class AboutSection extends HookWidget {
               ),
               ListTile(
                 title: Text(
-                  'Terms of Service',
+                  lang.terms_of_service_title,
                   style: MyFonts.font14BlackBold,
                 ),
                 trailing: const Icon(Icons.chevron_right, color: Colors.grey),
@@ -94,7 +93,7 @@ class AboutSection extends HookWidget {
               const SizedBox(height: 16),
               // Footer
               Text(
-                '© 2025 All rights reserved',
+                lang.all_rights_reserved,
                 style: MyFonts.font12Black.copyWith(color: Colors.grey[600]),
                 textAlign: TextAlign.center,
               ),

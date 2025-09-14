@@ -582,5 +582,221 @@
   "message_required": "Message is required",
   "@message_required": {
     "description": "Validation message for required message field"
+  },
+  "about": "About",
+  "@about": {
+    "description": "About page title"
+  },
+  "version": "Version 1.0.0",
+  "@version": {
+    "description": "App version text"
+  },
+  "our_mission": "Our Mission",
+  "@our_mission": {
+    "description": "Mission section title"
+  },
+  "mission_description": "JordanLink connects youth with meaningful volunteer opportunities and NGOs across Jordan. We empower young people to make a difference while helping organizations measure their impact and reach their goals.",
+  "@mission_description": {
+    "description": "Mission description text"
+  },
+  "youth_engagement": "Youth Engagement",
+  "@youth_engagement": {
+    "description": "Feature title"
+  },
+  "youth_engagement_description": "Connect with meaningful volunteer opportunities across Jordan",
+  "@youth_engagement_description": {
+    "description": "Youth engagement feature description"
+  },
+  "ngo_evaluation": "NGO Evaluation",
+  "@ngo_evaluation": {
+    "description": "Feature title"
+  },
+  "ngo_evaluation_description": "Track and measure organizational impact effectively",
+  "@ngo_evaluation_description": {
+    "description": "NGO evaluation feature description"
+  },
+  "community_building": "Community Building",
+  "@community_building": {
+    "description": "Feature title"
+  },
+  "community_building_description": "Foster connections between volunteers and organizations",
+  "@community_building_description": {
+    "description": "Community building feature description"
+  },
+  "privacy_policy_title": "Privacy Policy",
+  "@privacy_policy_title": {
+    "description": "Privacy policy link title"
+  },
+  "terms_of_service_title": "Terms of Service",
+  "@terms_of_service_title": {
+    "description": "Terms of service link title"
+  },
+  "all_rights_reserved": "© 2025 All rights reserved",
+  "@all_rights_reserved": {
+    "description": "Copyright footer text"
+  },
+  "mark_all_as_read": "Mark all as read",
+  "@mark_all_as_read": {
+    "description": "Mark all notifications as read button"
+  },
+  "no_notifications_available": "No notifications available",
+  "@no_notifications_available": {
+    "description": "Empty notifications message"
+  },
+  "no_notifications": "No notifications",
+  "@no_notifications": {
+    "description": "No notifications state"
+  },
+  "no_unread_notifications": "No unread notifications",
+  "@no_unread_notifications": {
+    "description": "No unread notifications state"
+  },
+  "no_title": "No title",
+  "@no_title": {
+    "description": "Default notification title"
+  },
+  "no_message": "No message",
+  "@no_message": {
+    "description": "Default notification message"
+  },
+  "unknown_error": "Unknown error",
+  "@unknown_error": {
+    "description": "Unknown error message"
+  },
+  "unknown_state": "Unknown state",
+  "@unknown_state": {
+    "description": "Unknown state message"
+  },
+  "just_now": "Just now",
+  "@just_now": {
+    "description": "Recent time indicator"
+  },
+  "following_status": "Following",
+  "@following_status": {
+    "description": "Following status"
+  },
+  "follow_action": "Follow",
+  "@follow_action": {
+    "description": "Follow action button"
+  },
+  "camera_option": "Camera",
+  "@camera_option": {
+    "description": "Camera option in image picker"
+  },
+  "gallery_option": "Gallery",
+  "@gallery_option": {
+    "description": "Gallery option in image picker"
+  },
+  "cancel_action": "Cancel",
+  "@cancel_action": {
+    "description": "Cancel action button"
+  },
+  "submit_action": "Submit",
+  "@submit_action": {
+    "description": "Submit action button"
+  },
+  "file_size_error": "File size must be less than 10MB",
+  "@file_size_error": {
+    "description": "File size validation error"
+  },
+  "registration_failed_message": "Registration failed. Please try again.",
+  "@registration_failed_message": {
+    "description": "Registration failure message"
+  },
+  "add_interests": "Add Interests",
+  "@add_interests": {
+    "description": "Add interests button"
+  },
+  "no_applications_yet": "No Applications Yet",
+  "@no_applications_yet": {
+    "description": "No applications message"
+  },
+  "applications_description": "Your volunteer applications will appear here",
+  "@applications_description": {
+    "description": "Applications description"
+  },
+  "evaluations": "Evaluations",
+  "@evaluations": {
+    "description": "Evaluations text"
+  },
+  "applications": "Applications",
+  "@applications": {
+    "description": "Applications text"
+  },
+  "error_loading_profile": "Error loading profile",
+  "@error_loading_profile": {
+    "description": "Profile loading error"
+  },
+  "no_user_data": "No user data available",
+  "@no_user_data": {
+    "description": "No user data error"
+  },
+  "leadership": "Leadership",
+  "@leadership": {
+    "description": "Leadership skill"
+  },
+  "communication": "Communication",
+  "@communication": {
+    "description": "Communication skill"
+  },
+  "project_management": "Project Management",
+  "@project_management": {
+    "description": "Project management skill"
+  },
+  "public_speaking": "Public Speaking",
+  "@public_speaking": {
+    "description": "Public speaking skill"
+  },
+  "social_media": "Social Media",
+  "@social_media": {
+    "description": "Social media skill"
+  },
+  "event_planning": "Event Planning",
+  "@event_planning": {
+    "description": "Event planning skill"
+  },
+  "education": "Education",
+  "@education": {
+    "description": "Education sector"
+  },
+  "environment": "Environment",
+  "@environment": {
+    "description": "Environment sector"
+  },
+  "healthcare": "Healthcare",
+  "@healthcare": {
+    "description": "Healthcare sector"
+  },
+  "social_justice": "Social Justice",
+  "@social_justice": {
+    "description": "Social justice sector"
+  },
+  "youth_development": "Youth Development",
+  "@youth_development": {
+    "description": "Youth development sector"
+  },
+  "arts_culture": "Arts & Culture",
+  "@arts_culture": {
+    "description": "Arts and culture sector"
+  },
+  "interests": "Interests",
+  "@interests": {
+    "description": "Interests field label"
+  },
+  "save_changes": "Save Changes",
+  "@save_changes": {
+    "description": "Save changes button"
+  },
+  "sectors_label": "Sectors *",
+  "@sectors_label": {
+    "description": "Sectors field label with required indicator"
+  },
+  "all_filter": "All",
+  "@all_filter": {
+    "description": "All filter option"
+  },
+  "unread_filter": "Unread",
+  "@unread_filter": {
+    "description": "Unread filter option"
   }
 }

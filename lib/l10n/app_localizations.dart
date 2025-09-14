@@ -1093,6 +1093,330 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Message is required'**
   String get message_required;
+
+  /// About page title
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// App version text
+  ///
+  /// In en, this message translates to:
+  /// **'Version 1.0.0'**
+  String get version;
+
+  /// Mission section title
+  ///
+  /// In en, this message translates to:
+  /// **'Our Mission'**
+  String get our_mission;
+
+  /// Mission description text
+  ///
+  /// In en, this message translates to:
+  /// **'JordanLink connects youth with meaningful volunteer opportunities and NGOs across Jordan. We empower young people to make a difference while helping organizations measure their impact and reach their goals.'**
+  String get mission_description;
+
+  /// Feature title
+  ///
+  /// In en, this message translates to:
+  /// **'Youth Engagement'**
+  String get youth_engagement;
+
+  /// Youth engagement feature description
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with meaningful volunteer opportunities across Jordan'**
+  String get youth_engagement_description;
+
+  /// Feature title
+  ///
+  /// In en, this message translates to:
+  /// **'NGO Evaluation'**
+  String get ngo_evaluation;
+
+  /// NGO evaluation feature description
+  ///
+  /// In en, this message translates to:
+  /// **'Track and measure organizational impact effectively'**
+  String get ngo_evaluation_description;
+
+  /// Feature title
+  ///
+  /// In en, this message translates to:
+  /// **'Community Building'**
+  String get community_building;
+
+  /// Community building feature description
+  ///
+  /// In en, this message translates to:
+  /// **'Foster connections between volunteers and organizations'**
+  String get community_building_description;
+
+  /// Privacy policy link title
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacy_policy_title;
+
+  /// Terms of service link title
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get terms_of_service_title;
+
+  /// Copyright footer text
+  ///
+  /// In en, this message translates to:
+  /// **'© 2025 All rights reserved'**
+  String get all_rights_reserved;
+
+  /// Mark all notifications as read button
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get mark_all_as_read;
+
+  /// Empty notifications message
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications available'**
+  String get no_notifications_available;
+
+  /// No notifications state
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications'**
+  String get no_notifications;
+
+  /// No unread notifications state
+  ///
+  /// In en, this message translates to:
+  /// **'No unread notifications'**
+  String get no_unread_notifications;
+
+  /// Default notification title
+  ///
+  /// In en, this message translates to:
+  /// **'No title'**
+  String get no_title;
+
+  /// Default notification message
+  ///
+  /// In en, this message translates to:
+  /// **'No message'**
+  String get no_message;
+
+  /// Unknown error message
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error'**
+  String get unknown_error;
+
+  /// Unknown state message
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown state'**
+  String get unknown_state;
+
+  /// Recent time indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get just_now;
+
+  /// Following status
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get following_status;
+
+  /// Follow action button
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get follow_action;
+
+  /// Camera option in image picker
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get camera_option;
+
+  /// Gallery option in image picker
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get gallery_option;
+
+  /// Cancel action button
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel_action;
+
+  /// Submit action button
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get submit_action;
+
+  /// File size validation error
+  ///
+  /// In en, this message translates to:
+  /// **'File size must be less than 10MB'**
+  String get file_size_error;
+
+  /// Registration failure message
+  ///
+  /// In en, this message translates to:
+  /// **'Registration failed. Please try again.'**
+  String get registration_failed_message;
+
+  /// Add interests button
+  ///
+  /// In en, this message translates to:
+  /// **'Add Interests'**
+  String get add_interests;
+
+  /// No applications message
+  ///
+  /// In en, this message translates to:
+  /// **'No Applications Yet'**
+  String get no_applications_yet;
+
+  /// Applications description
+  ///
+  /// In en, this message translates to:
+  /// **'Your volunteer applications will appear here'**
+  String get applications_description;
+
+  /// Evaluations text
+  ///
+  /// In en, this message translates to:
+  /// **'Evaluations'**
+  String get evaluations;
+
+  /// Applications text
+  ///
+  /// In en, this message translates to:
+  /// **'Applications'**
+  String get applications;
+
+  /// Profile loading error
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading profile'**
+  String get error_loading_profile;
+
+  /// No user data error
+  ///
+  /// In en, this message translates to:
+  /// **'No user data available'**
+  String get no_user_data;
+
+  /// Leadership skill
+  ///
+  /// In en, this message translates to:
+  /// **'Leadership'**
+  String get leadership;
+
+  /// Communication skill
+  ///
+  /// In en, this message translates to:
+  /// **'Communication'**
+  String get communication;
+
+  /// Project management skill
+  ///
+  /// In en, this message translates to:
+  /// **'Project Management'**
+  String get project_management;
+
+  /// Public speaking skill
+  ///
+  /// In en, this message translates to:
+  /// **'Public Speaking'**
+  String get public_speaking;
+
+  /// Social media skill
+  ///
+  /// In en, this message translates to:
+  /// **'Social Media'**
+  String get social_media;
+
+  /// Event planning skill
+  ///
+  /// In en, this message translates to:
+  /// **'Event Planning'**
+  String get event_planning;
+
+  /// Education sector
+  ///
+  /// In en, this message translates to:
+  /// **'Education'**
+  String get education;
+
+  /// Environment sector
+  ///
+  /// In en, this message translates to:
+  /// **'Environment'**
+  String get environment;
+
+  /// Healthcare sector
+  ///
+  /// In en, this message translates to:
+  /// **'Healthcare'**
+  String get healthcare;
+
+  /// Social justice sector
+  ///
+  /// In en, this message translates to:
+  /// **'Social Justice'**
+  String get social_justice;
+
+  /// Youth development sector
+  ///
+  /// In en, this message translates to:
+  /// **'Youth Development'**
+  String get youth_development;
+
+  /// Arts and culture sector
+  ///
+  /// In en, this message translates to:
+  /// **'Arts & Culture'**
+  String get arts_culture;
+
+  /// Interests field label
+  ///
+  /// In en, this message translates to:
+  /// **'Interests'**
+  String get interests;
+
+  /// Save changes button
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get save_changes;
+
+  /// Sectors field label with required indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Sectors *'**
+  String get sectors_label;
+
+  /// All filter option
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all_filter;
+
+  /// Unread filter option
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get unread_filter;
 }
 
 class _AppLocalizationsDelegate

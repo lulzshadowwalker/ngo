@@ -1,7 +1,6 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:ngo/core/theme/my_colors.dart';
+import 'package:ngo/export_tools.dart';
 import 'package:ngo/models/application_form.dart';
 import 'package:ngo/models/form_field.dart' as ngo_form;
 
@@ -23,6 +22,7 @@ class DynamicApplicationForm extends HookWidget {
     final formData = useState<Map<String, dynamic>>({});
     final controllers = useMemoized(() => <String, TextEditingController>{});
     final selectedValues = useState<Map<String, dynamic>>({});
+    final lang = AppLocalizations.of(context)!;
 
     // Initialize controllers for text fields
     useEffect(() {
@@ -97,7 +97,7 @@ class DynamicApplicationForm extends HookWidget {
                     ),
                   ),
                   child: Text(
-                    'Cancel',
+                    lang.cancel_action,
                     style: TextStyle(
                       color: MyColors.primaryColor,
                       fontWeight: FontWeight.w600,
@@ -122,9 +122,9 @@ class DynamicApplicationForm extends HookWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text(
-                    'Submit Application',
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                  child: Text(
+                    lang.submit_action,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ),
               ),

@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:ngo/export_tools.dart';
 import 'package:ngo/features/notifications/cubit/notifications_cubit.dart';
 import 'package:ngo/service_locator.dart';
 
@@ -10,6 +9,7 @@ class NotificationsHome extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final selectedFilter = useState('All');
+    final lang = AppLocalizations.of(context)!;
 
     Widget buildFilterChip(String label) {
       return GestureDetector(
@@ -72,49 +72,50 @@ class NotificationsHome extends HookWidget {
 
     return BlocProvider(
       create: (context) => sl<NotificationsCubit>()..fetchNotifications(),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: const BackButton(color: Colors.black),
-          title: const Text(
-            'Notifications',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+      child: Builder(
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            leading: const BackButton(color: Colors.black),
+            title: Text(
+              lang.notifications,
+              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      buildFilterChip('All'),
-                      const SizedBox(width: 8),
-                      buildFilterChip('Unread'),
-                    ],
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context.read<NotificationsCubit>().markAllAsRead();
-                    },
-                    child: const Text(
-                      'Mark all as read',
-                      style: TextStyle(color: Colors.green),
+          body: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        buildFilterChip(lang.all_filter),
+                        const SizedBox(width: 8),
+                        buildFilterChip(lang.unread_filter),
+                      ],
                     ),
-                  ),
-                ],
-              ),
+                    TextButton(
+                      onPressed: () {
+                        context.read<NotificationsCubit>().markAllAsRead();
+                      },
+                      child: Text(
+                        lang.mark_all_as_read,
+                        style: const TextStyle(color: Colors.green),
+                      ),
+                    ),
+                  ],
+                ),
               const SizedBox(height: 16),
               Expanded(
                 child: BlocBuilder<NotificationsCubit, NotificationsState>(
                   builder: (context, state) {
                     if (state.runtimeType.toString().contains('Initial')) {
-                      return const Center(
-                        child: Text('No notifications available'),
+                      return Center(
+                        child: Text(lang.no_notifications_available),
                       );
                     } else if (state.runtimeType.toString().contains(
                       'Loading',
@@ -128,16 +129,16 @@ class NotificationsHome extends HookWidget {
                           loadedState.notifications as List<dynamic>;
 
                       final filteredNotifications =
-                          selectedFilter.value == 'All'
+                          selectedFilter.value == lang.all_filter
                           ? notifications
                           : notifications.where((n) => !n.isRead).toList();
 
                       if (filteredNotifications.isEmpty) {
                         return Center(
                           child: Text(
-                            selectedFilter.value == 'All'
-                                ? 'No notifications'
-                                : 'No unread notifications',
+                            selectedFilter.value == lang.all_filter
+                                ? lang.no_notifications
+                                : lang.no_unread_notifications,
                             style: const TextStyle(color: Colors.grey),
                           ),
                         );
@@ -148,10 +149,11 @@ class NotificationsHome extends HookWidget {
                         itemBuilder: (context, index) {
                           final notification = filteredNotifications[index];
                           return buildNotificationCard(
-                            title: notification.title ?? 'No title',
-                            subtitle: notification.message ?? 'No message',
+                            title: notification.title ?? lang.no_title,
+                            subtitle: notification.message ?? lang.no_message,
                             time: _formatTime(
                               notification.sentAt ?? DateTime.now(),
+                              lang,
                             ),
                             isRead: notification.isRead ?? false,
                             onTap: () {
@@ -167,7 +169,7 @@ class NotificationsHome extends HookWidget {
                       );
                     } else if (state.runtimeType.toString().contains('Error')) {
                       final errorState = state as dynamic;
-                      final message = errorState.message ?? 'Unknown error';
+                      final message = errorState.message ?? lang.unknown_error;
 
                       return Center(
                         child: Column(
@@ -185,7 +187,7 @@ class NotificationsHome extends HookWidget {
                         ),
                       );
                     } else {
-                      return const Center(child: Text('Unknown state'));
+                      return Center(child: Text(lang.unknown_state));
                     }
                   },
                 ),
@@ -193,11 +195,12 @@ class NotificationsHome extends HookWidget {
             ],
           ),
         ),
+        ),
       ),
     );
   }
 
-  String _formatTime(DateTime dateTime) {
+  String _formatTime(DateTime dateTime, AppLocalizations lang) {
     final now = DateTime.now();
     final difference = now.difference(dateTime);
 
@@ -208,7 +211,7 @@ class NotificationsHome extends HookWidget {
     } else if (difference.inMinutes > 0) {
       return '${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''} ago';
     } else {
-      return 'Just now';
+      return lang.just_now;
     }
   }
 }
