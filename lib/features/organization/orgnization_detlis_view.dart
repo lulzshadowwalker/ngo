@@ -19,7 +19,6 @@ class OrgnizationDetlisView extends HookWidget {
   Widget build(BuildContext context) {
     var lang = AppLocalizations.of(context)!;
     final selectedTabIndex = useState(0);
-    final isFollowLoading = useState(false);
     final isAboutExpanded = useState(false);
     
     return BlocProvider(
@@ -80,8 +79,8 @@ class OrgnizationDetlisView extends HookWidget {
                       _buildOrganizationHeader(organization),
                       
                       // Organization Info Card
-                      _buildOrganizationInfo(organization, isFollowLoading),
-                      
+                      _buildOrganizationInfo(organization, ),
+
                       // Contact Buttons
                       _buildContactButtons(organization),
                       
@@ -151,7 +150,7 @@ class OrgnizationDetlisView extends HookWidget {
     );
   }
 
-  Widget _buildOrganizationInfo(dynamic organization, ValueNotifier<bool> isFollowLoading) {
+  Widget _buildOrganizationInfo(dynamic organization,) {
     return Container(
       margin: const EdgeInsets.all(16),
       child: Row(
@@ -250,46 +249,9 @@ class OrgnizationDetlisView extends HookWidget {
             ),
           ),
           
-          // Follow Button
-          Builder(
-            builder: (context) => SizedBox(
-              width: 80,
-              child: ValueListenableBuilder<bool>(
-                valueListenable: isFollowLoading,
-                builder: (context, loading, child) {
-                  return ElevatedButton(
-                    onPressed: loading ? null : () {
-                      _handleFollowToggle(context, organization, isFollowLoading);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: organization.isFollowed ? Colors.grey[600] : MyColors.primaryColor,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    child: loading 
-                        ? const SizedBox(
-                            width: 12,
-                            height: 12,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                            ),
-                          )
-                        : Text(
-                            organization.isFollowed ? 'Following' : 'Follow',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                            ),
-                          ),
-                  );
-                },
-              ),
-            ),
-          ),
+
+
+
         ],
       ),
     );
