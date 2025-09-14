@@ -10,6 +10,7 @@ import 'package:ngo/features/components/text_from_field.dart';
 import 'package:ngo/features/main_nav/main_nav_export.dart';
 import 'package:ngo/service_locator.dart';
 
+import '../../../../core/widgets/toast_message.dart';
 import '../../cubit/auth_cubit.dart';
 import 'forgot_password_section.dart';
 
@@ -30,21 +31,37 @@ class LoginFromSection extends HookWidget {
           final stateType = state.runtimeType.toString();
           log("State: $stateType");
           if (stateType.contains('Authenticated')) {
-            CustomSnackBar.showSuccess(context, message: AppLocalizations.of(context)!.login_successful);
+            ToastMessage.showSuccess(
+              context,
+
+              message: AppLocalizations.of(context)!.login_successful,
+            );
+
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => MainNav()),
               (route) => false,
             );
           } else if (stateType.contains('LoginError')) {
-            CustomSnackBar.showError(context, message: AppLocalizations.of(context)!.login_failed);
+            ToastMessage.showError(
+              context,
+              message: AppLocalizations.of(context)!.login_failed,
+            );
           } else if (stateType.contains('RegisterError')) {
-            CustomSnackBar.showError(context, message: AppLocalizations.of(context)!.registration_failed);
+            ToastMessage.showError(
+              context,
+              message: AppLocalizations.of(context)!.registration_failed,
+            );
           } else if (stateType.contains('LogoutError')) {
-            
-            CustomSnackBar.showError(context, message: AppLocalizations.of(context)!.logout_failed);
+            ToastMessage.showError(
+              context,
+              message: AppLocalizations.of(context)!.logout_failed,
+            );
           } else if (stateType.contains('Error')) {
-            CustomSnackBar.showWarning(context, message: AppLocalizations.of(context)!.error_occurred);
+            ToastMessage.showError(
+              context,
+              message: AppLocalizations.of(context)!.error_occurred,
+            );
           }
         },
         builder: (context, state) {
@@ -62,7 +79,10 @@ class LoginFromSection extends HookWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextComponent(title: AppLocalizations.of(context)!.email, style: MyFonts.font14BlackBold),
+                  TextComponent(
+                    title: AppLocalizations.of(context)!.email,
+                    style: MyFonts.font14BlackBold,
+                  ),
                   const SizedBox(height: 10),
                   AppTextFormField(
                     controller: emailController,

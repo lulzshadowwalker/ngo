@@ -1,6 +1,7 @@
 import 'package:ngo/core/core_export.dart';
 import 'package:ngo/export_tools.dart';
 import 'package:ngo/features/auth/cubit/auth_cubit.dart';
+import 'package:ngo/features/user_management/cubit/user_management_cubit.dart';
 import 'package:ngo/service_locator.dart';
 
 import '../components/text_component.dart';
@@ -18,11 +19,13 @@ class Splash extends HookWidget {
         await authCubit.restoreAuthState();
         final state = authCubit.state;
         final stateType = state.runtimeType.toString();
-        
+
         // Check if the widget is still mounted before using context
         if (!context.mounted) return;
-        
+
         if (stateType.contains('Authenticated')) {
+          // Save user id globally after splash authentication
+          sl<UserManagementCubit>().fetchCurrentUser();
           // User is authenticated, navigate to MainNav
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => MainNav()),

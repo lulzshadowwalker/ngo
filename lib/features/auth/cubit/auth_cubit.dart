@@ -4,6 +4,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../core/contracts/auth_repository.dart';
 import '../../../core/helpers/helper.dart';
 import '../../../models/role.dart';
+import '../../../service_locator.dart';
+import '../../user_management/cubit/user_management_cubit.dart';
 
 part 'auth_cubit.freezed.dart';
 part 'auth_state.dart';
@@ -45,7 +47,9 @@ class AuthCubit extends Cubit<AuthState> {
         role: role.name,
       );
 
-      emit(AuthState.authenticated(accessToken: accessToken, role: role));
+  emit(AuthState.authenticated(accessToken: accessToken, role: role));
+  // Save user id globally after login
+  sl<UserManagementCubit>().fetchCurrentUser();
     } catch (error) {
       emit(AuthState.loginError(error.toString()));
     }
@@ -76,7 +80,9 @@ class AuthCubit extends Cubit<AuthState> {
         role: role.name,
       );
 
-      emit(AuthState.authenticated(accessToken: accessToken, role: role));
+  emit(AuthState.authenticated(accessToken: accessToken, role: role));
+  // Save user id globally after registration
+  sl<UserManagementCubit>().fetchCurrentUser();
     } catch (error) {
       emit(AuthState.registerError(error.toString()));
     }
@@ -111,7 +117,9 @@ class AuthCubit extends Cubit<AuthState> {
         accessToken: accessToken,
         role: role.name,
       );
-      emit(AuthState.authenticated(accessToken: accessToken, role: role));
+  emit(AuthState.authenticated(accessToken: accessToken, role: role));
+  // Save user id globally after registration
+  sl<UserManagementCubit>().fetchCurrentUser();
     } catch (error) {
       emit(AuthState.registerError(error.toString()));
     }

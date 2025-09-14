@@ -9,6 +9,8 @@ import 'package:ngo/models/application_response.dart';
 import 'package:ngo/models/opportunity.dart';
 import 'package:ngo/service_locator.dart';
 
+import '../../core/helpers/helper.dart';
+
 class OpportunityDetailView extends HookWidget {
   final String opportunityId;
 
@@ -758,24 +760,23 @@ class OpportunityDetailView extends HookWidget {
     );
   }
 
-  void _handleApply(BuildContext context, Opportunity opportunity) {
+  void _handleApply(BuildContext context, Opportunity opportunity) async {
     // Check if application form exists
     if (opportunity.applicationForm != null) {
       // Navigate to application form
       _showApplicationForm(context, opportunity);
     } else {
       // Direct application without form
-      // SharedPrefHelper.getInt('user_id').then((userId) {
-      //   if (userId == 0) {
-      //     _showErrorSnackBar(context, 'User not authenticated.');
-      //     return;
-      //   }
-        // Create a dummy ApplicationResponse list if needed
-        context.read<ApplicationCubit>().submitApplication(
-          opportunityId: int.parse(opportunity.id),
-          responses: [], // Basic application without custom form
-        );
-      // });
+      final String userId = await SharedPrefHelper.getString('user_id');
+      if (userId.isEmpty) {
+        _showErrorSnackBar(context, 'User not authenticated.');
+        return;
+      }
+      // Create a dummy ApplicationResponse list if needed
+      context.read<ApplicationCubit>().submitApplication(
+        opportunityId: int.parse(opportunity.id),
+        responses: [], // Basic application without custom form
+      );
     }
   }
 
