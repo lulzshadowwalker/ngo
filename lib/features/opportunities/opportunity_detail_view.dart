@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngo/core/contracts/opportunities_repository.dart';
 import 'package:ngo/core/theme/my_colors.dart';
@@ -248,7 +250,7 @@ class OpportunityDetailView extends HookWidget {
               // Application Deadline
               _buildDeadlineSection(opportunity.expiryDate, context),
 
-              const SizedBox(height: 100), // Space for bottom buttons
+              const SizedBox(height: 150), // Space for bottom buttons
             ],
           ),
         ),
@@ -637,7 +639,7 @@ class OpportunityDetailView extends HookWidget {
     Opportunity opportunity,
   ) {
     return Positioned(
-      bottom: 0,
+      bottom: 10,
       left: 0,
       right: 0,
       child: Container(
@@ -766,6 +768,7 @@ class OpportunityDetailView extends HookWidget {
 
   void _handleApply(BuildContext context, Opportunity opportunity) async {
     // Check if application form exists
+    log("this is a log message ${opportunity.applicationForm == null}");
     if (opportunity.applicationForm != null) {
       // Navigate to application form
       _showApplicationForm(context, opportunity);
@@ -826,11 +829,17 @@ class OpportunityDetailView extends HookWidget {
                       applicationForm: opportunity.applicationForm!,
                       onSubmit: (responses) async{
                         Navigator.pop(modalContext);
-                        // Convert Map responses to List<ApplicationResponse>
-                          final String userId = await SharedPrefHelper.getString('user_id');
-                        final applicationResponses = responses.entries.map((
-                          entry,
-                        ) {
+                        // Convert Map responses to proper format for API
+                        final String userId = await SharedPrefHelper.getString('user_id');
+                        log("This is user id: $userId");
+                        
+                        // Convert responses to match API expectations
+                        final formattedResponses = responses.entries.map((entry) {
+                          // Skip entries that are metadata (like file paths/bytes)
+                          if (entry.key.contains('_path') || entry.key.contains('_bytes')) {
+                            return null;
+                          }
+                          
                           final fieldId = int.parse(entry.key);
                           final formField = opportunity
                               .applicationForm!
@@ -843,12 +852,12 @@ class OpportunityDetailView extends HookWidget {
                             value: entry.value.toString(),
                             formField: formField,
                           );
-                        }).toList();
+                        }).where((response) => response != null).cast<ApplicationResponse>().toList();
           
                         // Use the original context instead of modalContext
                         context.read<ApplicationCubit>().submitApplication(
                           opportunityId: int.parse(opportunity.id),
-                          responses: applicationResponses,
+                          responses: formattedResponses,
                         );
                       },
                       onCancel: () => Navigator.pop(modalContext),

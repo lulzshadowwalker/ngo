@@ -67,21 +67,22 @@ class Home extends HookWidget {
                     ),
                   ],
                 ),
-              
-              
+
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
                       const SizedBox(height: 8),
                       TabBar(
-                        
                         dividerColor: Colors.transparent,
                         tabAlignment: TabAlignment.center,
                         controller: tabController,
                         indicatorColor: MyColors.primaryColor,
                         indicator: const BoxDecoration(
                           border: Border(
-                            bottom: BorderSide(color: MyColors.primaryColor, width: 1.0),
+                            bottom: BorderSide(
+                              color: MyColors.primaryColor,
+                              width: 1.0,
+                            ),
                           ),
                         ),
                         labelColor: Colors.black,
@@ -106,11 +107,6 @@ class Home extends HookWidget {
                     ],
                   ),
                 ),
-
-
-                
-                
-
 
                 // Profile completion card - only show if not complete
                 if (_shouldShowProfileCompletion(state))
@@ -146,8 +142,10 @@ class Home extends HookWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                 Text(
-                                  AppLocalizations.of(context)!.complete_your_profile,
+                                Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.complete_your_profile,
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
@@ -161,21 +159,18 @@ class Home extends HookWidget {
                         ],
                       ),
                     ),
-                  ),                
-                
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: tabController.index == 0 ? 480 : 600, 
-                    child: TabBarView(
-                      
-                      controller: tabController,
-                      children: [
-                        // Following Feed
-                        _buildFeedView(context, state, true),
-                        // Recent Feed
-                        _buildFeedView(context, state, false),
-                      ],
-                    ),
+                  ),
+
+                // Fixed scrolling section - using SliverFillRemaining
+                SliverFillRemaining(
+                  child: TabBarView(
+                    controller: tabController,
+                    children: [
+                      // Following Feed
+                      _buildFeedView(context, state, true),
+                      // Recent Feed
+                      _buildFeedView(context, state, false),
+                    ],
                   ),
                 ),
               ],
@@ -219,7 +214,9 @@ class Home extends HookWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                AppLocalizations.of(context)!.follow_organizations_to_see_their_posts_here,
+                AppLocalizations.of(
+                  context,
+                )!.follow_organizations_to_see_their_posts_here,
                 style: TextStyle(fontSize: 14, color: Colors.grey[500]),
               ),
             ],
@@ -231,12 +228,12 @@ class Home extends HookWidget {
           context.read<HomeCubit>().refreshFeed(isFollowing: true);
         },
         child: ListView.builder(
-          padding: EdgeInsets.zero,
+          // Removed shrinkWrap: true to allow proper scrolling
           itemCount: posts.length + opportunities.length,
           itemBuilder: (context, index) {
             if (index < posts.length) {
               final post = posts[index];
-              return _buildPostCard(post , context);
+              return _buildPostCard(post, context);
             } else {
               final opportunity = opportunities[index - posts.length];
               return _buildOpportunityCard(opportunity, context);
@@ -278,7 +275,7 @@ class Home extends HookWidget {
           context.read<HomeCubit>().refreshFeed(isFollowing: false);
         },
         child: ListView.builder(
-          padding: EdgeInsets.zero,
+          // Removed shrinkWrap: true and padding: EdgeInsets.zero for proper scrolling
           itemCount: posts.length + opportunities.length,
           itemBuilder: (context, index) {
             if (index < posts.length) {
@@ -328,7 +325,7 @@ class Home extends HookWidget {
     return const Center(child: Text('Unknown state'));
   }
 
-  Widget _buildPostCard(Post post , BuildContext context) {
+  Widget _buildPostCard(Post post, BuildContext context) {
     return GestureDetector(
       onTap: () {
         // Handle post tap action
@@ -336,7 +333,7 @@ class Home extends HookWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PostDetailsPage(slug: post.slug,),
+            builder: (context) => PostDetailsPage(slug: post.slug),
           ),
         );
       },
@@ -346,7 +343,6 @@ class Home extends HookWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.grey[200]!),
-       
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -389,12 +385,14 @@ class Home extends HookWidget {
                         ),
                         Text(
                           post.createdAtReadable,
-                          style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 12,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                
                 ],
               ),
             ),
@@ -433,7 +431,7 @@ class Home extends HookWidget {
                   ),
                 ),
               ),
-           const SizedBox(height: 12),
+            const SizedBox(height: 12),
           ],
         ),
       ),
@@ -516,7 +514,9 @@ class Home extends HookWidget {
                     CircleAvatar(
                       radius: 12,
                       backgroundColor: Colors.grey[300],
-                      backgroundImage: NetworkImage(opportunity.organization.logo),
+                      backgroundImage: NetworkImage(
+                        opportunity.organization.logo,
+                      ),
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -578,8 +578,8 @@ class Home extends HookWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text(
-                      'Apply Now',
+                    child:  Text(
+                      AppLocalizations.of(context)!.apply_now,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -603,12 +603,15 @@ class Home extends HookWidget {
 
     final followingState = state as dynamic;
     final profileCompletion = followingState.profileCompletion as int? ?? 0;
-    
+
     // Hide the card if profile is complete (profileCompletion = 3)
     return profileCompletion < 3;
   }
 
-  Widget _buildProfileCompletionProgress(BuildContext context, HomeState state) {
+  Widget _buildProfileCompletionProgress(
+    BuildContext context,
+    HomeState state,
+  ) {
     // Get profile completion from following feed state, default to 0
     int profileCompletion = 0;
     if (state.runtimeType.toString() == '_FollowingLoaded') {
@@ -620,7 +623,7 @@ class Home extends HookWidget {
     // Note: Case 3 (complete) is handled by hiding the entire widget
     final double progress;
     final String stepText;
-    
+
     switch (profileCompletion) {
       case 1:
         progress = 0.33;
@@ -637,9 +640,12 @@ class Home extends HookWidget {
     }
 
     return GestureDetector(
-       onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfileView()));
-                    },
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => EditProfileView()),
+        );
+      },
       child: Row(
         children: [
           Expanded(

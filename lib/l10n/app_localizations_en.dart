@@ -491,4 +491,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get select_sectors => 'Select Sectors';
+
+  @override
+  String get article => 'Article';
+
+  @override
+  String get subject => 'Subject';
+
+  @override
+  String get enter_subject => 'Enter subject';
+
+  @override
+  String get message => 'Message';
+
+  @override
+  String get describe_your_issue => 'Describe your issue';
+
+  @override
+  String get view_all_tickets => 'View All Tickets';
+
+  @override
+  String get submit => 'Submit';
+
+  @override
+  String get subject_required => 'Subject is required';
+
+  @override
+  String get message_required => 'Message is required';
 }

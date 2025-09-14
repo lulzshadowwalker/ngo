@@ -158,7 +158,16 @@
   "@dateOfBirth": {},
   "selectYourDateOfBirth": "اختر تاريخ ميلادك",
   "skills": "المهارات",
-    "sectors" : "القطاعات",
-    "select_skills" : "اختر مهاراتك",
-    "select_sectors" : "اختر قطاعاتك"
+  "sectors": "القطاعات",
+  "select_skills": "اختر مهاراتك",
+  "select_sectors": "اختر قطاعاتك",
+  "article": "مقال",
+  "subject": "الموضوع",
+  "enter_subject": "أدخل الموضوع",
+  "message": "الرسالة",
+  "describe_your_issue": "صف مشكلتك",
+  "view_all_tickets": "عرض جميع التذاكر",
+  "submit": "إرسال",
+  "subject_required": "الموضوع مطلوب",
+  "message_required": "الرسالة مطلوبة"
 }

@@ -1039,6 +1039,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Sectors'**
   String get select_sectors;
+
+  /// No description provided for @article.
+  ///
+  /// In en, this message translates to:
+  /// **'Article'**
+  String get article;
+
+  /// Label for subject field in support ticket
+  ///
+  /// In en, this message translates to:
+  /// **'Subject'**
+  String get subject;
+
+  /// Placeholder text for subject field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter subject'**
+  String get enter_subject;
+
+  /// Label for message field in support ticket
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get message;
+
+  /// Placeholder text for message field
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your issue'**
+  String get describe_your_issue;
+
+  /// Button text to view all support tickets
+  ///
+  /// In en, this message translates to:
+  /// **'View All Tickets'**
+  String get view_all_tickets;
+
+  /// Submit button text
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get submit;
+
+  /// Validation message for required subject field
+  ///
+  /// In en, this message translates to:
+  /// **'Subject is required'**
+  String get subject_required;
+
+  /// Validation message for required message field
+  ///
+  /// In en, this message translates to:
+  /// **'Message is required'**
+  String get message_required;
 }
 
 class _AppLocalizationsDelegate

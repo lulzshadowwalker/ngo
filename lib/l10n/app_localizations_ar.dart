@@ -491,4 +491,31 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get select_sectors => 'اختر قطاعاتك';
+
+  @override
+  String get article => 'مقال';
+
+  @override
+  String get subject => 'الموضوع';
+
+  @override
+  String get enter_subject => 'أدخل الموضوع';
+
+  @override
+  String get message => 'الرسالة';
+
+  @override
+  String get describe_your_issue => 'صف مشكلتك';
+
+  @override
+  String get view_all_tickets => 'عرض جميع التذاكر';
+
+  @override
+  String get submit => 'إرسال';
+
+  @override
+  String get subject_required => 'الموضوع مطلوب';
+
+  @override
+  String get message_required => 'الرسالة مطلوبة';
 }

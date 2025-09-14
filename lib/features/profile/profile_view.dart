@@ -680,7 +680,7 @@ class _ProfileViewContent extends HookWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: TextComponent(
-                  title: 'Following',
+                  title: AppLocalizations.of(context)!.following,
                   style: MyFonts.font12Black.copyWith(
                     color: MyColors.primaryColor,
                     fontWeight: FontWeight.w500,

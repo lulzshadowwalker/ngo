@@ -16,7 +16,10 @@ class SupportTicketView extends HookWidget {
     final formKey = useMemoized(() => GlobalKey<FormState>());
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Help Center'), centerTitle: true),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.help_center), 
+        centerTitle: true,
+      ),
       body: BlocProvider(
         create: (context) => sl<SupportTicketCubit>(),
         child: BlocConsumer<SupportTicketCubit, SupportTicketState>(
@@ -51,30 +54,36 @@ class SupportTicketView extends HookWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Subject', style: MyFonts.font14BlackBold),
+                    Text(
+                      AppLocalizations.of(context)!.subject, 
+                      style: MyFonts.font14BlackBold,
+                    ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: subjectController,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter subject',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)!.enter_subject,
+                        border: const OutlineInputBorder(),
                       ),
                       validator: (value) => value == null || value.isEmpty
-                          ? 'Subject is required'
+                          ? AppLocalizations.of(context)!.subject_required
                           : null,
                     ),
                     const SizedBox(height: 16),
-                    Text('Message', style: MyFonts.font14BlackBold),
+                    Text(
+                      AppLocalizations.of(context)!.message, 
+                      style: MyFonts.font14BlackBold,
+                    ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: messageController,
                       maxLines: 5,
-                      decoration: const InputDecoration(
-                        hintText: 'Describe your issue',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)!.describe_your_issue,
+                        border: const OutlineInputBorder(),
                       ),
                       validator: (value) => value == null || value.isEmpty
-                          ? 'Message is required'
+                          ? AppLocalizations.of(context)!.message_required
                           : null,
                     ),
                     const SizedBox(height: 24),
@@ -90,7 +99,7 @@ class SupportTicketView extends HookWidget {
                               ),
                             );
                           },
-                          child: Text("View All Tickets"),
+                          child: Text(AppLocalizations.of(context)!.view_all_tickets),
                         ),
                       ],
                     ),
@@ -127,7 +136,7 @@ class SupportTicketView extends HookWidget {
                                   strokeWidth: 2,
                                 ),
                               )
-                            : const Text('Submit'),
+                            : Text(AppLocalizations.of(context)!.submit),
                       ),
                     ),
                   ],

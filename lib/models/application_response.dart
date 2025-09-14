@@ -25,7 +25,7 @@ abstract class ApplicationResponse with _$ApplicationResponse {
 extension ApplicationResponseExtension on ApplicationResponse {
   Map<String, dynamic> toSubmissionJson() {
     return {
-      'formFieldId': formFieldId,
+      'form_field_id': formFieldId,
       'value': value,
     };
   }

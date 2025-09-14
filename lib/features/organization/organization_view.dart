@@ -21,6 +21,8 @@ class OrganizationView extends HookWidget {
     List<dynamic> sectors,
   ) {
     showModalBottomSheet(
+      useSafeArea: true,
+      isScrollControlled: true,
       context: context,
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
@@ -28,7 +30,7 @@ class OrganizationView extends HookWidget {
       ),
       builder: (BuildContext bottomSheetContext) {
         return Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.only(top: 20, left: 16, right: 16, bottom: 60),
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -347,13 +349,7 @@ class OrganizationView extends HookWidget {
                           try {
                             await context.read<OrganizationCubit>().unfollowOrganization(organizationId);
                             if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Unfollowed $name'),
-                                  backgroundColor: Colors.orange,
-                                  duration: const Duration(seconds: 2),
-                                ),
-                              );
+                          
                               // Reload organizations after unfollow
                               final lang = AppLocalizations.of(context)!;
                               if (selectedFilterId.value != null) {
@@ -382,7 +378,7 @@ class OrganizationView extends HookWidget {
                         },
                         child: Center(
                           child: Text(
-                            'Following',
+                           AppLocalizations.of(context)!.following,
                             style: TextStyle(
                               color: MyColors.primaryColor,
                               fontSize: 12,
@@ -443,7 +439,7 @@ class OrganizationView extends HookWidget {
                         }
                       },
                       child: Text(
-                        'Follow',
+                        AppLocalizations.of(context)!.follow,
                         style: const TextStyle(fontSize: 12),
                       ),
                     ),

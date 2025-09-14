@@ -31,7 +31,7 @@ class PostDetailsPage extends HookWidget {
               onPressed: () => Navigator.of(context).pop(),
             ),
             title: Text(
-              'Article',
+              AppLocalizations.of(context)!.article,
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,

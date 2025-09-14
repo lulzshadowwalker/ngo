@@ -548,5 +548,39 @@
   "select_skills" : "Select Skills",
   "@select_skills": {},
   "select_sectors" : "Select Sectors",
-  "@select_sectors": {}
+  "@select_sectors": {},
+  "article" : "Article",
+  "@article": {},
+  "subject": "Subject",
+  "@subject": {
+    "description": "Label for subject field in support ticket"
+  },
+  "enter_subject": "Enter subject",
+  "@enter_subject": {
+    "description": "Placeholder text for subject field"
+  },
+  "message": "Message",
+  "@message": {
+    "description": "Label for message field in support ticket"
+  },
+  "describe_your_issue": "Describe your issue",
+  "@describe_your_issue": {
+    "description": "Placeholder text for message field"
+  },
+  "view_all_tickets": "View All Tickets",
+  "@view_all_tickets": {
+    "description": "Button text to view all support tickets"
+  },
+  "submit": "Submit",
+  "@submit": {
+    "description": "Submit button text"
+  },
+  "subject_required": "Subject is required",
+  "@subject_required": {
+    "description": "Validation message for required subject field"
+  },
+  "message_required": "Message is required",
+  "@message_required": {
+    "description": "Validation message for required message field"
+  }
 }

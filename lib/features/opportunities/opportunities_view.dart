@@ -494,6 +494,7 @@ class _OpportunitiesContent extends HookWidget {
 
   void _showFilterBottomSheet(BuildContext context, AppLocalizations lang) {
     showModalBottomSheet(
+      useSafeArea: true,
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -502,161 +503,164 @@ class _OpportunitiesContent extends HookWidget {
           BlocProvider.value(value: context.read<SectorsCubit>()),
           BlocProvider.value(value: context.read<OpportunitiesCubit>()),
         ],
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 60),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
             ),
-          ),
-          child: DraggableScrollableSheet(
-            initialChildSize: 0.6,
-            maxChildSize: 0.9,
-            minChildSize: 0.3,
-            expand: false,
-            builder: (context, scrollController) {
-              return Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    height: 4,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                   Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Text(
-                      lang.filter_opportunities,
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      controller: scrollController,
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                           Text(
-                           lang.sector,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          BlocBuilder<SectorsCubit, SectorsState>(
-                            builder: (context, sectorsState) {
-                              return BlocBuilder<OpportunitiesCubit, OpportunitiesState>(
-                                builder: (context, opportunitiesState) {
-                                  // Get current selected sector ID
-                                  int? selectedSectorId;
-                                  try {
-                                    final dynamic state = opportunitiesState;
-                                    if (opportunitiesState.toString().contains('loaded')) {
-                                      selectedSectorId = state.selectedSectorId;
-                                    }
-                                  } catch (e) {
-                                    // Handle error accessing state
-                                  }
-
-                                  // Build sector chips
-                                  List<Widget> sectorChips = [
-                                    _buildFilterChip(
-                                      'All',
-                                      isSelected: selectedSectorId == null,
-                                      onTap: () {
-                                        context.read<OpportunitiesCubit>().clearFilters(
-                                          language: lang.localeName,
-                                        );
-                                      },
-                                    ),
-                                  ];
-
-                                  // Add sectors from SectorsCubit if available
-                                  if (sectorsState.toString().contains('loaded')) {
-                                    try {
-                                      final dynamic state = sectorsState;
-                                      final sectors = state.sectors as List<dynamic>;
-                                      
-                                      for (final sector in sectors) {
-                                        final sectorId = int.parse(sector.id);
-                                        final sectorName = sector.name;
-                                        
-                                        sectorChips.add(
-                                          _buildFilterChip(
-                                            sectorName,
-                                            isSelected: selectedSectorId == sectorId,
-                                            onTap: () {
-                                              context.read<OpportunitiesCubit>().filterBySector(
-                                                sectorId,
-                                                language: lang.localeName,
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      }
-                                    } catch (e) {
-                                      // Handle error accessing sectors
-                                    }
-                                  }
-
-                                  return Wrap(
-                                    spacing: 8,
-                                    runSpacing: 8,
-                                    children: sectorChips,
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 24),
-                          const Text(
-                            'Duration',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                        
-                          Row(
-                            children: [
-                              Expanded(
-                                child: OutlinedButton(
-                                  onPressed: () {
-                                    context.read<OpportunitiesCubit>().clearFilters(
-                                      language: lang.localeName,
-                                    );
-                                    Navigator.pop(context);
-                                  },
-                                  child:  Text(lang.clear_filters),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: MyColors.primaryColor,
-                                    foregroundColor: Colors.white,
-                                  ),
-                                  child:  Text(lang.apply_filters),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+            child: DraggableScrollableSheet(
+              initialChildSize: 0.6,
+              maxChildSize: 0.9,
+              minChildSize: 0.3,
+              expand: false,
+              builder: (context, scrollController) {
+                return Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      height: 4,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(2),
                       ),
                     ),
-                  ),
-                ],
-              );
-            },
+                     Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Text(
+                        lang.filter_opportunities,
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                             Text(
+                             lang.sector,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            BlocBuilder<SectorsCubit, SectorsState>(
+                              builder: (context, sectorsState) {
+                                return BlocBuilder<OpportunitiesCubit, OpportunitiesState>(
+                                  builder: (context, opportunitiesState) {
+                                    // Get current selected sector ID
+                                    int? selectedSectorId;
+                                    try {
+                                      final dynamic state = opportunitiesState;
+                                      if (opportunitiesState.toString().contains('loaded')) {
+                                        selectedSectorId = state.selectedSectorId;
+                                      }
+                                    } catch (e) {
+                                      // Handle error accessing state
+                                    }
+          
+                                    // Build sector chips
+                                    List<Widget> sectorChips = [
+                                      _buildFilterChip(
+                                        'All',
+                                        isSelected: selectedSectorId == null,
+                                        onTap: () {
+                                          context.read<OpportunitiesCubit>().clearFilters(
+                                            language: lang.localeName,
+                                          );
+                                        },
+                                      ),
+                                    ];
+          
+                                    // Add sectors from SectorsCubit if available
+                                    if (sectorsState.toString().contains('loaded')) {
+                                      try {
+                                        final dynamic state = sectorsState;
+                                        final sectors = state.sectors as List<dynamic>;
+                                        
+                                        for (final sector in sectors) {
+                                          final sectorId = int.parse(sector.id);
+                                          final sectorName = sector.name;
+                                          
+                                          sectorChips.add(
+                                            _buildFilterChip(
+                                              sectorName,
+                                              isSelected: selectedSectorId == sectorId,
+                                              onTap: () {
+                                                context.read<OpportunitiesCubit>().filterBySector(
+                                                  sectorId,
+                                                  language: lang.localeName,
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        }
+                                      } catch (e) {
+                                        // Handle error accessing sectors
+                                      }
+                                    }
+          
+                                    return Wrap(
+                                      spacing: 8,
+                                      runSpacing: 8,
+                                      children: sectorChips,
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 24),
+                            const Text(
+                              'Duration',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                          
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: OutlinedButton(
+                                    onPressed: () {
+                                      context.read<OpportunitiesCubit>().clearFilters(
+                                        language: lang.localeName,
+                                      );
+                                      Navigator.pop(context);
+                                    },
+                                    child:  Text(lang.clear_filters),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: MyColors.primaryColor,
+                                      foregroundColor: Colors.white,
+                                    ),
+                                    child:  Text(lang.apply_filters),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),

@@ -14,9 +14,11 @@ final class LaravelApplicationsRepository extends LaravelRepository
     required List<ApplicationResponse> responses,
   }) async {
     final authorization = await SharedPrefHelper.getAccessToken();
+    final userId = await SharedPrefHelper.getString('user_id');
     
     final requestData = {
-      'opportunityId': opportunityId,
+      'opportunity_id': opportunityId,
+      'user_id': int.parse(userId),
       'responses': responses.map((response) => response.toSubmissionJson()).toList(),
     };
 
