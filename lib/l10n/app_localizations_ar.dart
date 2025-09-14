@@ -318,16 +318,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get searchOrganizations => 'ابحث عن منظمات...';
 
   @override
-  String get password_reset_email_sent =>
-      'تم إرسال بريد إعادة تعيين كلمة المرور';
+  String get password_reset_email_sent => 'تم إرسال بريد إعادة تعيين كلمة المرور';
 
   @override
-  String get this_email_is_registered =>
-      'إذا كان هذا البريد الإلكتروني مسجلاً، ستصلك رابط لإعادة تعيين كلمة المرور قريبًا.';
+  String get this_email_is_registered => 'إذا كان هذا البريد الإلكتروني مسجلاً، ستصلك رابط لإعادة تعيين كلمة المرور قريبًا.';
 
   @override
-  String get enter_your_email_to_reevie =>
-      'أدخل عنوان بريدك الإلكتروني لاستلام رابط إعادة تعيين كلمة المرور.';
+  String get enter_your_email_to_reevie => 'أدخل عنوان بريدك الإلكتروني لاستلام رابط إعادة تعيين كلمة المرور.';
 
   @override
   String get btn_send => 'إرسال';
@@ -339,8 +336,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get plase_enter_a_valid_email => 'يرجى إدخال بريد إلكتروني صالح';
 
   @override
-  String get failed_to_send_reset_email =>
-      'فشل في إرسال بريد إعادة التعيين. يرجى المحاولة مرة أخرى.';
+  String get failed_to_send_reset_email => 'فشل في إرسال بريد إعادة التعيين. يرجى المحاولة مرة أخرى.';
 
   @override
   String get required_skills => 'المهارات المطلوبة';
@@ -396,6 +392,26 @@ class AppLocalizationsAr extends AppLocalizations {
   String get no_following_content_yet => 'لا يوجد محتوى تتابعه بعد';
 
   @override
-  String get follow_organizations_to_see_their_posts_here =>
-      'تابع منظمات لرؤية منشوراتها هنا';
+  String get follow_organizations_to_see_their_posts_here => 'تابع منظمات لرؤية منشوراتها هنا';
+
+  @override
+  String get password_required => 'Password is required';
+
+  @override
+  String get password_min_length => 'Password must be at least 8 characters';
+
+  @override
+  String get password_max_length => 'Password must not exceed 128 characters';
+
+  @override
+  String get password_uppercase => 'Password must contain at least one uppercase letter';
+
+  @override
+  String get password_lowercase => 'Password must contain at least one lowercase letter';
+
+  @override
+  String get password_number => 'Password must contain at least one number';
+
+  @override
+  String get password_special_char => 'Password must contain at least one special character';
 }

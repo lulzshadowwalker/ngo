@@ -130,5 +130,12 @@
   "filter_opportunities" : "تصفية الفرص",
   "sector" : "القطاع",
     "no_following_content_yet" : "لا يوجد محتوى تتابعه بعد",
-     "follow_organizations_to_see_their_posts_here" : "تابع منظمات لرؤية منشوراتها هنا"
+     "follow_organizations_to_see_their_posts_here" : "تابع منظمات لرؤية منشوراتها هنا",
+  "password_required": "كلمة المرور مطلوبة",
+  "password_min_length": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+  "password_max_length": "يجب ألا تتجاوز كلمة المرور 128 حرفًا",
+  "password_uppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
+  "password_lowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
+  "password_number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
+  "password_special_char": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل"
 }
