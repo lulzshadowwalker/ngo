@@ -807,10 +807,6 @@
   "@filter_by_sector": {
     "description": "Filter by sector label"
   },
-  "loading_sectors": "Loading sectors...",
-  "@loading_sectors": {
-    "description": "Loading sectors message"
-  },
   "currently_showing": "Currently showing: {filter}",
   "@currently_showing": {
     "description": "Current filter status message",
@@ -891,5 +887,263 @@
   "duration_filter": "Duration",
   "@duration_filter": {
     "description": "Duration filter section title"
+  },
+  "community_blog": "Community Blog",
+  "@community_blog": {
+    "description": "Blog page title"
+  },
+  "search_posts": "Search posts...",
+  "@search_posts": {
+    "description": "Search hint for blog posts"
+  },
+  "no_posts_available": "No Posts Available",
+  "@no_posts_available": {
+    "description": "Empty state title for blog"
+  },
+  "no_blog_posts_message": "There are no blog posts to display at the moment.",
+  "@no_blog_posts_message": {
+    "description": "Empty state description for blog"
+  },
+  "refresh": "Refresh",
+  "@refresh": {
+    "description": "Refresh button text"
+  },
+  "error_loading_posts": "Error loading posts",
+  "@error_loading_posts": {
+    "description": "Error message for failed post loading"
+  },
+  "error_loading_categories": "Error loading categories",
+  "@error_loading_categories": {
+    "description": "Error message for failed categories loading"
+  },
+  "unknown": "Unknown",
+  "@unknown": {
+    "description": "Unknown text fallback"
+  },
+  "min_read": "min read",
+  "@min_read": {
+    "description": "Reading time suffix"
+  },
+  "update_your_password": "Update Your Password",
+  "@update_your_password": {
+    "description": "Change password page subtitle"
+  },
+  "update_password_description": "Please enter your current password and choose a new secure password.",
+  "@update_password_description": {
+    "description": "Change password instructions"
+  },
+  "current_password": "Current Password",
+  "@current_password": {
+    "description": "Current password field label"
+  },
+  "enter_current_password": "Enter your current password",
+  "@enter_current_password": {
+    "description": "Current password field hint"
+  },
+  "new_password": "New Password",
+  "@new_password": {
+    "description": "New password field label"
+  },
+  "enter_new_password": "Enter your new password",
+  "@enter_new_password": {
+    "description": "New password field hint"
+  },
+  "confirm_new_password": "Confirm New Password",
+  "@confirm_new_password": {
+    "description": "Confirm password field label"
+  },
+  "confirm_new_password_hint": "Confirm your new password",
+  "@confirm_new_password_hint": {
+    "description": "Confirm password field hint"
+  },
+  "password_requirements": "Password Requirements:",
+  "@password_requirements": {
+    "description": "Password requirements section title"
+  },
+  "at_least_8_characters": "At least 8 characters long",
+  "@at_least_8_characters": {
+    "description": "Password requirement - length"
+  },
+  "different_from_current": "Different from current password",
+  "@different_from_current": {
+    "description": "Password requirement - different"
+  },
+  "must_match_confirmation": "Must match confirmation password",
+  "@must_match_confirmation": {
+    "description": "Password requirement - match"
+  },
+  "update_password": "Update Password",
+  "@update_password": {
+    "description": "Update password button text"
+  },
+  "please_enter_current_password": "Please enter your current password",
+  "@please_enter_current_password": {
+    "description": "Validation error for missing current password"
+  },
+  "please_enter_new_password": "Please enter a new password",
+  "@please_enter_new_password": {
+    "description": "Validation error for missing new password"
+  },
+  "password_min_8_characters": "Password must be at least 8 characters long",
+  "@password_min_8_characters": {
+    "description": "Validation error for password length"
+  },
+  "new_password_must_be_different": "New password must be different from current password",
+  "@new_password_must_be_different": {
+    "description": "Validation error for same password"
+  },
+  "please_confirm_new_password": "Please confirm your new password",
+  "@please_confirm_new_password": {
+    "description": "Validation error for missing password confirmation"
+  },
+  "passwords_do_not_match": "Passwords do not match",
+  "@passwords_do_not_match": {
+    "description": "Validation error for password mismatch"
+  },
+  "password_updated_successfully": "Password updated successfully!",
+  "@password_updated_successfully": {
+    "description": "Success message for password update"
+  },
+  "unexpected_error_occurred": "An unexpected error occurred",
+  "@unexpected_error_occurred": {
+    "description": "Unexpected error message"
+  },
+  "full_name": "Full Name",
+  "@full_name": {
+    "description": "Label for full name field"
+  },
+  "bio": "Bio",
+  "@bio": {
+    "description": "Label for bio field"
+  },
+  "enter_full_name": "Enter Full Name",
+  "@enter_full_name": {
+    "description": "Placeholder for full name field"
+  },
+  "enter_bio": "Enter Bio",
+  "@enter_bio": {
+    "description": "Placeholder for bio field"
+  },
+  "enter_email": "Enter Email",
+  "@enter_email": {
+    "description": "Placeholder for email field"
+  },
+  "change_photo": "Change Photo",
+  "@change_photo": {
+    "description": "Button text to change profile photo"
+  },
+  "error_loading_profile_data": "Error loading profile data",
+  "@error_loading_profile_data": {
+    "description": "Error message when profile data fails to load"
+  },
+  "image_selected_from_camera": "Image selected from camera",
+  "@image_selected_from_camera": {
+    "description": "Success message when image is selected from camera"
+  },
+  "image_selected_from_gallery": "Image selected from gallery",
+  "@image_selected_from_gallery": {
+    "description": "Success message when image is selected from gallery"
+  },
+  "error_accessing_camera": "Error accessing camera",
+  "@error_accessing_camera": {
+    "description": "Error message when camera access fails"
+  },
+  "error_accessing_gallery": "Error accessing gallery",
+  "@error_accessing_gallery": {
+    "description": "Error message when gallery access fails"
+  },
+  "loading_locations": "Loading locations...",
+  "@loading_locations": {
+    "description": "Loading message for locations"
+  },
+  "loading_sectors": "Loading sectors...",
+  "@loading_sectors": {
+    "description": "Loading message for sectors"
+  },
+  "search_hint": "Search...",
+  "@search_hint": {
+    "description": "Search input placeholder"
+  },
+  "city_area": "City, Area",
+  "@city_area": {
+    "description": "Location input placeholder"
+  },
+  "select_your_sector": "Select your sector",
+  "@select_your_sector": {
+    "description": "Sector dropdown placeholder"
+  },
+  "location_required": "Location is required",
+  "@location_required": {
+    "description": "Validation message for required location"
+  },
+  "sector_required": "Sector is required",
+  "@sector_required": {
+    "description": "Validation message for required sector"
+  },
+  "about_your_organization": "About your organization",
+  "@about_your_organization": {
+    "description": "Bio field placeholder"
+  },
+  "contact_email": "Contact Email",
+  "@contact_email": {
+    "description": "Contact email field label"
+  },
+  "contact_email_hint": "Contact Email",
+  "@contact_email_hint": {
+    "description": "Contact email field placeholder"
+  },
+  "website": "Website",
+  "@website": {
+    "description": "Website field label"
+  },
+  "website_url": "Website URL",
+  "@website_url": {
+    "description": "Website field placeholder"
+  },
+  "register": "Register",
+  "error_loading_locations": "Error loading locations",
+  "error_loading_sectors": "Error loading sectors",
+  "city_area_hint": "City, Area",
+  "sector_hint": "Sector",
+  "organization_registered_successfully": "Organization registered successfully!",
+  "loading_organizations": "Loading organizations...",
+  "loading_skills": "Loading skills...",
+  "error_loading_organizations": "Error loading organizations",
+  "error_loading_skills": "Error loading skills",
+  "search_locations_hint": "Search locations...",
+  "please_select_location": "Please select a location",
+  "please_add_skill": "Please add at least one skill",
+  "please_add_interest": "Please add at least one interest",
+  "no_organizations_available": "No organizations available",
+  "loading_skills_fallback": "Loading skills...",
+  "loading_sectors_fallback": "Loading sectors...",
+  "unfollow_dialog_title": "Unfollow {organizationName}?",
+  "@unfollow_dialog_title": {
+    "description": "Unfollow dialog title with organization name",
+    "placeholders": {
+      "organizationName": {
+        "type": "String"
+      }
+    }
+  },
+  "unfollow_dialog_content": "Are you sure you want to unfollow this organization?",
+  "@register": {
+    "description": "Register button text"
+  },
+  "location_required_error": "Location is required.",
+  "@location_required_error": {
+    "description": "Location validation error message"
+  },
+  "sector_required_error": "Sector is required.",
+  "@sector_required_error": {
+    "description": "Sector validation error message"
+  },
+  "failed_to_load_locations": "Failed to load locations. Tap to retry.",
+  "@failed_to_load_locations": {
+    "description": "Error message when locations fail to load"
+  },
+  "failed_to_load_sectors": "Failed to load sectors. Tap to retry.",
+  "@failed_to_load_sectors": {
+    "description": "Error message when sectors fail to load"
   }
 }

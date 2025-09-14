@@ -42,7 +42,8 @@ class _BlogContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedFilter = useState('All');
+    var lang = AppLocalizations.of(context)!;
+    final selectedFilter = useState(lang.all_filter);
     final showSearchField = useState(false);
     final searchController = useTextEditingController();
 
@@ -52,9 +53,9 @@ class _BlogContent extends HookWidget {
         centerTitle: false,
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
-          'Community Blog',
-          style: TextStyle(
+        title: Text(
+          lang.community_blog,
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w600,
@@ -89,7 +90,7 @@ class _BlogContent extends HookWidget {
               child: TextField(
                 controller: searchController,
                 decoration: InputDecoration(
-                  hintText: 'Search posts...',
+                  hintText: lang.search_posts,
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: searchController.text.isNotEmpty
                       ? IconButton(
@@ -166,6 +167,8 @@ class _BlogContent extends HookWidget {
     SectorsState sectorsState,
     ValueNotifier<String> selectedFilter,
   ) {
+    final lang = AppLocalizations.of(context)!;
+    
     Widget buildFilterChip(String label, {String? sectorId}) {
       final isSelected = selectedFilter.value == label;
       return GestureDetector(
@@ -173,7 +176,7 @@ class _BlogContent extends HookWidget {
           selectedFilter.value = label;
           final lang = AppLocalizations.of(context)!;
 
-          if (label == 'All') {
+          if (label == lang.all_filter) {
             context.read<PostCubit>().fetchAllPost(language: lang.localeName);
           } else {
             context.read<PostCubit>().searchPosts(
@@ -210,10 +213,10 @@ class _BlogContent extends HookWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         children: [
-          buildFilterChip('All'),
+          buildFilterChip(lang.all_filter),
           ...sectors.map(
             (sector) =>
-                buildFilterChip(sector.name ?? 'Unknown', sectorId: sector.id),
+                buildFilterChip(sector.name ?? lang.unknown, sectorId: sector.id),
           ),
         ],
       );
@@ -221,7 +224,7 @@ class _BlogContent extends HookWidget {
       return const Center(child: CircularProgressIndicator());
     } else if (sectorsState.runtimeType.toString().contains('Error')) {
       return Center(
-        child: Text('Error loading categories', style: MyFonts.font12Black),
+        child: Text(lang.error_loading_categories, style: MyFonts.font12Black),
       );
     } else {
       return const SizedBox.shrink();
@@ -330,6 +333,7 @@ class _BlogContent extends HookWidget {
   }
 
   Widget _buildEmptyState(BuildContext context) {
+    final lang = AppLocalizations.of(context)!;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -337,7 +341,7 @@ class _BlogContent extends HookWidget {
           Icon(Icons.article_outlined, size: 80, color: Colors.grey[400]),
           const SizedBox(height: 16),
           Text(
-            'No Posts Available',
+            lang.no_posts_available,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -346,7 +350,7 @@ class _BlogContent extends HookWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'There are no blog posts to display at the moment.',
+            lang.no_blog_posts_message,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 14, color: Colors.grey[500]),
           ),
@@ -360,7 +364,7 @@ class _BlogContent extends HookWidget {
               backgroundColor: MyColors.primaryColor,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Refresh'),
+            child: Text(lang.refresh),
           ),
         ],
       ),
@@ -368,15 +372,16 @@ class _BlogContent extends HookWidget {
   }
 
   Widget _buildErrorState(BuildContext context, String error) {
+    final lang = AppLocalizations.of(context)!;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(Icons.error_outline, size: 64, color: Colors.red),
           const SizedBox(height: 16),
-          const Text(
-            'Error loading posts',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          Text(
+            lang.error_loading_posts,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 8),
           Text(
@@ -390,7 +395,7 @@ class _BlogContent extends HookWidget {
               final lang = AppLocalizations.of(context)!;
               context.read<PostCubit>().fetchAllPost(language: lang.localeName);
             },
-            child: const Text('Retry'),
+            child: Text(lang.retry),
           ),
         ],
       ),

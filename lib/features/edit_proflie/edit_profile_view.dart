@@ -32,14 +32,14 @@ class _EditProfileContent extends HookWidget {
     final emailController = useTextEditingController();
 
     final selectedSkills = useState<Set<String>>({
-      'Leadership',
-      'Communication',
-      'Project Management',
+      AppLocalizations.of(context)!.leadership,
+      AppLocalizations.of(context)!.communication,
+      AppLocalizations.of(context)!.project_management,
     });
 
     final selectedInterests = useState<Set<String>>({
-      'Education',
-      'Environment',
+      AppLocalizations.of(context)!.education,
+      AppLocalizations.of(context)!.environment,
     });
 
     final selectedImage = useState<File?>(null);
@@ -50,13 +50,13 @@ class _EditProfileContent extends HookWidget {
         if (state.runtimeType.toString().contains('Error')) {
           try {
             final dynamic errorState = state;
-            final message = errorState.message ?? 'Unknown error';
+            final message = errorState.message ?? AppLocalizations.of(context)!.unknown_error;
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(SnackBar(content: Text('Error: $message')));
+            ).showSnackBar(SnackBar(content: Text('${AppLocalizations.of(context)!.error_occurred}: $message')));
           } catch (e) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Error loading profile data')),
+              SnackBar(content: Text(AppLocalizations.of(context)!.error_loading_profile_data)),
             );
           }
         }
@@ -120,21 +120,21 @@ class _EditProfileContent extends HookWidget {
     ValueNotifier<File?> selectedImage,
   ) {
     final skills = [
-      'Leadership',
-      'Communication',
-      'Project Management',
-      'Public Speaking',
-      'Social Media',
-      'Event Planning',
+      AppLocalizations.of(context)!.leadership,
+      AppLocalizations.of(context)!.communication,
+      AppLocalizations.of(context)!.project_management,
+      AppLocalizations.of(context)!.public_speaking,
+      AppLocalizations.of(context)!.social_media,
+      AppLocalizations.of(context)!.event_planning,
     ];
 
     final interests = [
-      'Education',
-      'Environment',
-      'Healthcare',
-      'Social Justice',
-      'Youth Development',
-      'Arts & Culture',
+      AppLocalizations.of(context)!.education,
+      AppLocalizations.of(context)!.environment,
+      AppLocalizations.of(context)!.healthcare,
+      AppLocalizations.of(context)!.social_justice,
+      AppLocalizations.of(context)!.youth_development,
+      AppLocalizations.of(context)!.arts_culture,
     ];
 
     return _buildMainScaffold(
@@ -154,7 +154,7 @@ class _EditProfileContent extends HookWidget {
   Widget _buildErrorScaffold(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        title: Text(AppLocalizations.of(context)!.edit_profile),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -164,11 +164,11 @@ class _EditProfileContent extends HookWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Error loading profile data'),
+            Text(AppLocalizations.of(context)!.error_loading_profile_data),
             ElevatedButton(
               onPressed: () =>
                   context.read<UserManagementCubit>().fetchCurrentUser(),
-              child: const Text('Retry'),
+              child: Text(AppLocalizations.of(context)!.retry),
             ),
           ],
         ),
@@ -188,9 +188,9 @@ class _EditProfileContent extends HookWidget {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Edit Profile',
-          style: TextStyle(
+        title: Text(
+          AppLocalizations.of(context)!.edit_profile,
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -225,9 +225,9 @@ class _EditProfileContent extends HookWidget {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Edit Profile',
-          style: TextStyle(
+        title: Text(
+          AppLocalizations.of(context)!.edit_profile,
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -245,20 +245,22 @@ class _EditProfileContent extends HookWidget {
           // Form Fields
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.only(bottom: 60, left: 16, right: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Full Name Field
                   _buildTextField(
-                    label: 'Full Name',
+                    context: context,
+                    label: AppLocalizations.of(context)!.full_name,
                     controller: fullNameController,
                   ),
                   const SizedBox(height: 24),
 
                   // Bio Field
                   _buildTextField(
-                    label: 'Bio',
+                    context: context,
+                    label: AppLocalizations.of(context)!.bio,
                     controller: bioController,
                     maxLines: 4,
                   ),
@@ -266,7 +268,7 @@ class _EditProfileContent extends HookWidget {
 
                   // Skills Section
                   _buildChipSection(
-                    title: 'Skills',
+                    title: AppLocalizations.of(context)!.skills,
                     items: skills,
                     selectedItems: selectedSkills.value,
                     onSelectionChanged: (item) {
@@ -285,7 +287,7 @@ class _EditProfileContent extends HookWidget {
 
                   // Interests Section
                   _buildChipSection(
-                    title: 'Interests',
+                    title: AppLocalizations.of(context)!.interests,
                     items: interests,
                     selectedItems: selectedInterests.value,
                     onSelectionChanged: (item) {
@@ -304,7 +306,8 @@ class _EditProfileContent extends HookWidget {
 
                   // Email Field
                   _buildTextField(
-                    label: 'Email',
+                    context: context,
+                    label: AppLocalizations.of(context)!.email,
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                   ),
@@ -337,9 +340,9 @@ class _EditProfileContent extends HookWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
-                        'Save Changes',
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.save_changes,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
@@ -438,9 +441,9 @@ class _EditProfileContent extends HookWidget {
           // Change Photo Text
           GestureDetector(
             onTap: () => _showImageSourceDialog(context, selectedImage),
-            child: const Text(
-              'Change Photo',
-              style: TextStyle(
+            child: Text(
+              AppLocalizations.of(context)!.change_photo,
+              style: const TextStyle(
                 fontSize: 14,
                 color: MyColors.primaryColor,
                 fontWeight: FontWeight.w500,
@@ -453,6 +456,7 @@ class _EditProfileContent extends HookWidget {
   }
 
   Widget _buildTextField({
+    required BuildContext context,
     required String label,
     required TextEditingController controller,
     int maxLines = 1,
@@ -460,6 +464,18 @@ class _EditProfileContent extends HookWidget {
     String? errorText,
     void Function(String)? onChanged,
   }) {
+    // Create proper placeholder based on label
+    String hintText;
+    if (label == AppLocalizations.of(context)!.full_name) {
+      hintText = AppLocalizations.of(context)!.enter_full_name;
+    } else if (label == AppLocalizations.of(context)!.bio) {
+      hintText = AppLocalizations.of(context)!.enter_bio;
+    } else if (label == AppLocalizations.of(context)!.email) {
+      hintText = AppLocalizations.of(context)!.enter_email;
+    } else {
+      hintText = 'Enter $label';
+    }
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -478,7 +494,7 @@ class _EditProfileContent extends HookWidget {
           keyboardType: keyboardType,
           onChanged: onChanged,
           decoration: InputDecoration(
-            hintText: 'Enter $label',
+            hintText: hintText,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(
@@ -602,7 +618,7 @@ class _EditProfileContent extends HookWidget {
             children: [
               ListTile(
                 leading: const Icon(Icons.camera_alt),
-                title: const Text('Camera'),
+                title: Text(AppLocalizations.of(context)!.camera),
                 onTap: () {
                   Navigator.pop(context);
                   _pickImageFromCamera(context, selectedImage);
@@ -610,7 +626,7 @@ class _EditProfileContent extends HookWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title: const Text('Gallery'),
+                title: Text(AppLocalizations.of(context)!.gallery),
                 onTap: () {
                   Navigator.pop(context);
                   _pickImageFromGallery(context, selectedImage);
@@ -618,7 +634,7 @@ class _EditProfileContent extends HookWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.cancel),
-                title: const Text('Cancel'),
+                title: Text(AppLocalizations.of(context)!.cancel),
                 onTap: () {
                   Navigator.pop(context);
                 },
@@ -640,8 +656,8 @@ class _EditProfileContent extends HookWidget {
       if (image != null) {
         selectedImage.value = File(image.path);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Image selected from camera'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.image_selected_from_camera),
             backgroundColor: MyColors.primaryColor,
           ),
         );
@@ -649,7 +665,7 @@ class _EditProfileContent extends HookWidget {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error accessing camera: $e'),
+          content: Text('${AppLocalizations.of(context)!.error_accessing_camera}: $e'),
           backgroundColor: Colors.red,
         ),
       );
@@ -666,8 +682,8 @@ class _EditProfileContent extends HookWidget {
       if (image != null) {
         selectedImage.value = File(image.path);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Image selected from gallery'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.image_selected_from_gallery),
             backgroundColor: MyColors.primaryColor,
           ),
         );
@@ -675,7 +691,7 @@ class _EditProfileContent extends HookWidget {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error accessing gallery: $e'),
+          content: Text('${AppLocalizations.of(context)!.error_accessing_gallery}: $e'),
           backgroundColor: Colors.red,
         ),
       );

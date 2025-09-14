@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:ngo/core/theme/my_fonts.dart';
 import 'package:ngo/export_tools.dart';
+import 'package:ngo/features/landing/landing.dart';
 
 import '../../core/theme/my_colors.dart';
 import '../../core/widgets/back_button.dart';
+import '../../core/widgets/toast_message.dart';
 import 'compelete_register_organization.dart';
 
 class RegisterOrganizationView extends HookWidget {
@@ -206,6 +208,22 @@ class RegisterOrganizationView extends HookWidget {
                     log("This Email is: ${emailController.text}");
                     log("This Password is: ${passwordController.text}");
                     log("This Name is: ${nameController.text}");
+
+                          if (formKey.currentState?.validate() != true) {
+                      // Show error toast for form validation
+
+                      return;
+                    }
+
+                    // Check terms agreement
+                    if (!agreedToTerms.value) {
+                      ToastMessage.showWarning(
+                        context,
+                        title: lang.terms_required,
+                        message: lang.plase_agree_to_terms,
+                      );
+                      return;
+                    }
                     if (formKey.currentState?.validate() == true &&
                         agreedToTerms.value) {
                       Navigator.push(
@@ -233,7 +251,7 @@ class RegisterOrganizationView extends HookWidget {
                   Text(lang.alreadyHaveAnAccount),
                   GestureDetector(
                     onTap: () {
-                      // Handle sign in navigation
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> Landing()), (route) => false);
                     },
                     child: Text(
                       lang.signIn,

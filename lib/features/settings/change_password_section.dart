@@ -33,10 +33,12 @@ class _ChangePasswordView extends HookWidget {
     final showNewPassword = useState(false);
     final showConfirmPassword = useState(false);
     final isLoading = useState(false);
+    
+    var lang = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Change Password'),
+        title: Text(lang.change_password),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
@@ -53,21 +55,21 @@ class _ChangePasswordView extends HookWidget {
             children: [
               const SizedBox(height: 20),
               Text(
-                'Update Your Password',
+                lang.update_your_password,
                 style: MyFonts.font20BlackBold.copyWith(
                   color: Colors.green[700],
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                'Please enter your current password and choose a new secure password.',
+                lang.update_password_description,
                 style: MyFonts.font14Black.copyWith(color: Colors.grey[600]),
               ),
               const SizedBox(height: 32),
 
               // Old Password Field
               Text(
-                'Current Password',
+                lang.current_password,
                 style: MyFonts.font16Black.copyWith(
                   fontWeight: FontWeight.w500,
                 ),
@@ -78,12 +80,12 @@ class _ChangePasswordView extends HookWidget {
                 obscureText: !showOldPassword.value,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your current password';
+                    return lang.please_enter_current_password;
                   }
                   return null;
                 },
                 decoration: InputDecoration(
-                  hintText: 'Enter your current password',
+                  hintText: lang.enter_current_password,
                   prefixIcon: const Icon(
                     Icons.lock_outline,
                     color: Colors.grey,
@@ -113,7 +115,7 @@ class _ChangePasswordView extends HookWidget {
 
               // New Password Field
               Text(
-                'New Password',
+                lang.new_password,
                 style: MyFonts.font16Black.copyWith(
                   fontWeight: FontWeight.w500,
                 ),
@@ -124,18 +126,18 @@ class _ChangePasswordView extends HookWidget {
                 obscureText: !showNewPassword.value,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a new password';
+                    return lang.please_enter_new_password;
                   }
                   if (value.length < 8) {
-                    return 'Password must be at least 8 characters long';
+                    return lang.password_min_8_characters;
                   }
                   if (value == oldPasswordController.text) {
-                    return 'New password must be different from current password';
+                    return lang.new_password_must_be_different;
                   }
                   return null;
                 },
                 decoration: InputDecoration(
-                  hintText: 'Enter your new password',
+                  hintText: lang.enter_new_password,
                   prefixIcon: const Icon(Icons.lock, color: Colors.grey),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -162,7 +164,7 @@ class _ChangePasswordView extends HookWidget {
 
               // Confirm Password Field
               Text(
-                'Confirm New Password',
+                lang.confirm_new_password,
                 style: MyFonts.font16Black.copyWith(
                   fontWeight: FontWeight.w500,
                 ),
@@ -173,15 +175,15 @@ class _ChangePasswordView extends HookWidget {
                 obscureText: !showConfirmPassword.value,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please confirm your new password';
+                    return lang.please_confirm_new_password;
                   }
                   if (value != newPasswordController.text) {
-                    return 'Passwords do not match';
+                    return lang.passwords_do_not_match;
                   }
                   return null;
                 },
                 decoration: InputDecoration(
-                  hintText: 'Confirm your new password',
+                  hintText: lang.confirm_new_password_hint,
                   prefixIcon: const Icon(Icons.lock_clock, color: Colors.grey),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -222,16 +224,16 @@ class _ChangePasswordView extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Password Requirements:',
+                      lang.password_requirements,
                       style: MyFonts.font14Black.copyWith(
                         fontWeight: FontWeight.w600,
                         color: Colors.green[700],
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _buildRequirement('At least 8 characters long'),
-                    _buildRequirement('Different from current password'),
-                    _buildRequirement('Must match confirmation password'),
+                    _buildRequirement(lang.at_least_8_characters),
+                    _buildRequirement(lang.different_from_current),
+                    _buildRequirement(lang.must_match_confirmation),
                   ],
                 ),
               ),
@@ -249,8 +251,8 @@ class _ChangePasswordView extends HookWidget {
                           // Show success message
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: const Text(
-                                'Password updated successfully!',
+                              content: Text(
+                                lang.password_updated_successfully,
                               ),
                               backgroundColor: Colors.green[700],
                               behavior: SnackBarBehavior.floating,
@@ -321,7 +323,7 @@ class _ChangePasswordView extends HookWidget {
                                         ).showSnackBar(
                                           SnackBar(
                                             content: Text(
-                                              'An unexpected error occurred: ${error.toString()}',
+                                              '${lang.unexpected_error_occurred}: ${error.toString()}',
                                             ),
                                             backgroundColor: Colors.red,
                                             behavior: SnackBarBehavior.floating,
@@ -341,7 +343,7 @@ class _ChangePasswordView extends HookWidget {
                                     ),
                                   )
                                 : Text(
-                                    'Update Password',
+                                    lang.update_password,
                                     style: MyFonts.font16Black.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600,
@@ -369,7 +371,7 @@ class _ChangePasswordView extends HookWidget {
                           Navigator.pop(context);
                         },
                         child: Text(
-                          'Cancel',
+                          lang.cancel,
                           style: MyFonts.font16Black.copyWith(
                             color: Colors.grey[700],
                             fontWeight: FontWeight.w500,

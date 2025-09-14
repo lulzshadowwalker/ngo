@@ -297,7 +297,7 @@ class _CompleteYourProfileView extends HookWidget {
                                 ),
                               ),
                               SizedBox(width: 8),
-                              Text('Loading locations...'),
+                              Text(lang.loading_locations),
                             ],
                           ),
                         ),
@@ -355,7 +355,7 @@ class _CompleteYourProfileView extends HookWidget {
                           showSearchBox: true,
                           searchFieldProps: TextFieldProps(
                             decoration: InputDecoration(
-                              hintText: 'Search locations...',
+                              hintText: lang.search_locations_hint,
                               prefixIcon: Icon(Icons.search),
                               border: OutlineInputBorder(),
                             ),
@@ -378,7 +378,7 @@ class _CompleteYourProfileView extends HookWidget {
                               SizedBox(width: 8),
                               Expanded(
                                 child: Text(
-                                  'Error loading locations',
+                                  lang.error_loading_locations,
                                   style: TextStyle(
                                     color: Colors.red,
                                     fontSize: 12,
@@ -390,7 +390,7 @@ class _CompleteYourProfileView extends HookWidget {
                                     .read<LocationCubit>()
                                     .fetchAllLocation(),
                                 child: Text(
-                                  'Retry',
+                                  lang.retry,
                                   style: TextStyle(fontSize: 12),
                                 ),
                               ),
@@ -402,7 +402,7 @@ class _CompleteYourProfileView extends HookWidget {
                       return TextFormField(
                         controller: locationController,
                         decoration: InputDecoration(
-                          hintText: 'City, Area',
+                          hintText: lang.city_area_hint,
                           border: const OutlineInputBorder(),
                           suffixIcon: Icon(
                             Icons.location_on,
@@ -532,7 +532,7 @@ class _CompleteYourProfileView extends HookWidget {
                             Icon(Icons.add, color: MyColors.primaryColor),
                             const SizedBox(width: 8),
                             Text(
-                              'Add Interests',
+                              lang.add_interests,
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.w500,
@@ -560,7 +560,7 @@ class _CompleteYourProfileView extends HookWidget {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              'Registration failed. Please try again.',
+                              lang.registration_failed_message,
                             ),
                             backgroundColor: Colors.red,
                           ),
@@ -589,7 +589,7 @@ class _CompleteYourProfileView extends HookWidget {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'Please select a location',
+                                          lang.please_select_location,
                                         ),
                                         backgroundColor: Colors.orange,
                                       ),
@@ -600,7 +600,7 @@ class _CompleteYourProfileView extends HookWidget {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'Please add at least one skill',
+                                          lang.please_add_skill,
                                         ),
                                         backgroundColor: Colors.orange,
                                       ),
@@ -611,7 +611,7 @@ class _CompleteYourProfileView extends HookWidget {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'Please add at least one interest',
+                                          lang.please_add_interest,
                                         ),
                                         backgroundColor: Colors.orange,
                                       ),
@@ -640,7 +640,7 @@ class _CompleteYourProfileView extends HookWidget {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'Registration failed: ${e.toString()}',
+                                          '${lang.registration_failed}: ${e.toString()}',
                                         ),
                                         backgroundColor: Colors.red,
                                       ),
@@ -704,7 +704,7 @@ class _CompleteYourProfileView extends HookWidget {
                             children: [
                               CircularProgressIndicator(),
                               SizedBox(height: 16),
-                              Text('Loading organizations...'),
+                              Text(lang.loading_organizations),
                             ],
                           ),
                         );
@@ -715,7 +715,7 @@ class _CompleteYourProfileView extends HookWidget {
 
                         if (organizations.isEmpty) {
                           return Center(
-                            child: Text('No organizations available'),
+                            child: Text(lang.no_organizations_available),
                           );
                         }
 
@@ -825,7 +825,7 @@ class _CompleteYourProfileView extends HookWidget {
                               Icon(Icons.error, color: Colors.red, size: 48),
                               SizedBox(height: 16),
                               Text(
-                                'Error loading organizations',
+                                lang.error_loading_organizations,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -838,13 +838,13 @@ class _CompleteYourProfileView extends HookWidget {
                                 onPressed: () => context
                                     .read<OrganizationCubit>()
                                     .fetchAllOrganizations(),
-                                child: Text('Retry'),
+                                child: Text(AppLocalizations.of(context)!.retry),
                               ),
                             ],
                           ),
                         );
                       } else {
-                        return Center(child: Text('Loading organizations...'));
+                        return Center(child: Text(lang.loading_organizations));
                       }
                     },
                   ),
@@ -872,7 +872,7 @@ class _CompleteYourProfileView extends HookWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 60),
               ],
             ),
           ),
@@ -968,7 +968,7 @@ class _CompleteYourProfileView extends HookWidget {
                               Icon(Icons.error, color: Colors.red, size: 48),
                               const SizedBox(height: 16),
                               Text(
-                                'Error loading skills',
+                                AppLocalizations.of(context)!.error_loading_skills,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -980,13 +980,13 @@ class _CompleteYourProfileView extends HookWidget {
                               ElevatedButton(
                                 onPressed: () =>
                                     sl<SkillsCubit>().fetchAllSkills(),
-                                child: Text('Retry'),
+                                child: Text(AppLocalizations.of(context)!.retry),
                               ),
                             ],
                           ),
                         );
                       } else {
-                        return const Center(child: Text('Loading skills...'));
+                        return Center(child: Text(AppLocalizations.of(context)!.loading_skills));
                       }
                     }(),
                   ),
@@ -1116,7 +1116,7 @@ class _CompleteYourProfileView extends HookWidget {
                               Icon(Icons.error, color: Colors.red, size: 48),
                               const SizedBox(height: 16),
                               Text(
-                                'Error loading sectors',
+                                AppLocalizations.of(context)!.error_loading_sectors,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -1128,13 +1128,13 @@ class _CompleteYourProfileView extends HookWidget {
                               ElevatedButton(
                                 onPressed: () =>
                                     sl<SectorsCubit>().fetchAllSectors(),
-                                child: Text('Retry'),
+                                child: Text(AppLocalizations.of(context)!.retry),
                               ),
                             ],
                           ),
                         );
                       } else {
-                        return const Center(child: Text('Loading sectors...'));
+                        return Center(child: Text(AppLocalizations.of(context)!.loading_sectors));
                       }
                     }(),
                   ),

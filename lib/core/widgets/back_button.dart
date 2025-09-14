@@ -11,17 +11,12 @@ class BackButtonWidgets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: MyColors.darkGrayColor, width: 0.4),
-        ),
-        child: HugeIcon(
-          icon: lang.localeName == "ar"
-              ? HugeIcons.strokeRoundedArrowRight01
-              : HugeIcons.strokeRoundedArrowLeft01,
-          color: MyColors.primaryColor,
-          size: 30,
-        ),
+      icon: HugeIcon(
+        icon: lang.localeName == "ar"
+            ? HugeIcons.strokeRoundedArrowRight01
+            : HugeIcons.strokeRoundedArrowLeft01,
+        color: MyColors.primaryColor,
+        size: 30,
       ),
       onPressed: () => Navigator.of(context).pop(),
     );

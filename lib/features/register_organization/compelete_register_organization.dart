@@ -120,8 +120,8 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                     const SizedBox(height: 8),
                     Text(
                       imagePickerResult.selectedImage == null
-                          ? 'Add Profile Picture'
-                          : 'Change Profile Picture',
+                          ? lang.addProfilePicture
+                          : lang.changeProfilePicture,
                       style: const TextStyle(
                         color: Colors.green,
                         fontWeight: FontWeight.w500,
@@ -152,7 +152,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           ),
                           SizedBox(width: 8),
-                          Text('Loading locations...'),
+                          Text(lang.loading_locations),
                         ],
                       ),
                     ),
@@ -196,7 +196,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                     },
                     validator: (location) {
                       if (location == null) {
-                        return 'Location is required';
+                        return lang.location_required;
                       }
                       return null;
                     },
@@ -214,7 +214,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                       showSearchBox: true,
                       searchFieldProps: TextFieldProps(
                         decoration: InputDecoration(
-                          hintText: 'Search locations...',
+                          hintText: lang.search_hint,
                           prefixIcon: Icon(Icons.search),
                           border: OutlineInputBorder(),
                         ),
@@ -237,7 +237,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                           SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              'Error loading locations',
+                              lang.error_loading_locations,
                               style: TextStyle(color: Colors.red, fontSize: 12),
                             ),
                           ),
@@ -246,7 +246,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                                 .read<LocationCubit>()
                                 .fetchAllLocation(),
                             child: Text(
-                              'Retry',
+                              lang.retry,
                               style: TextStyle(fontSize: 12),
                             ),
                           ),
@@ -258,7 +258,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                   return TextFormField(
                     controller: locationController,
                     decoration: InputDecoration(
-                      hintText: 'City, Area',
+                      hintText: lang.city_area_hint,
                       border: const OutlineInputBorder(),
                       suffixIcon: Icon(Icons.location_on, color: Colors.green),
                     ),
@@ -267,7 +267,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
               },
             ),
             const SizedBox(height: 20),
-            Text("Sectors *"),
+            Text("${lang.sectors} *"),
             BlocBuilder<SectorsCubit, SectorsState>(
               builder: (context, state) {
                 if (state.runtimeType.toString() == '_Loading') {
@@ -287,7 +287,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           ),
                           SizedBox(width: 8),
-                          Text('Loading sectors...'),
+                          Text(lang.loading_sectors),
                         ],
                       ),
                     ),
@@ -314,13 +314,13 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                     },
                     validator: (sector) {
                       if (sector == null) {
-                        return 'Sector is required';
+                        return lang.sector_required;
                       }
                       return null;
                     },
                     decoratorProps: DropDownDecoratorProps(
                       decoration: InputDecoration(
-                        hintText: 'Select your sector',
+                        hintText: lang.select_your_sector,
                         border: const OutlineInputBorder(),
                         suffixIcon: Icon(Icons.business, color: Colors.green),
                       ),
@@ -329,7 +329,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                       showSearchBox: true,
                       searchFieldProps: TextFieldProps(
                         decoration: InputDecoration(
-                          hintText: 'Search sectors...',
+                          hintText: lang.search_hint,
                           prefixIcon: Icon(Icons.search),
                           border: OutlineInputBorder(),
                         ),
@@ -352,7 +352,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                           SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              'Error loading sectors',
+                              lang.error_loading_sectors,
                               style: TextStyle(color: Colors.red, fontSize: 12),
                             ),
                           ),
@@ -361,7 +361,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                                 .read<SectorsCubit>()
                                 .fetchAllSectors(language: lang.localeName),
                             child: Text(
-                              'Retry',
+                              lang.retry,
                               style: TextStyle(fontSize: 12),
                             ),
                           ),
@@ -372,13 +372,13 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                 } else {
                   return TextFormField(
                     decoration: InputDecoration(
-                      hintText: 'Sector',
+                      hintText: lang.sector_hint,
                       border: const OutlineInputBorder(),
                       suffixIcon: Icon(Icons.business, color: Colors.green),
                     ),
                     validator: (value) {
                       if (selectedSector.value == null) {
-                        return 'Sector is required';
+                        return lang.sector_required;
                       }
                       return null;
                     },
@@ -387,33 +387,33 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
               },
             ),
             const SizedBox(height: 20),
-            const Text('Bio'),
+            Text(lang.bio),
             const SizedBox(height: 8),
             TextFormField(
               controller: aboutController,
               maxLines: 4,
-              decoration: const InputDecoration(
-                hintText: 'About your organization',
+              decoration: InputDecoration(
+                hintText: lang.about_your_organization,
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Contact Email'),
+            Text(lang.contact_email),
             const SizedBox(height: 8),
             TextFormField(
               controller: contactEmailController,
-              decoration: const InputDecoration(
-                hintText: 'Contact Email',
+              decoration: InputDecoration(
+                hintText: lang.contact_email_hint,
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 24),
-            const Text('Website'),
+            Text(lang.website),
             const SizedBox(height: 8),
             TextFormField(
               controller: websiteController,
-              decoration: const InputDecoration(
-                hintText: 'Website URL',
+              decoration: InputDecoration(
+                hintText: lang.website_url,
                 border: OutlineInputBorder(),
               ),
             ),
@@ -436,11 +436,11 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                         }
 
                         if (selectedLocation.value == null) {
-                          errorMessage.value = 'Location is required.';
+                          errorMessage.value = lang.location_required_error;
                           return;
                         }
                         if (selectedSector.value == null) {
-                          errorMessage.value = 'Sector is required.';
+                          errorMessage.value = lang.sector_required_error;
                           return;
                         }
                         isSubmitting.value = true;
@@ -474,9 +474,9 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                             (route) => false,
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                               content: Text(
-                                'Organization registered successfully!',
+                                lang.organization_registered_successfully,
                               ),
                             ),
                           );
@@ -498,9 +498,9 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                           strokeWidth: 2,
                         ),
                       )
-                    : const Text(
-                        'Register',
-                        style: TextStyle(
+                    : Text(
+                        lang.register,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -508,6 +508,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                       ),
               ),
             ),
+            SizedBox(height: 50),
           ],
         ),
       ),

@@ -692,9 +692,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get filter_by_sector => 'التصفية حسب القطاع:';
 
   @override
-  String get loading_sectors => 'جاري تحميل القطاعات...';
-
-  @override
   String currently_showing(String filter) {
     return 'يتم عرض حالياً: $filter';
   }
@@ -755,4 +752,241 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get duration_filter => 'المدة';
+
+  @override
+  String get community_blog => 'مدونة المجتمع';
+
+  @override
+  String get search_posts => 'البحث في المنشورات...';
+
+  @override
+  String get no_posts_available => 'لا توجد منشورات متاحة';
+
+  @override
+  String get no_blog_posts_message =>
+      'لا توجد منشورات في المدونة لعرضها حالياً.';
+
+  @override
+  String get refresh => 'تحديث';
+
+  @override
+  String get error_loading_posts => 'خطأ في تحميل المنشورات';
+
+  @override
+  String get error_loading_categories => 'خطأ في تحميل الفئات';
+
+  @override
+  String get unknown => 'غير معروف';
+
+  @override
+  String get min_read => 'دقيقة قراءة';
+
+  @override
+  String get update_your_password => 'تحديث كلمة المرور';
+
+  @override
+  String get update_password_description =>
+      'يرجى إدخال كلمة المرور الحالية واختيار كلمة مرور جديدة آمنة.';
+
+  @override
+  String get current_password => 'كلمة المرور الحالية';
+
+  @override
+  String get enter_current_password => 'أدخل كلمة المرور الحالية';
+
+  @override
+  String get new_password => 'كلمة المرور الجديدة';
+
+  @override
+  String get enter_new_password => 'أدخل كلمة المرور الجديدة';
+
+  @override
+  String get confirm_new_password => 'تأكيد كلمة المرور الجديدة';
+
+  @override
+  String get confirm_new_password_hint => 'أكد كلمة المرور الجديدة';
+
+  @override
+  String get password_requirements => 'متطلبات كلمة المرور:';
+
+  @override
+  String get at_least_8_characters => 'على الأقل 8 أحرف';
+
+  @override
+  String get different_from_current => 'مختلفة عن كلمة المرور الحالية';
+
+  @override
+  String get must_match_confirmation => 'يجب أن تتطابق مع تأكيد كلمة المرور';
+
+  @override
+  String get update_password => 'تحديث كلمة المرور';
+
+  @override
+  String get please_enter_current_password => 'يرجى إدخال كلمة المرور الحالية';
+
+  @override
+  String get please_enter_new_password => 'يرجى إدخال كلمة مرور جديدة';
+
+  @override
+  String get password_min_8_characters =>
+      'يجب أن تكون كلمة المرور 8 أحرف على الأقل';
+
+  @override
+  String get new_password_must_be_different =>
+      'يجب أن تكون كلمة المرور الجديدة مختلفة عن الحالية';
+
+  @override
+  String get please_confirm_new_password => 'يرجى تأكيد كلمة المرور الجديدة';
+
+  @override
+  String get passwords_do_not_match => 'كلمات المرور غير متطابقة';
+
+  @override
+  String get password_updated_successfully => 'تم تحديث كلمة المرور بنجاح!';
+
+  @override
+  String get unexpected_error_occurred => 'حدث خطأ غير متوقع';
+
+  @override
+  String get full_name => 'الاسم الكامل';
+
+  @override
+  String get bio => 'السيرة الذاتية';
+
+  @override
+  String get enter_full_name => 'أدخل الاسم الكامل';
+
+  @override
+  String get enter_bio => 'أدخل السيرة الذاتية';
+
+  @override
+  String get enter_email => 'أدخل البريد الإلكتروني';
+
+  @override
+  String get change_photo => 'تغيير الصورة';
+
+  @override
+  String get error_loading_profile_data => 'خطأ في تحميل بيانات الملف الشخصي';
+
+  @override
+  String get image_selected_from_camera => 'تم اختيار الصورة من الكاميرا';
+
+  @override
+  String get image_selected_from_gallery => 'تم اختيار الصورة من المعرض';
+
+  @override
+  String get error_accessing_camera => 'خطأ في الوصول إلى الكاميرا';
+
+  @override
+  String get error_accessing_gallery => 'خطأ في الوصول إلى المعرض';
+
+  @override
+  String get loading_locations => 'جاري تحميل المواقع...';
+
+  @override
+  String get loading_sectors => 'جاري تحميل القطاعات...';
+
+  @override
+  String get search_hint => 'البحث...';
+
+  @override
+  String get city_area => 'المدينة، المنطقة';
+
+  @override
+  String get select_your_sector => 'اختر قطاعك';
+
+  @override
+  String get location_required => 'الموقع مطلوب';
+
+  @override
+  String get sector_required => 'القطاع مطلوب';
+
+  @override
+  String get about_your_organization => 'عن منظمتك';
+
+  @override
+  String get contact_email => 'البريد الإلكتروني للتواصل';
+
+  @override
+  String get contact_email_hint => 'البريد الإلكتروني للتواصل';
+
+  @override
+  String get website => 'الموقع الإلكتروني';
+
+  @override
+  String get website_url => 'رابط الموقع الإلكتروني';
+
+  @override
+  String get register => 'تسجيل';
+
+  @override
+  String get error_loading_locations => 'خطأ في تحميل المواقع';
+
+  @override
+  String get error_loading_sectors => 'خطأ في تحميل القطاعات';
+
+  @override
+  String get city_area_hint => 'المدينة، المنطقة';
+
+  @override
+  String get sector_hint => 'القطاع';
+
+  @override
+  String get organization_registered_successfully => 'تم تسجيل المنظمة بنجاح!';
+
+  @override
+  String get loading_organizations => 'جاري تحميل المنظمات...';
+
+  @override
+  String get loading_skills => 'جاري تحميل المهارات...';
+
+  @override
+  String get error_loading_organizations => 'خطأ في تحميل المنظمات';
+
+  @override
+  String get error_loading_skills => 'خطأ في تحميل المهارات';
+
+  @override
+  String get search_locations_hint => 'البحث في المواقع...';
+
+  @override
+  String get please_select_location => 'يرجى تحديد الموقع';
+
+  @override
+  String get please_add_skill => 'يرجى إضافة مهارة واحدة على الأقل';
+
+  @override
+  String get please_add_interest => 'يرجى إضافة اهتمام واحد على الأقل';
+
+  @override
+  String get no_organizations_available => 'لا توجد منظمات متاحة';
+
+  @override
+  String get loading_skills_fallback => 'جاري تحميل المهارات...';
+
+  @override
+  String get loading_sectors_fallback => 'جاري تحميل القطاعات...';
+
+  @override
+  String unfollow_dialog_title(String organizationName) {
+    return 'إلغاء متابعة $organizationName؟';
+  }
+
+  @override
+  String get unfollow_dialog_content =>
+      'هل أنت متأكد من أنك تريد إلغاء متابعة هذه المنظمة؟';
+
+  @override
+  String get location_required_error => 'الموقع مطلوب.';
+
+  @override
+  String get sector_required_error => 'القطاع مطلوب.';
+
+  @override
+  String get failed_to_load_locations =>
+      'فشل في تحميل المواقع. اضغط للمحاولة مرة أخرى.';
+
+  @override
+  String get failed_to_load_sectors =>
+      'فشل في تحميل القطاعات. اضغط للمحاولة مرة أخرى.';
 }

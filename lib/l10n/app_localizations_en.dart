@@ -694,9 +694,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get filter_by_sector => 'Filter by Sector:';
 
   @override
-  String get loading_sectors => 'Loading sectors...';
-
-  @override
   String currently_showing(String filter) {
     return 'Currently showing: $filter';
   }
@@ -758,4 +755,242 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get duration_filter => 'Duration';
+
+  @override
+  String get community_blog => 'Community Blog';
+
+  @override
+  String get search_posts => 'Search posts...';
+
+  @override
+  String get no_posts_available => 'No Posts Available';
+
+  @override
+  String get no_blog_posts_message =>
+      'There are no blog posts to display at the moment.';
+
+  @override
+  String get refresh => 'Refresh';
+
+  @override
+  String get error_loading_posts => 'Error loading posts';
+
+  @override
+  String get error_loading_categories => 'Error loading categories';
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String get min_read => 'min read';
+
+  @override
+  String get update_your_password => 'Update Your Password';
+
+  @override
+  String get update_password_description =>
+      'Please enter your current password and choose a new secure password.';
+
+  @override
+  String get current_password => 'Current Password';
+
+  @override
+  String get enter_current_password => 'Enter your current password';
+
+  @override
+  String get new_password => 'New Password';
+
+  @override
+  String get enter_new_password => 'Enter your new password';
+
+  @override
+  String get confirm_new_password => 'Confirm New Password';
+
+  @override
+  String get confirm_new_password_hint => 'Confirm your new password';
+
+  @override
+  String get password_requirements => 'Password Requirements:';
+
+  @override
+  String get at_least_8_characters => 'At least 8 characters long';
+
+  @override
+  String get different_from_current => 'Different from current password';
+
+  @override
+  String get must_match_confirmation => 'Must match confirmation password';
+
+  @override
+  String get update_password => 'Update Password';
+
+  @override
+  String get please_enter_current_password =>
+      'Please enter your current password';
+
+  @override
+  String get please_enter_new_password => 'Please enter a new password';
+
+  @override
+  String get password_min_8_characters =>
+      'Password must be at least 8 characters long';
+
+  @override
+  String get new_password_must_be_different =>
+      'New password must be different from current password';
+
+  @override
+  String get please_confirm_new_password => 'Please confirm your new password';
+
+  @override
+  String get passwords_do_not_match => 'Passwords do not match';
+
+  @override
+  String get password_updated_successfully => 'Password updated successfully!';
+
+  @override
+  String get unexpected_error_occurred => 'An unexpected error occurred';
+
+  @override
+  String get full_name => 'Full Name';
+
+  @override
+  String get bio => 'Bio';
+
+  @override
+  String get enter_full_name => 'Enter Full Name';
+
+  @override
+  String get enter_bio => 'Enter Bio';
+
+  @override
+  String get enter_email => 'Enter Email';
+
+  @override
+  String get change_photo => 'Change Photo';
+
+  @override
+  String get error_loading_profile_data => 'Error loading profile data';
+
+  @override
+  String get image_selected_from_camera => 'Image selected from camera';
+
+  @override
+  String get image_selected_from_gallery => 'Image selected from gallery';
+
+  @override
+  String get error_accessing_camera => 'Error accessing camera';
+
+  @override
+  String get error_accessing_gallery => 'Error accessing gallery';
+
+  @override
+  String get loading_locations => 'Loading locations...';
+
+  @override
+  String get loading_sectors => 'Loading sectors...';
+
+  @override
+  String get search_hint => 'Search...';
+
+  @override
+  String get city_area => 'City, Area';
+
+  @override
+  String get select_your_sector => 'Select your sector';
+
+  @override
+  String get location_required => 'Location is required';
+
+  @override
+  String get sector_required => 'Sector is required';
+
+  @override
+  String get about_your_organization => 'About your organization';
+
+  @override
+  String get contact_email => 'Contact Email';
+
+  @override
+  String get contact_email_hint => 'Contact Email';
+
+  @override
+  String get website => 'Website';
+
+  @override
+  String get website_url => 'Website URL';
+
+  @override
+  String get register => 'Register';
+
+  @override
+  String get error_loading_locations => 'Error loading locations';
+
+  @override
+  String get error_loading_sectors => 'Error loading sectors';
+
+  @override
+  String get city_area_hint => 'City, Area';
+
+  @override
+  String get sector_hint => 'Sector';
+
+  @override
+  String get organization_registered_successfully =>
+      'Organization registered successfully!';
+
+  @override
+  String get loading_organizations => 'Loading organizations...';
+
+  @override
+  String get loading_skills => 'Loading skills...';
+
+  @override
+  String get error_loading_organizations => 'Error loading organizations';
+
+  @override
+  String get error_loading_skills => 'Error loading skills';
+
+  @override
+  String get search_locations_hint => 'Search locations...';
+
+  @override
+  String get please_select_location => 'Please select a location';
+
+  @override
+  String get please_add_skill => 'Please add at least one skill';
+
+  @override
+  String get please_add_interest => 'Please add at least one interest';
+
+  @override
+  String get no_organizations_available => 'No organizations available';
+
+  @override
+  String get loading_skills_fallback => 'Loading skills...';
+
+  @override
+  String get loading_sectors_fallback => 'Loading sectors...';
+
+  @override
+  String unfollow_dialog_title(String organizationName) {
+    return 'Unfollow $organizationName?';
+  }
+
+  @override
+  String get unfollow_dialog_content =>
+      'Are you sure you want to unfollow this organization?';
+
+  @override
+  String get location_required_error => 'Location is required.';
+
+  @override
+  String get sector_required_error => 'Sector is required.';
+
+  @override
+  String get failed_to_load_locations =>
+      'Failed to load locations. Tap to retry.';
+
+  @override
+  String get failed_to_load_sectors => 'Failed to load sectors. Tap to retry.';
 }

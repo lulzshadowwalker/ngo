@@ -815,8 +815,8 @@ class _ProfileViewContent extends HookWidget {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: Text('Unfollow ${organization.name}?'),
-          content: Text('Are you sure you want to unfollow this organization?'),
+          title: Text(AppLocalizations.of(context)!.unfollow_dialog_title(organization.name)),
+          content: Text(AppLocalizations.of(context)!.unfollow_dialog_content),
           actions: [
             TextButton(
               onPressed: () {
@@ -832,11 +832,14 @@ class _ProfileViewContent extends HookWidget {
                 );
                 context.read<UserManagementCubit>().fetchUserData();
               },
-              child: Text('Unfollow', style: TextStyle(color: Colors.red)),
+              child: Text(AppLocalizations.of(context)!.unfollow, style: TextStyle(color: Colors.red)),
             ),
           ],
         );
       },
     );
   }
+
+
+
 }

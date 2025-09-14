@@ -1430,12 +1430,6 @@ abstract class AppLocalizations {
   /// **'Filter by Sector:'**
   String get filter_by_sector;
 
-  /// Loading sectors message
-  ///
-  /// In en, this message translates to:
-  /// **'Loading sectors...'**
-  String get loading_sectors;
-
   /// Current filter status message
   ///
   /// In en, this message translates to:
@@ -1549,6 +1543,462 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Duration'**
   String get duration_filter;
+
+  /// Blog page title
+  ///
+  /// In en, this message translates to:
+  /// **'Community Blog'**
+  String get community_blog;
+
+  /// Search hint for blog posts
+  ///
+  /// In en, this message translates to:
+  /// **'Search posts...'**
+  String get search_posts;
+
+  /// Empty state title for blog
+  ///
+  /// In en, this message translates to:
+  /// **'No Posts Available'**
+  String get no_posts_available;
+
+  /// Empty state description for blog
+  ///
+  /// In en, this message translates to:
+  /// **'There are no blog posts to display at the moment.'**
+  String get no_blog_posts_message;
+
+  /// Refresh button text
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refresh;
+
+  /// Error message for failed post loading
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading posts'**
+  String get error_loading_posts;
+
+  /// Error message for failed categories loading
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading categories'**
+  String get error_loading_categories;
+
+  /// Unknown text fallback
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
+
+  /// Reading time suffix
+  ///
+  /// In en, this message translates to:
+  /// **'min read'**
+  String get min_read;
+
+  /// Change password page subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Update Your Password'**
+  String get update_your_password;
+
+  /// Change password instructions
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your current password and choose a new secure password.'**
+  String get update_password_description;
+
+  /// Current password field label
+  ///
+  /// In en, this message translates to:
+  /// **'Current Password'**
+  String get current_password;
+
+  /// Current password field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current password'**
+  String get enter_current_password;
+
+  /// New password field label
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get new_password;
+
+  /// New password field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your new password'**
+  String get enter_new_password;
+
+  /// Confirm password field label
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm New Password'**
+  String get confirm_new_password;
+
+  /// Confirm password field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your new password'**
+  String get confirm_new_password_hint;
+
+  /// Password requirements section title
+  ///
+  /// In en, this message translates to:
+  /// **'Password Requirements:'**
+  String get password_requirements;
+
+  /// Password requirement - length
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters long'**
+  String get at_least_8_characters;
+
+  /// Password requirement - different
+  ///
+  /// In en, this message translates to:
+  /// **'Different from current password'**
+  String get different_from_current;
+
+  /// Password requirement - match
+  ///
+  /// In en, this message translates to:
+  /// **'Must match confirmation password'**
+  String get must_match_confirmation;
+
+  /// Update password button text
+  ///
+  /// In en, this message translates to:
+  /// **'Update Password'**
+  String get update_password;
+
+  /// Validation error for missing current password
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your current password'**
+  String get please_enter_current_password;
+
+  /// Validation error for missing new password
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a new password'**
+  String get please_enter_new_password;
+
+  /// Validation error for password length
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters long'**
+  String get password_min_8_characters;
+
+  /// Validation error for same password
+  ///
+  /// In en, this message translates to:
+  /// **'New password must be different from current password'**
+  String get new_password_must_be_different;
+
+  /// Validation error for missing password confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your new password'**
+  String get please_confirm_new_password;
+
+  /// Validation error for password mismatch
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwords_do_not_match;
+
+  /// Success message for password update
+  ///
+  /// In en, this message translates to:
+  /// **'Password updated successfully!'**
+  String get password_updated_successfully;
+
+  /// Unexpected error message
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred'**
+  String get unexpected_error_occurred;
+
+  /// Label for full name field
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get full_name;
+
+  /// Label for bio field
+  ///
+  /// In en, this message translates to:
+  /// **'Bio'**
+  String get bio;
+
+  /// Placeholder for full name field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Full Name'**
+  String get enter_full_name;
+
+  /// Placeholder for bio field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Bio'**
+  String get enter_bio;
+
+  /// Placeholder for email field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Email'**
+  String get enter_email;
+
+  /// Button text to change profile photo
+  ///
+  /// In en, this message translates to:
+  /// **'Change Photo'**
+  String get change_photo;
+
+  /// Error message when profile data fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading profile data'**
+  String get error_loading_profile_data;
+
+  /// Success message when image is selected from camera
+  ///
+  /// In en, this message translates to:
+  /// **'Image selected from camera'**
+  String get image_selected_from_camera;
+
+  /// Success message when image is selected from gallery
+  ///
+  /// In en, this message translates to:
+  /// **'Image selected from gallery'**
+  String get image_selected_from_gallery;
+
+  /// Error message when camera access fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error accessing camera'**
+  String get error_accessing_camera;
+
+  /// Error message when gallery access fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error accessing gallery'**
+  String get error_accessing_gallery;
+
+  /// Loading message for locations
+  ///
+  /// In en, this message translates to:
+  /// **'Loading locations...'**
+  String get loading_locations;
+
+  /// Loading message for sectors
+  ///
+  /// In en, this message translates to:
+  /// **'Loading sectors...'**
+  String get loading_sectors;
+
+  /// Search input placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Search...'**
+  String get search_hint;
+
+  /// Location input placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'City, Area'**
+  String get city_area;
+
+  /// Sector dropdown placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Select your sector'**
+  String get select_your_sector;
+
+  /// Validation message for required location
+  ///
+  /// In en, this message translates to:
+  /// **'Location is required'**
+  String get location_required;
+
+  /// Validation message for required sector
+  ///
+  /// In en, this message translates to:
+  /// **'Sector is required'**
+  String get sector_required;
+
+  /// Bio field placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'About your organization'**
+  String get about_your_organization;
+
+  /// Contact email field label
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Email'**
+  String get contact_email;
+
+  /// Contact email field placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Email'**
+  String get contact_email_hint;
+
+  /// Website field label
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get website;
+
+  /// Website field placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Website URL'**
+  String get website_url;
+
+  /// Register button text
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get register;
+
+  /// No description provided for @error_loading_locations.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading locations'**
+  String get error_loading_locations;
+
+  /// No description provided for @error_loading_sectors.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading sectors'**
+  String get error_loading_sectors;
+
+  /// No description provided for @city_area_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'City, Area'**
+  String get city_area_hint;
+
+  /// No description provided for @sector_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Sector'**
+  String get sector_hint;
+
+  /// No description provided for @organization_registered_successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Organization registered successfully!'**
+  String get organization_registered_successfully;
+
+  /// No description provided for @loading_organizations.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading organizations...'**
+  String get loading_organizations;
+
+  /// No description provided for @loading_skills.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading skills...'**
+  String get loading_skills;
+
+  /// No description provided for @error_loading_organizations.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading organizations'**
+  String get error_loading_organizations;
+
+  /// No description provided for @error_loading_skills.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading skills'**
+  String get error_loading_skills;
+
+  /// No description provided for @search_locations_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search locations...'**
+  String get search_locations_hint;
+
+  /// No description provided for @please_select_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a location'**
+  String get please_select_location;
+
+  /// No description provided for @please_add_skill.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add at least one skill'**
+  String get please_add_skill;
+
+  /// No description provided for @please_add_interest.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add at least one interest'**
+  String get please_add_interest;
+
+  /// No description provided for @no_organizations_available.
+  ///
+  /// In en, this message translates to:
+  /// **'No organizations available'**
+  String get no_organizations_available;
+
+  /// No description provided for @loading_skills_fallback.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading skills...'**
+  String get loading_skills_fallback;
+
+  /// No description provided for @loading_sectors_fallback.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading sectors...'**
+  String get loading_sectors_fallback;
+
+  /// Unfollow dialog title with organization name
+  ///
+  /// In en, this message translates to:
+  /// **'Unfollow {organizationName}?'**
+  String unfollow_dialog_title(String organizationName);
+
+  /// No description provided for @unfollow_dialog_content.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to unfollow this organization?'**
+  String get unfollow_dialog_content;
+
+  /// Location validation error message
+  ///
+  /// In en, this message translates to:
+  /// **'Location is required.'**
+  String get location_required_error;
+
+  /// Sector validation error message
+  ///
+  /// In en, this message translates to:
+  /// **'Sector is required.'**
+  String get sector_required_error;
+
+  /// Error message when locations fail to load
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load locations. Tap to retry.'**
+  String get failed_to_load_locations;
+
+  /// Error message when sectors fail to load
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load sectors. Tap to retry.'**
+  String get failed_to_load_sectors;
 }
 
 class _AppLocalizationsDelegate
