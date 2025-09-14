@@ -6,7 +6,7 @@ part 'application_response.freezed.dart';
 @freezed
 abstract class ApplicationResponse with _$ApplicationResponse {
   const factory ApplicationResponse({
-    required int id,
+    required String id,
     required int formFieldId,
     required String value,
     required FormField formField,
@@ -14,7 +14,7 @@ abstract class ApplicationResponse with _$ApplicationResponse {
 
   factory ApplicationResponse.fromJson(Map<String, dynamic> json) {
     return ApplicationResponse(
-      id: json['id'] as int,
+      id: json['id'] as String,
       formFieldId: json['formFieldId'] as int,
       value: json['value'] as String,
       formField: FormField.fromJson(json['formField'] as Map<String, dynamic>),

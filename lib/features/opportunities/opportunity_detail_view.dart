@@ -50,6 +50,7 @@ class OpportunityDetailView extends HookWidget {
               children: [
                 _buildOpportunityDetails(context, opportunity),
                 _buildBottomActionButtons(context, opportunity),
+
               ],
             );
           },
@@ -640,7 +641,7 @@ class OpportunityDetailView extends HookWidget {
       left: 0,
       right: 0,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.only(bottom: 50 , left: 16, right: 16, top: 16),
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -744,6 +745,9 @@ class OpportunityDetailView extends HookWidget {
                           ),
                   ),
                 ),
+             
+               
+             
               ],
             );
           },
@@ -780,74 +784,88 @@ class OpportunityDetailView extends HookWidget {
     }
   }
 
+
+
+
+
   void _showApplicationForm(BuildContext context, Opportunity opportunity) {
     showModalBottomSheet(
+      useSafeArea: true,
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (modalContext) => BlocProvider.value(
         value: context.read<ApplicationCubit>(),
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.8,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                height: 4,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(2),
-                ),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 60),
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+                
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: DynamicApplicationForm(
-                    applicationForm: opportunity.applicationForm!,
-                    onSubmit: (responses) {
-                      Navigator.pop(modalContext);
-                      // Convert Map responses to List<ApplicationResponse>
-                      final applicationResponses = responses.entries.map((
-                        entry,
-                      ) {
-                        final fieldId = int.parse(entry.key);
-                        final formField = opportunity
-                            .applicationForm!
-                            .formFields
-                            .firstWhere((field) => field.id == fieldId);
-
-                        return ApplicationResponse(
-                          id: 0, // Will be set by backend
-                          formFieldId: fieldId,
-                          value: entry.value.toString(),
-                          formField: formField,
-                        );
-                      }).toList();
-
-                      // Use the original context instead of modalContext
-                      context.read<ApplicationCubit>().submitApplication(
-                        opportunityId: int.parse(opportunity.id),
-                        responses: applicationResponses,
-                      );
-                    },
-                    onCancel: () => Navigator.pop(modalContext),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  height: 4,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: DynamicApplicationForm(
+                      applicationForm: opportunity.applicationForm!,
+                      onSubmit: (responses) async{
+                        Navigator.pop(modalContext);
+                        // Convert Map responses to List<ApplicationResponse>
+                          final String userId = await SharedPrefHelper.getString('user_id');
+                        final applicationResponses = responses.entries.map((
+                          entry,
+                        ) {
+                          final fieldId = int.parse(entry.key);
+                          final formField = opportunity
+                              .applicationForm!
+                              .formFields
+                              .firstWhere((field) => field.id == fieldId);
+             
+                          return ApplicationResponse(
+                            id: userId, // Will be set by backend
+                            formFieldId: fieldId,
+                            value: entry.value.toString(),
+                            formField: formField,
+                          );
+                        }).toList();
+          
+                        // Use the original context instead of modalContext
+                        context.read<ApplicationCubit>().submitApplication(
+                          opportunityId: int.parse(opportunity.id),
+                          responses: applicationResponses,
+                        );
+                      },
+                      onCancel: () => Navigator.pop(modalContext),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+
+
+
 
   void _showSuccessSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(

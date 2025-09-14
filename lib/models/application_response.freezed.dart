@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ApplicationResponse {
 
- int get id; int get formFieldId; String get value; FormField get formField;
+ String get id; int get formFieldId; String get value; FormField get formField;
 /// Create a copy of ApplicationResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -46,7 +46,7 @@ abstract mixin class $ApplicationResponseCopyWith<$Res>  {
   factory $ApplicationResponseCopyWith(ApplicationResponse value, $Res Function(ApplicationResponse) _then) = _$ApplicationResponseCopyWithImpl;
 @useResult
 $Res call({
- int id, int formFieldId, String value, FormField formField
+ String id, int formFieldId, String value, FormField formField
 });
 
 
@@ -66,7 +66,7 @@ class _$ApplicationResponseCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? formFieldId = null,Object? value = null,Object? formField = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,formFieldId: null == formFieldId ? _self.formFieldId : formFieldId // ignore: cast_nullable_to_non_nullable
+as String,formFieldId: null == formFieldId ? _self.formFieldId : formFieldId // ignore: cast_nullable_to_non_nullable
 as int,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
 as String,formField: null == formField ? _self.formField : formField // ignore: cast_nullable_to_non_nullable
 as FormField,
@@ -92,7 +92,7 @@ class _ApplicationResponse implements ApplicationResponse {
   const _ApplicationResponse({required this.id, required this.formFieldId, required this.value, required this.formField});
   
 
-@override final  int id;
+@override final  String id;
 @override final  int formFieldId;
 @override final  String value;
 @override final  FormField formField;
@@ -127,7 +127,7 @@ abstract mixin class _$ApplicationResponseCopyWith<$Res> implements $Application
   factory _$ApplicationResponseCopyWith(_ApplicationResponse value, $Res Function(_ApplicationResponse) _then) = __$ApplicationResponseCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int formFieldId, String value, FormField formField
+ String id, int formFieldId, String value, FormField formField
 });
 
 
@@ -147,7 +147,7 @@ class __$ApplicationResponseCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? formFieldId = null,Object? value = null,Object? formField = null,}) {
   return _then(_ApplicationResponse(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,formFieldId: null == formFieldId ? _self.formFieldId : formFieldId // ignore: cast_nullable_to_non_nullable
+as String,formFieldId: null == formFieldId ? _self.formFieldId : formFieldId // ignore: cast_nullable_to_non_nullable
 as int,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
 as String,formField: null == formField ? _self.formField : formField // ignore: cast_nullable_to_non_nullable
 as FormField,

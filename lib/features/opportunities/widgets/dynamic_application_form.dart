@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:ngo/core/theme/my_colors.dart';
@@ -205,7 +206,7 @@ class DynamicApplicationForm extends HookWidget {
         return _buildCheckboxField(field, selectedValues);
 
       case ngo_form.FormFieldType.file:
-        return _buildFileField(field, selectedValues);
+        return _buildFileField(context, field, selectedValues);
     }
   }
 
@@ -399,44 +400,104 @@ class DynamicApplicationForm extends HookWidget {
   }
 
   Widget _buildFileField(
+    BuildContext context,
     ngo_form.FormField field,
     ValueNotifier<Map<String, dynamic>> selectedValues,
   ) {
-    final fileName = selectedValues.value[field.id.toString()] as String?;
+    return ValueListenableBuilder<Map<String, dynamic>>(
+      valueListenable: selectedValues,
+      builder: (context, values, child) {
+        final fileName = values[field.id.toString()] as String?;
 
-    return InkWell(
-      onTap: () {
-        // TODO: Implement file picker
-        // For now, just show a placeholder
-        selectedValues.value = {
-          ...selectedValues.value,
-          field.id.toString(): 'selected_file.pdf',
-        };
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[300]!),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          children: [
-            Icon(Icons.attach_file, color: Colors.grey[600], size: 20),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                fileName ?? field.placeholder ?? 'Select file',
-                style: TextStyle(
-                  color: fileName != null ? Colors.black87 : Colors.grey[600],
-                  fontSize: 16,
-                ),
-              ),
+        return InkWell(
+          onTap: () async {
+            print('File picker tapped for field: ${field.id}');
+            try {
+              // Use file_picker to pick a file with type restrictions
+              print('Starting file picker...');
+              final result = await FilePicker.platform.pickFiles(
+                type: FileType.any,
+                allowMultiple: false,
+                allowedExtensions: null, // You can restrict file types here if needed
+              );
+              
+              print('File picker result: $result');
+              
+              if (result != null && result.files.isNotEmpty) {
+                final file = result.files.first;
+                print('Selected file: ${file.name}, size: ${file.size}');
+                
+                // Optional: Check file size (e.g., max 10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                  print('File too large: ${file.size} bytes');
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('File size must be less than 10MB'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                  return;
+                }
+                
+                print('Updating selectedValues with file: ${file.name}');
+                selectedValues.value = {
+                  ...selectedValues.value,
+                  field.id.toString(): file.name,
+                  // Also store the file path if available
+                  '${field.id}_path': file.path,
+                  // Store file bytes if needed for upload
+                  '${field.id}_bytes': file.bytes,
+                };
+                print('Updated selectedValues: ${selectedValues.value}');
+              } else {
+                print('No file selected or result was null');
+              }
+            } catch (e) {
+              print('Error during file picking: $e');
+              // Handle any errors during file picking
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Error picking file: ${e.toString()}'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            }
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey[300]!),
+              borderRadius: BorderRadius.circular(8),
             ),
-          ],
-        ),
-      ),
+            child: Row(
+              children: [
+                Icon(Icons.attach_file, color: Colors.grey[600], size: 20),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    fileName ?? field.placeholder ?? 'Select file',
+                    style: TextStyle(
+                      color: fileName != null ? Colors.black87 : Colors.grey[600],
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
+
+
+
+
+
 
   TextInputType _getKeyboardType(ngo_form.FormFieldType type) {
     switch (type) {

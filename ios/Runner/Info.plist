@@ -51,5 +51,11 @@
 	<string>This app needs access to your camera to take profile pictures.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app needs access to your photo library to select profile pictures.</string>
+	
+	<!-- Permissions for file picker -->
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>This app needs access to documents to allow file uploads for applications.</string>
+	<key>NSDownloadsFolderUsageDescription</key>
+	<string>This app needs access to downloads to allow file uploads for applications.</string>
 </dict>
 </plist>
