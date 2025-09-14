@@ -6,6 +6,7 @@ import 'package:ngo/features/location_section/cubit/location_cubit.dart';
 import 'package:ngo/features/main_nav/main_nav.dart';
 
 import '../../core/hooks/use_image_picker.dart';
+import '../../core/theme/my_colors.dart';
 import '../../core/theme/my_fonts.dart';
 import '../../export_tools.dart';
 import '../../models/location.dart';
@@ -93,7 +94,7 @@ class _CompleteYourProfileView extends HookWidget {
               CircleAvatar(
                 radius: 18,
                 backgroundColor: i <= step
-                    ? Colors.green[700]
+                    ? MyColors.primaryColor
                     : Colors.grey[300],
                 child: i <= step
                     ? const Icon(Icons.check, color: Colors.white)
@@ -103,7 +104,7 @@ class _CompleteYourProfileView extends HookWidget {
                 Container(
                   width: 40,
                   height: 4,
-                  color: i < step ? Colors.green[700] : Colors.grey[300],
+                  color: i < step ? MyColors.primaryColor : Colors.grey[300],
                 ),
             ],
           );
@@ -138,7 +139,7 @@ class _CompleteYourProfileView extends HookWidget {
                   child: Text(
                     lang.step_1_of_3,
                     style: TextStyle(
-                      color: Colors.green,
+                      color: MyColors.primaryColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -156,7 +157,7 @@ class _CompleteYourProfileView extends HookWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: Colors.green,
+                              color: MyColors.primaryColor,
                               style: BorderStyle.solid,
                               width: 2,
                             ),
@@ -172,7 +173,7 @@ class _CompleteYourProfileView extends HookWidget {
                           child: imagePickerResult.selectedImage == null
                               ? const Icon(
                                   Icons.camera_alt,
-                                  color: Colors.green,
+                                  color: MyColors.primaryColor,
                                   size: 40,
                                 )
                               : null,
@@ -180,10 +181,10 @@ class _CompleteYourProfileView extends HookWidget {
                         const SizedBox(height: 8),
                         Text(
                           imagePickerResult.selectedImage == null
-                              ? 'Add Profile Picture'
-                              : 'Change Profile Picture',
+                              ? lang.addProfilePicture
+                              : lang.changeProfilePicture,
                           style: const TextStyle(
-                            color: Colors.green,
+                            color: MyColors.primaryColor,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -192,30 +193,30 @@ class _CompleteYourProfileView extends HookWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                const Text('About Me'),
+                Text(lang.aboutYou),
                 const SizedBox(height: 8),
                 TextFormField(
                   controller: aboutController,
                   maxLines: 4,
-                  decoration: const InputDecoration(
-                    hintText: 'Tell us about yourself...',
+                  decoration: InputDecoration(
+                    hintText: lang.tellUsAboutYourself,
                     border: OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text('Date of Birth'),
+                Text(lang.dateOfBirth),
                 const SizedBox(height: 8),
                 TextFormField(
                   readOnly: true,
                   decoration: InputDecoration(
                     hintText: selectedDate.value == null
-                        ? 'Select date'
+                        ? lang.selectYourDateOfBirth
                         : '${selectedDate.value!.day}/${selectedDate.value!.month}/${selectedDate.value!.year}',
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: const Icon(
                         Icons.calendar_today,
-                        color: Colors.green,
+                        color: MyColors.primaryColor,
                       ),
                       onPressed: () async {
                         final picked = await showDatePicker(
@@ -235,7 +236,7 @@ class _CompleteYourProfileView extends HookWidget {
                   height: 54,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[700],
+                      backgroundColor: MyColors.primaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -245,7 +246,7 @@ class _CompleteYourProfileView extends HookWidget {
                       curve: Curves.ease,
                     ),
                     child: Text(
-                      'Next',
+                      lang.next,
                       style: MyFonts.font16Black.copyWith(color: Colors.white),
                     ),
                   ),
@@ -254,8 +255,8 @@ class _CompleteYourProfileView extends HookWidget {
               ],
             ),
           ),
+
           // Step 2
-          
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             child: ListView(
@@ -267,7 +268,7 @@ class _CompleteYourProfileView extends HookWidget {
                   child: Text(
                     lang.step_2_of_3,
                     style: TextStyle(
-                      color: Colors.green,
+                      color: MyColors.primaryColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -347,7 +348,7 @@ class _CompleteYourProfileView extends HookWidget {
                             border: const OutlineInputBorder(),
                             suffixIcon: Icon(
                               Icons.location_on,
-                              color: Colors.green,
+                              color: MyColors.primaryColor,
                             ),
                           ),
                         ),
@@ -406,7 +407,7 @@ class _CompleteYourProfileView extends HookWidget {
                           border: const OutlineInputBorder(),
                           suffixIcon: Icon(
                             Icons.location_on,
-                            color: Colors.green,
+                            color: MyColors.primaryColor,
                           ),
                         ),
                       );
@@ -414,7 +415,7 @@ class _CompleteYourProfileView extends HookWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                const Text('Skills'),
+                Text(lang.skills),
                 const SizedBox(height: 8),
                 // Selected skills display
                 if (selectedSkills.value.isNotEmpty) ...[
@@ -425,7 +426,9 @@ class _CompleteYourProfileView extends HookWidget {
                           (skill) => Chip(
                             label: Text(skill.name),
                             backgroundColor: Colors.green[50],
-                            labelStyle: const TextStyle(color: Colors.green),
+                            labelStyle: const TextStyle(
+                              color: MyColors.primaryColor,
+                            ),
                             deleteIcon: const Icon(Icons.close, size: 18),
                             onDeleted: () {
                               selectedSkills.value = List.from(
@@ -461,7 +464,7 @@ class _CompleteYourProfileView extends HookWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.add, color: Colors.green),
+                            Icon(Icons.add, color: MyColors.primaryColor),
                             const SizedBox(width: 8),
                             Text(
                               lang.add_skills,
@@ -476,8 +479,9 @@ class _CompleteYourProfileView extends HookWidget {
                     );
                   },
                 ),
+
                 const SizedBox(height: 20),
-                const Text('Volunteering Interests (Sectors)'),
+                Text(lang.sectors),
                 const SizedBox(height: 8),
                 // Selected sectors display
                 if (selectedSectors.value.isNotEmpty) ...[
@@ -488,7 +492,9 @@ class _CompleteYourProfileView extends HookWidget {
                           (sector) => Chip(
                             label: Text(sector.name),
                             backgroundColor: Colors.green[50],
-                            labelStyle: const TextStyle(color: Colors.green),
+                            labelStyle: const TextStyle(
+                              color: MyColors.primaryColor,
+                            ),
                             deleteIcon: const Icon(Icons.close, size: 18),
                             onDeleted: () {
                               selectedSectors.value = List.from(
@@ -524,7 +530,7 @@ class _CompleteYourProfileView extends HookWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.add, color: Colors.green),
+                            Icon(Icons.add, color: MyColors.primaryColor),
                             const SizedBox(width: 8),
                             Text(
                               'Add Interests',
@@ -571,7 +577,7 @@ class _CompleteYourProfileView extends HookWidget {
                         height: 54,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green[700],
+                            backgroundColor: MyColors.primaryColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -665,7 +671,7 @@ class _CompleteYourProfileView extends HookWidget {
               ],
             ),
           ),
-          
+
           // Step 3
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -678,7 +684,7 @@ class _CompleteYourProfileView extends HookWidget {
                   child: Text(
                     lang.step_3_of_3,
                     style: TextStyle(
-                      color: Colors.green,
+                      color: MyColors.primaryColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -738,7 +744,7 @@ class _CompleteYourProfileView extends HookWidget {
                                   child: org.logo.isEmpty
                                       ? const Icon(
                                           Icons.business,
-                                          color: Colors.green,
+                                          color: MyColors.primaryColor,
                                         )
                                       : null,
                                 ),
@@ -769,7 +775,7 @@ class _CompleteYourProfileView extends HookWidget {
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: isFollowed
                                         ? Colors.grey[300]
-                                        : Colors.green[700],
+                                        : MyColors.primaryColor,
                                     foregroundColor: isFollowed
                                         ? Colors.black
                                         : Colors.white,
@@ -849,7 +855,7 @@ class _CompleteYourProfileView extends HookWidget {
                   height: 54,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[700],
+                      backgroundColor: MyColors.primaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -881,6 +887,9 @@ class _CompleteYourProfileView extends HookWidget {
     SkillsState state,
     ValueNotifier<List<Skill>> selectedSkills,
   ) {
+
+
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -895,7 +904,7 @@ class _CompleteYourProfileView extends HookWidget {
           expand: false,
           builder: (context, scrollController) {
             return Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.only(bottom: 60 , left: 16, right: 16, top: 8),
               child: Column(
                 children: [
                   Container(
@@ -908,7 +917,7 @@ class _CompleteYourProfileView extends HookWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Select Skills',
+                    AppLocalizations.of(context)!.select_skills,
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
@@ -930,7 +939,7 @@ class _CompleteYourProfileView extends HookWidget {
                             return CheckboxListTile(
                               title: Text(skill.name),
                               value: isSelected,
-                              activeColor: Colors.green,
+                              activeColor: MyColors.primaryColor,
                               onChanged: (bool? value) {
                                 if (value == true) {
                                   selectedSkills.value = [
@@ -981,19 +990,27 @@ class _CompleteYourProfileView extends HookWidget {
                     }(),
                   ),
                   const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green[700],
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        'Done',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 24, top: 8),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: MyColors.primaryColor,
+                          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 24),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 2,
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                        child:  Text(
+                          AppLocalizations.of(context)!.done,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
@@ -1005,6 +1022,9 @@ class _CompleteYourProfileView extends HookWidget {
         ),
       ),
     );
+  
+  
+  
   }
 
   void _showSectorsBottomSheet(
@@ -1026,7 +1046,7 @@ class _CompleteYourProfileView extends HookWidget {
           expand: false,
           builder: (context, scrollController) {
             return Container(
-              padding: const EdgeInsets.all(16),
+               padding: const EdgeInsets.only(bottom: 60 , left: 16, right: 16, top: 8),
               child: Column(
                 children: [
                   Container(
@@ -1039,7 +1059,7 @@ class _CompleteYourProfileView extends HookWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Select Interests',
+                    AppLocalizations.of(context)!.select_sectors,
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
@@ -1062,7 +1082,7 @@ class _CompleteYourProfileView extends HookWidget {
                               title: Text(sector.name),
 
                               value: isSelected,
-                              activeColor: Colors.green,
+                              activeColor: MyColors.primaryColor,
                               onChanged: (bool? value) {
                                 if (value == true) {
                                   selectedSectors.value = [
@@ -1117,12 +1137,12 @@ class _CompleteYourProfileView extends HookWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green[700],
+                        backgroundColor: MyColors.primaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
                       onPressed: () => Navigator.pop(context),
                       child: Text(
-                        'Done',
+                        AppLocalizations.of(context)!.done,
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

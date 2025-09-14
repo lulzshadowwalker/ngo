@@ -449,4 +449,46 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get invalidEmail => 'البريد الإلكتروني غير صالح';
+
+  @override
+  String get selectImageSource => 'اختر مصدر الصورة';
+
+  @override
+  String get camera => 'الكاميرا';
+
+  @override
+  String get gallery => 'المعرض';
+
+  @override
+  String get remove => 'إزالة الصورة';
+
+  @override
+  String get addProfilePicture => 'إضافة صورة شخصية';
+
+  @override
+  String get changeProfilePicture => 'تغيير الصورة الشخصية';
+
+  @override
+  String get aboutYou => 'عنك';
+
+  @override
+  String get tellUsAboutYourself => 'أخبرنا عن نفسك';
+
+  @override
+  String get dateOfBirth => 'تاريخ الميلاد';
+
+  @override
+  String get selectYourDateOfBirth => 'اختر تاريخ ميلادك';
+
+  @override
+  String get skills => 'المهارات';
+
+  @override
+  String get sectors => 'القطاعات';
+
+  @override
+  String get select_skills => 'اختر مهاراتك';
+
+  @override
+  String get select_sectors => 'اختر قطاعاتك';
 }

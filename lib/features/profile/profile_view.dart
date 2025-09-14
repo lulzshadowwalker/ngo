@@ -812,16 +812,12 @@ class _ProfileViewContent extends HookWidget {
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
-                // Call the unfollow method
+           
                 context.read<OrganizationCubit>().unfollowOrganization(organization.slug);
-                
-                // Show loading indicator
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Unfollowing organization...'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
+              
+                context.read<UserManagementCubit>().fetchUserData();
+         
+               
               },
               child: Text(
                 'Unfollow',

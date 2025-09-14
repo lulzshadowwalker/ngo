@@ -231,20 +231,19 @@ class OpportunityDetailView extends HookWidget {
               // Benefits
               if (opportunity.benefits.isNotEmpty)
                 _buildBenefitsSection(opportunity.benefits, context),
-             
 
-               // Benefits
+              // Benefits
               if (opportunity.tags.isNotEmpty)
                 _buildTageSection(opportunity.tags, context),
 
-             if(opportunity.extra != null && opportunity.extra!.isNotEmpty)
+              if (opportunity.extra != null && opportunity.extra!.isNotEmpty)
                 _buildSection(
                   AppLocalizations.of(context)!.additional_information,
                   opportunity.extra!,
                 ),
 
               // Application Deadline
-              _buildDeadlineSection(opportunity.expiryDate , context),
+              _buildDeadlineSection(opportunity.expiryDate, context),
 
               const SizedBox(height: 100), // Space for bottom buttons
             ],
@@ -526,8 +525,7 @@ class OpportunityDetailView extends HookWidget {
       ),
     );
   }
-// _buildTageSection
-
+  // _buildTageSection
 
   Widget _buildTageSection(List<String> tags, BuildContext context) {
     return Container(
@@ -555,7 +553,7 @@ class OpportunityDetailView extends HookWidget {
                       horizontal: 12,
                       vertical: 8,
                     ),
-                       decoration: BoxDecoration(
+                    decoration: BoxDecoration(
                       color: MyColors.primaryColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
@@ -589,12 +587,8 @@ class OpportunityDetailView extends HookWidget {
       ),
     );
   }
- 
 
-
-
-
-  Widget _buildDeadlineSection(DateTime expiryDate , BuildContext context) {
+  Widget _buildDeadlineSection(DateTime expiryDate, BuildContext context) {
     final daysLeft = expiryDate.difference(DateTime.now()).inDays;
 
     return Container(
@@ -741,7 +735,9 @@ class OpportunityDetailView extends HookWidget {
                             ),
                           )
                         : Text(
-                            isAlreadyApplied ? AppLocalizations.of(context)!.already_applied :AppLocalizations.of(context)!.apply_now,
+                            isAlreadyApplied
+                                ? AppLocalizations.of(context)!.already_applied
+                                : AppLocalizations.of(context)!.apply_now,
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                   ),
@@ -769,10 +765,17 @@ class OpportunityDetailView extends HookWidget {
       _showApplicationForm(context, opportunity);
     } else {
       // Direct application without form
-      context.read<ApplicationCubit>().submitApplication(
-        opportunityId: int.parse(opportunity.id),
-        responses: [], // Basic application without custom form
-      );
+      // SharedPrefHelper.getInt('user_id').then((userId) {
+      //   if (userId == 0) {
+      //     _showErrorSnackBar(context, 'User not authenticated.');
+      //     return;
+      //   }
+        // Create a dummy ApplicationResponse list if needed
+        context.read<ApplicationCubit>().submitApplication(
+          opportunityId: int.parse(opportunity.id),
+          responses: [], // Basic application without custom form
+        );
+      // });
     }
   }
 
@@ -811,11 +814,15 @@ class OpportunityDetailView extends HookWidget {
                     onSubmit: (responses) {
                       Navigator.pop(modalContext);
                       // Convert Map responses to List<ApplicationResponse>
-                      final applicationResponses = responses.entries.map((entry) {
+                      final applicationResponses = responses.entries.map((
+                        entry,
+                      ) {
                         final fieldId = int.parse(entry.key);
-                        final formField = opportunity.applicationForm!.formFields
+                        final formField = opportunity
+                            .applicationForm!
+                            .formFields
                             .firstWhere((field) => field.id == fieldId);
-                        
+
                         return ApplicationResponse(
                           id: 0, // Will be set by backend
                           formFieldId: fieldId,
@@ -823,7 +830,7 @@ class OpportunityDetailView extends HookWidget {
                           formField: formField,
                         );
                       }).toList();
-                      
+
                       // Use the original context instead of modalContext
                       context.read<ApplicationCubit>().submitApplication(
                         opportunityId: int.parse(opportunity.id),

@@ -157,7 +157,7 @@ class JoinTheCommunity extends HookWidget {
                   Checkbox(
                     value: agreedToTerms.value,
                     onChanged: (val) => agreedToTerms.value = val ?? false,
-                    activeColor: Colors.green[700],
+                    activeColor: MyColors.primaryColor,
                   ),
                   Expanded(
                     child: Wrap(
@@ -184,7 +184,7 @@ class JoinTheCommunity extends HookWidget {
                           child: Text(
                             lang.privacyPolicy,
                             style: TextStyle(
-                              color: Colors.green[700],
+                              color: MyColors.primaryColor,
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,
                             ),
@@ -201,7 +201,7 @@ class JoinTheCommunity extends HookWidget {
                 height: 54,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[700],
+                    backgroundColor: MyColors.primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),

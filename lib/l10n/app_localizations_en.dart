@@ -449,4 +449,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get invalidEmail => 'Invalid email format';
+
+  @override
+  String get selectImageSource => 'Select Image Source';
+
+  @override
+  String get camera => 'Camera';
+
+  @override
+  String get gallery => 'Gallery';
+
+  @override
+  String get remove => 'Remove Image';
+
+  @override
+  String get addProfilePicture => 'Add Profile Picture';
+
+  @override
+  String get changeProfilePicture => 'Change Profile Picture';
+
+  @override
+  String get aboutYou => 'About You';
+
+  @override
+  String get tellUsAboutYourself => 'Tell us about yourself';
+
+  @override
+  String get dateOfBirth => 'Date of Birth';
+
+  @override
+  String get selectYourDateOfBirth => 'Select your date of birth';
+
+  @override
+  String get skills => 'Skills';
+
+  @override
+  String get sectors => 'Volunteering Interests (Sectors)';
+
+  @override
+  String get select_skills => 'Select Skills';
+
+  @override
+  String get select_sectors => 'Select Sectors';
 }

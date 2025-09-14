@@ -145,5 +145,20 @@
   "fullNameMaxLength": "يجب ألا يتجاوز الاسم الكامل 50 حرفًا",
   "nameOnlyContainsLetters": "يجب أن يحتوي الاسم على أحرف ومسافات فقط",
   "emailRequired": "البريد الإلكتروني مطلوب",
-  "invalidEmail": "البريد الإلكتروني غير صالح"
+  "invalidEmail": "البريد الإلكتروني غير صالح",
+  "selectImageSource": "اختر مصدر الصورة",
+  "camera": "الكاميرا",
+  "gallery": "المعرض",
+  "remove": "إزالة الصورة",
+  "addProfilePicture": "إضافة صورة شخصية",
+  "changeProfilePicture": "تغيير الصورة الشخصية",
+  "aboutYou": "عنك",
+  "tellUsAboutYourself": "أخبرنا عن نفسك",
+  "dateOfBirth": "تاريخ الميلاد",
+  "@dateOfBirth": {},
+  "selectYourDateOfBirth": "اختر تاريخ ميلادك",
+  "skills": "المهارات",
+    "sectors" : "القطاعات",
+    "select_skills" : "اختر مهاراتك",
+    "select_sectors" : "اختر قطاعاتك"
 }

@@ -1,8 +1,9 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ngo/export_tools.dart';
+
+import '../theme/my_colors.dart';
 
 /// A custom hook for handling image selection from camera or gallery
 /// 
@@ -66,16 +67,16 @@ UseImagePickerResult useImagePicker({
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: const Icon(Icons.camera_alt, color: Colors.green),
-                title: const Text('Camera'),
+                leading:  Icon(Icons.camera_alt, color: MyColors.primaryColor),
+                title:  Text(AppLocalizations.of(context)!.camera),
                 onTap: () {
                   Navigator.of(context).pop();
                   pickImage(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.photo_library, color: Colors.green),
-                title: const Text('Gallery'),
+                leading:  Icon(Icons.photo_library, color: MyColors.primaryColor),
+                title:  Text(AppLocalizations.of(context)!.gallery),
                 onTap: () {
                   Navigator.of(context).pop();
                   pickImage(ImageSource.gallery);
@@ -84,7 +85,7 @@ UseImagePickerResult useImagePicker({
               if (selectedImage.value != null)
                 ListTile(
                   leading: const Icon(Icons.delete, color: Colors.red),
-                  title: const Text('Remove Image'),
+                  title:  Text(AppLocalizations.of(context)!.remove),
                   onTap: () {
                     Navigator.of(context).pop();
                     clearImage();
