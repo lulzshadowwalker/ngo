@@ -130,8 +130,7 @@ class _CompleteYourProfileView extends HookWidget {
           // Step 1
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
               children: [
                 stepIndicator(0),
                 const SizedBox(height: 8),
@@ -1046,7 +1045,7 @@ class _CompleteYourProfileView extends HookWidget {
           expand: false,
           builder: (context, scrollController) {
             return Container(
-               padding: const EdgeInsets.only(bottom: 60 , left: 16, right: 16, top: 8),
+               padding: const EdgeInsets.only(bottom: 70 , left: 16, right: 16, top: 8),
               child: Column(
                 children: [
                   Container(

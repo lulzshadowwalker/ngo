@@ -345,11 +345,7 @@ class OrganizationView extends HookWidget {
                         onTap: () async {
                           log("Unfollowing organization ID: $organizationId");
                           try {
-                            await context
-                                .read<OrganizationCubit>()
-                                .unfollowOrganization(organizationId);
-
-                            // Show success message
+                            await context.read<OrganizationCubit>().unfollowOrganization(organizationId);
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -358,14 +354,25 @@ class OrganizationView extends HookWidget {
                                   duration: const Duration(seconds: 2),
                                 ),
                               );
+                              // Reload organizations after unfollow
+                              final lang = AppLocalizations.of(context)!;
+                              if (selectedFilterId.value != null) {
+                                context.read<OrganizationCubit>().searchOrganizations(
+                                  searchController.text,
+                                  language: lang.localeName,
+                                  sectorId: selectedFilterId.value,
+                                );
+                              } else {
+                                context.read<OrganizationCubit>().fetchAllOrganizations(
+                                  language: lang.localeName,
+                                );
+                              }
                             }
                           } catch (e) {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(
-                                    'Failed to unfollow $name: ${e.toString()}',
-                                  ),
+                                  content: Text('Failed to unfollow $name: [0m${e.toString()}'),
                                   backgroundColor: Colors.red,
                                   duration: const Duration(seconds: 2),
                                 ),
@@ -400,11 +407,7 @@ class OrganizationView extends HookWidget {
                       onPressed: () async {
                         log("Following organization ID: $organizationId");
                         try {
-                          await context
-                              .read<OrganizationCubit>()
-                              .followOrganization(organizationId);
-
-                          // Show success message
+                          await context.read<OrganizationCubit>().followOrganization(organizationId);
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -413,15 +416,25 @@ class OrganizationView extends HookWidget {
                                 duration: const Duration(seconds: 2),
                               ),
                             );
+                            // Reload organizations after follow
+                            final lang = AppLocalizations.of(context)!;
+                            if (selectedFilterId.value != null) {
+                              context.read<OrganizationCubit>().searchOrganizations(
+                                searchController.text,
+                                language: lang.localeName,
+                                sectorId: selectedFilterId.value,
+                              );
+                            } else {
+                              context.read<OrganizationCubit>().fetchAllOrganizations(
+                                language: lang.localeName,
+                              );
+                            }
                           }
                         } catch (e) {
-                          // Show error message
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(
-                                  'Failed to follow $name: ${e.toString()}',
-                                ),
+                                content: Text('Failed to follow $name: ${e.toString()}'),
                                 backgroundColor: Colors.red,
                                 duration: const Duration(seconds: 2),
                               ),
