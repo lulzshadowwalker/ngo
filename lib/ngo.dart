@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<LocaleCubit, LocaleState>(
         builder: (context, localeState) {
           return MaterialApp(
-              theme: AppTheme.lightTheme,
+            theme: AppTheme.lightTheme,
 
             debugShowCheckedModeBanner: false,
             title: 'NGO-962',

@@ -25,7 +25,9 @@ class SearchHome extends HookWidget {
           child: Text(
             label,
             style: TextStyle(
-              color: selectedFilter.value == label ? Colors.white : Colors.black,
+              color: selectedFilter.value == label
+                  ? Colors.white
+                  : Colors.black,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -43,13 +45,9 @@ class SearchHome extends HookWidget {
     }) {
       return Card(
         margin: const EdgeInsets.symmetric(vertical: 8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: ListTile(
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(imageUrl),
-          ),
+          leading: CircleAvatar(backgroundImage: NetworkImage(imageUrl)),
           title: Text(
             title,
             style: const TextStyle(fontWeight: FontWeight.bold),
@@ -78,7 +76,9 @@ class SearchHome extends HookWidget {
             onPressed: () {
               // Handle follow/unfollow action
             },
-            child: Text(isFollowing ? lang.following_status : lang.follow_action),
+            child: Text(
+              isFollowing ? lang.following_status : lang.follow_action,
+            ),
           ),
         ),
       );
@@ -129,8 +129,7 @@ class SearchHome extends HookWidget {
                     title: 'Youth Empowerment Foundation',
                     subtitle: 'Education & Development',
                     location: 'Zarqa, Jordan',
-                    imageUrl:
-                        'https://randomuser.me/api/portraits/men/45.jpg',
+                    imageUrl: 'https://randomuser.me/api/portraits/men/45.jpg',
                     isFollowing: true,
                     lang: lang,
                   ),
@@ -138,8 +137,7 @@ class SearchHome extends HookWidget {
                     title: 'Green Earth Jordan',
                     subtitle: 'Environmental Conservation',
                     location: 'Amman, Jordan',
-                    imageUrl:
-                        'https://randomuser.me/api/portraits/men/32.jpg',
+                    imageUrl: 'https://randomuser.me/api/portraits/men/32.jpg',
                     isFollowing: true,
                     lang: lang,
                   ),
@@ -176,8 +174,11 @@ class SearchHome extends HookWidget {
                           const SizedBox(height: 4),
                           Row(
                             children: [
-                              const Icon(Icons.location_on,
-                                  size: 16, color: Colors.grey),
+                              const Icon(
+                                Icons.location_on,
+                                size: 16,
+                                color: Colors.grey,
+                              ),
                               const SizedBox(width: 4),
                               const Text('Amman, Jordan'),
                             ],
@@ -189,17 +190,23 @@ class SearchHome extends HookWidget {
                               Chip(
                                 label: const Text('Education'),
                                 backgroundColor: Colors.green[50],
-                                labelStyle: const TextStyle(color: Colors.green),
+                                labelStyle: const TextStyle(
+                                  color: Colors.green,
+                                ),
                               ),
                               Chip(
                                 label: const Text('Environment'),
                                 backgroundColor: Colors.green[50],
-                                labelStyle: const TextStyle(color: Colors.green),
+                                labelStyle: const TextStyle(
+                                  color: Colors.green,
+                                ),
                               ),
                               Chip(
                                 label: const Text('Project Management'),
                                 backgroundColor: Colors.green[50],
-                                labelStyle: const TextStyle(color: Colors.green),
+                                labelStyle: const TextStyle(
+                                  color: Colors.green,
+                                ),
                               ),
                             ],
                           ),
@@ -216,8 +223,7 @@ class SearchHome extends HookWidget {
                     title: 'Youth Mentorship Program Volunteer',
                     subtitle: 'Youth Empowerment Foundation',
                     location: 'Zarqa, Jordan',
-                    imageUrl:
-                        'https://randomuser.me/api/portraits/men/45.jpg',
+                    imageUrl: 'https://randomuser.me/api/portraits/men/45.jpg',
                     isFollowing: false,
                     lang: lang,
                   ),

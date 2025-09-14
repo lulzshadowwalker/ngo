@@ -12,14 +12,14 @@ class PostCubit extends Cubit<PostState> {
 
   final PostsRepository postsRepository;
   List<Post>? post;
-  
+
   Future<void> fetchAllPost({String language = 'en'}) async {
     try {
       emit(PostState.loading());
- 
+
       final accessToken = await SharedPrefHelper.getAccessToken();
 
-      post = await postsRepository.fetchAll(accessToken , language: language);
+      post = await postsRepository.fetchAll(accessToken, language: language);
       log('Fetched posts: ${post?.length}');
       emit(PostState.loaded(post!));
     } catch (e) {
@@ -35,13 +35,15 @@ class PostCubit extends Cubit<PostState> {
   }) async {
     try {
       emit(PostState.loading());
-      
+
       post = await postsRepository.search(
         query,
         language: language,
         sectorId: sectorId,
       );
-      log('Searched posts: ${post?.length}, query: "$query", sectorId: $sectorId');
+      log(
+        'Searched posts: ${post?.length}, query: "$query", sectorId: $sectorId',
+      );
       emit(PostState.loaded(post!));
     } catch (e) {
       log('Error searching posts: $e');
@@ -55,25 +57,20 @@ class PostCubit extends Cubit<PostState> {
   }) async {
     try {
       emit(PostState.loading());
-      
+
       final accessToken = await SharedPrefHelper.getAccessToken();
-      
+
       final singlePost = await postsRepository.fetch(
         accessToken,
         slug,
         language: language,
       );
       log('Fetched single post: ${singlePost.title}, slug: $slug');
-      
-    
+
       emit(PostState.loadedSinglePost(singlePost));
     } catch (e) {
       log('Error fetching single post: $e');
       emit(PostState.error(e.toString()));
     }
   }
-
-
-
-
 }

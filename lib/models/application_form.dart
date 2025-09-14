@@ -24,10 +24,10 @@ abstract class ApplicationForm with _$ApplicationForm {
       formFields: (json['formFields'] as List<dynamic>? ?? [])
           .map((field) => FormField.fromJson(field as Map<String, dynamic>))
           .toList(),
-      createdAt: json['createdAt'] != null 
+      createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'] as String)
           : DateTime.now(),
-      updatedAt: json['updatedAt'] != null 
+      updatedAt: json['updatedAt'] != null
           ? DateTime.parse(json['updatedAt'] as String)
           : DateTime.now(),
     );

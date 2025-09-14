@@ -2,11 +2,7 @@ class AppAssets {
   static const String logo = 'assets/images/logo_app.png';
   static const String logo2 = 'assets/images/logo_app2.png';
 
-
-
-
   /// create icon paths
-
 }
 
 class AppIcons {
@@ -29,12 +25,15 @@ class AppIconsSettings {
   static const String aboutApp = 'assets/icons_settings/about_app_icons.svg';
   static const String change = 'assets/icons_settings/change_icons.svg';
   static const String deleteAccount = 'assets/icons_settings/d_account.svg';
-  static const String dataManagement = 'assets/icons_settings/data_management_icons.svg';
+  static const String dataManagement =
+      'assets/icons_settings/data_management_icons.svg';
   static const String email = 'assets/icons_settings/email_icons.svg';
-  static const String helpCenter = 'assets/icons_settings/help_center_icons.svg';
+  static const String helpCenter =
+      'assets/icons_settings/help_center_icons.svg';
   static const String language = 'assets/icons_settings/language_icons.svg';
   static const String logout = 'assets/icons_settings/logout_icons.svg';
-  static const String profileSettings = 'assets/icons_settings/profile_settings.svg';
+  static const String profileSettings =
+      'assets/icons_settings/profile_settings.svg';
   static const String push = 'assets/icons_settings/push_icons.svg';
   static const String report = 'assets/icons_settings/report_icons.svg';
   static const String visibility = 'assets/icons_settings/visibility_icons.svg';

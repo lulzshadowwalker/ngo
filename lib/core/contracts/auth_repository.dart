@@ -1,25 +1,21 @@
-
-
 import '../../models/role.dart';
-typedef AccessToken = String;
 
+typedef AccessToken = String;
 
 abstract class AuthRepository {
   /// Logs in a user with the given [email] and [password].
   ///
   /// Returns a [Map<String, dynamic>] containing user data on success.
-   Future<(AccessToken accessToken, Role role)> login(
+  Future<(AccessToken accessToken, Role role)> login(
     String email,
     String password, {
     String? deviceToken,
   });
 
-
   /// Logs out the current user.
   ///
   /// Returns a [Future<void>] that completes when the logout is successful.
   Future<void> logout();
-
 
   /// Registers a new individual user.
   ///
@@ -47,9 +43,8 @@ abstract class AuthRepository {
     String? logo,
   });
 
-
   /// Change password for the user with given [currentPassword] and [newPassword].
-  /// 
+  ///
   /// Returns a [Future<void>] that completes when the password change is successful.
   Future<void> changePassword({
     required String currentPassword,
@@ -58,8 +53,5 @@ abstract class AuthRepository {
     String? accessToken,
   });
 
-
   Future<void> forgotPassword({String email});
-
-
 }

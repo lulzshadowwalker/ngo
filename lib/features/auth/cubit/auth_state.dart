@@ -17,9 +17,11 @@ class AuthState with _$AuthState {
   const factory AuthState.logoutError(String message) = _LogoutError;
   const factory AuthState.forgotPasswordLoading() = _ForgotPasswordLoading;
   const factory AuthState.forgotPasswordSuccess() = _ForgotPasswordSuccess;
-  const factory AuthState.forgotPasswordError(String message) = _ForgotPasswordError;
+  const factory AuthState.forgotPasswordError(String message) =
+      _ForgotPasswordError;
   const factory AuthState.passwordChangeLoading() = _PasswordChangeLoading;
   const factory AuthState.passwordChangeSuccess() = _PasswordChangeSuccess;
-  const factory AuthState.passwordChangeError(String message) = _PasswordChangeError;
+  const factory AuthState.passwordChangeError(String message) =
+      _PasswordChangeError;
   const factory AuthState.error(String message) = _Error;
 }

@@ -38,10 +38,10 @@ class ApplicationCubit extends Cubit<ApplicationState> {
   }) async {
     try {
       emit(const ApplicationState.saving());
-      
+
       // For now, just simulate saving
       await Future.delayed(const Duration(seconds: 1));
-      
+
       emit(const ApplicationState.savedAsDraft());
     } catch (e) {
       emit(ApplicationState.error(e.toString()));
@@ -54,10 +54,12 @@ class ApplicationCubit extends Cubit<ApplicationState> {
       emit(const ApplicationState.checking());
 
       final applications = await _repository.fetchAll();
-      final existingApplication = applications.data.cast<Application?>().firstWhere(
-        (app) => app?.opportunity.id == opportunityId.toString(),
-        orElse: () => null,
-      );
+      final existingApplication = applications.data
+          .cast<Application?>()
+          .firstWhere(
+            (app) => app?.opportunity.id == opportunityId.toString(),
+            orElse: () => null,
+          );
 
       if (existingApplication != null) {
         emit(ApplicationState.alreadyApplied(existingApplication));

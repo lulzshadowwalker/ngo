@@ -12,16 +12,17 @@ part 'notifications_state.dart';
 class NotificationsCubit extends Cubit<NotificationsState> {
   final NotificationRepository _repository;
 
-  NotificationsCubit(this._repository) : super(const NotificationsState.initial());
+  NotificationsCubit(this._repository)
+    : super(const NotificationsState.initial());
 
   Future<void> fetchNotifications() async {
     final accessToken = await SharedPrefHelper.getAccessToken();
     log("This my access token: $accessToken");
     try {
       emit(const NotificationsState.loading());
-      
+
       final notifications = await _repository.list(accessToken);
-      
+
       emit(NotificationsState.loaded(notifications));
     } catch (error) {
       emit(NotificationsState.error(error.toString()));
@@ -29,50 +30,64 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   }
 
   Future<void> markAllAsRead() async {
-        final accessToken = await SharedPrefHelper.getAccessToken();
+    final accessToken = await SharedPrefHelper.getAccessToken();
     try {
       await _repository.readAll(accessToken);
-      
+
       // Refresh the notifications list
       await fetchNotifications();
     } catch (error) {
-      emit(NotificationsState.error('Failed to mark all as read: ${error.toString()}'));
+      emit(
+        NotificationsState.error(
+          'Failed to mark all as read: ${error.toString()}',
+        ),
+      );
     }
   }
 
   Future<void> markAsRead(String notificationId) async {
-         final accessToken = await SharedPrefHelper.getAccessToken();
+    final accessToken = await SharedPrefHelper.getAccessToken();
     try {
       await _repository.read(accessToken, notificationId);
-      
+
       // Refresh the notifications list
       await fetchNotifications();
     } catch (error) {
-      emit(NotificationsState.error('Failed to mark as read: ${error.toString()}'));
+      emit(
+        NotificationsState.error('Failed to mark as read: ${error.toString()}'),
+      );
     }
   }
 
-  Future<void> deleteNotification( String notificationId) async {
-         final accessToken = await SharedPrefHelper.getAccessToken();
+  Future<void> deleteNotification(String notificationId) async {
+    final accessToken = await SharedPrefHelper.getAccessToken();
     try {
       await _repository.destroy(accessToken, notificationId);
-      
+
       // Refresh the notifications list
       await fetchNotifications();
     } catch (error) {
-      emit(NotificationsState.error('Failed to delete notification: ${error.toString()}'));
+      emit(
+        NotificationsState.error(
+          'Failed to delete notification: ${error.toString()}',
+        ),
+      );
     }
   }
 
   Future<void> deleteAllNotifications() async {
-         final accessToken = await SharedPrefHelper.getAccessToken();
+    final accessToken = await SharedPrefHelper.getAccessToken();
     try {
       await _repository.destroyAll(accessToken);
-      
+
       // Refresh the notifications list
       await fetchNotifications();
     } catch (error) {
-      emit(NotificationsState.error('Failed to delete all notifications: ${error.toString()}'));
+      emit(
+        NotificationsState.error(
+          'Failed to delete all notifications: ${error.toString()}',
+        ),
+      );
     }
   }
 }

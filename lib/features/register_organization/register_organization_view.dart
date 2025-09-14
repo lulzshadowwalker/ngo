@@ -58,7 +58,7 @@ class RegisterOrganizationView extends HookWidget {
                   hintText: lang.enterFullName,
                   border: const OutlineInputBorder(),
                 ),
-                   validator: (value) {
+                validator: (value) {
                   if (value == null || value.isEmpty) {
                     return lang.fullNameRequired;
                   }

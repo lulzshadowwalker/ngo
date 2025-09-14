@@ -11,7 +11,7 @@ class AboutSection extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final lang = AppLocalizations.of(context)!;
-    
+
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
@@ -72,10 +72,18 @@ class AboutSection extends HookWidget {
               // Links
               Divider(height: 32),
               ListTile(
-                title: Text(lang.privacy_policy_title, style: MyFonts.font14BlackBold),
+                title: Text(
+                  lang.privacy_policy_title,
+                  style: MyFonts.font14BlackBold,
+                ),
                 trailing: const Icon(Icons.chevron_right, color: Colors.grey),
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacyPolicyView()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PrivacyPolicyView(),
+                    ),
+                  );
                 },
                 contentPadding: EdgeInsets.zero,
               ),
@@ -86,7 +94,10 @@ class AboutSection extends HookWidget {
                 ),
                 trailing: const Icon(Icons.chevron_right, color: Colors.grey),
                 onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TermsOfService()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TermsOfService()),
+                  );
                 },
                 contentPadding: EdgeInsets.zero,
               ),

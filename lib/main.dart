@@ -8,7 +8,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefHelper.init();
   setupServiceLocator();
-    // Bloc.observer = AppBlocObserver();
+  // Bloc.observer = AppBlocObserver();
   LocaleCubit.initial(SharedPrefHelper.instance);
   runApp(const MyApp());
 }

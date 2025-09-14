@@ -17,7 +17,7 @@ class SupportTicketView extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.help_center), 
+        title: Text(AppLocalizations.of(context)!.help_center),
         centerTitle: true,
       ),
       body: BlocProvider(
@@ -55,7 +55,7 @@ class SupportTicketView extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.subject, 
+                      AppLocalizations.of(context)!.subject,
                       style: MyFonts.font14BlackBold,
                     ),
                     const SizedBox(height: 8),
@@ -71,7 +71,7 @@ class SupportTicketView extends HookWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      AppLocalizations.of(context)!.message, 
+                      AppLocalizations.of(context)!.message,
                       style: MyFonts.font14BlackBold,
                     ),
                     const SizedBox(height: 8),
@@ -79,7 +79,9 @@ class SupportTicketView extends HookWidget {
                       controller: messageController,
                       maxLines: 5,
                       decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)!.describe_your_issue,
+                        hintText: AppLocalizations.of(
+                          context,
+                        )!.describe_your_issue,
                         border: const OutlineInputBorder(),
                       ),
                       validator: (value) => value == null || value.isEmpty
@@ -99,7 +101,9 @@ class SupportTicketView extends HookWidget {
                               ),
                             );
                           },
-                          child: Text(AppLocalizations.of(context)!.view_all_tickets),
+                          child: Text(
+                            AppLocalizations.of(context)!.view_all_tickets,
+                          ),
                         ),
                       ],
                     ),

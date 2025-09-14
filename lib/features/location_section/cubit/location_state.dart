@@ -7,5 +7,6 @@ class LocationState with _$LocationState {
   const factory LocationState.loaded(List<Location> locations) = _Loaded;
   const factory LocationState.error(String message) = _Error;
 
-  const factory LocationState.loadedSingleLocation(Location location) = _LoadedSingleLocation;
+  const factory LocationState.loadedSingleLocation(Location location) =
+      _LoadedSingleLocation;
 }

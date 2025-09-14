@@ -798,5 +798,98 @@
   "unread_filter": "Unread",
   "@unread_filter": {
     "description": "Unread filter option"
+  },
+  "filter_organizations": "Filter Organizations",
+  "@filter_organizations": {
+    "description": "Filter organizations modal title"
+  },
+  "filter_by_sector": "Filter by Sector:",
+  "@filter_by_sector": {
+    "description": "Filter by sector label"
+  },
+  "loading_sectors": "Loading sectors...",
+  "@loading_sectors": {
+    "description": "Loading sectors message"
+  },
+  "currently_showing": "Currently showing: {filter}",
+  "@currently_showing": {
+    "description": "Current filter status message",
+    "placeholders": {
+      "filter": {
+        "type": "String"
+      }
+    }
+  },
+  "apply": "Apply",
+  "@apply": {
+    "description": "Apply button text"
+  },
+  "welcome_loading_organizations": "Welcome! Loading organizations...",
+  "@welcome_loading_organizations": {
+    "description": "Welcome message while loading organizations"
+  },
+  "no_organizations_found": "No organizations found",
+  "@no_organizations_found": {
+    "description": "No organizations found message"
+  },
+  "no_organizations_match_filter": "No organizations match your current filter. Try adjusting your search criteria.",
+  "@no_organizations_match_filter": {
+    "description": "No organizations match filter message"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  "following_text": "Following",
+  "@following_text": {
+    "description": "Following button text when already following"
+  },
+  "unfollow": "Unfollow",
+  "@unfollow": {
+    "description": "Unfollow action text"
+  },
+  "volunteer_opportunities": "Volunteer Opportunities",
+  "@volunteer_opportunities": {
+    "description": "App bar title for opportunities page"
+  },
+  "search_opportunities": "Search opportunities...",
+  "@search_opportunities": {
+    "description": "Search hint text for opportunities"
+  },
+  "oops_something_went_wrong": "Oops! Something went wrong",
+  "@oops_something_went_wrong": {
+    "description": "Error message when something goes wrong"
+  },
+  "check_connection_try_again": "Please check your connection and try again",
+  "@check_connection_try_again": {
+    "description": "Error description for connection issues"
+  },
+  "try_again": "Try Again",
+  "@try_again": {
+    "description": "Retry button text"
+  },
+  "no_opportunities_found": "No opportunities found",
+  "@no_opportunities_found": {
+    "description": "Empty state title for opportunities"
+  },
+  "try_adjusting_search_filters": "Try adjusting your search or filters",
+  "@try_adjusting_search_filters": {
+    "description": "Empty state description for opportunities"
+  },
+  "month": "month",
+  "@month": {
+    "description": "Singular month text"
+  },
+  "months": "months",
+  "@months": {
+    "description": "Plural months text"
+  },
+  "location_id": "Location ID:",
+  "@location_id": {
+    "description": "Location ID prefix text"
+  },
+  "duration_filter": "Duration",
+  "@duration_filter": {
+    "description": "Duration filter section title"
   }
 }

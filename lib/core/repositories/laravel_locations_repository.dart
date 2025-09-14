@@ -4,12 +4,12 @@ import 'package:ngo/models/location.dart';
 
 final class LaravelLocationsRepository extends LaravelRepository
     implements LocationsRepository {
-
   @override
   Future<List<Location>> fetchAll({String language = 'en'}) async {
-    final response = await get('/v1/locations', headers: {
-      'Accept-Language': language,
-    });
+    final response = await get(
+      '/v1/locations',
+      headers: {'Accept-Language': language},
+    );
 
     final data = response['data'] as List<dynamic>;
     return data
@@ -19,9 +19,10 @@ final class LaravelLocationsRepository extends LaravelRepository
 
   @override
   Future<Location> fetch(String id, {String language = 'en'}) async {
-    final response = await get('/v1/locations/$id' , headers: {
-      'Accept-Language': language,
-    });
+    final response = await get(
+      '/v1/locations/$id',
+      headers: {'Accept-Language': language},
+    );
     final data = response['data'] as Map<String, dynamic>;
     return Location.fromLaravel(data);
   }

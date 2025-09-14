@@ -18,22 +18,26 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> loadFollowingFeed({String language = 'en'}) async {
     try {
       emit(const HomeState.loading());
-      
+
       final accessToken = await SharedPrefHelper.getAccessToken();
       log("Loading following feed with language: $language , $accessToken");
-      
+
       final result = await _feedRepository.following(
         accessToken,
         language: language,
       );
-      
-      log("Following feed loaded: ${result.$2.length} posts, ${result.$3.length} opportunities");
-      
-      emit(HomeState.followingLoaded(
-        profileCompletion: result.$1,
-        posts: result.$2,
-        opportunities: result.$3,
-      ));
+
+      log(
+        "Following feed loaded: ${result.$2.length} posts, ${result.$3.length} opportunities",
+      );
+
+      emit(
+        HomeState.followingLoaded(
+          profileCompletion: result.$1,
+          posts: result.$2,
+          opportunities: result.$3,
+        ),
+      );
     } catch (error) {
       log("Error loading following feed: $error");
       emit(HomeState.error(error.toString()));
@@ -43,17 +47,16 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> loadRecentFeed({String language = 'en'}) async {
     try {
       emit(const HomeState.loading());
-      
+
       log("Loading recent feed with language: $language");
-      
+
       final result = await _feedRepository.recent(language: language);
-      
-      log("Recent feed loaded: ${result.$1.length} posts, ${result.$2.length} opportunities");
-      
-      emit(HomeState.recentLoaded(
-        posts: result.$1,
-        opportunities: result.$2,
-      ));
+
+      log(
+        "Recent feed loaded: ${result.$1.length} posts, ${result.$2.length} opportunities",
+      );
+
+      emit(HomeState.recentLoaded(posts: result.$1, opportunities: result.$2));
     } catch (error) {
       log("Error loading recent feed: $error");
       emit(HomeState.error(error.toString()));

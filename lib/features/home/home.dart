@@ -578,7 +578,7 @@ class Home extends HookWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child:  Text(
+                    child: Text(
                       AppLocalizations.of(context)!.apply_now,
                       style: TextStyle(
                         fontSize: 16,

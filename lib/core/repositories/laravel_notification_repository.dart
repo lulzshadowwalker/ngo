@@ -2,7 +2,6 @@ import '../../models/notification.dart';
 import '../contracts/notification_repository.dart';
 import 'laravel_repository.dart';
 
-
 final class LaravelNotificationRepository extends LaravelRepository
     implements NotificationRepository {
   @override
@@ -68,6 +67,4 @@ final class LaravelNotificationRepository extends LaravelRepository
       headers: {'Authorization': 'Bearer $accessToken'},
     );
   }
-
-  
 }

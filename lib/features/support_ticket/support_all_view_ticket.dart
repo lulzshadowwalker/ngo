@@ -25,18 +25,27 @@ class SupportAllViewTicket extends HookWidget {
             if (type.contains('loading')) {
               return const Center(child: CircularProgressIndicator());
             } else if (type.contains('error')) {
-              final message = (state as dynamic).message ?? 'Error loading tickets.';
+              final message =
+                  (state as dynamic).message ?? 'Error loading tickets.';
               return Center(
                 child: Text(
                   message,
-                  style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 16),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                    fontSize: 16,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               );
             } else if (type.contains('ticketsloaded')) {
               final tickets = (state as dynamic).tickets as List<SupportTicket>;
               if (tickets.isEmpty) {
-                return Center(child: Text('No support tickets found.', style: MyFonts.font14Black));
+                return Center(
+                  child: Text(
+                    'No support tickets found.',
+                    style: MyFonts.font14Black,
+                  ),
+                );
               }
               return ListView.separated(
                 padding: const EdgeInsets.all(16),
@@ -46,15 +55,25 @@ class SupportAllViewTicket extends HookWidget {
                   final ticket = tickets[index];
                   return ListTile(
                     title: Text(ticket.subject, style: MyFonts.font14BlackBold),
-                    subtitle: Text(ticket.message, maxLines: 2, overflow: TextOverflow.ellipsis),
+                    subtitle: Text(
+                      ticket.message,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     trailing: Text(
                       ticket.status.value,
-                      style: MyFonts.font12Black.copyWith(color: ticket.status.color),
+                      style: MyFonts.font12Black.copyWith(
+                        color: ticket.status.color,
+                      ),
                     ),
                     onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowDetalisSupportAllViewTicket(
-                      id: ticket.id,
-                    )));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ShowDetalisSupportAllViewTicket(id: ticket.id),
+                        ),
+                      );
                     },
                   );
                 },

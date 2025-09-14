@@ -30,10 +30,7 @@ abstract interface class OpportunitiesRepository {
   });
 
   /// Get single opportunity by ID
-  Future<Opportunity> fetch(
-    String id, {
-    String language = 'en',
-  });
+  Future<Opportunity> fetch(String id, {String language = 'en'});
 
   /// Get platform statistics
   Future<Map<String, dynamic>> getStats();
@@ -42,8 +39,7 @@ abstract interface class OpportunitiesRepository {
   Future<List<Opportunity>> search(
     String query, {
     String language = 'en',
-  
-    int? sectorId,
 
+    int? sectorId,
   });
 }

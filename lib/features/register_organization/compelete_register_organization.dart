@@ -29,11 +29,13 @@ class CompeleteRegisterOrganization extends HookWidget {
     var lang = AppLocalizations.of(context)!;
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => sl<SectorsCubit>()..fetchAllSectors(language: lang.localeName)),
         BlocProvider(
-          create: (context) => sl<LocationCubit>()..fetchAllLocation(
-            language: lang.localeName,
-          ),
+          create: (context) =>
+              sl<SectorsCubit>()..fetchAllSectors(language: lang.localeName),
+        ),
+        BlocProvider(
+          create: (context) =>
+              sl<LocationCubit>()..fetchAllLocation(language: lang.localeName),
         ),
       ],
       child: Scaffold(
@@ -265,8 +267,8 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
               },
             ),
             const SizedBox(height: 20),
-         Text("Sectors *"),
-         BlocBuilder<SectorsCubit, SectorsState>(
+            Text("Sectors *"),
+            BlocBuilder<SectorsCubit, SectorsState>(
               builder: (context, state) {
                 if (state.runtimeType.toString() == '_Loading') {
                   return Container(
@@ -298,7 +300,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                       return sectors.where((sector) {
                         if (filter.isEmpty) return true;
                         final searchTerm = filter.toLowerCase();
-                        return sector.name.toLowerCase().contains(searchTerm) ;
+                        return sector.name.toLowerCase().contains(searchTerm);
                       }).toList();
                     },
                     itemAsString: (Sector sector) => sector.name,
@@ -355,8 +357,13 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                             ),
                           ),
                           TextButton(
-                            onPressed: () => context.read<SectorsCubit>().fetchAllSectors(language: lang.localeName),
-                            child: Text('Retry', style: TextStyle(fontSize: 12)),
+                            onPressed: () => context
+                                .read<SectorsCubit>()
+                                .fetchAllSectors(language: lang.localeName),
+                            child: Text(
+                              'Retry',
+                              style: TextStyle(fontSize: 12),
+                            ),
                           ),
                         ],
                       ),
@@ -427,7 +434,7 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                           errorMessage.value = null;
                           return;
                         }
-                      
+
                         if (selectedLocation.value == null) {
                           errorMessage.value = 'Location is required.';
                           return;
@@ -439,14 +446,17 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                         isSubmitting.value = true;
                         try {
                           // Get sectorId from selectedSkills (first skill for demo, or adapt as needed)
-                       
-                          final logoPath = imagePickerResult.selectedImage?.path;
+
+                          final logoPath =
+                              imagePickerResult.selectedImage?.path;
                           await sl<AuthCubit>().registerOrganization(
                             name: fullName,
                             email: email,
                             password: password,
-                            locationId: int.tryParse(selectedLocation.value!.id) ?? 0,
-                            sectorId: int.tryParse(selectedSector.value!.id) ?? 0,
+                            locationId:
+                                int.tryParse(selectedLocation.value!.id) ?? 0,
+                            sectorId:
+                                int.tryParse(selectedSector.value!.id) ?? 0,
                             bio: aboutController.text.isNotEmpty
                                 ? aboutController.text
                                 : null,
@@ -465,7 +475,9 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Organization registered successfully!'),
+                              content: Text(
+                                'Organization registered successfully!',
+                              ),
                             ),
                           );
                           // Example navigation:
@@ -501,6 +513,4 @@ class _CompleteRegisterOrganizationBody extends HookWidget {
       ),
     );
   }
-
-
 }

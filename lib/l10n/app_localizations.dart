@@ -1417,6 +1417,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unread'**
   String get unread_filter;
+
+  /// Filter organizations modal title
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Organizations'**
+  String get filter_organizations;
+
+  /// Filter by sector label
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by Sector:'**
+  String get filter_by_sector;
+
+  /// Loading sectors message
+  ///
+  /// In en, this message translates to:
+  /// **'Loading sectors...'**
+  String get loading_sectors;
+
+  /// Current filter status message
+  ///
+  /// In en, this message translates to:
+  /// **'Currently showing: {filter}'**
+  String currently_showing(String filter);
+
+  /// Apply button text
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get apply;
+
+  /// Welcome message while loading organizations
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome! Loading organizations...'**
+  String get welcome_loading_organizations;
+
+  /// No organizations found message
+  ///
+  /// In en, this message translates to:
+  /// **'No organizations found'**
+  String get no_organizations_found;
+
+  /// No organizations match filter message
+  ///
+  /// In en, this message translates to:
+  /// **'No organizations match your current filter. Try adjusting your search criteria.'**
+  String get no_organizations_match_filter;
+
+  /// Retry button text
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// Following button text when already following
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get following_text;
+
+  /// Unfollow action text
+  ///
+  /// In en, this message translates to:
+  /// **'Unfollow'**
+  String get unfollow;
+
+  /// App bar title for opportunities page
+  ///
+  /// In en, this message translates to:
+  /// **'Volunteer Opportunities'**
+  String get volunteer_opportunities;
+
+  /// Search hint text for opportunities
+  ///
+  /// In en, this message translates to:
+  /// **'Search opportunities...'**
+  String get search_opportunities;
+
+  /// Error message when something goes wrong
+  ///
+  /// In en, this message translates to:
+  /// **'Oops! Something went wrong'**
+  String get oops_something_went_wrong;
+
+  /// Error description for connection issues
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your connection and try again'**
+  String get check_connection_try_again;
+
+  /// Retry button text
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get try_again;
+
+  /// Empty state title for opportunities
+  ///
+  /// In en, this message translates to:
+  /// **'No opportunities found'**
+  String get no_opportunities_found;
+
+  /// Empty state description for opportunities
+  ///
+  /// In en, this message translates to:
+  /// **'Try adjusting your search or filters'**
+  String get try_adjusting_search_filters;
+
+  /// Singular month text
+  ///
+  /// In en, this message translates to:
+  /// **'month'**
+  String get month;
+
+  /// Plural months text
+  ///
+  /// In en, this message translates to:
+  /// **'months'**
+  String get months;
+
+  /// Location ID prefix text
+  ///
+  /// In en, this message translates to:
+  /// **'Location ID:'**
+  String get location_id;
+
+  /// Duration filter section title
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration_filter;
 }
 
 class _AppLocalizationsDelegate

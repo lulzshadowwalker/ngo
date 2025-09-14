@@ -13,20 +13,17 @@ class LocationCubit extends Cubit<LocationState> {
   final LocationsRepository _repository;
   LocationCubit(this._repository) : super(LocationState.initial());
 
-
-
- Future<void> fetchAllLocation({String language = 'en'})async{
+  Future<void> fetchAllLocation({String language = 'en'}) async {
     try {
       emit(const LocationState.loading());
-       final locations = await  _repository.fetchAll(language: language);
+      final locations = await _repository.fetchAll(language: language);
 
-       log("Fetched ${locations.length} locations");
-       emit(LocationState.loaded(locations));
+      log("Fetched ${locations.length} locations");
+      emit(LocationState.loaded(locations));
     } catch (error) {
       emit(LocationState.error(error.toString()));
     }
   }
-
 
   Future<void> fetchLocation(String id, {String language = 'en'}) async {
     try {

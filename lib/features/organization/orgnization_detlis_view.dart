@@ -20,9 +20,11 @@ class OrgnizationDetlisView extends HookWidget {
     var lang = AppLocalizations.of(context)!;
     final selectedTabIndex = useState(0);
     final isAboutExpanded = useState(false);
-    
+
     return BlocProvider(
-      create: (context) => sl<OrganizationCubit>()..fetchOrganization(slug, language: lang.localeName),
+      create: (context) =>
+          sl<OrganizationCubit>()
+            ..fetchOrganization(slug, language: lang.localeName),
       child: Builder(
         builder: (context) => Scaffold(
           backgroundColor: Colors.white,
@@ -52,10 +54,13 @@ class OrgnizationDetlisView extends HookWidget {
                 onPressed: () async {
                   final organizationCubit = context.read<OrganizationCubit>();
                   final organizationState = organizationCubit.state;
-                  if (organizationState.runtimeType.toString().contains('LoadedSingleOrganization')) {
+                  if (organizationState.runtimeType.toString().contains(
+                    'LoadedSingleOrganization',
+                  )) {
                     final loadedState = organizationState as dynamic;
                     final organization = loadedState.organization;
-                    final shareText = '${organization.name}\n\n${organization.bio ?? ''}\n\nCheck out this organization in the NGO app.';
+                    final shareText =
+                        '${organization.name}\n\n${organization.bio ?? ''}\n\nCheck out this organization in the NGO app.';
                     Share.share(shareText);
                   }
                 },
@@ -67,7 +72,9 @@ class OrgnizationDetlisView extends HookWidget {
               if (state.runtimeType.toString().contains('Loading') ||
                   state.runtimeType.toString().contains('Initial')) {
                 return _buildLoadingSkeleton();
-              } else if (state.runtimeType.toString().contains('LoadedSingleOrganization')) {
+              } else if (state.runtimeType.toString().contains(
+                'LoadedSingleOrganization',
+              )) {
                 final loadedState = state as dynamic;
                 final organization = loadedState.organization;
 
@@ -77,22 +84,22 @@ class OrgnizationDetlisView extends HookWidget {
                     children: [
                       // Organization Header with Background Image
                       _buildOrganizationHeader(organization),
-                      
+
                       // Organization Info Card
-                      _buildOrganizationInfo(organization, ),
+                      _buildOrganizationInfo(organization),
 
                       // Contact Buttons
                       _buildContactButtons(organization),
-                      
+
                       // About Us Section
                       _buildAboutSection(organization, isAboutExpanded),
-                      
+
                       // Tab Navigation
                       _buildTabNavigation(selectedTabIndex),
-                      
+
                       // Tab Content
                       _buildTabContent(selectedTabIndex.value, organization),
-                      
+
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -102,7 +109,10 @@ class OrgnizationDetlisView extends HookWidget {
                 return _buildErrorState(
                   errorState.message ?? 'Failed to load organization',
                   () {
-                    context.read<OrganizationCubit>().fetchOrganization(slug, language: lang.localeName);
+                    context.read<OrganizationCubit>().fetchOrganization(
+                      slug,
+                      language: lang.localeName,
+                    );
                   },
                 );
               }
@@ -138,11 +148,7 @@ class OrgnizationDetlisView extends HookWidget {
             Container(
               color: MyColors.primaryColor.withOpacity(0.8),
               child: const Center(
-                child: Icon(
-                  Icons.business,
-                  size: 80,
-                  color: Colors.white,
-                ),
+                child: Icon(Icons.business, size: 80, color: Colors.white),
               ),
             ),
         ],
@@ -150,7 +156,7 @@ class OrgnizationDetlisView extends HookWidget {
     );
   }
 
-  Widget _buildOrganizationInfo(dynamic organization,) {
+  Widget _buildOrganizationInfo(dynamic organization) {
     return Container(
       margin: const EdgeInsets.all(16),
       child: Row(
@@ -191,7 +197,7 @@ class OrgnizationDetlisView extends HookWidget {
             ),
           ),
           const SizedBox(width: 16),
-          
+
           // Organization Details
           Expanded(
             child: Column(
@@ -208,7 +214,7 @@ class OrgnizationDetlisView extends HookWidget {
                   maxLines: 2,
                 ),
                 const SizedBox(height: 4),
-                
+
                 // Sector
                 Row(
                   children: [
@@ -217,17 +223,14 @@ class OrgnizationDetlisView extends HookWidget {
                     Expanded(
                       child: Text(
                         organization.sector,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 4),
-                
+
                 // Location
                 Row(
                   children: [
@@ -236,10 +239,7 @@ class OrgnizationDetlisView extends HookWidget {
                     Expanded(
                       child: Text(
                         organization.location,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -248,10 +248,6 @@ class OrgnizationDetlisView extends HookWidget {
               ],
             ),
           ),
-          
-
-
-
         ],
       ),
     );
@@ -282,9 +278,13 @@ class OrgnizationDetlisView extends HookWidget {
             const SizedBox(width: 12),
             Expanded(
               child: OutlinedButton.icon(
-                onPressed: organization.website != null && organization.website!.isNotEmpty ? () {
-                  _launchWebsite(context, organization.website!);
-                } : null,
+                onPressed:
+                    organization.website != null &&
+                        organization.website!.isNotEmpty
+                    ? () {
+                        _launchWebsite(context, organization.website!);
+                      }
+                    : null,
                 icon: const Icon(Icons.language, size: 18),
                 label: const Text('Website'),
                 style: OutlinedButton.styleFrom(
@@ -302,10 +302,13 @@ class OrgnizationDetlisView extends HookWidget {
     );
   }
 
-  Widget _buildAboutSection(dynamic organization, ValueNotifier<bool> isExpanded) {
+  Widget _buildAboutSection(
+    dynamic organization,
+    ValueNotifier<bool> isExpanded,
+  ) {
     const int maxLines = 3; // Number of lines to show when collapsed
     final String bioText = organization.bio ?? 'No description available.';
-    
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -339,9 +342,9 @@ class OrgnizationDetlisView extends HookWidget {
                     textDirection: TextDirection.ltr,
                   );
                   textPainter.layout(maxWidth: constraints.maxWidth);
-                  
+
                   final bool isTextOverflowing = textPainter.didExceedMaxLines;
-                  
+
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -356,7 +359,9 @@ class OrgnizationDetlisView extends HookWidget {
                             height: 1.5,
                           ),
                           maxLines: expanded ? null : maxLines,
-                          overflow: expanded ? TextOverflow.visible : TextOverflow.ellipsis,
+                          overflow: expanded
+                              ? TextOverflow.visible
+                              : TextOverflow.ellipsis,
                         ),
                       ),
                       if (isTextOverflowing) // Only show read more if text actually overflows
@@ -414,7 +419,11 @@ class OrgnizationDetlisView extends HookWidget {
     );
   }
 
-  Widget _buildTabItem(String title, int index, ValueNotifier<int> selectedTabIndex) {
+  Widget _buildTabItem(
+    String title,
+    int index,
+    ValueNotifier<int> selectedTabIndex,
+  ) {
     final isSelected = selectedTabIndex.value == index;
     return Expanded(
       child: GestureDetector(
@@ -460,19 +469,23 @@ class OrgnizationDetlisView extends HookWidget {
       children: [
         _buildProgramCard(
           title: 'Integrity School',
-          description: 'Developing tomorrow\'s leaders through workshops and mentorship',
+          description:
+              'Developing tomorrow\'s leaders through workshops and mentorship',
           duration: 'Sep 2025 - Dec 2027',
           status: 'Ongoing',
           statusColor: MyColors.primaryColor,
-          imageUrl: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400',
+          imageUrl:
+              'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400',
         ),
         _buildProgramCard(
           title: 'Action For Integrity',
-          description: 'Teaching essential digital skills to empower youth in the modern workplace',
+          description:
+              'Teaching essential digital skills to empower youth in the modern workplace',
           duration: 'Sep 2025 - Dec 2027',
           status: 'Upcoming',
           statusColor: Colors.orange,
-          imageUrl: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400',
+          imageUrl:
+              'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400',
         ),
       ],
     );
@@ -484,10 +497,7 @@ class OrgnizationDetlisView extends HookWidget {
       child: Center(
         child: Text(
           'No volunteer opportunities available',
-          style: TextStyle(
-            color: Colors.grey,
-            fontSize: 16,
-          ),
+          style: TextStyle(color: Colors.grey, fontSize: 16),
         ),
       ),
     );
@@ -499,10 +509,7 @@ class OrgnizationDetlisView extends HookWidget {
       child: Center(
         child: Text(
           'No vacancies available',
-          style: TextStyle(
-            color: Colors.grey,
-            fontSize: 16,
-          ),
+          style: TextStyle(color: Colors.grey, fontSize: 16),
         ),
       ),
     );
@@ -552,7 +559,7 @@ class OrgnizationDetlisView extends HookWidget {
               ),
             ),
           ),
-          
+
           // Program Details
           Padding(
             padding: const EdgeInsets.all(16),
@@ -583,14 +590,14 @@ class OrgnizationDetlisView extends HookWidget {
                     const SizedBox(width: 4),
                     Text(
                       'Duration: $duration',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                      ),
+                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     ),
                     const Spacer(),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: statusColor,
                         borderRadius: BorderRadius.circular(12),
@@ -626,7 +633,7 @@ class OrgnizationDetlisView extends HookWidget {
               width: double.infinity,
               color: Colors.grey[300],
             ),
-            
+
             // Organization info skeleton
             Container(
               margin: const EdgeInsets.all(16),
@@ -647,9 +654,17 @@ class OrgnizationDetlisView extends HookWidget {
                       children: [
                         Container(height: 20, color: Colors.grey[300]),
                         const SizedBox(height: 8),
-                        Container(height: 16, width: 150, color: Colors.grey[300]),
+                        Container(
+                          height: 16,
+                          width: 150,
+                          color: Colors.grey[300],
+                        ),
                         const SizedBox(height: 4),
-                        Container(height: 16, width: 120, color: Colors.grey[300]),
+                        Container(
+                          height: 16,
+                          width: 120,
+                          color: Colors.grey[300],
+                        ),
                       ],
                     ),
                   ),
@@ -664,7 +679,7 @@ class OrgnizationDetlisView extends HookWidget {
                 ],
               ),
             ),
-            
+
             // About section skeleton
             Padding(
               padding: const EdgeInsets.all(16),
@@ -673,10 +688,13 @@ class OrgnizationDetlisView extends HookWidget {
                 children: [
                   Container(height: 20, width: 100, color: Colors.grey[300]),
                   const SizedBox(height: 8),
-                  ...List.generate(3, (index) => Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Container(height: 16, color: Colors.grey[300]),
-                  )),
+                  ...List.generate(
+                    3,
+                    (index) => Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Container(height: 16, color: Colors.grey[300]),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -725,31 +743,49 @@ class OrgnizationDetlisView extends HookWidget {
   }
 
   // Helper methods for launching external apps
-  void _handleFollowToggle(BuildContext context, dynamic organization, ValueNotifier<bool> isFollowLoading) {
+  void _handleFollowToggle(
+    BuildContext context,
+    dynamic organization,
+    ValueNotifier<bool> isFollowLoading,
+  ) {
     final organizationCubit = context.read<OrganizationCubit>();
-    
+
     if (organization.isFollowed) {
       // Show confirmation dialog for unfollowing
-      _showUnfollowConfirmation(context, organization, organizationCubit, isFollowLoading);
+      _showUnfollowConfirmation(
+        context,
+        organization,
+        organizationCubit,
+        isFollowLoading,
+      );
     } else {
       // Follow immediately
-      _performFollowAction(context, organizationCubit, organization, isFollowLoading, true);
+      _performFollowAction(
+        context,
+        organizationCubit,
+        organization,
+        isFollowLoading,
+        true,
+      );
     }
   }
 
   Future<void> _performFollowAction(
     BuildContext context,
-    OrganizationCubit cubit, 
-    dynamic organization, 
-    ValueNotifier<bool> isFollowLoading, 
-    bool isFollow
+    OrganizationCubit cubit,
+    dynamic organization,
+    ValueNotifier<bool> isFollowLoading,
+    bool isFollow,
   ) async {
     isFollowLoading.value = true;
-    
+
     try {
       if (isFollow) {
         await cubit.followOrganization(organization.slug);
-        _showSuccessSnackBar(context, 'You are now following ${organization.name}');
+        _showSuccessSnackBar(
+          context,
+          'You are now following ${organization.name}',
+        );
       } else {
         await cubit.unfollowOrganization(organization.slug);
         _showSuccessSnackBar(context, 'You unfollowed ${organization.name}');
@@ -761,13 +797,20 @@ class OrgnizationDetlisView extends HookWidget {
     }
   }
 
-  void _showUnfollowConfirmation(BuildContext context, dynamic organization, OrganizationCubit cubit, ValueNotifier<bool> isFollowLoading) {
+  void _showUnfollowConfirmation(
+    BuildContext context,
+    dynamic organization,
+    OrganizationCubit cubit,
+    ValueNotifier<bool> isFollowLoading,
+  ) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: const Text('Unfollow Organization'),
-          content: Text('Are you sure you want to unfollow ${organization.name}?'),
+          content: Text(
+            'Are you sure you want to unfollow ${organization.name}?',
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
@@ -776,7 +819,13 @@ class OrgnizationDetlisView extends HookWidget {
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
-                _performFollowAction(context, cubit, organization, isFollowLoading, false);
+                _performFollowAction(
+                  context,
+                  cubit,
+                  organization,
+                  isFollowLoading,
+                  false,
+                );
               },
               style: TextButton.styleFrom(foregroundColor: Colors.red),
               child: const Text('Unfollow'),
@@ -797,11 +846,15 @@ class OrgnizationDetlisView extends HookWidget {
     );
   }
 
-  Future<void> _launchEmail(BuildContext context, String organizationName) async {
+  Future<void> _launchEmail(
+    BuildContext context,
+    String organizationName,
+  ) async {
     final Uri emailUri = Uri(
       scheme: 'mailto',
       path: '', // You can add a default email here if available
-      query: 'subject=Contact Request for $organizationName&body=Hello $organizationName,\n\nI would like to get in touch with your organization.\n\nBest regards,',
+      query:
+          'subject=Contact Request for $organizationName&body=Hello $organizationName,\n\nI would like to get in touch with your organization.\n\nBest regards,',
     );
 
     try {
@@ -826,10 +879,7 @@ class OrgnizationDetlisView extends HookWidget {
 
     try {
       if (await canLaunchUrl(websiteUri)) {
-        await launchUrl(
-          websiteUri,
-          mode: LaunchMode.externalApplication,
-        );
+        await launchUrl(websiteUri, mode: LaunchMode.externalApplication);
       } else {
         _showErrorSnackBar(context, 'Could not open website');
       }

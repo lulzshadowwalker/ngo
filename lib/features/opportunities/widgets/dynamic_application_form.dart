@@ -47,19 +47,13 @@ class DynamicApplicationForm extends HookWidget {
           // Form Header
           Text(
             applicationForm.title,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           if (applicationForm.description?.isNotEmpty == true) ...[
             const SizedBox(height: 8),
             Text(
               applicationForm.description!,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[600],
-              ),
+              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
             ),
           ],
           const SizedBox(height: 24),
@@ -167,10 +161,7 @@ class DynamicApplicationForm extends HookWidget {
           const SizedBox(height: 4),
           Text(
             field.helpText!,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
           ),
         ],
         const SizedBox(height: 8),
@@ -282,7 +273,7 @@ class DynamicApplicationForm extends HookWidget {
     ValueNotifier<Map<String, dynamic>> selectedValues,
   ) {
     final selectedDate = selectedValues.value[field.id.toString()] as DateTime?;
-    
+
     return InkWell(
       onTap: () async {
         final date = await showDatePicker(
@@ -314,7 +305,9 @@ class DynamicApplicationForm extends HookWidget {
                     ? '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}'
                     : field.placeholder ?? 'Select date',
                 style: TextStyle(
-                  color: selectedDate != null ? Colors.black87 : Colors.grey[600],
+                  color: selectedDate != null
+                      ? Colors.black87
+                      : Colors.grey[600],
                   fontSize: 16,
                 ),
               ),
@@ -354,10 +347,7 @@ class DynamicApplicationForm extends HookWidget {
       ),
       hint: Text(field.placeholder ?? 'Select an option'),
       items: options.map((option) {
-        return DropdownMenuItem<String>(
-          value: option,
-          child: Text(option),
-        );
+        return DropdownMenuItem<String>(value: option, child: Text(option));
       }).toList(),
       onChanged: (value) {
         if (value != null) {
@@ -375,7 +365,8 @@ class DynamicApplicationForm extends HookWidget {
     ngo_form.FormField field,
     ValueNotifier<Map<String, dynamic>> selectedValues,
   ) {
-    final isChecked = selectedValues.value[field.id.toString()] as bool? ?? false;
+    final isChecked =
+        selectedValues.value[field.id.toString()] as bool? ?? false;
 
     return Row(
       children: [
@@ -418,15 +409,16 @@ class DynamicApplicationForm extends HookWidget {
               final result = await FilePicker.platform.pickFiles(
                 type: FileType.any,
                 allowMultiple: false,
-                allowedExtensions: null, // You can restrict file types here if needed
+                allowedExtensions:
+                    null, // You can restrict file types here if needed
               );
-              
+
               print('File picker result: $result');
-              
+
               if (result != null && result.files.isNotEmpty) {
                 final file = result.files.first;
                 print('Selected file: ${file.name}, size: ${file.size}');
-                
+
                 // Optional: Check file size (e.g., max 10MB)
                 if (file.size > 10 * 1024 * 1024) {
                   print('File too large: ${file.size} bytes');
@@ -440,7 +432,7 @@ class DynamicApplicationForm extends HookWidget {
                   }
                   return;
                 }
-                
+
                 print('Updating selectedValues with file: ${file.name}');
                 selectedValues.value = {
                   ...selectedValues.value,
@@ -481,7 +473,9 @@ class DynamicApplicationForm extends HookWidget {
                   child: Text(
                     fileName ?? field.placeholder ?? 'Select file',
                     style: TextStyle(
-                      color: fileName != null ? Colors.black87 : Colors.grey[600],
+                      color: fileName != null
+                          ? Colors.black87
+                          : Colors.grey[600],
                       fontSize: 16,
                     ),
                   ),
@@ -493,11 +487,6 @@ class DynamicApplicationForm extends HookWidget {
       },
     );
   }
-
-
-
-
-
 
   TextInputType _getKeyboardType(ngo_form.FormFieldType type) {
     switch (type) {

@@ -886,9 +886,6 @@ class _CompleteYourProfileView extends HookWidget {
     SkillsState state,
     ValueNotifier<List<Skill>> selectedSkills,
   ) {
-
-
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -903,7 +900,12 @@ class _CompleteYourProfileView extends HookWidget {
           expand: false,
           builder: (context, scrollController) {
             return Container(
-              padding: const EdgeInsets.only(bottom: 60 , left: 16, right: 16, top: 8),
+              padding: const EdgeInsets.only(
+                bottom: 60,
+                left: 16,
+                right: 16,
+                top: 8,
+              ),
               child: Column(
                 children: [
                   Container(
@@ -996,14 +998,17 @@ class _CompleteYourProfileView extends HookWidget {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: MyColors.primaryColor,
-                          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 24),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 18,
+                            horizontal: 24,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                           elevation: 2,
                         ),
                         onPressed: () => Navigator.pop(context),
-                        child:  Text(
+                        child: Text(
                           AppLocalizations.of(context)!.done,
                           style: TextStyle(
                             color: Colors.white,
@@ -1021,9 +1026,6 @@ class _CompleteYourProfileView extends HookWidget {
         ),
       ),
     );
-  
-  
-  
   }
 
   void _showSectorsBottomSheet(
@@ -1045,7 +1047,12 @@ class _CompleteYourProfileView extends HookWidget {
           expand: false,
           builder: (context, scrollController) {
             return Container(
-               padding: const EdgeInsets.only(bottom: 70 , left: 16, right: 16, top: 8),
+              padding: const EdgeInsets.only(
+                bottom: 70,
+                left: 16,
+                right: 16,
+                top: 8,
+              ),
               child: Column(
                 children: [
                   Container(

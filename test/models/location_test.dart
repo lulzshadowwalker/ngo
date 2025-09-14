@@ -13,16 +13,15 @@ void main() {
             "city": "Caylaton",
             "country": "Georgia",
             "createdAt": "2025-06-05T12:27:13+00:00",
-            "updatedAt": "2025-06-05T12:27:13+00:00"
+            "updatedAt": "2025-06-05T12:27:13+00:00",
           },
-          "relationships": {
-            "individuals": [],
-            "organizations": []
-          }
-        }
+          "relationships": {"individuals": [], "organizations": []},
+        },
       };
 
-      final location = Location.fromLaravel(json['data'] as Map<String, dynamic>);
+      final location = Location.fromLaravel(
+        json['data'] as Map<String, dynamic>,
+      );
 
       expect(location.id, "1");
       expect(location.city, "Caylaton");
@@ -34,7 +33,7 @@ void main() {
         "id": "2",
         "attributes": {
           // city and country are missing
-        }
+        },
       };
 
       expect(

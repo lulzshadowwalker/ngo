@@ -1,6 +1,3 @@
-
-
-
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,21 +30,19 @@ class _EditProfileContent extends HookWidget {
     final fullNameController = useTextEditingController();
     final bioController = useTextEditingController();
     final emailController = useTextEditingController();
-    
 
     final selectedSkills = useState<Set<String>>({
-      'Leadership', 
-      'Communication', 
-      'Project Management'
+      'Leadership',
+      'Communication',
+      'Project Management',
     });
-    
+
     final selectedInterests = useState<Set<String>>({
-      'Education', 
-      'Environment'
+      'Education',
+      'Environment',
     });
-    
+
     final selectedImage = useState<File?>(null);
-    
 
     return BlocConsumer<UserManagementCubit, UserManagementState>(
       listener: (context, state) {
@@ -56,9 +51,9 @@ class _EditProfileContent extends HookWidget {
           try {
             final dynamic errorState = state;
             final message = errorState.message ?? 'Unknown error';
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error: $message')),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('Error: $message')));
           } catch (e) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Error loading profile data')),
@@ -68,7 +63,7 @@ class _EditProfileContent extends HookWidget {
       },
       builder: (context, state) {
         final stateType = state.runtimeType.toString();
-        
+
         // Handle loading and initial states
         if (stateType.contains('Loading') || stateType.contains('Initial')) {
           return _buildLoadingScaffold(context);
@@ -115,7 +110,7 @@ class _EditProfileContent extends HookWidget {
   }
 
   Widget _buildMainScaffoldWithUserData(
-    BuildContext context, 
+    BuildContext context,
     User? user,
     TextEditingController fullNameController,
     TextEditingController bioController,
@@ -125,13 +120,21 @@ class _EditProfileContent extends HookWidget {
     ValueNotifier<File?> selectedImage,
   ) {
     final skills = [
-      'Leadership', 'Communication', 'Project Management', 'Public Speaking',
-      'Social Media', 'Event Planning'
+      'Leadership',
+      'Communication',
+      'Project Management',
+      'Public Speaking',
+      'Social Media',
+      'Event Planning',
     ];
-    
+
     final interests = [
-      'Education', 'Environment', 'Healthcare', 'Social Justice',
-      'Youth Development', 'Arts & Culture'
+      'Education',
+      'Environment',
+      'Healthcare',
+      'Social Justice',
+      'Youth Development',
+      'Arts & Culture',
     ];
 
     return _buildMainScaffold(
@@ -163,7 +166,8 @@ class _EditProfileContent extends HookWidget {
           children: [
             const Text('Error loading profile data'),
             ElevatedButton(
-              onPressed: () => context.read<UserManagementCubit>().fetchCurrentUser(),
+              onPressed: () =>
+                  context.read<UserManagementCubit>().fetchCurrentUser(),
               child: const Text('Retry'),
             ),
           ],
@@ -194,13 +198,9 @@ class _EditProfileContent extends HookWidget {
         ),
         centerTitle: true,
       ),
-      body: const Center(
-        child: CircularProgressIndicator(),
-      ),
+      body: const Center(child: CircularProgressIndicator()),
     );
   }
-
-
 
   Widget _buildMainScaffold(
     BuildContext context, {
@@ -241,7 +241,7 @@ class _EditProfileContent extends HookWidget {
           SliverToBoxAdapter(
             child: _buildProfilePhotoSection(context, user, selectedImage),
           ),
-          
+
           // Form Fields
           SliverToBoxAdapter(
             child: Padding(
@@ -255,7 +255,7 @@ class _EditProfileContent extends HookWidget {
                     controller: fullNameController,
                   ),
                   const SizedBox(height: 24),
-                  
+
                   // Bio Field
                   _buildTextField(
                     label: 'Bio',
@@ -263,14 +263,16 @@ class _EditProfileContent extends HookWidget {
                     maxLines: 4,
                   ),
                   const SizedBox(height: 24),
-                  
+
                   // Skills Section
                   _buildChipSection(
                     title: 'Skills',
                     items: skills,
                     selectedItems: selectedSkills.value,
                     onSelectionChanged: (item) {
-                      final newSelection = Set<String>.from(selectedSkills.value);
+                      final newSelection = Set<String>.from(
+                        selectedSkills.value,
+                      );
                       if (newSelection.contains(item)) {
                         newSelection.remove(item);
                       } else {
@@ -280,14 +282,16 @@ class _EditProfileContent extends HookWidget {
                     },
                   ),
                   const SizedBox(height: 24),
-                  
+
                   // Interests Section
                   _buildChipSection(
                     title: 'Interests',
                     items: interests,
                     selectedItems: selectedInterests.value,
                     onSelectionChanged: (item) {
-                      final newSelection = Set<String>.from(selectedInterests.value);
+                      final newSelection = Set<String>.from(
+                        selectedInterests.value,
+                      );
                       if (newSelection.contains(item)) {
                         newSelection.remove(item);
                       } else {
@@ -297,7 +301,7 @@ class _EditProfileContent extends HookWidget {
                     },
                   ),
                   const SizedBox(height: 24),
-                  
+
                   // Email Field
                   _buildTextField(
                     label: 'Email',
@@ -305,7 +309,7 @@ class _EditProfileContent extends HookWidget {
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 32),
-                  
+
                   // Save Changes Button
                   SizedBox(
                     width: double.infinity,
@@ -352,7 +356,11 @@ class _EditProfileContent extends HookWidget {
     );
   }
 
-  Widget _buildProfilePhotoSection(BuildContext context, User? user, ValueNotifier<File?> selectedImage) {
+  Widget _buildProfilePhotoSection(
+    BuildContext context,
+    User? user,
+    ValueNotifier<File?> selectedImage,
+  ) {
     return Container(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -365,10 +373,7 @@ class _EditProfileContent extends HookWidget {
                 height: 100,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: MyColors.primaryColor,
-                    width: 3,
-                  ),
+                  border: Border.all(color: MyColors.primaryColor, width: 3),
                 ),
                 child: ClipOval(
                   child: selectedImage.value != null
@@ -379,30 +384,30 @@ class _EditProfileContent extends HookWidget {
                           fit: BoxFit.cover,
                         )
                       : user?.avatar != null && user!.avatar!.isNotEmpty
-                          ? Image.network(
-                              user.avatar!,
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  color: Colors.grey[200],
-                                  child: const Icon(
-                                    Icons.person,
-                                    size: 50,
-                                    color: Colors.grey,
-                                  ),
-                                );
-                              },
-                            )
-                          : Container(
+                      ? Image.network(
+                          user.avatar!,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
                               color: Colors.grey[200],
                               child: const Icon(
                                 Icons.person,
                                 size: 50,
                                 color: Colors.grey,
                               ),
-                            ),
+                            );
+                          },
+                        )
+                      : Container(
+                          color: Colors.grey[200],
+                          child: const Icon(
+                            Icons.person,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
+                        ),
                 ),
               ),
               Positioned(
@@ -429,7 +434,7 @@ class _EditProfileContent extends HookWidget {
             ],
           ),
           const SizedBox(height: 12),
-          
+
           // Change Photo Text
           GestureDetector(
             onTap: () => _showImageSourceDialog(context, selectedImage),
@@ -502,10 +507,7 @@ class _EditProfileContent extends HookWidget {
           const SizedBox(height: 4),
           Text(
             errorText,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.red,
-            ),
+            style: const TextStyle(fontSize: 12, color: Colors.red),
           ),
         ],
       ],
@@ -570,12 +572,16 @@ class _EditProfileContent extends HookWidget {
     TextEditingController emailController,
     ValueNotifier<Set<String>> selectedSkills,
     ValueNotifier<Set<String>> selectedInterests,
-    ValueNotifier<File?> selectedImage
+    ValueNotifier<File?> selectedImage,
   ) {
     // Call the API to update profile
     context.read<UserManagementCubit>().updateProfile(
-      name: fullNameController.text.trim().isEmpty ? null : fullNameController.text.trim(),
-      email: emailController.text.trim().isEmpty ? null : emailController.text.trim(),
+      name: fullNameController.text.trim().isEmpty
+          ? null
+          : fullNameController.text.trim(),
+      email: emailController.text.trim().isEmpty
+          ? null
+          : emailController.text.trim(),
       bio: bioController.text.trim().isEmpty ? null : bioController.text.trim(),
       // TODO: Add other fields like birthdate, website, etc. when UI fields are added
       // For now, we're only updating the basic fields that are in the current UI
@@ -583,7 +589,10 @@ class _EditProfileContent extends HookWidget {
     );
   }
 
-  void _showImageSourceDialog(BuildContext context, ValueNotifier<File?> selectedImage) {
+  void _showImageSourceDialog(
+    BuildContext context,
+    ValueNotifier<File?> selectedImage,
+  ) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -621,7 +630,10 @@ class _EditProfileContent extends HookWidget {
     );
   }
 
-  void _pickImageFromCamera(BuildContext context, ValueNotifier<File?> selectedImage) async {
+  void _pickImageFromCamera(
+    BuildContext context,
+    ValueNotifier<File?> selectedImage,
+  ) async {
     try {
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: ImageSource.camera);
@@ -644,7 +656,10 @@ class _EditProfileContent extends HookWidget {
     }
   }
 
-  void _pickImageFromGallery(BuildContext context, ValueNotifier<File?> selectedImage) async {
+  void _pickImageFromGallery(
+    BuildContext context,
+    ValueNotifier<File?> selectedImage,
+  ) async {
     try {
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
@@ -666,7 +681,4 @@ class _EditProfileContent extends HookWidget {
       );
     }
   }
-
-
-
 }

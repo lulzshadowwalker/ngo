@@ -31,9 +31,7 @@ final class LaravelFeedRepository extends LaravelRepository
           .toList()
           .cast<Post>(),
       (response['opportunities'] as List<dynamic>)
-          .map(
-            (item) => Opportunity.fromLaravel(item as Map<String, dynamic>),
-          )
+          .map((item) => Opportunity.fromLaravel(item as Map<String, dynamic>))
           .toList()
           .cast<Opportunity>(),
     );
@@ -52,9 +50,7 @@ final class LaravelFeedRepository extends LaravelRepository
           .toList()
           .cast<Post>(),
       (response['opportunities'] as List<dynamic>)
-          .map(
-            (item) => Opportunity.fromLaravel(item as Map<String, dynamic>),
-          )
+          .map((item) => Opportunity.fromLaravel(item as Map<String, dynamic>))
           .toList()
           .cast<Opportunity>(),
     );

@@ -47,9 +47,9 @@ class AuthCubit extends Cubit<AuthState> {
         role: role.name,
       );
 
-  emit(AuthState.authenticated(accessToken: accessToken, role: role));
-  // Save user id globally after login
-  sl<UserManagementCubit>().fetchCurrentUser();
+      emit(AuthState.authenticated(accessToken: accessToken, role: role));
+      // Save user id globally after login
+      sl<UserManagementCubit>().fetchCurrentUser();
     } catch (error) {
       emit(AuthState.loginError(error.toString()));
     }
@@ -80,9 +80,9 @@ class AuthCubit extends Cubit<AuthState> {
         role: role.name,
       );
 
-  emit(AuthState.authenticated(accessToken: accessToken, role: role));
-  // Save user id globally after registration
-  sl<UserManagementCubit>().fetchCurrentUser();
+      emit(AuthState.authenticated(accessToken: accessToken, role: role));
+      // Save user id globally after registration
+      sl<UserManagementCubit>().fetchCurrentUser();
     } catch (error) {
       emit(AuthState.registerError(error.toString()));
     }
@@ -117,9 +117,9 @@ class AuthCubit extends Cubit<AuthState> {
         accessToken: accessToken,
         role: role.name,
       );
-  emit(AuthState.authenticated(accessToken: accessToken, role: role));
-  // Save user id globally after registration
-  sl<UserManagementCubit>().fetchCurrentUser();
+      emit(AuthState.authenticated(accessToken: accessToken, role: role));
+      // Save user id globally after registration
+      sl<UserManagementCubit>().fetchCurrentUser();
     } catch (error) {
       emit(AuthState.registerError(error.toString()));
     }

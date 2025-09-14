@@ -4,8 +4,6 @@ import 'package:ngo/features/static_page_features/cubit/static_page_cubit.dart';
 import '../../export_tools.dart';
 import '../../service_locator.dart';
 
-
-
 class TermsOfService extends StatelessWidget {
   const TermsOfService({super.key});
 

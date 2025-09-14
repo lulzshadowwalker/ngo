@@ -80,7 +80,10 @@ class NotificationsHome extends HookWidget {
             leading: const BackButton(color: Colors.black),
             title: Text(
               lang.notifications,
-              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           body: Padding(
@@ -109,92 +112,95 @@ class NotificationsHome extends HookWidget {
                     ),
                   ],
                 ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: BlocBuilder<NotificationsCubit, NotificationsState>(
-                  builder: (context, state) {
-                    if (state.runtimeType.toString().contains('Initial')) {
-                      return Center(
-                        child: Text(lang.no_notifications_available),
-                      );
-                    } else if (state.runtimeType.toString().contains(
-                      'Loading',
-                    )) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (state.runtimeType.toString().contains(
-                      'Loaded',
-                    )) {
-                      final loadedState = state as dynamic;
-                      final notifications =
-                          loadedState.notifications as List<dynamic>;
-
-                      final filteredNotifications =
-                          selectedFilter.value == lang.all_filter
-                          ? notifications
-                          : notifications.where((n) => !n.isRead).toList();
-
-                      if (filteredNotifications.isEmpty) {
+                const SizedBox(height: 16),
+                Expanded(
+                  child: BlocBuilder<NotificationsCubit, NotificationsState>(
+                    builder: (context, state) {
+                      if (state.runtimeType.toString().contains('Initial')) {
                         return Center(
-                          child: Text(
+                          child: Text(lang.no_notifications_available),
+                        );
+                      } else if (state.runtimeType.toString().contains(
+                        'Loading',
+                      )) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (state.runtimeType.toString().contains(
+                        'Loaded',
+                      )) {
+                        final loadedState = state as dynamic;
+                        final notifications =
+                            loadedState.notifications as List<dynamic>;
+
+                        final filteredNotifications =
                             selectedFilter.value == lang.all_filter
-                                ? lang.no_notifications
-                                : lang.no_unread_notifications,
-                            style: const TextStyle(color: Colors.grey),
+                            ? notifications
+                            : notifications.where((n) => !n.isRead).toList();
+
+                        if (filteredNotifications.isEmpty) {
+                          return Center(
+                            child: Text(
+                              selectedFilter.value == lang.all_filter
+                                  ? lang.no_notifications
+                                  : lang.no_unread_notifications,
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                          );
+                        }
+
+                        return ListView.builder(
+                          itemCount: filteredNotifications.length,
+                          itemBuilder: (context, index) {
+                            final notification = filteredNotifications[index];
+                            return buildNotificationCard(
+                              title: notification.title ?? lang.no_title,
+                              subtitle: notification.message ?? lang.no_message,
+                              time: _formatTime(
+                                notification.sentAt ?? DateTime.now(),
+                                lang,
+                              ),
+                              isRead: notification.isRead ?? false,
+                              onTap: () {
+                                if (!(notification.isRead ?? true)) {
+                                  // Mark as read when tapped
+                                  context.read<NotificationsCubit>().markAsRead(
+                                    notification.id ?? '',
+                                  );
+                                }
+                              },
+                            );
+                          },
+                        );
+                      } else if (state.runtimeType.toString().contains(
+                        'Error',
+                      )) {
+                        final errorState = state as dynamic;
+                        final message =
+                            errorState.message ?? lang.unknown_error;
+
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Error: $message'),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: () => context
+                                    .read<NotificationsCubit>()
+                                    .fetchNotifications(),
+                                child: const Text('Retry'),
+                              ),
+                            ],
                           ),
                         );
+                      } else {
+                        return Center(child: Text(lang.unknown_state));
                       }
-
-                      return ListView.builder(
-                        itemCount: filteredNotifications.length,
-                        itemBuilder: (context, index) {
-                          final notification = filteredNotifications[index];
-                          return buildNotificationCard(
-                            title: notification.title ?? lang.no_title,
-                            subtitle: notification.message ?? lang.no_message,
-                            time: _formatTime(
-                              notification.sentAt ?? DateTime.now(),
-                              lang,
-                            ),
-                            isRead: notification.isRead ?? false,
-                            onTap: () {
-                              if (!(notification.isRead ?? true)) {
-                                // Mark as read when tapped
-                                context.read<NotificationsCubit>().markAsRead(
-                                  notification.id ?? '',
-                                );
-                              }
-                            },
-                          );
-                        },
-                      );
-                    } else if (state.runtimeType.toString().contains('Error')) {
-                      final errorState = state as dynamic;
-                      final message = errorState.message ?? lang.unknown_error;
-
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Error: $message'),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () => context
-                                  .read<NotificationsCubit>()
-                                  .fetchNotifications(),
-                              child: const Text('Retry'),
-                            ),
-                          ],
-                        ),
-                      );
-                    } else {
-                      return Center(child: Text(lang.unknown_state));
-                    }
-                  },
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
         ),
       ),
     );

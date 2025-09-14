@@ -17,7 +17,10 @@ class DontHaveAcountSection extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const JionOurCommunity()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const JionOurCommunity()),
+          );
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

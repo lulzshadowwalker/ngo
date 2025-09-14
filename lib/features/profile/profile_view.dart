@@ -30,9 +30,7 @@ class ProfileView extends HookWidget {
         BlocProvider(
           create: (context) => sl<UserManagementCubit>()..fetchUserData(),
         ),
-        BlocProvider(
-          create: (context) => sl<OrganizationCubit>(),
-        ),
+        BlocProvider(create: (context) => sl<OrganizationCubit>()),
       ],
       child: _ProfileViewContent(selectedTab: selectedTab),
     );
@@ -80,7 +78,8 @@ class _ProfileViewContent extends HookWidget {
         listener: (context, orgState) {
           final stateType = orgState.runtimeType.toString();
           // Listen for successful unfollow operations
-          if (stateType.contains('LoadedSingleOrganization') || stateType.contains('Loaded')) {
+          if (stateType.contains('LoadedSingleOrganization') ||
+              stateType.contains('Loaded')) {
             // Refresh user data to update the following list
             context.read<UserManagementCubit>().fetchUserData();
           } else if (stateType.contains('Error')) {
@@ -107,7 +106,9 @@ class _ProfileViewContent extends HookWidget {
                 ),
 
                 // Tab Content
-                SliverToBoxAdapter(child: _buildTabContent(context, selectedTab, state)),
+                SliverToBoxAdapter(
+                  child: _buildTabContent(context, selectedTab, state),
+                ),
 
                 // Bottom padding
                 const SliverToBoxAdapter(child: SizedBox(height: 100)),
@@ -518,7 +519,10 @@ class _ProfileViewContent extends HookWidget {
     }
   }
 
-  Widget _buildFollowingTab(BuildContext context, List<Organization> organizations) {
+  Widget _buildFollowingTab(
+    BuildContext context,
+    List<Organization> organizations,
+  ) {
     if (organizations.isEmpty) {
       return Container(
         padding: const EdgeInsets.all(24),
@@ -555,14 +559,18 @@ class _ProfileViewContent extends HookWidget {
     );
   }
 
-  Widget _buildOrganizationCard(BuildContext context, {required Organization organization}) {
+  Widget _buildOrganizationCard(
+    BuildContext context, {
+    required Organization organization,
+  }) {
     return GestureDetector(
       onTap: () {
         // Navigate to organization details page
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => OrgnizationDetlisView(slug: organization.slug),
+            builder: (context) =>
+                OrgnizationDetlisView(slug: organization.slug),
           ),
         );
       },
@@ -608,7 +616,7 @@ class _ProfileViewContent extends HookWidget {
                     ),
             ),
             const SizedBox(width: 12),
-      
+
             // Organization Details
             Expanded(
               child: Column(
@@ -629,7 +637,11 @@ class _ProfileViewContent extends HookWidget {
                       ),
                       const SizedBox(width: 2),
                       if (organization.isFollowed)
-                        const Icon(Icons.verified, size: 16, color: Colors.blue),
+                        const Icon(
+                          Icons.verified,
+                          size: 16,
+                          color: Colors.blue,
+                        ),
                     ],
                   ),
                   const SizedBox(height: 4),
@@ -667,14 +679,17 @@ class _ProfileViewContent extends HookWidget {
                 ],
               ),
             ),
-      
+
             // Following Button
             GestureDetector(
               onTap: () {
                 _showUnfollowDialog(context, organization);
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   border: Border.all(color: MyColors.primaryColor),
                   borderRadius: BorderRadius.circular(20),
@@ -812,13 +827,12 @@ class _ProfileViewContent extends HookWidget {
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
-                context.read<OrganizationCubit>().unfollowOrganization(organization.slug);
+                context.read<OrganizationCubit>().unfollowOrganization(
+                  organization.slug,
+                );
                 context.read<UserManagementCubit>().fetchUserData();
               },
-              child: Text(
-                'Unfollow',
-                style: TextStyle(color: Colors.red),
-              ),
+              child: Text('Unfollow', style: TextStyle(color: Colors.red)),
             ),
           ],
         );

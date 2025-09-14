@@ -1,4 +1,3 @@
-
 sealed class MainNavState {}
 
 final class MainNavInitial extends MainNavState {}

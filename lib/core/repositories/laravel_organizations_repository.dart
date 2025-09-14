@@ -8,11 +8,11 @@ import 'package:ngo/models/organization.dart';
 final class LaravelOrganizationsRepository extends LaravelRepository
     implements OrganizationsRepository {
   @override
-  Future<Organization> fetch(String slug, String accessToken , {String language = 'en'}) async {
-
-    
-
-        
+  Future<Organization> fetch(
+    String slug,
+    String accessToken, {
+    String language = 'en',
+  }) async {
     final response = await get(
       '/v1/organizations/$slug',
       headers: {
@@ -25,10 +25,10 @@ final class LaravelOrganizationsRepository extends LaravelRepository
   }
 
   @override
-  Future<List<Organization>> fetchAll(String accessToken ,{String language = 'en'}) async {
-
-
-
+  Future<List<Organization>> fetchAll(
+    String accessToken, {
+    String language = 'en',
+  }) async {
     final response = await get(
       '/v1/organizations',
       headers: {
@@ -49,14 +49,11 @@ final class LaravelOrganizationsRepository extends LaravelRepository
     log('Raw authorization token: "$authorization"');
     log('Token length: ${authorization.length}');
     log('Token starts with Bearer: ${authorization.startsWith('Bearer ')}');
-    
+
     if (authorization.isEmpty) {
       throw Exception('Authentication required. Please log in again.');
     }
-    
 
-  
-    
     try {
       await post(
         '/v1/organizations/$organizationId/follows',
@@ -81,13 +78,11 @@ final class LaravelOrganizationsRepository extends LaravelRepository
   Future<void> unfollowOrganization(String organizationId) async {
     final authorization = await SharedPrefHelper.getAccessToken();
     log("Raw authorization token: $authorization");
-    
+
     if (authorization.isEmpty) {
       throw Exception('Authentication required. Please log in again.');
     }
-    
 
-    
     try {
       await delete(
         '/v1/organizations/$organizationId/follows',

@@ -40,16 +40,17 @@ class LandingButtonSection extends StatelessWidget {
           buttonColor: MyColors.backgroundColor,
           borderColor: MyColors.backgroundColor,
           onPressed: () {
-               Navigator.push(context, MaterialPageRoute(builder: (context) => const JionOurCommunity()));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const JionOurCommunity()),
+            );
           },
           title: lang.sigup,
         ),
 
         const SizedBox(height: 20),
         TextButton(
-          onPressed: () {
-
-          },
+          onPressed: () {},
           child: TextComponent(
             title: lang.continue_as_guest,
             style: MyFonts.font14BlackBold,

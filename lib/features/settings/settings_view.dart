@@ -176,7 +176,11 @@ class SettingsView extends HookWidget {
                         value:
                             (state.runtimeType.toString().contains('Loaded') &&
                                 (state as dynamic).preferences != null)
-                            ? ((state as dynamic).preferences!.profileVisibility ?? 'public') == 'public'
+                            ? ((state as dynamic)
+                                          .preferences!
+                                          .profileVisibility ??
+                                      'public') ==
+                                  'public'
                             : true, // Default to public (true)
                         onChanged: (value) {
                           // Temporary: Only allow setting to public due to API limitations
@@ -186,7 +190,9 @@ class SettingsView extends HookWidget {
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: Text('Feature Not Available'),
-                                content: Text('Private profile visibility is not currently supported by the server. Please contact support for more information.'),
+                                content: Text(
+                                  'Private profile visibility is not currently supported by the server. Please contact support for more information.',
+                                ),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(context),
@@ -207,7 +213,8 @@ class SettingsView extends HookWidget {
                               : null;
 
                           final updateData = <String, dynamic>{
-                            'profileVisibility': 'public', // Only send public for now
+                            'profileVisibility':
+                                'public', // Only send public for now
                             'emailNotifications':
                                 currentPrefs?.emailNotifications ?? false,
                             'pushNotifications':
@@ -415,7 +422,6 @@ class SettingsView extends HookWidget {
           Theme(
             data: ThemeData(
               switchTheme: SwitchThemeData(
-                
                 thumbColor: MaterialStateProperty.resolveWith<Color>((states) {
                   if (states.contains(MaterialState.selected)) {
                     return Colors.white;
@@ -426,7 +432,7 @@ class SettingsView extends HookWidget {
                   if (states.contains(MaterialState.selected)) {
                     return MyColors.primaryColor;
                   }
-                  
+
                   return Colors.grey[300]!;
                 }),
                 overlayColor: MaterialStateProperty.all(Colors.transparent),
@@ -434,10 +440,7 @@ class SettingsView extends HookWidget {
                 // materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
             ),
-            child: Switch(
-              value: value,
-              onChanged: onChanged,
-            ),
+            child: Switch(value: value, onChanged: onChanged),
           ),
         ],
       ),
@@ -459,7 +462,7 @@ class SettingsView extends HookWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children:  [
+          children: [
             Icon(Icons.logout, size: 24, color: Colors.red),
             SizedBox(width: 12),
             Text(

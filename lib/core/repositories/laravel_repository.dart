@@ -155,10 +155,9 @@ abstract class LaravelRepository {
     // Add files to form data
     if (files != null) {
       for (final entry in files.entries) {
-        formData.files.add(MapEntry(
-          entry.key,
-          await MultipartFile.fromFile(entry.value.path),
-        ));
+        formData.files.add(
+          MapEntry(entry.key, await MultipartFile.fromFile(entry.value.path)),
+        );
       }
     }
 
@@ -176,7 +175,11 @@ abstract class LaravelRepository {
   }
 
   /// Helper method to add nested JSON data to FormData
-  void _addNestedFormData(FormData formData, Map<String, dynamic> data, String prefix) {
+  void _addNestedFormData(
+    FormData formData,
+    Map<String, dynamic> data,
+    String prefix,
+  ) {
     data.forEach((key, value) {
       final fieldName = prefix.isEmpty ? key : '$prefix[$key]';
 
@@ -187,7 +190,9 @@ abstract class LaravelRepository {
           if (value[i] is Map<String, dynamic>) {
             _addNestedFormData(formData, value[i], '$fieldName[$i]');
           } else {
-            formData.fields.add(MapEntry('$fieldName[$i]', value[i].toString()));
+            formData.fields.add(
+              MapEntry('$fieldName[$i]', value[i].toString()),
+            );
           }
         }
       } else if (value != null) {

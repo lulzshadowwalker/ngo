@@ -16,13 +16,11 @@ class Login extends StatelessWidget {
 
           LoginFromSection(),
           const SizedBox(height: 20),
-       
-       
-             DontHaveAcountSection(lang: lang),
+
+          DontHaveAcountSection(lang: lang),
+
           // LoginScreenButtonSection(lang: lang),
           // const SizedBox(height: 15),
-
-       
         ],
       ),
     );

@@ -1,5 +1,3 @@
-
-
 import 'package:ngo/core/repositories/laravel_repository.dart';
 
 import '../../models/static_page.dart';

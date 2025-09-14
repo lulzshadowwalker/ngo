@@ -15,14 +15,14 @@ class ForgotPasswordSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: AppLocalizations.of(context)!.localeName == "en" ?  Alignment.centerLeft : Alignment.centerRight,
+      alignment: AppLocalizations.of(context)!.localeName == "en"
+          ? Alignment.centerLeft
+          : Alignment.centerRight,
       child: TextButton(
         onPressed: () => _showForgotPasswordDialog(context),
         child: TextComponent(
           title: AppLocalizations.of(context)!.forgot_fassword,
-          style: MyFonts.font14BlackBold.copyWith(
-            color: MyColors.primaryColor,
-          ),
+          style: MyFonts.font14BlackBold.copyWith(color: MyColors.primaryColor),
           textAlign: TextAlign.start,
         ),
       ),
@@ -54,14 +54,14 @@ class ForgotPasswordDialog extends HookWidget {
         if (stateType.contains('ForgotPasswordSuccess')) {
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(
+            SnackBar(
               content: Text(lang.this_email_is_registered),
               backgroundColor: Colors.green,
             ),
           );
         } else if (stateType.contains('ForgotPasswordError')) {
           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(
+            SnackBar(
               content: Text(lang.failed_to_send_reset_email),
               backgroundColor: Colors.red,
             ),
@@ -69,9 +69,7 @@ class ForgotPasswordDialog extends HookWidget {
         }
       },
       child: Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Form(
@@ -110,12 +108,16 @@ class ForgotPasswordDialog extends HookWidget {
                 BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
                     final stateType = state.runtimeType.toString();
-                    final isLoading = stateType.contains('ForgotPasswordLoading');
+                    final isLoading = stateType.contains(
+                      'ForgotPasswordLoading',
+                    );
                     return Row(
                       children: [
                         Expanded(
                           child: TextButton(
-                            onPressed: isLoading ? null : () => Navigator.of(context).pop(),
+                            onPressed: isLoading
+                                ? null
+                                : () => Navigator.of(context).pop(),
                             child: Text(
                               lang.btn_cancel,
                               style: MyFonts.font14BlackBold,
@@ -125,13 +127,15 @@ class ForgotPasswordDialog extends HookWidget {
                         const SizedBox(width: 12),
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: isLoading ? null : () {
-                              if (formKey.currentState!.validate()) {
-                                context.read<AuthCubit>().forgotPassword(
-                                  email: emailController.text.trim(),
-                                );
-                              }
-                            },
+                            onPressed: isLoading
+                                ? null
+                                : () {
+                                    if (formKey.currentState!.validate()) {
+                                      context.read<AuthCubit>().forgotPassword(
+                                        email: emailController.text.trim(),
+                                      );
+                                    }
+                                  },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: MyColors.primaryColor,
                               foregroundColor: Colors.white,
@@ -151,7 +155,9 @@ class ForgotPasswordDialog extends HookWidget {
                                   )
                                 : Text(
                                     lang.btn_send,
-                                    style: MyFonts.font14BlackBold.copyWith(color: Colors.white),
+                                    style: MyFonts.font14BlackBold.copyWith(
+                                      color: Colors.white,
+                                    ),
                                   ),
                           ),
                         ),

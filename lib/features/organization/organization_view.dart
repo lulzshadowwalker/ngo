@@ -30,7 +30,12 @@ class OrganizationView extends HookWidget {
       ),
       builder: (BuildContext bottomSheetContext) {
         return Container(
-          padding: const EdgeInsets.only(top: 20, left: 16, right: 16, bottom: 60),
+          padding: const EdgeInsets.only(
+            top: 20,
+            left: 16,
+            right: 16,
+            bottom: 60,
+          ),
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -40,7 +45,7 @@ class OrganizationView extends HookWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Filter Organizations',
+                      lang.filter_organizations,
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -54,7 +59,7 @@ class OrganizationView extends HookWidget {
                 ),
 
                 Text(
-                  'Filter by Sector:',
+                  lang.filter_by_sector,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -172,7 +177,9 @@ class OrganizationView extends HookWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text('Clear Filters'),
+                        child: Text(
+                          AppLocalizations.of(context)!.clear_filters,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -187,7 +194,7 @@ class OrganizationView extends HookWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text('Apply'),
+                        child: Text(AppLocalizations.of(context)!.apply),
                       ),
                     ),
                   ],
@@ -347,28 +354,35 @@ class OrganizationView extends HookWidget {
                         onTap: () async {
                           log("Unfollowing organization ID: $organizationId");
                           try {
-                            await context.read<OrganizationCubit>().unfollowOrganization(organizationId);
+                            await context
+                                .read<OrganizationCubit>()
+                                .unfollowOrganization(organizationId);
                             if (context.mounted) {
-                          
                               // Reload organizations after unfollow
                               final lang = AppLocalizations.of(context)!;
                               if (selectedFilterId.value != null) {
-                                context.read<OrganizationCubit>().searchOrganizations(
-                                  searchController.text,
-                                  language: lang.localeName,
-                                  sectorId: selectedFilterId.value,
-                                );
+                                context
+                                    .read<OrganizationCubit>()
+                                    .searchOrganizations(
+                                      searchController.text,
+                                      language: lang.localeName,
+                                      sectorId: selectedFilterId.value,
+                                    );
                               } else {
-                                context.read<OrganizationCubit>().fetchAllOrganizations(
-                                  language: lang.localeName,
-                                );
+                                context
+                                    .read<OrganizationCubit>()
+                                    .fetchAllOrganizations(
+                                      language: lang.localeName,
+                                    );
                               }
                             }
                           } catch (e) {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Failed to unfollow $name: [0m${e.toString()}'),
+                                  content: Text(
+                                    'Failed to unfollow $name: [0m${e.toString()}',
+                                  ),
                                   backgroundColor: Colors.red,
                                   duration: const Duration(seconds: 2),
                                 ),
@@ -378,7 +392,7 @@ class OrganizationView extends HookWidget {
                         },
                         child: Center(
                           child: Text(
-                           AppLocalizations.of(context)!.following,
+                            AppLocalizations.of(context)!.following,
                             style: TextStyle(
                               color: MyColors.primaryColor,
                               fontSize: 12,
@@ -403,7 +417,9 @@ class OrganizationView extends HookWidget {
                       onPressed: () async {
                         log("Following organization ID: $organizationId");
                         try {
-                          await context.read<OrganizationCubit>().followOrganization(organizationId);
+                          await context
+                              .read<OrganizationCubit>()
+                              .followOrganization(organizationId);
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -415,22 +431,28 @@ class OrganizationView extends HookWidget {
                             // Reload organizations after follow
                             final lang = AppLocalizations.of(context)!;
                             if (selectedFilterId.value != null) {
-                              context.read<OrganizationCubit>().searchOrganizations(
-                                searchController.text,
-                                language: lang.localeName,
-                                sectorId: selectedFilterId.value,
-                              );
+                              context
+                                  .read<OrganizationCubit>()
+                                  .searchOrganizations(
+                                    searchController.text,
+                                    language: lang.localeName,
+                                    sectorId: selectedFilterId.value,
+                                  );
                             } else {
-                              context.read<OrganizationCubit>().fetchAllOrganizations(
-                                language: lang.localeName,
-                              );
+                              context
+                                  .read<OrganizationCubit>()
+                                  .fetchAllOrganizations(
+                                    language: lang.localeName,
+                                  );
                             }
                           }
                         } catch (e) {
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Failed to follow $name: ${e.toString()}'),
+                                content: Text(
+                                  'Failed to follow $name: ${e.toString()}',
+                                ),
                                 backgroundColor: Colors.red,
                                 duration: const Duration(seconds: 2),
                               ),

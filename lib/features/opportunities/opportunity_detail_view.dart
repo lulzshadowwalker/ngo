@@ -52,7 +52,6 @@ class OpportunityDetailView extends HookWidget {
               children: [
                 _buildOpportunityDetails(context, opportunity),
                 _buildBottomActionButtons(context, opportunity),
-
               ],
             );
           },
@@ -643,7 +642,12 @@ class OpportunityDetailView extends HookWidget {
       left: 0,
       right: 0,
       child: Container(
-        padding: const EdgeInsets.only(bottom: 50 , left: 16, right: 16, top: 16),
+        padding: const EdgeInsets.only(
+          bottom: 50,
+          left: 16,
+          right: 16,
+          top: 16,
+        ),
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -747,9 +751,6 @@ class OpportunityDetailView extends HookWidget {
                           ),
                   ),
                 ),
-             
-               
-             
               ],
             );
           },
@@ -787,10 +788,6 @@ class OpportunityDetailView extends HookWidget {
     }
   }
 
-
-
-
-
   void _showApplicationForm(BuildContext context, Opportunity opportunity) {
     showModalBottomSheet(
       useSafeArea: true,
@@ -803,7 +800,7 @@ class OpportunityDetailView extends HookWidget {
           padding: const EdgeInsets.only(bottom: 60),
           child: Container(
             height: MediaQuery.of(context).size.height * 0.8,
-                
+
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -827,33 +824,40 @@ class OpportunityDetailView extends HookWidget {
                     padding: const EdgeInsets.all(16),
                     child: DynamicApplicationForm(
                       applicationForm: opportunity.applicationForm!,
-                      onSubmit: (responses) async{
+                      onSubmit: (responses) async {
                         Navigator.pop(modalContext);
                         // Convert Map responses to proper format for API
-                        final String userId = await SharedPrefHelper.getString('user_id');
+                        final String userId = await SharedPrefHelper.getString(
+                          'user_id',
+                        );
                         log("This is user id: $userId");
-                        
+
                         // Convert responses to match API expectations
-                        final formattedResponses = responses.entries.map((entry) {
-                          // Skip entries that are metadata (like file paths/bytes)
-                          if (entry.key.contains('_path') || entry.key.contains('_bytes')) {
-                            return null;
-                          }
-                          
-                          final fieldId = int.parse(entry.key);
-                          final formField = opportunity
-                              .applicationForm!
-                              .formFields
-                              .firstWhere((field) => field.id == fieldId);
-             
-                          return ApplicationResponse(
-                            id: userId, // Will be set by backend
-                            formFieldId: fieldId,
-                            value: entry.value.toString(),
-                            formField: formField,
-                          );
-                        }).where((response) => response != null).cast<ApplicationResponse>().toList();
-          
+                        final formattedResponses = responses.entries
+                            .map((entry) {
+                              // Skip entries that are metadata (like file paths/bytes)
+                              if (entry.key.contains('_path') ||
+                                  entry.key.contains('_bytes')) {
+                                return null;
+                              }
+
+                              final fieldId = int.parse(entry.key);
+                              final formField = opportunity
+                                  .applicationForm!
+                                  .formFields
+                                  .firstWhere((field) => field.id == fieldId);
+
+                              return ApplicationResponse(
+                                id: userId, // Will be set by backend
+                                formFieldId: fieldId,
+                                value: entry.value.toString(),
+                                formField: formField,
+                              );
+                            })
+                            .where((response) => response != null)
+                            .cast<ApplicationResponse>()
+                            .toList();
+
                         // Use the original context instead of modalContext
                         context.read<ApplicationCubit>().submitApplication(
                           opportunityId: int.parse(opportunity.id),
@@ -871,10 +875,6 @@ class OpportunityDetailView extends HookWidget {
       ),
     );
   }
-
-
-
-
 
   void _showSuccessSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(

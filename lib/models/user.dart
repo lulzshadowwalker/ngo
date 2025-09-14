@@ -24,7 +24,9 @@ abstract class User with _$User {
 
     Location? location;
     if (includes?['location'] != null) {
-      location = Location.fromLaravel(includes!['location'] as Map<String, dynamic>);
+      location = Location.fromLaravel(
+        includes!['location'] as Map<String, dynamic>,
+      );
     }
 
     List<String>? skills;

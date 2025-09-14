@@ -684,4 +684,75 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get unread_filter => 'غير مقروء';
+
+  @override
+  String get filter_organizations => 'تصفية المنظمات';
+
+  @override
+  String get filter_by_sector => 'التصفية حسب القطاع:';
+
+  @override
+  String get loading_sectors => 'جاري تحميل القطاعات...';
+
+  @override
+  String currently_showing(String filter) {
+    return 'يتم عرض حالياً: $filter';
+  }
+
+  @override
+  String get apply => 'تطبيق';
+
+  @override
+  String get welcome_loading_organizations =>
+      'أهلاً وسهلاً! جاري تحميل المنظمات...';
+
+  @override
+  String get no_organizations_found => 'لا توجد منظمات';
+
+  @override
+  String get no_organizations_match_filter =>
+      'لا توجد منظمات تطابق المرشح الحالي. جرب تعديل معايير البحث.';
+
+  @override
+  String get retry => 'إعادة المحاولة';
+
+  @override
+  String get following_text => 'يتابع';
+
+  @override
+  String get unfollow => 'إلغاء المتابعة';
+
+  @override
+  String get volunteer_opportunities => 'الفرص التطوعية';
+
+  @override
+  String get search_opportunities => 'البحث في الفرص...';
+
+  @override
+  String get oops_something_went_wrong => 'عذراً! حدث خطأ ما';
+
+  @override
+  String get check_connection_try_again =>
+      'يرجى التحقق من اتصالك والمحاولة مرة أخرى';
+
+  @override
+  String get try_again => 'إعادة المحاولة';
+
+  @override
+  String get no_opportunities_found => 'لا توجد فرص متاحة';
+
+  @override
+  String get try_adjusting_search_filters => 'جرب تعديل البحث أو المرشحات';
+
+  @override
+  String get month => 'شهر';
+
+  @override
+  String get months => 'شهور';
+
+  @override
+  String get location_id => 'معرف الموقع:';
+
+  @override
+  String get duration_filter => 'المدة';
 }

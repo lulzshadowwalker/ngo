@@ -73,9 +73,7 @@ void setupServiceLocator() {
   sl.registerLazySingleton<ApplicationsRepository>(
     () => LaravelApplicationsRepository(),
   );
-  sl.registerLazySingleton<FeedRepository>(
-    () => LaravelFeedRepository(),
-  );
+  sl.registerLazySingleton<FeedRepository>(() => LaravelFeedRepository());
 
   // Register cubits as factories (new instance per injection)
   sl.registerFactory(() => AuthCubit(sl<AuthRepository>()));

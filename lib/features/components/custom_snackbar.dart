@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ngo/core/theme/my_colors.dart';
 
-enum SnackBarType {
-  success,
-  error,
-  warning,
-  info,
-}
+enum SnackBarType { success, error, warning, info }
 
 class CustomSnackBar {
   static void show(
@@ -21,11 +16,7 @@ class CustomSnackBar {
     final snackBar = SnackBar(
       content: Row(
         children: [
-          Icon(
-            _getIcon(type),
-            color: Colors.white,
-            size: 24,
-          ),
+          Icon(_getIcon(type), color: Colors.white, size: 24),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
@@ -42,16 +33,15 @@ class CustomSnackBar {
       backgroundColor: _getBackgroundColor(type),
       behavior: SnackBarBehavior.floating,
       margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 6,
       duration: duration,
       action: showCloseButton
           ? SnackBarAction(
               label: actionLabel ?? 'Close',
               textColor: Colors.white,
-              onPressed: onActionPressed ??
+              onPressed:
+                  onActionPressed ??
                   () {
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
                   },

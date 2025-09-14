@@ -17,10 +17,10 @@ class SkillsCubit extends Cubit<SkillsState> {
     try {
       log('SkillsCubit: Starting to fetch skills...');
       emit(const SkillsState.loading());
-      
+
       log('SkillsCubit: Calling repository.fetchAll...');
       final skills = await _repository.fetchAll(language: language);
-      
+
       log('SkillsCubit: Received ${skills.length} skills');
       emit(SkillsState.loaded(skills));
     } catch (error) {
@@ -31,9 +31,9 @@ class SkillsCubit extends Cubit<SkillsState> {
   Future<void> fetchSkill(String id, {String language = 'en'}) async {
     try {
       emit(const SkillsState.loading());
-      
+
       final skill = await _repository.fetch(id, language: language);
-      
+
       emit(SkillsState.loadedSingleSkill(skill));
     } catch (error) {
       emit(SkillsState.error(error.toString()));

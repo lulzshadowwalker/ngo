@@ -12,10 +12,10 @@ void main() {
           "attributes": {
             "name": "Paris Rodriguez",
             "createdAt": "2025-06-05T12:28:48+00:00",
-            "updatedAt": "2025-06-05T12:28:48+00:00"
+            "updatedAt": "2025-06-05T12:28:48+00:00",
           },
-          "relationships": {}
-        }
+          "relationships": {},
+        },
       };
 
       final skill = Skill.fromLaravel(json['data'] as Map<String, dynamic>);
@@ -29,7 +29,7 @@ void main() {
         "id": "2",
         "attributes": {
           // name is missing
-        }
+        },
       };
 
       expect(

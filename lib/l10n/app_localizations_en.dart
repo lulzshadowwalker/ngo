@@ -686,4 +686,76 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unread_filter => 'Unread';
+
+  @override
+  String get filter_organizations => 'Filter Organizations';
+
+  @override
+  String get filter_by_sector => 'Filter by Sector:';
+
+  @override
+  String get loading_sectors => 'Loading sectors...';
+
+  @override
+  String currently_showing(String filter) {
+    return 'Currently showing: $filter';
+  }
+
+  @override
+  String get apply => 'Apply';
+
+  @override
+  String get welcome_loading_organizations =>
+      'Welcome! Loading organizations...';
+
+  @override
+  String get no_organizations_found => 'No organizations found';
+
+  @override
+  String get no_organizations_match_filter =>
+      'No organizations match your current filter. Try adjusting your search criteria.';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get following_text => 'Following';
+
+  @override
+  String get unfollow => 'Unfollow';
+
+  @override
+  String get volunteer_opportunities => 'Volunteer Opportunities';
+
+  @override
+  String get search_opportunities => 'Search opportunities...';
+
+  @override
+  String get oops_something_went_wrong => 'Oops! Something went wrong';
+
+  @override
+  String get check_connection_try_again =>
+      'Please check your connection and try again';
+
+  @override
+  String get try_again => 'Try Again';
+
+  @override
+  String get no_opportunities_found => 'No opportunities found';
+
+  @override
+  String get try_adjusting_search_filters =>
+      'Try adjusting your search or filters';
+
+  @override
+  String get month => 'month';
+
+  @override
+  String get months => 'months';
+
+  @override
+  String get location_id => 'Location ID:';
+
+  @override
+  String get duration_filter => 'Duration';
 }

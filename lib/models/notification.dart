@@ -15,7 +15,7 @@ abstract class Notification with _$Notification {
 
   factory Notification.fromLaravel(Map<String, dynamic> json) {
     final attributes = json['attributes'] as Map<String, dynamic>;
-    
+
     return Notification(
       title: attributes['title'] as String? ?? '',
       message: attributes['message'] as String? ?? '',

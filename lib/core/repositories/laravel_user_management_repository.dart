@@ -39,10 +39,14 @@ final class LaravelUserManagementRepository extends LaravelRepository
       data: {
         'data': {
           'attributes': {
-            if (preferences['language'] != null) 'language': preferences['language'],
-            if (preferences['pushNotifications'] != null) 'pushNotifications': preferences['pushNotifications'],
-            if (preferences['emailNotifications'] != null) 'emailNotifications': preferences['emailNotifications'],
-            if (preferences['profileVisibility'] != null) 'profileVisibility': preferences['profileVisibility'],
+            if (preferences['language'] != null)
+              'language': preferences['language'],
+            if (preferences['pushNotifications'] != null)
+              'pushNotifications': preferences['pushNotifications'],
+            if (preferences['emailNotifications'] != null)
+              'emailNotifications': preferences['emailNotifications'],
+            if (preferences['profileVisibility'] != null)
+              'profileVisibility': preferences['profileVisibility'],
           },
         },
       },
@@ -59,10 +63,7 @@ final class LaravelUserManagementRepository extends LaravelRepository
     File? avatarFile,
   }) async {
     final Map<String, dynamic> requestData = {
-      'data': {
-        'attributes': {},
-        'relationships': {},
-      },
+      'data': {'attributes': {}, 'relationships': {}},
     };
 
     // Add profile attributes
@@ -82,25 +83,26 @@ final class LaravelUserManagementRepository extends LaravelRepository
       requestData['data']['attributes']['website'] = profileData['website'];
     }
     if (profileData['contactEmail'] != null) {
-      requestData['data']['attributes']['contactEmail'] = profileData['contactEmail'];
+      requestData['data']['attributes']['contactEmail'] =
+          profileData['contactEmail'];
     }
 
     // Add relationships
     if (profileData['locationId'] != null) {
       requestData['data']['relationships']['location'] = {
-        'data': {'id': profileData['locationId']}
+        'data': {'id': profileData['locationId']},
       };
     }
     if (profileData['skillIds'] != null && profileData['skillIds'] is List) {
       requestData['data']['relationships']['skills'] = {
         'data': (profileData['skillIds'] as List)
             .map((id) => {'id': id})
-            .toList()
+            .toList(),
       };
     }
     if (profileData['sectorId'] != null) {
       requestData['data']['relationships']['sector'] = {
-        'data': {'id': profileData['sectorId']}
+        'data': {'id': profileData['sectorId']},
       };
     }
 

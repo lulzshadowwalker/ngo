@@ -19,30 +19,38 @@ void main() {
             "sector": "Miss Maye Schneider",
             "location": "Caylaton, Georgia",
             "createdAt": "2025-06-05T12:27:15+00:00",
-            "updatedAt": "2025-06-05T12:27:15+00:00"
+            "updatedAt": "2025-06-05T12:27:15+00:00",
           },
           "relationships": {
             "sector": {
-              "data": {"type": "sectors", "id": "1"}
+              "data": {"type": "sectors", "id": "1"},
             },
             "location": {
-              "data": {"type": "locations", "id": "1"}
+              "data": {"type": "locations", "id": "1"},
             },
             "posts": [],
             "organizationPreferences": [],
-            "follows": []
-          }
-        }
+            "follows": [],
+          },
+        },
       };
 
-      final org = Organization.fromLaravel(json['data'] as Map<String, dynamic>);
+      final org = Organization.fromLaravel(
+        json['data'] as Map<String, dynamic>,
+      );
 
       expect(org.id, "1");
       expect(org.name, "Miss Abbie Gulgowski");
       expect(org.slug, "missabbiegulgowski");
       expect(org.bio, "Reiciendis odio nesciunt est aliquam quia praesentium.");
-      expect(org.logo, startsWith("https://images.unsplash.com/photo-1562307534"));
-      expect(org.website, startsWith("http://www.kautzer.org/vel-maiores-commodi"));
+      expect(
+        org.logo,
+        startsWith("https://images.unsplash.com/photo-1562307534"),
+      );
+      expect(
+        org.website,
+        startsWith("http://www.kautzer.org/vel-maiores-commodi"),
+      );
       expect(org.sector, "Miss Maye Schneider");
       expect(org.location, "Caylaton, Georgia");
       expect(org.createdAt, DateTime.parse("2025-06-05T12:27:15+00:00"));
@@ -54,7 +62,7 @@ void main() {
         "id": "2",
         "attributes": {
           // name, slug, etc. are missing
-        }
+        },
       };
 
       expect(

@@ -6,7 +6,7 @@ import 'package:ngo/export_tools.dart';
 import '../theme/my_colors.dart';
 
 /// A custom hook for handling image selection from camera or gallery
-/// 
+///
 /// Returns a [UseImagePickerResult] which contains:
 /// - [selectedImage]: The currently selected image file
 /// - [pickImage]: Function to pick image from specified source
@@ -43,7 +43,7 @@ UseImagePickerResult useImagePicker({
         maxWidth: maxWidth,
         maxHeight: maxHeight,
       );
-      
+
       if (image != null) {
         selectedImage.value = File(image.path);
       }
@@ -67,16 +67,19 @@ UseImagePickerResult useImagePicker({
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading:  Icon(Icons.camera_alt, color: MyColors.primaryColor),
-                title:  Text(AppLocalizations.of(context)!.camera),
+                leading: Icon(Icons.camera_alt, color: MyColors.primaryColor),
+                title: Text(AppLocalizations.of(context)!.camera),
                 onTap: () {
                   Navigator.of(context).pop();
                   pickImage(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading:  Icon(Icons.photo_library, color: MyColors.primaryColor),
-                title:  Text(AppLocalizations.of(context)!.gallery),
+                leading: Icon(
+                  Icons.photo_library,
+                  color: MyColors.primaryColor,
+                ),
+                title: Text(AppLocalizations.of(context)!.gallery),
                 onTap: () {
                   Navigator.of(context).pop();
                   pickImage(ImageSource.gallery);
@@ -85,7 +88,7 @@ UseImagePickerResult useImagePicker({
               if (selectedImage.value != null)
                 ListTile(
                   leading: const Icon(Icons.delete, color: Colors.red),
-                  title:  Text(AppLocalizations.of(context)!.remove),
+                  title: Text(AppLocalizations.of(context)!.remove),
                   onTap: () {
                     Navigator.of(context).pop();
                     clearImage();

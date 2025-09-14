@@ -1,5 +1,3 @@
-
-
 import '../../models/support_ticket.dart';
 
 abstract interface class SupportTicketRepository {

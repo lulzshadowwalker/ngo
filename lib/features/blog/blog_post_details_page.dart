@@ -19,7 +19,9 @@ class PostDetailsPage extends HookWidget {
   Widget build(BuildContext context) {
     var lang = AppLocalizations.of(context)!;
     return BlocProvider(
-      create: (context) => sl<PostCubit>()..fetchSinglePost(slug: slug , language: lang.localeName),
+      create: (context) =>
+          sl<PostCubit>()
+            ..fetchSinglePost(slug: slug, language: lang.localeName),
       child: Builder(
         builder: (context) => Scaffold(
           backgroundColor: Colors.white,
@@ -49,197 +51,204 @@ class PostDetailsPage extends HookWidget {
                 onPressed: () async {
                   final postCubit = context.read<PostCubit>();
                   final postState = postCubit.state;
-                  if (postState.runtimeType.toString().contains('LoadedSinglePost')) {
+                  if (postState.runtimeType.toString().contains(
+                    'LoadedSinglePost',
+                  )) {
                     final loadedState = postState as dynamic;
                     final post = loadedState.post;
-                    final shareText = '${post.title}\n\n${post.content}\n\nRead more in the NGO app.';
+                    final shareText =
+                        '${post.title}\n\n${post.content}\n\nRead more in the NGO app.';
                     Share.share(shareText);
                   }
                 },
               ),
             ],
           ),
-        body: BlocBuilder<PostCubit, PostState>(
-          builder: (context, state) {
-            if (state.runtimeType.toString().contains('Loading') ||
-                state.runtimeType.toString().contains('Initial')) {
-              return _buildLoadingSkeleton();
-            } else if (state.runtimeType.toString().contains('LoadedSinglePost')) {
-              final loadedState = state as dynamic;
-              final post = loadedState.post;
+          body: BlocBuilder<PostCubit, PostState>(
+            builder: (context, state) {
+              if (state.runtimeType.toString().contains('Loading') ||
+                  state.runtimeType.toString().contains('Initial')) {
+                return _buildLoadingSkeleton();
+              } else if (state.runtimeType.toString().contains(
+                'LoadedSinglePost',
+              )) {
+                final loadedState = state as dynamic;
+                final post = loadedState.post;
 
-              return SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Article Title
-                    Text(
-                      post.title ?? 'Untitled Article',
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        height: 1.3,
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Article Title
+                      Text(
+                        post.title ?? 'Untitled Article',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          height: 1.3,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
-                    // Author Info
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundImage: post.organization?.logo != null
-                              ? CachedNetworkImageProvider(post.organization!.logo!)
-                              : null,
-                          child: post.organization?.logo == null
-                              ? const Icon(Icons.person, color: Colors.white)
-                              : null,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                post.organization?.name ??
-                                    'Anonymous Organization',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    post.createdAtReadable,
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Icon(
-                                    Icons.access_time,
-                                    size: 12,
-                                    color: Colors.grey[600],
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    '5 min read', // Default read time since it's not in the model
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Tags
-                    if (post.sector != null)
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
+                      // Author Info
+                      Row(
                         children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _getTagColor(
-                                post.sector!.name ?? 'General',
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Text(
-                              post.sector!.name ?? 'General',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
+                          CircleAvatar(
+                            radius: 20,
+                            backgroundImage: post.organization?.logo != null
+                                ? CachedNetworkImageProvider(
+                                    post.organization!.logo!,
+                                  )
+                                : null,
+                            child: post.organization?.logo == null
+                                ? const Icon(Icons.person, color: Colors.white)
+                                : null,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  post.organization?.name ??
+                                      'Anonymous Organization',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      post.createdAtReadable,
+                                      style: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Icon(
+                                      Icons.access_time,
+                                      size: 12,
+                                      color: Colors.grey[600],
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      '5 min read', // Default read time since it's not in the model
+                                      style: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
-                    const SizedBox(height: 20),
+                      const SizedBox(height: 16),
 
-                    // Article Image
-                    if (post.cover.isNotEmpty)
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: CachedNetworkImage(
-                          imageUrl: post.cover,
-                          width: double.infinity,
-                          height: 200,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => Container(
+                      // Tags
+                      if (post.sector != null)
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: _getTagColor(
+                                  post.sector!.name ?? 'General',
+                                ),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Text(
+                                post.sector!.name ?? 'General',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      const SizedBox(height: 20),
+
+                      // Article Image
+                      if (post.cover.isNotEmpty)
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: CachedNetworkImage(
+                            imageUrl: post.cover,
                             width: double.infinity,
                             height: 200,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(12),
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(
+                              width: double.infinity,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
                             ),
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          ),
-                          errorWidget: (context, url, error) => Container(
-                            width: double.infinity,
-                            height: 200,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Icons.image_not_supported,
-                              size: 50,
-                              color: Colors.grey,
+                            errorWidget: (context, url, error) => Container(
+                              width: double.infinity,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Icon(
+                                Icons.image_not_supported,
+                                size: 50,
+                                color: Colors.grey,
+                              ),
                             ),
                           ),
                         ),
+                      const SizedBox(height: 20),
+
+                      // Article Content
+                      Text(
+                        post.content,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          height: 1.6,
+                          color: Colors.black87,
+                        ),
                       ),
-                    const SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
-                    // Article Content
-                    Text(
-                      post.content,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        height: 1.6,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
+                      // Comments Section
+                      const Divider(),
 
-                    // Comments Section
-                    const Divider(),
+                      const SizedBox(height: 32),
+                    ],
+                  ),
+                );
+              } else if (state.runtimeType.toString().contains('Error')) {
+                final errorState = state as dynamic;
+                return _buildErrorState(
+                  errorState.message ?? 'Failed to load article',
+                  () {
+                    context.read<PostCubit>().fetchSinglePost(slug: slug);
+                  },
+                );
+              }
 
-                    const SizedBox(height: 32),
-                  ],
-                ),
-              );
-            } else if (state.runtimeType.toString().contains('Error')) {
-              final errorState = state as dynamic;
-              return _buildErrorState(
-                errorState.message ?? 'Failed to load article',
-                () {
-                  context.read<PostCubit>().fetchSinglePost(slug: slug);
-                },
-              );
-            }
-
-            return const Center(child: Text('Unknown state'));
-          },
-        ),
+              return const Center(child: Text('Unknown state'));
+            },
+          ),
         ),
       ),
     );

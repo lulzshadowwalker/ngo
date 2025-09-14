@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ToastType {
-  success,
-  error,
-  warning,
-  info,
-}
+enum ToastType { success, error, warning, info }
 
 class ToastMessage {
   static OverlayEntry? _overlayEntry;
@@ -166,21 +161,17 @@ class _ToastWidgetState extends State<_ToastWidget>
       vsync: this,
     );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, -1),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutBack,
-    ));
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, -1), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: Curves.easeOutBack,
+          ),
+        );
 
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOut,
-    ));
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+    );
 
     _animationController.forward();
   }
@@ -229,13 +220,9 @@ class _ToastWidgetState extends State<_ToastWidget>
                     child: Row(
                       children: [
                         // Icon
-                        Icon(
-                          _getIcon(),
-                          color: _getIconColor(),
-                          size: 24,
-                        ),
+                        Icon(_getIcon(), color: _getIconColor(), size: 24),
                         const SizedBox(width: 12),
-                        
+
                         // Content
                         Expanded(
                           child: Column(
@@ -263,7 +250,7 @@ class _ToastWidgetState extends State<_ToastWidget>
                             ],
                           ),
                         ),
-                        
+
                         // Dismiss button
                         GestureDetector(
                           onTap: _dismiss,

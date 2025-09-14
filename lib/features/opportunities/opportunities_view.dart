@@ -73,9 +73,9 @@ class _OpportunitiesContent extends HookWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
-          'Volunteer Opportunities',
-          style: TextStyle(
+        title: Text(
+          lang.volunteer_opportunities,
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w600,
@@ -98,7 +98,7 @@ class _OpportunitiesContent extends HookWidget {
             SearchAndFilterWidget(
               filterType: FilterType.opportunities,
               searchController: searchController,
-              searchHint: 'Search opportunities...',
+              searchHint: lang.search_opportunities,
               onSearch: (query) {
                 context.read<OpportunitiesCubit>().searchOpportunities(
                   query,
@@ -198,7 +198,7 @@ class _OpportunitiesContent extends HookWidget {
           Icon(Icons.error_outline, size: 80, color: Colors.red[400]),
           const SizedBox(height: 16),
           Text(
-            'Oops! Something went wrong',
+            lang.oops_something_went_wrong,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -207,7 +207,7 @@ class _OpportunitiesContent extends HookWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Please check your connection and try again',
+            lang.check_connection_try_again,
             style: TextStyle(fontSize: 14, color: Colors.grey[500]),
             textAlign: TextAlign.center,
           ),
@@ -222,7 +222,7 @@ class _OpportunitiesContent extends HookWidget {
               backgroundColor: MyColors.primaryColor,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Try Again'),
+            child: Text(lang.try_again),
           ),
         ],
       ),
@@ -237,7 +237,7 @@ class _OpportunitiesContent extends HookWidget {
           Icon(Icons.search_off, size: 80, color: Colors.grey[400]),
           const SizedBox(height: 16),
           Text(
-            'No opportunities found',
+            lang.no_opportunities_found,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -246,7 +246,7 @@ class _OpportunitiesContent extends HookWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Try adjusting your search or filters',
+            lang.try_adjusting_search_filters,
             style: TextStyle(fontSize: 14, color: Colors.grey[500]),
           ),
         ],
@@ -355,7 +355,7 @@ class _OpportunitiesContent extends HookWidget {
                         Expanded(
                           child: Text(
                             opportunity.locationDescription ??
-                                'Location ID: ${opportunity.locationId}',
+                                '${lang.location_id} ${opportunity.locationId}',
                             style: const TextStyle(
                               fontSize: 12,
                               color: Colors.grey,
@@ -371,7 +371,7 @@ class _OpportunitiesContent extends HookWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          '${opportunity.duration} ${opportunity.duration == 1 ? 'month' : 'months'}',
+                          '${opportunity.duration} ${opportunity.duration == 1 ? lang.month : lang.months}',
                           style: const TextStyle(
                             fontSize: 12,
                             color: Colors.grey,
@@ -570,7 +570,7 @@ class _OpportunitiesContent extends HookWidget {
                                     // Build sector chips
                                     List<Widget> sectorChips = [
                                       _buildFilterChip(
-                                        'All',
+                                        lang.all_filter,
                                         isSelected: selectedSectorId == null,
                                         onTap: () {
                                           context.read<OpportunitiesCubit>().clearFilters(
@@ -618,9 +618,9 @@ class _OpportunitiesContent extends HookWidget {
                               },
                             ),
                             const SizedBox(height: 24),
-                            const Text(
-                              'Duration',
-                              style: TextStyle(
+                            Text(
+                              lang.duration_filter,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),

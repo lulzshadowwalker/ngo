@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +19,7 @@ class SupportTicketCubit extends Cubit<SupportTicketState> {
   Future<void> getAllTickets() async {
     emit(const SupportTicketState.loading());
     try {
-   final accessToken = await SharedPrefHelper.getAccessToken();
+      final accessToken = await SharedPrefHelper.getAccessToken();
       log("This is the access token: $accessToken");
       final tickets = await repository.list(accessToken);
       emit(SupportTicketState.ticketsLoaded(tickets));
@@ -46,7 +45,7 @@ class SupportTicketCubit extends Cubit<SupportTicketState> {
   }) async {
     emit(const SupportTicketState.loading());
     try {
-       final accessToken = await SharedPrefHelper.getAccessToken();
+      final accessToken = await SharedPrefHelper.getAccessToken();
       final ticket = await repository.create(
         accessToken,
         subject: subject,

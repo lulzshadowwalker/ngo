@@ -5,28 +5,29 @@ import 'package:ngo/features/support_ticket/cubit/support_ticket_cubit.dart';
 import 'package:ngo/service_locator.dart';
 
 class ShowDetalisSupportAllViewTicket extends HookWidget {
-  const ShowDetalisSupportAllViewTicket({super.key , required this.id});
-   final String id;
+  const ShowDetalisSupportAllViewTicket({super.key, required this.id});
+  final String id;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<SupportTicketCubit>()..getTicketById(id),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Ticket Details'),
-          centerTitle: true,
-        ),
+        appBar: AppBar(title: const Text('Ticket Details'), centerTitle: true),
         body: BlocBuilder<SupportTicketCubit, SupportTicketState>(
           builder: (context, state) {
             final type = state.runtimeType.toString().toLowerCase();
             if (type.contains('loading')) {
               return const Center(child: CircularProgressIndicator());
             } else if (type.contains('error')) {
-              final message = (state as dynamic).message ?? 'Error loading ticket.';
+              final message =
+                  (state as dynamic).message ?? 'Error loading ticket.';
               return Center(
                 child: Text(
                   message,
-                  style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 16),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                    fontSize: 16,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               );

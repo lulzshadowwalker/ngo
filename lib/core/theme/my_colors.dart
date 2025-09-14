@@ -15,9 +15,6 @@ class MyColors {
   // Add more colors as needed
 }
 
-
-
-
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
     // Base Colors
@@ -47,9 +44,7 @@ class AppTheme {
       style: ElevatedButton.styleFrom(
         backgroundColor: MyColors.primaryColor,
         foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     ),
 
@@ -65,14 +60,8 @@ class AppTheme {
         fontSize: 18,
         fontWeight: FontWeight.w600,
       ),
-      bodyLarge: TextStyle(
-        color: MyColors.textColor,
-        fontSize: 16,
-      ),
-      bodyMedium: TextStyle(
-        color: MyColors.textColor,
-        fontSize: 14,
-      ),
+      bodyLarge: TextStyle(color: MyColors.textColor, fontSize: 16),
+      bodyMedium: TextStyle(color: MyColors.textColor, fontSize: 14),
     ),
 
     // Input Decoration Theme
@@ -97,9 +86,7 @@ class AppTheme {
     cardTheme: CardThemeData(
       color: Colors.white,
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
   );
 }

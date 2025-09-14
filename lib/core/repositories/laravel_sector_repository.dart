@@ -26,8 +26,4 @@ final class LaravelSectorRepository extends LaravelRepository
         .map((item) => Sector.fromLaravel(item as Map<String, dynamic>))
         .toList();
   }
-
-
-
-
 }

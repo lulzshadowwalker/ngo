@@ -345,7 +345,7 @@ class _ChangePasswordView extends HookWidget {
                                     style: MyFonts.font16Black.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 13
+                                      fontSize: 13,
                                     ),
                                   ),
                           ),

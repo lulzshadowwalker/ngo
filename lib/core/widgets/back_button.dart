@@ -4,10 +4,7 @@ import '../../export_tools.dart';
 import '../theme/my_colors.dart';
 
 class BackButtonWidgets extends StatelessWidget {
-  const BackButtonWidgets({
-    super.key,
-    required this.lang,
-  });
+  const BackButtonWidgets({super.key, required this.lang});
 
   final AppLocalizations lang;
 

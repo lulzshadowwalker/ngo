@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-  import 'package:ngo/features/static_page_features/cubit/static_page_cubit.dart';
+import 'package:ngo/features/static_page_features/cubit/static_page_cubit.dart';
 import 'package:ngo/service_locator.dart';
 
 import '../../export_tools.dart';

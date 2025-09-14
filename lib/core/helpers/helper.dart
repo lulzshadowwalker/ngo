@@ -97,7 +97,7 @@ class SharedPrefHelper {
   }
 
   /// Auth-specific helper methods
-  
+
   /// Saves authentication data (access token and role)
   static Future<void> saveAuthData({
     required String accessToken,

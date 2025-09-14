@@ -32,9 +32,9 @@ class _TestFilePickerState extends State<TestFilePicker> {
                     type: FileType.any,
                     allowMultiple: false,
                   );
-                  
+
                   print('File picker result: $result');
-                  
+
                   if (result != null && result.files.isNotEmpty) {
                     final file = result.files.first;
                     print('Selected file: ${file.name}');
@@ -47,9 +47,9 @@ class _TestFilePickerState extends State<TestFilePicker> {
                 } catch (e) {
                   print('Error: $e');
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Error: $e')),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('Error: $e')));
                   }
                 }
               },

@@ -7,7 +7,6 @@ import 'package:ngo/models/application_response.dart';
 
 final class LaravelApplicationsRepository extends LaravelRepository
     implements ApplicationsRepository {
-  
   @override
   Future<Application> submit({
     required int opportunityId,
@@ -15,11 +14,13 @@ final class LaravelApplicationsRepository extends LaravelRepository
   }) async {
     final authorization = await SharedPrefHelper.getAccessToken();
     final userId = await SharedPrefHelper.getString('user_id');
-    
+
     final requestData = {
       'opportunity_id': opportunityId,
       'user_id': int.parse(userId),
-      'responses': responses.map((response) => response.toSubmissionJson()).toList(),
+      'responses': responses
+          .map((response) => response.toSubmissionJson())
+          .toList(),
     };
 
     final response = await post(
@@ -38,13 +39,10 @@ final class LaravelApplicationsRepository extends LaravelRepository
     int perPage = 20,
   }) async {
     final authorization = await SharedPrefHelper.getAccessToken();
-    
+
     final response = await get(
       '/v1/applications',
-      queryParameters: {
-        'page': page,
-        'per_page': perPage,
-      },
+      queryParameters: {'page': page, 'per_page': perPage},
       headers: {'Authorization': 'Bearer $authorization'},
     );
 
@@ -57,7 +55,7 @@ final class LaravelApplicationsRepository extends LaravelRepository
   @override
   Future<Application> fetch(int id) async {
     final authorization = await SharedPrefHelper.getAccessToken();
-    
+
     final response = await get(
       '/v1/applications/$id',
       headers: {'Authorization': 'Bearer $authorization'},
@@ -73,9 +71,11 @@ final class LaravelApplicationsRepository extends LaravelRepository
     required List<ApplicationResponse> responses,
   }) async {
     final authorization = await SharedPrefHelper.getAccessToken();
-    
+
     final requestData = {
-      'responses': responses.map((response) => response.toSubmissionJson()).toList(),
+      'responses': responses
+          .map((response) => response.toSubmissionJson())
+          .toList(),
     };
 
     final response = await patch(
@@ -91,7 +91,7 @@ final class LaravelApplicationsRepository extends LaravelRepository
   @override
   Future<void> deleteApplication(int id) async {
     final authorization = await SharedPrefHelper.getAccessToken();
-    
+
     await super.delete(
       '/v1/applications/$id',
       headers: {'Authorization': 'Bearer $authorization'},
