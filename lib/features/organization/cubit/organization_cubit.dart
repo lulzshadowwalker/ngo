@@ -6,6 +6,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ngo/core/contracts/organizations_repository.dart';
 import 'package:ngo/models/organization.dart';
 
+import '../../../core/helpers/helper.dart';
+
 part 'organization_cubit.freezed.dart';
 part 'organization_state.dart';
 
@@ -13,14 +15,19 @@ class OrganizationCubit extends Cubit<OrganizationState> {
   final OrganizationsRepository _repository;
   Timer? _debounceTimer;
 
-  OrganizationCubit(this._repository) : super(const OrganizationState.initial());
+  OrganizationCubit(this._repository)
+    : super(const OrganizationState.initial());
 
   Future<void> fetchAllOrganizations({String language = 'en'}) async {
     try {
+      final authorization = await SharedPrefHelper.getAccessToken();
       emit(const OrganizationState.loading());
-      
-      final organizations = await _repository.fetchAll(language: language);
-      
+
+      final organizations = await _repository.fetchAll(
+        authorization,
+        language: language,
+      );
+
       emit(OrganizationState.loaded(organizations));
     } catch (error) {
       emit(OrganizationState.error(error.toString()));
@@ -29,10 +36,15 @@ class OrganizationCubit extends Cubit<OrganizationState> {
 
   Future<void> fetchOrganization(String slug, {String language = 'en'}) async {
     try {
+      final authorization = await SharedPrefHelper.getAccessToken();
       emit(const OrganizationState.loading());
-      
-      final organization = await _repository.fetch(slug, language: language);
-      
+
+      final organization = await _repository.fetch(
+        slug,
+        authorization,
+        language: language,
+      );
+
       emit(OrganizationState.loadedSingleOrgnization(organization));
     } catch (error) {
       emit(OrganizationState.error(error.toString()));
@@ -43,22 +55,28 @@ class OrganizationCubit extends Cubit<OrganizationState> {
     try {
       log('Following organization with ID: $organizationId');
       await _repository.followOrganization(organizationId);
-      
+
       // Update the current state
       final currentState = state;
       log('Current state type: ${currentState.runtimeType}');
-      
-      if (currentState is _LoadedSingleOrganization && 
+
+      if (currentState is _LoadedSingleOrganization &&
           currentState.organization.id == organizationId) {
         log('Updating single organization view');
         // Update single organization view
-        final updatedOrganization = currentState.organization.copyWith(isFollowed: true);
+        final updatedOrganization = currentState.organization.copyWith(
+          isFollowed: true,
+        );
         emit(OrganizationState.loadedSingleOrgnization(updatedOrganization));
       } else if (currentState is _Loaded) {
-        log('Updating organization list. Current orgs count: ${currentState.organizations.length}');
+        log(
+          'Updating organization list. Current orgs count: ${currentState.organizations.length}',
+        );
         // Update organization in the list
         final updatedOrganizations = currentState.organizations.map((org) {
-          log('Comparing org.id "${org.id}" with organizationId "$organizationId"');
+          log(
+            'Comparing org.id "${org.id}" with organizationId "$organizationId"',
+          );
           if (org.id == organizationId) {
             log('Found matching organization, updating isFollowed to true');
             return org.copyWith(isFollowed: true);
@@ -68,7 +86,11 @@ class OrganizationCubit extends Cubit<OrganizationState> {
         emit(OrganizationState.loaded(updatedOrganizations));
       }
     } catch (error) {
-      emit(OrganizationState.error('Failed to follow organization: ${error.toString()}'));
+      emit(
+        OrganizationState.error(
+          'Failed to follow organization: ${error.toString()}',
+        ),
+      );
     }
   }
 
@@ -76,22 +98,28 @@ class OrganizationCubit extends Cubit<OrganizationState> {
     try {
       log('Unfollowing organization with ID: $organizationId');
       await _repository.unfollowOrganization(organizationId);
-      
+
       // Update the current state
       final currentState = state;
       log('Current state type: ${currentState.runtimeType}');
-      
-      if (currentState is _LoadedSingleOrganization && 
+
+      if (currentState is _LoadedSingleOrganization &&
           currentState.organization.id == organizationId) {
         log('Updating single organization view');
         // Update single organization view
-        final updatedOrganization = currentState.organization.copyWith(isFollowed: false);
+        final updatedOrganization = currentState.organization.copyWith(
+          isFollowed: false,
+        );
         emit(OrganizationState.loadedSingleOrgnization(updatedOrganization));
       } else if (currentState is _Loaded) {
-        log('Updating organization list. Current orgs count: ${currentState.organizations.length}');
+        log(
+          'Updating organization list. Current orgs count: ${currentState.organizations.length}',
+        );
         // Update organization in the list
         final updatedOrganizations = currentState.organizations.map((org) {
-          log('Comparing org.id "${org.id}" with organizationId "$organizationId"');
+          log(
+            'Comparing org.id "${org.id}" with organizationId "$organizationId"',
+          );
           if (org.id == organizationId) {
             log('Found matching organization, updating isFollowed to false');
             return org.copyWith(isFollowed: false);
@@ -101,13 +129,13 @@ class OrganizationCubit extends Cubit<OrganizationState> {
         emit(OrganizationState.loaded(updatedOrganizations));
       }
     } catch (error) {
-      emit(OrganizationState.error('Failed to unfollow organization: ${error.toString()}'));
+      emit(
+        OrganizationState.error(
+          'Failed to unfollow organization: ${error.toString()}',
+        ),
+      );
     }
   }
-
-
-
-
 
   Future<void> searchOrganizations(
     String query, {
@@ -116,22 +144,26 @@ class OrganizationCubit extends Cubit<OrganizationState> {
   }) async {
     try {
       emit(const OrganizationState.loading());
-      
+
       if (query.trim().isEmpty) {
         // If search query is empty, fetch all organizations
         await fetchAllOrganizations(language: language);
         return;
       }
-      
+
       final organizations = await _repository.search(
         query,
         language: language,
         sectorId: sectorId,
       );
-      
+
       emit(OrganizationState.loaded(organizations));
     } catch (error) {
-      emit(OrganizationState.error('Failed to search organizations: ${error.toString()}'));
+      emit(
+        OrganizationState.error(
+          'Failed to search organizations: ${error.toString()}',
+        ),
+      );
     }
   }
 
@@ -147,7 +179,7 @@ class OrganizationCubit extends Cubit<OrganizationState> {
     Duration delay = const Duration(milliseconds: 500),
   }) async {
     _debounceTimer?.cancel();
-    
+
     _debounceTimer = Timer(delay, () {
       searchOrganizations(query, language: language, sectorId: sectorId);
     });

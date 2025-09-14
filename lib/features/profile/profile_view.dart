@@ -812,12 +812,8 @@ class _ProfileViewContent extends HookWidget {
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
-           
                 context.read<OrganizationCubit>().unfollowOrganization(organization.slug);
-              
                 context.read<UserManagementCubit>().fetchUserData();
-         
-               
               },
               child: Text(
                 'Unfollow',

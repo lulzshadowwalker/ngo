@@ -8,8 +8,8 @@ import 'package:ngo/models/organization.dart';
 final class LaravelOrganizationsRepository extends LaravelRepository
     implements OrganizationsRepository {
   @override
-  Future<Organization> fetch(String slug, {String language = 'en'}) async {
-    final authorization = await SharedPrefHelper.getAccessToken();
+  Future<Organization> fetch(String slug, String accessToken , {String language = 'en'}) async {
+
     
 
         
@@ -17,7 +17,7 @@ final class LaravelOrganizationsRepository extends LaravelRepository
       '/v1/organizations/$slug',
       headers: {
         'Accept-Language': language,
-        'Authorization': 'Bearer $authorization',
+        'Authorization': 'Bearer $accessToken',
       },
     );
     final data = response['data'] as Map<String, dynamic>;
@@ -25,15 +25,15 @@ final class LaravelOrganizationsRepository extends LaravelRepository
   }
 
   @override
-  Future<List<Organization>> fetchAll({String language = 'en'}) async {
-    final authorization = await SharedPrefHelper.getAccessToken();
+  Future<List<Organization>> fetchAll(String accessToken ,{String language = 'en'}) async {
+
 
 
     final response = await get(
       '/v1/organizations',
       headers: {
         'Accept-Language': language,
-        'Authorization': 'Bearer $authorization',
+        'Authorization': 'Bearer $accessToken',
       },
     );
 
