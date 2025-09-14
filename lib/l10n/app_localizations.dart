@@ -829,6 +829,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Additional Information'**
   String get additional_information;
+
+  /// Button text for clearing filters
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Filters'**
+  String get clear_filters;
+
+  /// Button text for applying filters
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filters'**
+  String get apply_filters;
+
+  /// Title for the filter opportunities modal
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Opportunities'**
+  String get filter_opportunities;
+
+  /// Label for sector filter
+  ///
+  /// In en, this message translates to:
+  /// **'Sector'**
+  String get sector;
+
+  /// Message indicating no content in following tab
+  ///
+  /// In en, this message translates to:
+  /// **'No following content yet'**
+  String get no_following_content_yet;
+
+  /// Prompt to follow organizations to see posts
+  ///
+  /// In en, this message translates to:
+  /// **'Follow organizations to see their posts here'**
+  String get follow_organizations_to_see_their_posts_here;
 }
 
 class _AppLocalizationsDelegate

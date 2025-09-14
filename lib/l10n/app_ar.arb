@@ -120,10 +120,15 @@
   "about_the_role": "حول الدور",
   "months_duration": "مدة الشهور",
   "applications_close": "إغلاق الطلبات",
-  "days_left_to_apply" : "أيام متبقية للتقديم {days}",
-    "already_applied" : "تم التقديم بالفعل",
-      "apply_now" : "قدّم الآن",
-        "tags" : "العلامات",
-          "additional_information" : "معلومات إضافية"
-           
+  "days_left_to_apply": "أيام متبقية للتقديم {days}",
+  "already_applied": "تم التقديم بالفعل",
+  "apply_now": "قدّم الآن",
+  "tags": "العلامات",
+  "additional_information": "معلومات إضافية",
+  "clear_filters": "مسح الفلاتر",
+  "apply_filters" : "تطبيق الفلاتر",
+  "filter_opportunities" : "تصفية الفرص",
+  "sector" : "القطاع",
+    "no_following_content_yet" : "لا يوجد محتوى تتابعه بعد",
+     "follow_organizations_to_see_their_posts_here" : "تابع منظمات لرؤية منشوراتها هنا"
 }

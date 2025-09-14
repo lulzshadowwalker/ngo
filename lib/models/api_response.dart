@@ -15,12 +15,12 @@ abstract class ApiMeta with _$ApiMeta {
 
   factory ApiMeta.fromJson(Map<String, dynamic> json) {
     return ApiMeta(
-      total: json['total'] as int,
-      perPage: json['perPage'] as int,
-      currentPage: json['currentPage'] as int,
-      lastPage: json['lastPage'] as int,
-      from: json['from'] as int,
-      to: json['to'] as int,
+      total: json['total'] as int? ?? 0,
+      perPage: json['perPage'] as int? ?? 20,
+      currentPage: json['currentPage'] as int? ?? 1,
+      lastPage: json['lastPage'] as int? ?? 1,
+      from: json['from'] as int? ?? 1,
+      to: json['to'] as int? ?? 0,
     );
   }
 }

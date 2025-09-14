@@ -380,4 +380,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get additional_information => 'Additional Information';
+
+  @override
+  String get clear_filters => 'Clear Filters';
+
+  @override
+  String get apply_filters => 'Apply Filters';
+
+  @override
+  String get filter_opportunities => 'Filter Opportunities';
+
+  @override
+  String get sector => 'Sector';
+
+  @override
+  String get no_following_content_yet => 'No following content yet';
+
+  @override
+  String get follow_organizations_to_see_their_posts_here =>
+      'Follow organizations to see their posts here';
 }

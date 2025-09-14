@@ -365,7 +365,7 @@ class _ProfileViewContent extends HookWidget {
                 AppLocalizations.of(context)!.following,
               ),
               _buildStatItem(
-                '8',
+                (0).toString(),
                 AppLocalizations.of(context)!.my_applications,
               ),
             ],
@@ -712,32 +712,6 @@ class _ProfileViewContent extends HookWidget {
             const SizedBox(height: 8),
             TextComponent(
               title: 'Your volunteer applications will appear here',
-              style: MyFonts.font14Black.copyWith(color: Colors.grey),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMyEvaluationsTab() {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      child: Center(
-        child: Column(
-          children: [
-            const Icon(Icons.rate_review, size: 64, color: Colors.grey),
-            const SizedBox(height: 16),
-            TextComponent(
-              title: 'No Evaluations Yet',
-              style: MyFonts.font18BlackBold.copyWith(
-                fontWeight: FontWeight.w500,
-                color: Colors.grey,
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextComponent(
-              title: 'Your volunteer evaluations will appear here',
               style: MyFonts.font14Black.copyWith(color: Colors.grey),
             ),
           ],

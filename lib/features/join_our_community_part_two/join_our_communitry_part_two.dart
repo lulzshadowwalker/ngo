@@ -43,7 +43,10 @@ class JoinOurCommunitryPartTwo extends StatelessWidget {
             const SizedBox(height: 20),
             IamJoiningAsAnSection(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> JoinTheCommunity()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => JoinTheCommunity()),
+                );
               },
               title: lang.opptunity_seeker,
               description: AppLocalizations.of(
@@ -53,7 +56,12 @@ class JoinOurCommunitryPartTwo extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             IamJoiningAsAnSection(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => JoinTheCommunity()),
+                );
+              },
               title: lang.consultant,
               description: lang.for_registered_as_consultant,
               icon: Icons.business,

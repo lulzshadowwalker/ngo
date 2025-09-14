@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngo/core/theme/my_colors.dart';
+import 'package:ngo/features/edit_proflie/edit_profle_export.dart';
 import 'package:ngo/features/opportunities/opportunity_detail_view.dart';
 import 'package:ngo/features/post/data/model/post.dart';
 import 'package:ngo/service_locator.dart';
@@ -108,83 +109,63 @@ class Home extends HookWidget {
 
 
                 
-                SliverToBoxAdapter(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        const CircleAvatar(
-                          radius: 24,
-                          backgroundImage: NetworkImage(
-                            'https://randomuser.me/api/portraits/women/44.jpg',
+                
+
+
+                // Profile completion card - only show if not complete
+                if (_shouldShowProfileCompletion(state))
+                  SliverToBoxAdapter(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.1),
+                            spreadRadius: 1,
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
                           ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Complete Your Profile',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          // const CircleAvatar(
+                          //   radius: 24,
+                          //   backgroundImage: NetworkImage(
+                          //     'https://randomuser.me/api/portraits/women/44.jpg',
+                          //   ),
+                          // ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                 Text(
+                                  AppLocalizations.of(context)!.complete_your_profile,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: LinearProgressIndicator(
-                                      value: 0.33,
-                                      backgroundColor: Colors.grey[200],
-                                      valueColor:
-                                          const AlwaysStoppedAnimation<Color>(
-                                            MyColors.primaryColor,
-                                          ),
-                                      minHeight: 4,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Text(
-                                    'Step 1 of 3',
-                                    style: TextStyle(
-                                       color: MyColors.primaryColor.withOpacity(0.8),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                const SizedBox(height: 8),
+                                _buildProfileCompletionProgress(context, state),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-                
-                
+                  ),                
                 
                 SliverToBoxAdapter(
                   child: SizedBox(
-                    height: 480, // Fixed height for TabBarView
+                    height: tabController.index == 0 ? 480 : 600, 
                     child: TabBarView(
                       
                       controller: tabController,
@@ -233,12 +214,12 @@ class Home extends HookWidget {
               Icon(Icons.people_outline, size: 64, color: Colors.grey[400]),
               const SizedBox(height: 16),
               Text(
-                'No following content yet',
+                AppLocalizations.of(context)!.no_following_content_yet,
                 style: TextStyle(fontSize: 18, color: Colors.grey[600]),
               ),
               const SizedBox(height: 8),
               Text(
-                'Follow organizations to see their posts here',
+                AppLocalizations.of(context)!.follow_organizations_to_see_their_posts_here,
                 style: TextStyle(fontSize: 14, color: Colors.grey[500]),
               ),
             ],
@@ -607,6 +588,77 @@ class Home extends HookWidget {
                   ),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool _shouldShowProfileCompletion(HomeState state) {
+    // Only show profile completion for following feed state
+    if (state.runtimeType.toString() != '_FollowingLoaded') {
+      return false;
+    }
+
+    final followingState = state as dynamic;
+    final profileCompletion = followingState.profileCompletion as int? ?? 0;
+    
+    // Hide the card if profile is complete (profileCompletion = 3)
+    return profileCompletion < 3;
+  }
+
+  Widget _buildProfileCompletionProgress(BuildContext context, HomeState state) {
+    // Get profile completion from following feed state, default to 0
+    int profileCompletion = 0;
+    if (state.runtimeType.toString() == '_FollowingLoaded') {
+      final followingState = state as dynamic;
+      profileCompletion = followingState.profileCompletion as int? ?? 0;
+    }
+
+    // Calculate progress based on profileCompletion value (1 or 2)
+    // Note: Case 3 (complete) is handled by hiding the entire widget
+    final double progress;
+    final String stepText;
+    
+    switch (profileCompletion) {
+      case 1:
+        progress = 0.33;
+        stepText = 'Step 1 of 3';
+        break;
+      case 2:
+        progress = 0.66;
+        stepText = 'Step 2 of 3';
+        break;
+      default: // 0 or any other value
+        progress = 0.0;
+        stepText = 'Get Started';
+        break;
+    }
+
+    return GestureDetector(
+       onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfileView()));
+                    },
+      child: Row(
+        children: [
+          Expanded(
+            child: LinearProgressIndicator(
+              value: progress,
+              backgroundColor: Colors.grey[200],
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                MyColors.primaryColor,
+              ),
+              minHeight: 4,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Text(
+            stepText,
+            style: TextStyle(
+              color: MyColors.primaryColor.withOpacity(0.8),
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],

@@ -459,11 +459,11 @@ class SettingsView extends HookWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children:  [
             Icon(Icons.logout, size: 24, color: Colors.red),
             SizedBox(width: 12),
             Text(
-              'Log Out',
+              AppLocalizations.of(context)!.logout,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,

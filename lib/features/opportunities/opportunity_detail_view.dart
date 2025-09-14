@@ -4,6 +4,8 @@ import 'package:ngo/core/theme/my_colors.dart';
 import 'package:ngo/export_tools.dart';
 import 'package:ngo/features/applications/cubit/application_cubit.dart';
 import 'package:ngo/features/opportunities/cubit/opportunities_cubit.dart';
+import 'package:ngo/features/opportunities/widgets/dynamic_application_form.dart';
+import 'package:ngo/models/application_response.dart';
 import 'package:ngo/models/opportunity.dart';
 import 'package:ngo/service_locator.dart';
 
@@ -779,76 +781,61 @@ class OpportunityDetailView extends HookWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        height: MediaQuery.of(context).size.height * 0.8,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+      builder: (modalContext) => BlocProvider.value(
+        value: context.read<ApplicationCubit>(),
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.8,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              height: 4,
-              width: 40,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text(
-                'Application Form',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                height: 4,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
                 ),
               ),
-            ),
-            const Expanded(
-              child: Center(
-                child: Text(
-                  'Application form implementation\ncoming soon!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Cancel'),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        context.read<ApplicationCubit>().submitApplication(
-                          opportunityId: int.parse(opportunity.id),
-                          responses: [],
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: DynamicApplicationForm(
+                    applicationForm: opportunity.applicationForm!,
+                    onSubmit: (responses) {
+                      Navigator.pop(modalContext);
+                      // Convert Map responses to List<ApplicationResponse>
+                      final applicationResponses = responses.entries.map((entry) {
+                        final fieldId = int.parse(entry.key);
+                        final formField = opportunity.applicationForm!.formFields
+                            .firstWhere((field) => field.id == fieldId);
+                        
+                        return ApplicationResponse(
+                          id: 0, // Will be set by backend
+                          formFieldId: fieldId,
+                          value: entry.value.toString(),
+                          formField: formField,
                         );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: MyColors.primaryColor,
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text('Submit'),
-                    ),
+                      }).toList();
+                      
+                      // Use the original context instead of modalContext
+                      context.read<ApplicationCubit>().submitApplication(
+                        opportunityId: int.parse(opportunity.id),
+                        responses: applicationResponses,
+                      );
+                    },
+                    onCancel: () => Navigator.pop(modalContext),
                   ),
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

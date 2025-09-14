@@ -462,6 +462,30 @@
   "additional_information" : "Additional Information",
   "@additional_information": {
     "description": "Label for additional information section"
+  },
+  "clear_filters" : "Clear Filters",
+  "@clear_filters": {
+    "description": "Button text for clearing filters"
+  },
+  "apply_filters" : "Apply Filters",
+  "@apply_filters": {
+    "description": "Button text for applying filters"
+  },
+  "filter_opportunities" : "Filter Opportunities",
+  "@filter_opportunities": {
+    "description": "Title for the filter opportunities modal"
+  },
+  "sector" : "Sector",
+  "@sector": {
+    "description": "Label for sector filter"
+  },
+  "no_following_content_yet" : "No following content yet",
+  "@no_following_content_yet": {
+    "description": "Message indicating no content in following tab"
+  },
+  "follow_organizations_to_see_their_posts_here" : "Follow organizations to see their posts here",
+  "@follow_organizations_to_see_their_posts_here": {
+    "description": "Prompt to follow organizations to see posts"
   }
 
 }

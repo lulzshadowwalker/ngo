@@ -25,7 +25,7 @@ final class LaravelFeedRepository extends LaravelRepository
     );
 
     return (
-      response['profileCompletion'] as int,
+      response['profileCompletion'] as int? ?? 0,
       (response['posts'] as List<dynamic>)
           .map((item) => Post.fromLaravel(item as Map<String, dynamic>))
           .toList()

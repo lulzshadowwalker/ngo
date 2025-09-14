@@ -233,16 +233,38 @@ class OpportunitiesCubit extends Cubit<OpportunitiesState> {
   Future<void> loadMore({String language = 'en'}) async {
     final currentState = state;
     if (currentState is _Loaded && currentState.meta.currentPage < currentState.meta.lastPage) {
-      await fetchOpportunities(
-        language: language,
-        page: currentState.currentPage + 1,
-        search: currentState.searchQuery.isNotEmpty ? currentState.searchQuery : null,
-        tags: currentState.selectedTags.isNotEmpty ? currentState.selectedTags : null,
-        sectorId: currentState.selectedSectorId,
-        locationId: currentState.selectedLocationId,
-        isFeatured: currentState.isFeatured ? true : null,
-        isLoadMore: true,
-      );
+      try {
+        final nextPage = currentState.currentPage + 1;
+        
+        final response = await _repository.fetchAll(
+          language: language,
+          page: nextPage,
+          search: currentState.searchQuery.isNotEmpty ? currentState.searchQuery : null,
+          tags: currentState.selectedTags.isNotEmpty ? currentState.selectedTags : null,
+          sectorId: currentState.selectedSectorId,
+          locationId: currentState.selectedLocationId,
+          isFeatured: currentState.isFeatured ? true : null,
+        );
+
+        // Append new opportunities to existing list
+        final updatedOpportunities = List<Opportunity>.from(currentState.opportunities)
+          ..addAll(response.data);
+        
+        emit(OpportunitiesState.loaded(
+          opportunities: updatedOpportunities,
+          meta: response.meta,
+          links: response.links,
+          currentPage: nextPage,
+          searchQuery: currentState.searchQuery,
+          selectedTags: currentState.selectedTags,
+          selectedSectorId: currentState.selectedSectorId,
+          selectedLocationId: currentState.selectedLocationId,
+          isFeatured: currentState.isFeatured,
+        ));
+      } catch (e) {
+        // Don't emit error state for load more failures, just ignore
+        // This prevents the UI from showing error state when pagination fails
+      }
     }
   }
 

@@ -379,4 +379,23 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get additional_information => 'معلومات إضافية';
+
+  @override
+  String get clear_filters => 'مسح الفلاتر';
+
+  @override
+  String get apply_filters => 'تطبيق الفلاتر';
+
+  @override
+  String get filter_opportunities => 'تصفية الفرص';
+
+  @override
+  String get sector => 'القطاع';
+
+  @override
+  String get no_following_content_yet => 'لا يوجد محتوى تتابعه بعد';
+
+  @override
+  String get follow_organizations_to_see_their_posts_here =>
+      'تابع منظمات لرؤية منشوراتها هنا';
 }

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:hugeicons/hugeicons.dart';
 
 import '../../core/core_export.dart';
+import '../../core/widgets/toast_message.dart';
 import '../../export_tools.dart';
 import '../complete_your_profile/complete_your_profile_export.dart';
 
@@ -63,8 +64,21 @@ class JoinTheCommunity extends HookWidget {
                   hintText: lang.enterFullName,
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Required' : null,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return '${lang.fullName} is required';
+                  }
+                  if (value.trim().length < 2) {
+                    return 'Name must be at least 2 characters';
+                  }
+                  if (value.trim().length > 50) {
+                    return 'Name must not exceed 50 characters';
+                  }
+                  if (!RegExp(r'^[a-zA-Z\s\u0600-\u06FF]+$').hasMatch(value.trim())) {
+                    return 'Name can only contain letters and spaces';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 20),
               buildLabel(lang.emailAddress),
@@ -75,8 +89,16 @@ class JoinTheCommunity extends HookWidget {
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Required' : null,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return '${lang.emailAddress} is required';
+                  }
+                  // Email format validation
+                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value.trim())) {
+                    return 'Please enter a valid email address';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 20),
               buildLabel(lang.password),
@@ -96,8 +118,34 @@ class JoinTheCommunity extends HookWidget {
                         obscurePassword.value = !obscurePassword.value,
                   ),
                 ),
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Required' : null,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return '${lang.password} is required';
+                  }
+                  if (value.length < 8) {
+                    return 'Password must be at least 8 characters';
+                  }
+                  if (value.length > 128) {
+                    return 'Password must not exceed 128 characters';
+                  }
+                  // Check for at least one uppercase letter
+                  if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                    return 'Password must contain at least one uppercase letter';
+                  }
+                  // Check for at least one lowercase letter
+                  if (!RegExp(r'[a-z]').hasMatch(value)) {
+                    return 'Password must contain at least one lowercase letter';
+                  }
+                  // Check for at least one digit
+                  if (!RegExp(r'[0-9]').hasMatch(value)) {
+                    return 'Password must contain at least one number';
+                  }
+                  // Check for at least one special character
+                  if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
+                    return 'Password must contain at least one special character';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 20),
               Row(
@@ -105,13 +153,16 @@ class JoinTheCommunity extends HookWidget {
                   Checkbox(
                     value: agreedToTerms.value,
                     onChanged: (val) => agreedToTerms.value = val ?? false,
+                    activeColor: Colors.green[700],
                   ),
                   Expanded(
                     child: Wrap(
                       children: [
                          Text(lang.iAgreeToThe),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            // TODO: Navigate to Terms of Service
+                          },
                           child: Text(
                             lang.termsOfService,
                             style: TextStyle(
@@ -123,7 +174,9 @@ class JoinTheCommunity extends HookWidget {
                         ),
                          Text(lang.andA),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            // TODO: Navigate to Privacy Policy
+                          },
                           child: Text(
                             lang.privacyPolicy,
                             style: TextStyle(
@@ -153,14 +206,31 @@ class JoinTheCommunity extends HookWidget {
                     log("This Email is: ${emailController.text}");
                     log("This Password is: ${passwordController.text}");
                     log("This Name is: ${nameController.text}");
-                    if (formKey.currentState?.validate() == true &&
-                        agreedToTerms.value) {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> CompleteYourProfile(
-                            fullName: nameController.text,
-                            email: emailController.text,
-                            password: passwordController.text,
-                          )));
+                    
+                    // Validate form first
+                    if (formKey.currentState?.validate() != true) {
+                      // Show error toast for form validation
+                   
+                      return;
                     }
+                    
+                    // Check terms agreement
+                    if (!agreedToTerms.value) {
+                      ToastMessage.showWarning(
+                        context,
+                        title: 'Terms Required',
+                        message: 'Please agree to the Terms of Service and Privacy Policy',
+                      );
+                      return;
+                    }
+                    
+                    
+                    
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> CompleteYourProfile(
+                      fullName: nameController.text.trim(),
+                      email: emailController.text.trim().toLowerCase(),
+                      password: passwordController.text,
+                    )));
                   },
                   child: Text(
                     lang.create_account,
