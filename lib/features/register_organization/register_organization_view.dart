@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:ngo/core/theme/my_fonts.dart';
 import 'package:ngo/export_tools.dart';
 
+import '../../core/theme/my_colors.dart';
 import '../../core/widgets/back_button.dart';
 import 'compelete_register_organization.dart';
 
@@ -57,8 +58,23 @@ class RegisterOrganizationView extends HookWidget {
                   hintText: lang.enterFullName,
                   border: const OutlineInputBorder(),
                 ),
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Required' : null,
+                   validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return lang.fullNameRequired;
+                  }
+                  if (value.trim().length < 3) {
+                    return lang.fullNameMinLength;
+                  }
+                  if (value.trim().length > 50) {
+                    return lang.fullNameMaxLength;
+                  }
+                  if (!RegExp(
+                    r'^[a-zA-Z\s\u0600-\u06FF]+$',
+                  ).hasMatch(value.trim())) {
+                    return lang.nameOnlyContainsLetters;
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 20),
               buildLabel(lang.emailAddress),
@@ -69,8 +85,18 @@ class RegisterOrganizationView extends HookWidget {
                   border: const OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Required' : null,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return lang.emailRequired;
+                  }
+                  // Email format validation
+                  if (!RegExp(
+                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                  ).hasMatch(value.trim())) {
+                    return lang.invalidEmail;
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 20),
               buildLabel(lang.password),
@@ -90,22 +116,52 @@ class RegisterOrganizationView extends HookWidget {
                         obscurePassword.value = !obscurePassword.value,
                   ),
                 ),
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Required' : null,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return lang.password_required;
+                  }
+                  if (value.length < 8) {
+                    return lang.password_min_length;
+                  }
+                  if (value.length > 128) {
+                    return lang.password_max_length;
+                  }
+                  // Check for at least one uppercase letter
+                  if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                    return lang.password_uppercase;
+                  }
+                  // Check for at least one lowercase letter
+                  if (!RegExp(r'[a-z]').hasMatch(value)) {
+                    return lang.password_lowercase;
+                  }
+                  // Check for at least one digit
+                  if (!RegExp(r'[0-9]').hasMatch(value)) {
+                    return lang.password_number;
+                  }
+                  // Check for at least one special character
+                  if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
+                    return lang.password_special_char;
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 20),
+
               Row(
                 children: [
                   Checkbox(
                     value: agreedToTerms.value,
                     onChanged: (val) => agreedToTerms.value = val ?? false,
+                    activeColor: MyColors.primaryColor,
                   ),
                   Expanded(
                     child: Wrap(
                       children: [
                         Text(lang.iAgreeToThe),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            // TODO: Navigate to Terms of Service
+                          },
                           child: Text(
                             lang.termsOfService,
                             style: TextStyle(
@@ -117,11 +173,13 @@ class RegisterOrganizationView extends HookWidget {
                         ),
                         Text(lang.andA),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            // TODO: Navigate to Privacy Policy
+                          },
                           child: Text(
                             lang.privacyPolicy,
                             style: TextStyle(
-                              color: Colors.green[700],
+                              color: MyColors.primaryColor,
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,
                             ),
@@ -132,6 +190,7 @@ class RegisterOrganizationView extends HookWidget {
                   ),
                 ],
               ),
+
               const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,
