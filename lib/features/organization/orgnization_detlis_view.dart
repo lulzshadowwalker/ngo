@@ -412,8 +412,8 @@ class OrgnizationDetlisView extends HookWidget {
       child: Row(
         children: [
           _buildTabItem('Programs', 0, selectedTabIndex),
-          _buildTabItem('Volunteer', 1, selectedTabIndex),
-          _buildTabItem('Vacancies', 2, selectedTabIndex),
+          // _buildTabItem('Volunteer', 1, selectedTabIndex),
+          // _buildTabItem('Vacancies', 2, selectedTabIndex),
         ],
       ),
     );
@@ -455,10 +455,10 @@ class OrgnizationDetlisView extends HookWidget {
     switch (selectedIndex) {
       case 0:
         return _buildProgramsTab();
-      case 1:
-        return _buildVolunteerTab();
-      case 2:
-        return _buildVacanciesTab();
+      // case 1:
+      //   return _buildVolunteerTab();
+      // case 2:
+      //   return _buildVacanciesTab();
       default:
         return _buildProgramsTab();
     }
