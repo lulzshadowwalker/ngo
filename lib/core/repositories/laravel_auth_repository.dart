@@ -46,7 +46,12 @@ class LaravelLoginRepository extends LaravelRepository
     required String email,
     required String password,
     required int locationId,
-    String? avatar,
+    String? avatar, // File path for avatar upload
+    String? phone,
+    String? bio,
+    String? birthdate,
+    List<int>? skills, 
+    List<int>? volunteeringInterests,
   }) async {
     // Create FormData for multipart request
     final formData = FormData.fromMap({
@@ -54,6 +59,15 @@ class LaravelLoginRepository extends LaravelRepository
       'data[attributes][email]': email,
       'data[attributes][password]': password,
       'data[relationships][location][data][id]': locationId,
+      'data[attributes][phone]': phone ?? '',
+      'data[attributes][bio]': bio ?? '',
+      'data[attributes][birthdate]': birthdate ?? '',
+      'data[relationships][skills][data]': skills
+          ?.map((skillId) => {'id': skillId})
+          .toList(), 
+      'data[relationships][volunteeringInterests][data]': volunteeringInterests
+          ?.map((interestId) => {'id': interestId})
+          .toList(), 
     });
 
     // Add avatar files if provided

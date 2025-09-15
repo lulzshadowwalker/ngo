@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ngo/models/location.dart';
 import 'package:ngo/models/organization.dart';
+import 'package:ngo/models/skill.dart';
+import 'package:ngo/models/volunteering_interest.dart';
 
 part 'user.freezed.dart';
 
@@ -13,8 +15,10 @@ abstract class User with _$User {
     required String? avatar,
     required String? bio,
     required DateTime? birthdate,
+    String? phone,
     Location? location,
     List<String>? skills,
+    List<String>? volunteeringInterests,
     List<Organization>? following,
   }) = _User;
 
@@ -32,7 +36,17 @@ abstract class User with _$User {
     List<String>? skills;
     if (includes?['skills'] != null) {
       final skillsList = includes!['skills'] as List<dynamic>;
-      skills = skillsList.map((skill) => skill.toString()).toList();
+      skills = skillsList
+          .map((skill) => Skill.fromLaravel(skill as Map<String, dynamic>).name)
+          .toList();
+    }
+
+    List<String>? volunteeringInterests;
+    if (includes?['volunteeringInterests'] != null) {
+      final interestsList = includes!['volunteeringInterests'] as List<dynamic>;
+      volunteeringInterests = interestsList
+          .map((interest) => VolunteeringInterest.fromLaravel(interest as Map<String, dynamic>).name)
+          .toList();
     }
 
     List<Organization>? following;
@@ -49,11 +63,13 @@ abstract class User with _$User {
       email: attributes['email'] as String? ?? '',
       avatar: attributes['avatar'] as String?,
       bio: attributes['bio'] as String?,
+      phone: attributes['phone'] as String?,
       birthdate: attributes['birthdate'] != null
           ? DateTime.parse(attributes['birthdate'] as String)
           : null,
       location: location,
       skills: skills,
+      volunteeringInterests: volunteeringInterests,
       following: following,
     );
   }

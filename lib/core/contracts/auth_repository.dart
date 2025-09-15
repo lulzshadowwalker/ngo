@@ -26,6 +26,11 @@ abstract class AuthRepository {
     required String password,
     required int locationId,
     String? avatar, // File path for avatar upload
+    String? phone,
+    String? bio,
+    String? birthdate,
+    List<int>? skills, 
+    List<int>? volunteeringInterests,
   });
 
   /// Registers a new organization user.
