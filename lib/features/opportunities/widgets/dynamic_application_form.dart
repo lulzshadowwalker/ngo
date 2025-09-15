@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:ngo/core/theme/my_colors.dart';
 import 'package:ngo/export_tools.dart';
@@ -402,10 +404,10 @@ class DynamicApplicationForm extends HookWidget {
 
         return InkWell(
           onTap: () async {
-            print('File picker tapped for field: ${field.id}');
+            log('File picker tapped for field: ${field.id}');
             try {
               // Use file_picker to pick a file with type restrictions
-              print('Starting file picker...');
+              log('Starting file picker...');
               final result = await FilePicker.platform.pickFiles(
                 type: FileType.any,
                 allowMultiple: false,
@@ -413,15 +415,15 @@ class DynamicApplicationForm extends HookWidget {
                     null, // You can restrict file types here if needed
               );
 
-              print('File picker result: $result');
+              log('File picker result: $result');
 
               if (result != null && result.files.isNotEmpty) {
                 final file = result.files.first;
-                print('Selected file: ${file.name}, size: ${file.size}');
+                log('Selected file: ${file.name}, size: ${file.size}');
 
                 // Optional: Check file size (e.g., max 10MB)
                 if (file.size > 10 * 1024 * 1024) {
-                  print('File too large: ${file.size} bytes');
+                  log('File too large: ${file.size} bytes');
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -433,7 +435,7 @@ class DynamicApplicationForm extends HookWidget {
                   return;
                 }
 
-                print('Updating selectedValues with file: ${file.name}');
+                log('Updating selectedValues with file: ${file.name}');
                 selectedValues.value = {
                   ...selectedValues.value,
                   field.id.toString(): file.name,
@@ -442,12 +444,12 @@ class DynamicApplicationForm extends HookWidget {
                   // Store file bytes if needed for upload
                   '${field.id}_bytes': file.bytes,
                 };
-                print('Updated selectedValues: ${selectedValues.value}');
+                log('Updated selectedValues: ${selectedValues.value}');
               } else {
-                print('No file selected or result was null');
+                log('No file selected or result was null');
               }
             } catch (e) {
-              print('Error during file picking: $e');
+              log('Error during file picking: $e');
               // Handle any errors during file picking
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(

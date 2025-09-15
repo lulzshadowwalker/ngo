@@ -977,6 +977,18 @@ class AppLocalizationsAr extends AppLocalizations {
       'هل أنت متأكد من أنك تريد إلغاء متابعة هذه المنظمة؟';
 
   @override
+  String get phone_number => 'رقم الهاتف';
+
+  @override
+  String get enter_phone_number => 'أدخل رقم الهاتف (اختياري)';
+
+  @override
+  String get optional => 'اختياري';
+
+  @override
+  String get invalid_phone_number => 'يرجى إدخال رقم هاتف صحيح';
+
+  @override
   String get location_required_error => 'الموقع مطلوب.';
 
   @override

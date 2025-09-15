@@ -1143,6 +1143,14 @@
     }
   },
   "unfollow_dialog_content": "Are you sure you want to unfollow this organization?",
+  "phone_number": "Phone Number",
+  "@phone_number": {},
+  "enter_phone_number": "Enter phone number (optional)",
+  "@enter_phone_number": {},
+  "optional": "optional",
+  "@optional": {},
+  "invalid_phone_number": "Please enter a valid phone number",
+  "@invalid_phone_number": {},
   "@unfollow_dialog_content": {},
   "@register": {
     "description": "Register button text"

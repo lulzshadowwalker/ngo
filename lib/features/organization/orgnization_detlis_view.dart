@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,6 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/constant/app_assets.dart';
 import '../../core/theme/my_colors.dart';
+import '../../models/organization.dart';
 import '../../service_locator.dart';
 
 class OrgnizationDetlisView extends HookWidget {
@@ -406,6 +409,10 @@ class OrgnizationDetlisView extends HookWidget {
     );
   }
 
+
+
+
+
   Widget _buildTabNavigation(ValueNotifier<int> selectedTabIndex) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -451,69 +458,71 @@ class OrgnizationDetlisView extends HookWidget {
     );
   }
 
-  Widget _buildTabContent(int selectedIndex, dynamic organization) {
+  Widget _buildTabContent(int selectedIndex, Organization organization) {
+    
     switch (selectedIndex) {
       case 0:
-        return _buildProgramsTab();
+        return _buildProgramsTab(organization);
       // case 1:
       //   return _buildVolunteerTab();
       // case 2:
       //   return _buildVacanciesTab();
       default:
-        return _buildProgramsTab();
+        return _buildProgramsTab(organization);
     }
   }
 
-  Widget _buildProgramsTab() {
+  Widget _buildProgramsTab(Organization organization) {
+    log("this is programs ${organization.programs.length}");
+    if (organization.programs.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          children: [
+            Icon(
+              Icons.event_note,
+              size: 64,
+              color: Colors.grey[400],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'No Programs Available',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[600],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'This organization hasn\'t published any programs yet.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.grey[500],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Column(
-      children: [
-        _buildProgramCard(
-          title: 'Integrity School',
-          description:
-              'Developing tomorrow\'s leaders through workshops and mentorship',
-          duration: 'Sep 2025 - Dec 2027',
-          status: 'Ongoing',
+      children: organization.programs.map((program) {
+        return _buildProgramCard(
+          title: program.title,
+          description: program.description ?? 'No description available',
+          duration: 'Duration not specified', // Can be updated when Program model includes dates
+          status: 'Active', // Can be updated when Program model includes status
           statusColor: MyColors.primaryColor,
-          imageUrl:
-              'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400',
-        ),
-        _buildProgramCard(
-          title: 'Action For Integrity',
-          description:
-              'Teaching essential digital skills to empower youth in the modern workplace',
-          duration: 'Sep 2025 - Dec 2027',
-          status: 'Upcoming',
-          statusColor: Colors.orange,
-          imageUrl:
-              'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400',
-        ),
-      ],
+          imageUrl: program.cover??"" // Default image
+        );
+      }).toList(),
     );
   }
 
-  Widget _buildVolunteerTab() {
-    return const Padding(
-      padding: EdgeInsets.all(16),
-      child: Center(
-        child: Text(
-          'No volunteer opportunities available',
-          style: TextStyle(color: Colors.grey, fontSize: 16),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildVacanciesTab() {
-    return const Padding(
-      padding: EdgeInsets.all(16),
-      child: Center(
-        child: Text(
-          'No vacancies available',
-          style: TextStyle(color: Colors.grey, fontSize: 16),
-        ),
-      ),
-    );
-  }
+
+
 
   Widget _buildProgramCard({
     required String title,
@@ -742,109 +751,12 @@ class OrgnizationDetlisView extends HookWidget {
     );
   }
 
-  // Helper methods for launching external apps
-  void _handleFollowToggle(
-    BuildContext context,
-    dynamic organization,
-    ValueNotifier<bool> isFollowLoading,
-  ) {
-    final organizationCubit = context.read<OrganizationCubit>();
+ 
 
-    if (organization.isFollowed) {
-      // Show confirmation dialog for unfollowing
-      _showUnfollowConfirmation(
-        context,
-        organization,
-        organizationCubit,
-        isFollowLoading,
-      );
-    } else {
-      // Follow immediately
-      _performFollowAction(
-        context,
-        organizationCubit,
-        organization,
-        isFollowLoading,
-        true,
-      );
-    }
-  }
 
-  Future<void> _performFollowAction(
-    BuildContext context,
-    OrganizationCubit cubit,
-    dynamic organization,
-    ValueNotifier<bool> isFollowLoading,
-    bool isFollow,
-  ) async {
-    isFollowLoading.value = true;
 
-    try {
-      if (isFollow) {
-        await cubit.followOrganization(organization.slug);
-        _showSuccessSnackBar(
-          context,
-          'You are now following ${organization.name}',
-        );
-      } else {
-        await cubit.unfollowOrganization(organization.slug);
-        _showSuccessSnackBar(context, 'You unfollowed ${organization.name}');
-      }
-    } catch (e) {
-      _showErrorSnackBar(context, 'Something went wrong. Please try again.');
-    } finally {
-      isFollowLoading.value = false;
-    }
-  }
 
-  void _showUnfollowConfirmation(
-    BuildContext context,
-    dynamic organization,
-    OrganizationCubit cubit,
-    ValueNotifier<bool> isFollowLoading,
-  ) {
-    showDialog(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('Unfollow Organization'),
-          content: Text(
-            'Are you sure you want to unfollow ${organization.name}?',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-                _performFollowAction(
-                  context,
-                  cubit,
-                  organization,
-                  isFollowLoading,
-                  false,
-                );
-              },
-              style: TextButton.styleFrom(foregroundColor: Colors.red),
-              child: const Text('Unfollow'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
-  void _showSuccessSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: MyColors.primaryColor,
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
 
   Future<void> _launchEmail(
     BuildContext context,

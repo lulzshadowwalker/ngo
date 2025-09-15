@@ -24,10 +24,13 @@ class CompleteYourProfile extends HookWidget {
     required this.fullName,
     required this.email,
     required this.password,
+    this.phoneNumber,
   });
   final String fullName;
   final String email;
   final String password;
+  final String? phoneNumber;
+
   @override
   Widget build(BuildContext context) {
     var lang = AppLocalizations.of(context)!;
@@ -55,6 +58,7 @@ class CompleteYourProfile extends HookWidget {
         fullName: fullName,
         email: email,
         password: password,
+        phoneNumber: phoneNumber,
       ),
     );
   }
@@ -65,11 +69,13 @@ class _CompleteYourProfileView extends HookWidget {
     required this.fullName,
     required this.email,
     required this.password,
+    this.phoneNumber,
   });
 
   final String fullName;
   final String email;
   final String password;
+  final String? phoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -559,9 +565,7 @@ class _CompleteYourProfileView extends HookWidget {
                       } else if (stateType.contains('RegisterError')) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(
-                              lang.registration_failed_message,
-                            ),
+                            content: Text(lang.registration_failed_message),
                             backgroundColor: Colors.red,
                           ),
                         );
@@ -599,9 +603,7 @@ class _CompleteYourProfileView extends HookWidget {
                                   if (selectedSkills.value.isEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text(
-                                          lang.please_add_skill,
-                                        ),
+                                        content: Text(lang.please_add_skill),
                                         backgroundColor: Colors.orange,
                                       ),
                                     );
@@ -610,9 +612,7 @@ class _CompleteYourProfileView extends HookWidget {
                                   if (selectedSectors.value.isEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text(
-                                          lang.please_add_interest,
-                                        ),
+                                        content: Text(lang.please_add_interest),
                                         backgroundColor: Colors.orange,
                                       ),
                                     );
@@ -634,6 +634,23 @@ class _CompleteYourProfileView extends HookWidget {
                                           avatar: imagePickerResult
                                               .selectedImage
                                               ?.path,
+                                          phone: phoneNumber,
+                                          bio: aboutController.text.trim(),
+                                          birthdate: selectedDate.value
+                                              ?.toIso8601String(),
+                                          skills: selectedSkills.value
+                                              .map(
+                                                (skill) =>
+                                                    int.tryParse(skill.id) ?? 0,
+                                              )
+                                              .toList(),
+                                          sectors: selectedSectors.value
+                                              .map(
+                                                (sector) =>
+                                                    int.tryParse(sector.id) ??
+                                                    0,
+                                              )
+                                              .toList(),
                                         );
                                   } catch (e) {
                                     log("Registration error: $e");
@@ -838,7 +855,9 @@ class _CompleteYourProfileView extends HookWidget {
                                 onPressed: () => context
                                     .read<OrganizationCubit>()
                                     .fetchAllOrganizations(),
-                                child: Text(AppLocalizations.of(context)!.retry),
+                                child: Text(
+                                  AppLocalizations.of(context)!.retry,
+                                ),
                               ),
                             ],
                           ),
@@ -968,7 +987,9 @@ class _CompleteYourProfileView extends HookWidget {
                               Icon(Icons.error, color: Colors.red, size: 48),
                               const SizedBox(height: 16),
                               Text(
-                                AppLocalizations.of(context)!.error_loading_skills,
+                                AppLocalizations.of(
+                                  context,
+                                )!.error_loading_skills,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -980,13 +1001,19 @@ class _CompleteYourProfileView extends HookWidget {
                               ElevatedButton(
                                 onPressed: () =>
                                     sl<SkillsCubit>().fetchAllSkills(),
-                                child: Text(AppLocalizations.of(context)!.retry),
+                                child: Text(
+                                  AppLocalizations.of(context)!.retry,
+                                ),
                               ),
                             ],
                           ),
                         );
                       } else {
-                        return Center(child: Text(AppLocalizations.of(context)!.loading_skills));
+                        return Center(
+                          child: Text(
+                            AppLocalizations.of(context)!.loading_skills,
+                          ),
+                        );
                       }
                     }(),
                   ),
@@ -1116,7 +1143,9 @@ class _CompleteYourProfileView extends HookWidget {
                               Icon(Icons.error, color: Colors.red, size: 48),
                               const SizedBox(height: 16),
                               Text(
-                                AppLocalizations.of(context)!.error_loading_sectors,
+                                AppLocalizations.of(
+                                  context,
+                                )!.error_loading_sectors,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -1128,13 +1157,19 @@ class _CompleteYourProfileView extends HookWidget {
                               ElevatedButton(
                                 onPressed: () =>
                                     sl<SectorsCubit>().fetchAllSectors(),
-                                child: Text(AppLocalizations.of(context)!.retry),
+                                child: Text(
+                                  AppLocalizations.of(context)!.retry,
+                                ),
                               ),
                             ],
                           ),
                         );
                       } else {
-                        return Center(child: Text(AppLocalizations.of(context)!.loading_sectors));
+                        return Center(
+                          child: Text(
+                            AppLocalizations.of(context)!.loading_sectors,
+                          ),
+                        );
                       }
                     }(),
                   ),

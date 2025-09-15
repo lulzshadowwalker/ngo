@@ -51,7 +51,7 @@ class LaravelLoginRepository extends LaravelRepository
     String? bio,
     String? birthdate,
     List<int>? skills, 
-    List<int>? volunteeringInterests,
+    List<int>? sectors,
   }) async {
     // Create FormData for multipart request
     final formData = FormData.fromMap({
@@ -65,7 +65,7 @@ class LaravelLoginRepository extends LaravelRepository
       'data[relationships][skills][data]': skills
           ?.map((skillId) => {'id': skillId})
           .toList(), 
-      'data[relationships][volunteeringInterests][data]': volunteeringInterests
+      'data[relationships][sectors][data]': sectors
           ?.map((interestId) => {'id': interestId})
           .toList(), 
     });

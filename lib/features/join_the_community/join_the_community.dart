@@ -15,6 +15,7 @@ class JoinTheCommunity extends HookWidget {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final nameController = useTextEditingController();
     final emailController = useTextEditingController();
+    final phoneController = useTextEditingController();
     final passwordController = useTextEditingController();
     final obscurePassword = useState(true);
     final agreedToTerms = useState(false);
@@ -26,6 +27,16 @@ class JoinTheCommunity extends HookWidget {
           style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
         ),
         const Text('  *', style: TextStyle(color: Colors.red, fontSize: 16)),
+      ],
+    );
+
+    Widget buildOptionalLabel(String label) => Row(
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+        ),
+        Text('  (${lang.optional})', style: TextStyle(color: Colors.grey, fontSize: 14)),
       ],
     );
 
@@ -105,6 +116,27 @@ class JoinTheCommunity extends HookWidget {
                 },
               ),
               const SizedBox(height: 20),
+              buildOptionalLabel(lang.phone_number),
+              TextFormField(
+                controller: phoneController,
+                decoration: InputDecoration(
+                  hintText: lang.enter_phone_number,
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  // Phone is optional, so only validate if user entered something
+                  if (value != null && value.isNotEmpty) {
+                    // Basic phone number validation - at least 10 digits
+                    final phoneRegex = RegExp(r'^\+?[\d\s\-\(\)]{10,}$');
+                    if (!phoneRegex.hasMatch(value.trim())) {
+                      return lang.invalid_phone_number;
+                    }
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
               buildLabel(lang.password),
               TextFormField(
                 controller: passwordController,
@@ -151,6 +183,8 @@ class JoinTheCommunity extends HookWidget {
                   return null;
                 },
               ),
+              const SizedBox(height: 20),
+              
               const SizedBox(height: 20),
               Row(
                 children: [
@@ -210,6 +244,7 @@ class JoinTheCommunity extends HookWidget {
                     log("This Email is: ${emailController.text}");
                     log("This Password is: ${passwordController.text}");
                     log("This Name is: ${nameController.text}");
+                    log("This Phone is: ${phoneController.text}");
 
                     // Validate form first
                     if (formKey.currentState?.validate() != true) {
@@ -235,6 +270,9 @@ class JoinTheCommunity extends HookWidget {
                           fullName: nameController.text.trim(),
                           email: emailController.text.trim().toLowerCase(),
                           password: passwordController.text,
+                          phoneNumber: phoneController.text.trim().isNotEmpty 
+                              ? phoneController.text.trim() 
+                              : null,
                         ),
                       ),
                     );

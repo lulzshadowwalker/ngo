@@ -30,7 +30,7 @@ abstract class AuthRepository {
     String? bio,
     String? birthdate,
     List<int>? skills, 
-    List<int>? volunteeringInterests,
+    List<int>? sectors,
   });
 
   /// Registers a new organization user.

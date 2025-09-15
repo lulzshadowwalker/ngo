@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Program {
 
- int get id; String get title; String? get description;
+ String get id; String get title; String? get description; String? get cover;
 /// Create a copy of Program
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $ProgramCopyWith<Program> get copyWith => _$ProgramCopyWithImpl<Program>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Program&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Program&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.cover, cover) || other.cover == cover));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,description);
+int get hashCode => Object.hash(runtimeType,id,title,description,cover);
 
 @override
 String toString() {
-  return 'Program(id: $id, title: $title, description: $description)';
+  return 'Program(id: $id, title: $title, description: $description, cover: $cover)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $ProgramCopyWith<$Res>  {
   factory $ProgramCopyWith(Program value, $Res Function(Program) _then) = _$ProgramCopyWithImpl;
 @useResult
 $Res call({
- int id, String title, String? description
+ String id, String title, String? description, String? cover
 });
 
 
@@ -63,11 +63,12 @@ class _$ProgramCopyWithImpl<$Res>
 
 /// Create a copy of Program
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? description = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? description = freezed,Object? cover = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,cover: freezed == cover ? _self.cover : cover // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -79,12 +80,13 @@ as String?,
 
 
 class _Program implements Program {
-  const _Program({required this.id, required this.title, required this.description});
+  const _Program({required this.id, required this.title, required this.description, required this.cover});
   
 
-@override final  int id;
+@override final  String id;
 @override final  String title;
 @override final  String? description;
+@override final  String? cover;
 
 /// Create a copy of Program
 /// with the given fields replaced by the non-null parameter values.
@@ -96,16 +98,16 @@ _$ProgramCopyWith<_Program> get copyWith => __$ProgramCopyWithImpl<_Program>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Program&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Program&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.cover, cover) || other.cover == cover));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,description);
+int get hashCode => Object.hash(runtimeType,id,title,description,cover);
 
 @override
 String toString() {
-  return 'Program(id: $id, title: $title, description: $description)';
+  return 'Program(id: $id, title: $title, description: $description, cover: $cover)';
 }
 
 
@@ -116,7 +118,7 @@ abstract mixin class _$ProgramCopyWith<$Res> implements $ProgramCopyWith<$Res> {
   factory _$ProgramCopyWith(_Program value, $Res Function(_Program) _then) = __$ProgramCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String title, String? description
+ String id, String title, String? description, String? cover
 });
 
 
@@ -133,11 +135,12 @@ class __$ProgramCopyWithImpl<$Res>
 
 /// Create a copy of Program
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? description = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? description = freezed,Object? cover = freezed,}) {
   return _then(_Program(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,cover: freezed == cover ? _self.cover : cover // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

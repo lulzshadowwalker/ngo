@@ -62,6 +62,11 @@ class AuthCubit extends Cubit<AuthState> {
     required String password,
     required int locationId,
     String? avatar,
+    String? phone,
+    String? bio,
+    String? birthdate,
+    List<int>? skills,
+    List<int>? sectors,
   }) async {
     try {
       emit(const AuthState.registering());
@@ -72,6 +77,11 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
         locationId: locationId,
         avatar: avatar,
+        phone: phone,
+        bio: bio,
+        birthdate: birthdate,
+        skills: skills,
+        sectors: sectors,
       );
 
       // Save auth data to SharedPreferences

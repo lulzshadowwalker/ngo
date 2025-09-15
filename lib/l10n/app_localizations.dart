@@ -1976,6 +1976,30 @@ abstract class AppLocalizations {
   /// **'Are you sure you want to unfollow this organization?'**
   String get unfollow_dialog_content;
 
+  /// No description provided for @phone_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phone_number;
+
+  /// No description provided for @enter_phone_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter phone number (optional)'**
+  String get enter_phone_number;
+
+  /// No description provided for @optional.
+  ///
+  /// In en, this message translates to:
+  /// **'optional'**
+  String get optional;
+
+  /// No description provided for @invalid_phone_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid phone number'**
+  String get invalid_phone_number;
+
   /// Location validation error message
   ///
   /// In en, this message translates to:

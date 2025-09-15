@@ -982,6 +982,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Are you sure you want to unfollow this organization?';
 
   @override
+  String get phone_number => 'Phone Number';
+
+  @override
+  String get enter_phone_number => 'Enter phone number (optional)';
+
+  @override
+  String get optional => 'optional';
+
+  @override
+  String get invalid_phone_number => 'Please enter a valid phone number';
+
+  @override
   String get location_required_error => 'Location is required.';
 
   @override
